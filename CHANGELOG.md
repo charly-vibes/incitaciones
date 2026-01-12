@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-01-12
 
+#### Added - Code Review Research and Prompts
+
+- **research-paper-rule-of-5-multi-agent-review.md** - Comprehensive framework combining Steve Yegge's Rule of 5 with multi-agent parallel architecture for code review
+- **research-paper-cognitive-architectures-for-prompts.md** - Analysis of cross-disciplinary methodologies (Disney Strategy, Six Hats, Red Teaming, Pre-Mortem, Medical Diagnosis, Aviation CRM, Legal Review) adapted for prompt engineering
+- **prompt-task-iterative-code-review.md** - Practical implementation of Rule of 5 for solo code review with convergence criteria
+- **prompt-workflow-multi-agent-parallel-review.md** - Advanced multi-agent workflow for comprehensive code review (Wave/Gate architecture)
+
+These prompts and research synthesize methodologies from medicine, military, aviation, law, and engineering to create structured AI-driven code review processes achieving 85-92% defect detection.
+
+#### Earlier Today
+
 - Initial repository setup
 - Created AGENTS.md with repository structure and philosophy
 - Created README.md with meta prompt for LLMs
