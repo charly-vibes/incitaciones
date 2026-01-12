@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-01-12
 
+#### Added - Development Workflow Prompts
+
+- **prompt-workflow-deliberate-commits.md** - Comprehensive git commit workflow with mandatory review, logical grouping, and contextual messages (no AI attribution)
+- **prompt-workflow-create-handoff.md** - Create context handoff documents for transferring work between AI sessions with preserved learnings and priorities
+- **prompt-workflow-resume-handoff.md** - Resume work from handoff documents with verification, adaptation to changes, and context restoration
+- **prompt-task-research-codebase.md** - Pure documentation research without suggestions or critiques, focusing on understanding existing code
+- **prompt-workflow-plan-implement-verify-tdd.md** - Test-Driven Development workflow with Red-Green-Refactor cycle and phased implementation
+- **prompt-task-describe-pr.md** - Generate comprehensive pull request descriptions with context, testing guidance, and breaking changes
+- **prompt-workflow-extract-prompt-from-conversation.md** - Meta prompt for extracting reusable prompts from successful AI conversations
+
+These prompts are adapted from fabbro agent system patterns, HumanLayer workflows, and Advanced Context Engineering principles. They emphasize deliberate workflows, context preservation, and structured development practices.
+
 #### Added - Code Review Research and Prompts
 
 - **research-paper-rule-of-5-multi-agent-review.md** - Comprehensive framework combining Steve Yegge's Rule of 5 with multi-agent parallel architecture for code review
