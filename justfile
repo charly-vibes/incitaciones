@@ -12,6 +12,11 @@ new TYPE NAME:
     DATE=$(date +%Y-%m-%d)
     SLUG=$(echo "{{NAME}}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
 
+    if [ -z "$SLUG" ]; then
+        echo "Error: Invalid name results in empty slug." >&2
+        exit 1
+    fi
+
     case "{{TYPE}}" in
         prompt)
             FILE="content/prompt-task-${SLUG}.md"
@@ -41,7 +46,7 @@ new TYPE NAME:
     cp "$TEMPLATE" "$FILE"
     sed -i "s/\[YYYY-MM-DD\]/$DATE/g" "$FILE"
     sed -i "s/\[Human Readable Title\]/{{NAME}}/g" "$FILE"
-    sed -i "s/\[Title\]/{{NAME}}/g" "$FILE"
+    sed -i "s/# \[Title\]/# {{NAME}}/g" "$FILE"
 
     echo "Created: $FILE"
     echo "Edit with: \$EDITOR $FILE"
@@ -84,7 +89,7 @@ find TERM:
 
     # Search in frontmatter and content
     echo "=== Content matching '{{TERM}}' ==="
-    grep -l -i "{{TERM}}" content/*.md 2>/dev/null | grep -v template | sed 's|content/||' || true
+    grep -H -i -n "{{TERM}}" content/*.md 2>/dev/null | grep -v template || echo "No content matches found"
     echo ""
 
 # Find prompts by tag
@@ -305,10 +310,20 @@ check-links:
 
 # Clean up: remove files marked for deletion
 clean:
-    @echo "Removing temporary and backup files..."
-    @find content -name "*.bak" -delete
-    @find content -name "*~" -delete
-    @echo "Done"
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "The following backup files will be deleted:"
+    find content -name "*.bak" -o -name "*~"
+    echo ""
+    read -p "Are you sure you want to delete these files? (y/n) " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        find content -name "*.bak" -delete
+        find content -name "*~" -delete
+        echo "Backup files removed."
+    else
+        echo "Clean up cancelled."
+    fi
 
 # Initialize a new references file
 new-references CATEGORY:
