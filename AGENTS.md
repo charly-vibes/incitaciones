@@ -119,6 +119,9 @@ The canonical and complete commit process is documented in the contribution guid
 
 **➡️ See [CONTRIBUTING.md](CONTRIBUTING.md#commit-guidelines) for the full guidelines.**
 
+**🤖 For AI assistants:** Use the deliberate commits workflow to ensure proper review and commit structure:
+**➡️ See [content/prompt-workflow-deliberate-commits.md](content/prompt-workflow-deliberate-commits.md)**
+
 ## Relating Content
 
 Files reference each other in the `related` field:
