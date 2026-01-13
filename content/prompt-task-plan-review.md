@@ -1,22 +1,32 @@
 ---
-title: Iterative Plan Review (Rule of 5)
+title: Iterative Plan Review (Rule of 5 Principle)
 type: prompt
 subtype: task
-tags: [review, planning, rule-of-5, quality-assurance, validation]
+tags: [review, planning, rule-of-5, quality-assurance, validation, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [prompt-workflow-create-plan.md, prompt-workflow-iterate-plan.md, prompt-workflow-rule-of-5-review.md]
-source: adapted-from-fabbro
+updated: 2026-01-13
+version: 1.1.0
+related: [prompt-workflow-create-plan.md, prompt-workflow-iterate-plan.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
+source: adapted-from-fabbro-with-rule-of-5-principle
 ---
 
-# Iterative Plan Review (Rule of 5)
+# Iterative Plan Review (Rule of 5 Principle)
+
+## About This Prompt
+
+This prompt applies the **Rule of 5 principle** (iterative refinement until convergence) to plan review. It uses a single-agent, 5-pass approach with domain-focused passes adapted for planning:
+
+- **Approach:** Single agent, sequential passes
+- **Passes:** Feasibility → Completeness → TDD Alignment → Ordering → Executability
+- **Philosophy:** Iterative refinement with convergence checking
+
+**Note:** This is not Steve Yegge's original Draft/Correctness/Clarity/EdgeCases/Excellence structure, but applies his core principle to plan-specific concerns.
 
 ## When to Use
 
-Use this prompt to perform thorough review of implementation plans using the Rule of 5 methodology - iterative refinement until convergence.
+Use this prompt to perform thorough review of implementation plans using iterative refinement until convergence.
 
 **Critical for:**
 - Reviewing plans before implementation begins
@@ -465,33 +475,53 @@ NEEDS_REVISION
 
 ## References
 
-- Steve Yegge's "Six New Tips for Better Coding with Agents" - Rule of 5 methodology
-- `prompt-workflow-create-plan.md` - How to create plans
-- `prompt-workflow-iterate-plan.md` - How to fix issues found in review
-- `prompt-workflow-rule-of-5-review.md` - Multi-agent variant of Rule of 5
+**Rule of 5 Principle:**
+- **Steve Yegge's Article:** https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+- **Gastown Implementation:** https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
+
+**Related Prompts:**
+- **prompt-workflow-create-plan.md** - How to create plans
+- **prompt-workflow-iterate-plan.md** - How to fix issues found in review
+- **prompt-task-iterative-code-review.md** - Steve's original 5-stage approach for code
+- **prompt-workflow-rule-of-5-review.md** - Extended multi-agent variant for code (high-stakes)
 
 ## Notes
 
-### Why Rule of 5?
+### About This Adaptation
 
-The Rule of 5 methodology achieves:
-- **85-92% defect detection** vs 60-70% for single-pass reviews
-- **Multiple perspectives** - Each pass focuses on different aspects
+**Core Principle:** Steve Yegge's Rule of 5 - "LLM agents produce best work through 4-5 iterative refinements until convergence"
+
+**This prompt adapts the principle to plan review:**
+- Steve's original: Draft → Correctness → Clarity → Edge Cases → Excellence (editorial)
+- This prompt: Feasibility → Completeness → TDD → Ordering → Executability (plan-specific)
+- Both use convergence checking to know when to stop
+
+**Why domain-focused passes for plans?**
+Plans need different concerns than code: feasibility analysis, TDD alignment, dependency ordering, etc. The 5-pass iterative structure with convergence is what matters, not the specific pass topics.
+
+### Detection Rates
+
+Single-agent iterative review achieves:
+- **75-85% defect detection** vs 60-70% for single-pass reviews
+- **Multiple perspectives** - Each pass focuses on different aspect
 - **Convergence validation** - Knows when to stop reviewing
 - **Systematic coverage** - No aspect overlooked
 
 ### Single Agent vs Multi-Agent
 
-This is **single-agent** Rule of 5:
+This is **single-agent** iterative review:
 - One agent performs all 5 passes sequentially
-- Good for: Solo review, quick quality gate, learning tool
-- Faster and cheaper than multi-agent
+- Good for: Solo review, standard plans, quick quality gate
+- Cost: ~$0.40-0.60 per review
+- Time: 12-17 minutes
 
-For **multi-agent** Rule of 5 (higher quality, more expensive):
-- Use `prompt-workflow-rule-of-5-review.md`
+For **multi-agent** parallel review (10% better detection, 2x cost):
+- Use `prompt-workflow-rule-of-5-review.md` for code review
 - Parallel independent reviews by specialist agents
 - Cross-validation and conflict resolution
 - Best for: Critical code, security reviews, large changes
+- Not typically needed for plan review (single-agent sufficient)
 
 ### Convergence is Key
 
@@ -534,4 +564,5 @@ A thorough 10-minute review is better than a superficial 2-minute scan.
 
 ## Version History
 
+- 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with plan-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro plan_review command

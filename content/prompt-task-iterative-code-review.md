@@ -1,32 +1,50 @@
 ---
-title: Iterative Code Review with Rule of 5
+title: Iterative Code Review with Rule of 5 (Steve Yegge's Original)
 type: prompt
-tags: [code-review, rule-of-5, iteration, convergence, quality-assurance]
-tools: [claude-code, cursor, aider, gemini]
+tags: [code-review, rule-of-5, iteration, convergence, quality-assurance, linear]
+tools: [claude-code, cursor, aider, gemini, gastown]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
+updated: 2026-01-13
+version: 1.1.0
 related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-workflow-multi-agent-parallel-review.md]
-source: adapted-from-https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+source: steve-yegge-gastown-rule-of-five-formula
 ---
 
-# Iterative Code Review with Rule of 5
+# Iterative Code Review with Rule of 5 (Steve Yegge's Original)
+
+## About This Prompt
+
+This prompt implements **Steve Yegge's original Rule of 5 approach** as found in his gastown tool. It follows a linear 5-stage refinement process: Draft → Correctness → Clarity → Edge Cases → Excellence.
+
+**Key characteristic:** Sequential stages where each builds on insights from the previous stage.
+
+**Source:** Inspired by Steve's gastown `rule-of-five.formula.toml`
 
 ## When to Use
 
+**This is Steve's original approach - use it for 80% of your code reviews.**
+
 **Use this prompt when:**
 - Reviewing your own code before committing
-- Doing a quick quality check on a feature
+- Standard code review for non-critical systems
+- Doing a quality check on a feature
 - Working solo without a code review partner
-- You want high-quality review without setting up multi-agent systems
-- Time budget: 15-20 minutes for thorough review
+- You want high-quality review (75-85% detection) without complexity
+- Budget-conscious scenarios ($0.40-0.60 per review)
+- Learning AI-assisted code review
+- Time budget: 12-17 minutes for thorough review
 
-**When NOT to use:**
-- Security-critical code (use full multi-agent review instead)
-- Production systems with high reliability requirements (add human review)
-- Very large changes (>1000 LOC) - consider chunking first
-- When you need deep architectural review (use specialized prompts)
+**When NOT to use (consider extended multi-agent variant instead):**
+- Security-critical code requiring 85-92% detection
+- Large refactorings (>500 LOC) with high cascading failure risk
+- Pre-production quality gates for critical systems
+- When you need cross-validated findings from multiple specialized perspectives
+
+**When NOT to use (neither approach is sufficient):**
+- Very large changes (>1000 LOC) - chunk it first
+- Deep architectural review - use specialized prompts
+- Compliance/regulatory review - need human expert
 
 **Prerequisites:**
 - Code is complete and functional
@@ -34,6 +52,93 @@ source: adapted-from-https://steve-yegge.medium.com/six-new-tips-for-better-codi
 - You've done a first self-review already
 
 ## The Prompt
+
+### Original Variant (Steve's Actual Stages)
+
+This follows Steve Yegge's actual gastown implementation most closely:
+
+```
+I need you to review this code using the Rule of 5 - five stages of iterative refinement.
+
+CODE TO REVIEW:
+[paste your code or specify file path]
+
+PHILOSOPHY: "Breadth-first exploration, then editorial passes"
+
+STAGE 1: DRAFT - Get the shape right
+Question: Is the overall approach sound?
+Focus:
+- Don't aim for perfection
+- Review overall structure and approach
+- Identify major architectural issues
+- Get the "shape" right before refining details
+- Is this solving the right problem?
+
+Output: High-level assessment, major structural issues
+
+STAGE 2: CORRECTNESS - Is the logic sound?
+Question: Are there errors, bugs, or logical flaws?
+Focus:
+- Fix errors and bugs identified in Stage 1
+- Verify logical correctness
+- Check algorithms and data structures
+- Ensure functions do what they claim
+- Identify off-by-one errors, wrong operators, etc.
+
+Output: List of correctness issues with locations
+
+STAGE 3: CLARITY - Can someone else understand this?
+Question: Is the code comprehensible?
+Focus:
+- Improve readability based on Stage 2 fixes
+- Remove or explain technical jargon
+- Clarify variable and function names
+- Improve code organization
+- Add comments where intent isn't obvious
+
+Output: Clarity improvements and naming suggestions
+
+STAGE 4: EDGE CASES - What could go wrong?
+Question: Are boundary conditions handled?
+Focus:
+- Identify gaps from previous stages
+- Handle unusual scenarios
+- Check boundary conditions (null, empty, max values)
+- Error handling for external dependencies
+- Input validation gaps
+
+Output: Edge cases and error handling issues
+
+STAGE 5: EXCELLENCE - Ready to ship?
+Question: Would you be proud to ship this?
+Focus:
+- Final polish based on all previous stages
+- Production quality check
+- Performance considerations
+- Documentation completeness
+- Overall code quality
+
+Output: Final recommendations for production readiness
+
+CONVERGENCE CHECK:
+After each stage (starting with Stage 2), report:
+1. Number of new CRITICAL issues found
+2. Number of new issues vs previous stage
+3. Convergence status:
+   - CONVERGED: No new CRITICAL, <10% new issues
+   - CONTINUE: Proceed to next stage
+   - NEEDS_HUMAN: Found blocking issues requiring judgment
+
+FINAL REPORT:
+- Total issues by severity
+- Top 3 most critical findings
+- Recommended next actions
+- Production readiness assessment
+```
+
+### Code Review Variant (Specialized Domains)
+
+This variant focuses on code review domains rather than editorial refinement:
 
 ```
 I need you to review this code using the Rule of 5 - iterative refinement until convergence.
@@ -325,20 +430,49 @@ PASS 8: Production readiness (deployment, rollback, monitoring)
 Don't stop until: 0 CRITICAL, <3 HIGH, and explicit "READY FOR PRODUCTION" statement
 ```
 
+## Comparison: Original vs Extended Multi-Agent
+
+| Aspect | This (Original) | Extended Multi-Agent |
+|--------|-----------------|----------------------|
+| **Approach** | Linear 5-stage | Parallel with gates |
+| **Stages** | Draft → Correctness → Clarity → Edge Cases → Excellence | Wave 1 (5 parallel) → consolidate → Wave 2 → synthesize |
+| **Context Building** | Sequential, each stage builds on previous | Independent, then cross-validated |
+| **Detection Rate** | 75-85% | 85-92% |
+| **Cost** | $0.40-0.60 per 500 LOC | $0.80-1.20 per 500 LOC |
+| **Time** | 12-17 minutes | 10-15 minutes |
+| **Complexity** | Simple, easy to understand | Complex orchestration |
+| **Best For** | Daily workflow, most reviews | Critical systems, security |
+| **Prompt File** | This file | prompt-workflow-rule-of-5-review.md |
+
+**Recommendation:** Start with this original approach. Use extended only when additional 10% detection justifies 2x cost.
+
 ## References
 
-- Steve Yegge's "Six New Tips for Better Coding with Agents": https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
-- Original discovery by Jeffrey Emanuel
-- Research: research-paper-rule-of-5-multi-agent-review.md
-- Related: prompt-workflow-multi-agent-parallel-review.md (for more complex scenarios)
+**Primary Sources:**
+- **Steve Yegge's Article:** https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+- **Gastown Implementation:** https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- **Original Discovery:** Jeffrey Emanuel
+
+**Related Prompts:**
+- **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
+- **Extended Multi-Agent:** prompt-workflow-rule-of-5-review.md (for critical systems)
+- **Detailed Parallel:** prompt-workflow-multi-agent-parallel-review.md (full Wave/Gate architecture)
 
 ## Notes
 
-**Why 5 passes?**
-- Pass 1-2: Catch obvious issues
-- Pass 3-4: Catch issues revealed by fixing earlier issues
-- Pass 5: Catch edge cases and confirm convergence
+**Why This is Called "Original":**
+This prompt most closely follows Steve Yegge's actual gastown implementation: linear stages, each building on the previous, focused on editorial refinement from draft to excellence.
+
+**Why 5 stages?**
+Steve's insight: "LLM agents produce best work through 4-5 iterative refinements"
+- Stage 1: Breadth-first, get the shape
+- Stages 2-4: Progressive refinement catching issues that become visible after earlier fixes
+- Stage 5: Final polish and convergence check
 - After 5, if not converged, likely need human judgment
+
+**Two Variants in This File:**
+1. **Original Variant** (Steve's actual stages): Best for most use cases, follows gastown approach
+2. **Code Review Variant** (domain-focused): Alternative focusing on security/performance/etc domains
 
 **Convergence criteria tuning:**
 - For stricter review: Change thresholds to 0 CRITICAL, <5% new issues
@@ -365,4 +499,5 @@ Don't skip passes to save time. The iterative refinement is what makes this work
 
 ## Version History
 
+- 1.1.0 (2026-01-13): Added "Original Variant" matching Steve's actual gastown stages (Draft → Correctness → Clarity → Edge Cases → Excellence); kept existing domain-focused version as "Code Review Variant"; added comparison table and gastown reference
 - 1.0.0 (2026-01-12): Initial version based on Steve Yegge's Rule of 5

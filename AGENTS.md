@@ -104,6 +104,17 @@ just stats
 
 All changes, whether made by a human or an AI assistant, must be carefully reviewed before being committed. Commits should be granular, with descriptive messages that explain the "what" and the "why" of the change.
 
+**IMPORTANT: Never use `git add -A` or `git add .`**
+
+Always explicitly add files one by one:
+```bash
+git add path/to/file1.md
+git add path/to/file2.md
+git add CHANGELOG.md
+```
+
+This forces deliberate review of each changed file before committing.
+
 The canonical and complete commit process is documented in the contribution guide.
 
 **➡️ See [CONTRIBUTING.md](CONTRIBUTING.md#commit-guidelines) for the full guidelines.**

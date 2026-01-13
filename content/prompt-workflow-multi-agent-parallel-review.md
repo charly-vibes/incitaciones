@@ -1,18 +1,29 @@
 ---
-title: Multi-Agent Parallel Code Review Workflow
+title: Multi-Agent Parallel Code Review Workflow (Extended Rule of 5)
 type: prompt
 subtype: workflow
-tags: [code-review, multi-agent, parallel, workflow, advanced, team]
+tags: [code-review, multi-agent, parallel, workflow, advanced, team, extended]
 tools: [claude-code]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-task-iterative-code-review.md]
-source: adapted-from-https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+updated: 2026-01-13
+version: 1.1.0
+related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-task-iterative-code-review.md, prompt-workflow-rule-of-5-review.md]
+source: extended-from-steve-yegge-rule-of-5-principle
 ---
 
-# Multi-Agent Parallel Code Review Workflow
+# Multi-Agent Parallel Code Review Workflow (Extended Rule of 5)
+
+## About This Workflow
+
+This is the **extended multi-agent parallel variant** of Steve Yegge's Rule of 5 principle. It provides the most detailed, prescriptive implementation of the Wave/Gate architecture for maximum code review quality.
+
+**Architecture:** 3 Waves + 2 Gates with specialized parallel agents
+**Detection Rate:** 85-92% (vs 75-85% for Steve's original)
+**Cost:** 2-3x more expensive than original
+**Best For:** Security-critical systems, large refactorings, pre-production gates
+
+**Note:** For 80% of code reviews, use **prompt-task-iterative-code-review.md** (Steve's original linear approach). This workflow is for high-stakes scenarios where the additional 10% detection justifies 2x cost.
 
 ## When to Use
 
@@ -626,9 +637,16 @@ Iteration 2+:
 
 ## References
 
-- Research: research-paper-rule-of-5-multi-agent-review.md
-- Steve Yegge's article: https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
-- Simpler alternative: prompt-task-iterative-code-review.md
+**Rule of 5 Principle:**
+- **Steve Yegge's Article:** https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+- **Gastown Implementation:** https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
+
+**Related Prompts:**
+- **prompt-task-iterative-code-review.md** - Steve's original linear approach (use this for 80% of reviews)
+- **prompt-workflow-rule-of-5-review.md** - Simplified multi-agent orchestrator (less prescriptive than this)
+- **prompt-task-plan-review.md** - Apply Rule of 5 principle to plan review
+- **prompt-task-research-review.md** - Apply Rule of 5 principle to research review
 
 ## Notes
 
@@ -680,4 +698,5 @@ Iteration 2+:
 
 ## Version History
 
+- 1.1.0 (2026-01-13): Updated to clarify this is extended variant of Steve Yegge's Rule of 5; added gastown reference; added guidance on when to use vs. original
 - 1.0.0 (2026-01-12): Initial multi-agent parallel workflow based on Rule of 5 research

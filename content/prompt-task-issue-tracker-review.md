@@ -1,22 +1,32 @@
 ---
-title: Iterative Issue Tracker Review (Rule of 5)
+title: Iterative Issue Tracker Review (Rule of 5 Principle)
 type: prompt
 subtype: task
-tags: [review, issue-tracking, rule-of-5, project-management, quality-assurance]
+tags: [review, issue-tracking, rule-of-5, project-management, quality-assurance, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [prompt-workflow-create-plan.md, prompt-task-plan-review.md, prompt-workflow-rule-of-5-review.md]
-source: adapted-from-fabbro
+updated: 2026-01-13
+version: 1.1.0
+related: [prompt-workflow-create-plan.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
+source: adapted-from-fabbro-with-rule-of-5-principle
 ---
 
-# Iterative Issue Tracker Review (Rule of 5)
+# Iterative Issue Tracker Review (Rule of 5 Principle)
+
+## About This Prompt
+
+This prompt applies the **Rule of 5 principle** (iterative refinement until convergence) to issue tracker review. It uses a single-agent, 5-pass approach with domain-focused passes adapted for issue quality:
+
+- **Approach:** Single agent, sequential passes
+- **Passes:** Completeness → Scope → Dependencies → Alignment → Executability
+- **Philosophy:** Iterative refinement with convergence checking
+
+**Note:** This is not Steve Yegge's original Draft/Correctness/Clarity/EdgeCases/Excellence structure, but applies his core principle to issue management concerns.
 
 ## When to Use
 
-Use this prompt to perform thorough review of issues in your issue tracking system using the Rule of 5 methodology - iterative refinement until convergence.
+Use this prompt to perform thorough review of issues in your issue tracking system using iterative refinement until convergence.
 
 **Critical for:**
 - Reviewing issues after creating them from a plan
@@ -710,12 +720,31 @@ gh issue close <number>
 
 ## References
 
-- Steve Yegge's "Six New Tips for Better Coding with Agents" - Rule of 5 methodology
-- `prompt-workflow-create-plan.md` - Plans should map to issues
-- `prompt-task-plan-review.md` - Similar review for plans
-- `prompt-workflow-rule-of-5-review.md` - Multi-agent variant
+**Rule of 5 Principle:**
+- **Steve Yegge's Article:** https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+- **Gastown Implementation:** https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
+
+**Related Prompts:**
+- **prompt-workflow-create-plan.md** - Plans should map to issues
+- **prompt-task-plan-review.md** - Similar iterative review for plans
+- **prompt-task-research-review.md** - Similar iterative review for research
+- **prompt-task-iterative-code-review.md** - Steve's original 5-stage approach for code
+- **prompt-workflow-rule-of-5-review.md** - Extended multi-agent variant for code (high-stakes)
 
 ## Notes
+
+### About This Adaptation
+
+**Core Principle:** Steve Yegge's Rule of 5 - "LLM agents produce best work through 4-5 iterative refinements until convergence"
+
+**This prompt adapts the principle to issue review:**
+- Steve's original: Draft → Correctness → Clarity → Edge Cases → Excellence (editorial)
+- This prompt: Completeness → Scope → Dependencies → Alignment → Executability (issue-specific)
+- Both use convergence checking to know when to stop
+
+**Why domain-focused passes for issues?**
+Issue trackers need validation on different dimensions than code: scope atomicity, dependency correctness, plan alignment, executability. The 5-pass iterative structure with convergence is the framework, not the specific concerns.
 
 ### Why Review Issues?
 
@@ -763,4 +792,5 @@ Balance structure with flexibility.
 
 ## Version History
 
+- 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with issue-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro beads_review command

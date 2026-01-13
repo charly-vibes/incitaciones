@@ -1,22 +1,32 @@
 ---
-title: Iterative Research Review (Rule of 5)
+title: Iterative Research Review (Rule of 5 Principle)
 type: prompt
 subtype: task
-tags: [review, research, rule-of-5, quality-assurance, validation]
+tags: [review, research, rule-of-5, quality-assurance, validation, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [prompt-task-research-codebase.md, prompt-workflow-rule-of-5-review.md, prompt-task-plan-review.md]
-source: adapted-from-fabbro
+updated: 2026-01-13
+version: 1.1.0
+related: [prompt-task-research-codebase.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
+source: adapted-from-fabbro-with-rule-of-5-principle
 ---
 
-# Iterative Research Review (Rule of 5)
+# Iterative Research Review (Rule of 5 Principle)
+
+## About This Prompt
+
+This prompt applies the **Rule of 5 principle** (iterative refinement until convergence) to research document review. It uses a single-agent, 5-pass approach with domain-focused passes adapted for research validation:
+
+- **Approach:** Single agent, sequential passes
+- **Passes:** Accuracy → Completeness → Clarity → Actionability → Integration
+- **Philosophy:** Iterative refinement with convergence checking
+
+**Note:** This is not Steve Yegge's original Draft/Correctness/Clarity/EdgeCases/Excellence structure, but applies his core principle to research-specific concerns.
 
 ## When to Use
 
-Use this prompt to perform thorough review of research documents using the Rule of 5 methodology - iterative refinement until convergence.
+Use this prompt to perform thorough review of research documents using iterative refinement until convergence.
 
 **Critical for:**
 - Reviewing research documents before finalizing
@@ -494,12 +504,30 @@ NEEDS_REVISION
 
 ## References
 
-- Steve Yegge's "Six New Tips for Better Coding with Agents" - Rule of 5 methodology
-- `prompt-task-research-codebase.md` - How to conduct research
-- `prompt-task-plan-review.md` - Similar review methodology for plans
-- `prompt-workflow-rule-of-5-review.md` - Multi-agent variant of Rule of 5
+**Rule of 5 Principle:**
+- **Steve Yegge's Article:** https://steve-yegge.medium.com/six-new-tips-for-better-coding-with-agents-d4e9c86e42a9
+- **Gastown Implementation:** https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
+
+**Related Prompts:**
+- **prompt-task-research-codebase.md** - How to conduct research
+- **prompt-task-plan-review.md** - Similar iterative review for plans
+- **prompt-task-iterative-code-review.md** - Steve's original 5-stage approach for code
+- **prompt-workflow-rule-of-5-review.md** - Extended multi-agent variant for code (high-stakes)
 
 ## Notes
+
+### About This Adaptation
+
+**Core Principle:** Steve Yegge's Rule of 5 - "LLM agents produce best work through 4-5 iterative refinements until convergence"
+
+**This prompt adapts the principle to research review:**
+- Steve's original: Draft → Correctness → Clarity → Edge Cases → Excellence (editorial)
+- This prompt: Accuracy → Completeness → Clarity → Actionability → Integration (research-specific)
+- Both use convergence checking to know when to stop
+
+**Why domain-focused passes for research?**
+Research documents need validation on different dimensions than code: accuracy of claims, completeness of analysis, actionability of recommendations, etc. The 5-pass iterative structure with convergence is the key, not the specific pass topics.
 
 ### Why Review Research?
 
@@ -575,4 +603,5 @@ Don't expect perfection on first draft.
 
 ## Version History
 
+- 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with research-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro research_review command

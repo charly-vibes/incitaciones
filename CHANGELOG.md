@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-01-13
+
+#### Added - Universal Rule of 5 Implementation
+
+- **prompt-task-rule-of-5-universal.md** - Universal implementation of Steve Yegge's original Rule of 5 that works for any domain (code, plans, research, issues, specs, documentation). Uses the original 5 editorial stages: Draft → Correctness → Clarity → Edge Cases → Excellence. Includes complete examples for 4 different domains.
+
+#### Changed - Rule of 5 Documentation Updates
+
+**All Rule of 5 prompts updated to v1.1.0+ with consistent references:**
+- **research-paper-rule-of-5-multi-agent-review.md** (v1.2.0) - Distinguished Steve Yegge's actual gastown implementation (linear 5-stage) from extended parallel multi-agent variant. Added detailed documentation of original implementation with comparison tables and guidance on when to use each approach. Updated references to recommend universal prompt.
+- **prompt-task-iterative-code-review.md** (v1.1.0) - Added "Original Variant" matching Steve's actual gastown stages alongside existing domain-focused variant. Clarified this is Steve's original approach to use for 80% of reviews. Added comparison table and gastown reference.
+- **prompt-workflow-rule-of-5-review.md** (v1.1.0) - Clarified as "Extended Variant" not Steve's original. Added comparison table showing cost/benefit trade-offs. Updated to recommend original for most cases.
+- **prompt-workflow-multi-agent-parallel-review.md** (v1.1.0) - Updated as most comprehensive extended variant. Added guidance on when to use vs. original approach. Added gastown references.
+- **prompt-task-plan-review.md** (v1.1.0) - Clarified relationship to Steve's Rule of 5 principle. Uses domain-specific passes (Feasibility → Completeness → TDD → Ordering → Executability) while maintaining core iterative refinement approach.
+- **prompt-task-research-review.md** (v1.1.0) - Clarified as adaptation of Rule of 5 principle for research. Uses research-specific passes (Accuracy → Completeness → Clarity → Actionability → Integration).
+- **prompt-task-issue-tracker-review.md** (v1.1.0) - Clarified as adaptation of Rule of 5 principle for issue management. Uses issue-specific passes (Completeness → Scope → Dependencies → Alignment → Executability).
+
+**Key improvements:**
+- All files now correctly reference gastown implementation: https://github.com/steveyegge/gastown/blob/main/internal/formula/formulas/rule-of-five.formula.toml
+- Clear distinction between Steve's original (75-85% detection, $0.40-0.60) and extended variants (85-92% detection, $0.80-1.20)
+- Consistent cross-references between all Rule of 5 prompts
+- Unified recommendation: use universal prompt for 80% of reviews, extended multi-agent only for critical systems
+
 ### 2026-01-12
 
 #### Added - Development Workflow Prompts
