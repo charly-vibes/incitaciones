@@ -18,6 +18,22 @@ just new prompt "Your Task Name"
 just search
 ```
 
+### How to Install Commands
+
+To install the prompts as commands in your local repository, copy the following prompt and paste it into your AI-powered CLI:
+
+> **User Prompt to an AI Agent**
+>
+> ```
+> Please install the `incitaciones` prompt commands locally in this repository.
+>
+> Follow the instructions detailed in https://github.com/charly-vibes/incitaciones/blob/main/content/meta-prompt-install-commands.md to perform the installation. Ensure that you set up the canonical directory and create symbolic links for all relevant tools as specified.
+>
+> Start by asking me which tools I use and which prompts I want to install.
+> ```
+
+This will instruct the agent to read the meta-prompt and begin the installation process for this project.
+
 ## Structure
 
 Everything lives in `content/` with descriptive filenames:
