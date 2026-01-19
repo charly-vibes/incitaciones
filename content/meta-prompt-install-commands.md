@@ -101,9 +101,9 @@ When installing locally, all prompts are placed in a single, canonical directory
 
 - **Canonical Path**: `./.agents/commands/incitaciones/`
 
-To ensure your specific tool can find these commands, the installation process will **create a symbolic link** from your tool's default local command directory to this canonical path.
+To ensure your specific tool can find these commands, the installation process will **create a symbolic link** from your tool's default local command directory (`.{tool}/commands`) to the *parent of the canonical path* (`../.agents/commands`). This enables namespaced invocation.
 
-**Example**: For Claude Code, the installer will ensure that `./.claude/commands` is a symlink pointing to `../../.agents/commands/incitaciones` (the exact relative path may vary).
+**Example**: For Claude Code, the installer will ensure that `./.claude/commands` is a symlink pointing to `../.agents/commands`.
 
 This keeps all prompts in one place, preventing duplication and ensuring consistency across all tools.
 
@@ -149,11 +149,11 @@ Global installations use tool-specific paths in your user home directory. Note t
 
 For each selected prompt:
 
-### 3.1 Read the source file
-Locate the source file in the `incitaciones` repository (e.g., `content/prompt-workflow-{name}.md`).
+### 3.1 Read the Source Prompt File
+Locate the raw prompt definition file in the `incitaciones` repository's *`content/` directory* (e.g., `content/prompt-workflow-{name}.md`). These files contain the untuned prompt definitions.
 
-### 3.2 Extract the prompt content
-Extract ONLY the content inside the ` ```markdown ` code block under the `## The Prompt` section. Do not include the fences.
+### 3.2 Extract the Core Prompt Content
+Extract ONLY the content inside the first ` ```markdown ` code block found under the `## The Prompt` section within the source file. Do not include the markdown code fences themselves. This extracted content is the core, untuned prompt that will be installed.
 
 ### 3.3 Determine Target Write Path
 - For **Global** scope, the path is the tool-specific global path.
@@ -171,8 +171,8 @@ Before writing any files for a local install, perform these checks:
     - Let's call this `TOOL_PATH`.
 
 3.  **Check and Configure `TOOL_PATH`**:
-    - **If `TOOL_PATH` does not exist**: Create the necessary parent directories (e.g., `./.claude`) and then create a relative symbolic link from `TOOL_PATH` to the canonical directory.
-      - Example: `ln -s ../../.agents/commands/incitaciones ./.claude/commands` (the exact relative path `../` depends on the nesting level of `TOOL_PATH`).
+    - **If `TOOL_PATH` does not exist**: Create the necessary parent directories (e.g., `./.claude`) and then create a relative symbolic link from `TOOL_PATH` to the parent of the canonical directory (to enable namespaced invocation).
+      - Example: `ln -s ../.agents/commands ./.claude/commands`
     - **If `TOOL_PATH` exists and is a regular directory**: 
       - **MOVE** any existing files from `TOOL_PATH` to `./.agents/commands/incitaciones/` to consolidate them. Announce which files were moved.
       - **Remove** the now-empty `TOOL_PATH` directory.
@@ -183,6 +183,8 @@ Before writing any files for a local install, perform these checks:
 1.  Adapt the extracted prompt for the target tool if needed (e.g., add frontmatter for Amp).
 2.  Write the final content to the target path determined in Step 3.3.
 3.  Set file permissions to `644`.
+
+---
 
 ### 3.6 For updates
 1.  The process is the same as a fresh install.
@@ -202,27 +204,12 @@ After installation:
 
 | Tool | Invocation |
 |------|------------|
-| Claude Code | `/command-name` |
-| Cursor | `@command-name` or via command palette |
-| Amp | `/command-name` |
-| Gemini CLI | `gemini --command name` or alias |
-| Windsurf | Via command palette |
-| Aider | `/command-name` or alias |
-
-## Contextualizing Prompts
-
-When installing to a specific repository, optionally:
-- Add repository-specific context (tech stack, conventions)
-- Reference local files (CONTRIBUTING.md, style guides)
-- Adjust examples to match the project's domain
-
-Ask: "Do you want me to contextualize these prompts for this repository?"
-
-If yes, I will:
-1. Read key repo files (README, CONTRIBUTING, etc.)
-2. Detect tech stack and conventions
-3. Add a "Repository Context" section to each installed prompt
-```
+| Claude Code | `/incitaciones/command-name` |
+| Cursor | `@incitaciones/command-name` or via command palette |
+| Amp | `/incitaciones/command-name` |
+| Gemini CLI | `gemini --command incitaciones/name` or alias |
+| Windsurf | Via command palette (e.g., `incitaciones/command-name`) |
+| Aider | `/incitaciones/command-name` or alias |```
 
 ---
 
