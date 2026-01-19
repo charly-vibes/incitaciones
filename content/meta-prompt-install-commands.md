@@ -73,6 +73,7 @@ Ask me the following questions (use your tool's question interface if available)
 - [ ] `parallel-review` - Parallel multi-agent review
 - [ ] `design-practice` - 6-phase design framework
 - [ ] `extract-prompt` - Extract prompt from conversation
+- [ ] `optionality-review` - Strategic flexibility assessment
 
 **Tasks** (focused single activities):
 - [ ] `describe-pr` - Generate PR descriptions
@@ -250,6 +251,7 @@ Each invokable as `/commit`, `/debug`, `/describe-pr`, `/code-review`
 | parallel-review | prompt-workflow-multi-agent-parallel-review.md |
 | design-practice | prompt-workflow-design-in-practice.md |
 | extract-prompt | prompt-workflow-extract-prompt-from-conversation.md |
+| optionality-review | prompt-workflow-optionality-review.md |
 | describe-pr | prompt-task-describe-pr.md |
 | research-codebase | prompt-task-research-codebase.md |
 | debug | prompt-task-systematic-debugging.md |
