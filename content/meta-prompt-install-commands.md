@@ -93,140 +93,101 @@ Ask me the following questions (use your tool's question interface if available)
 
 ## Step 2: Determine Paths and Format
 
-Based on the tool and scope, determine the correct installation path:
+A key goal is to maintain a **single source of truth** for all prompts within this repository, especially for local (per-project) installations.
 
-### Claude Code
+### Local Installation (Recommended)
+
+When installing locally, all prompts are placed in a single, canonical directory:
+
+- **Canonical Path**: `./.agents/commands/incitaciones/`
+
+To ensure your specific tool can find these commands, the installation process will **create a symbolic link** from your tool's default local command directory to this canonical path.
+
+**Example**: For Claude Code, the installer will ensure that `./.claude/commands` is a symlink pointing to `../../.agents/commands/incitaciones` (the exact relative path may vary).
+
+This keeps all prompts in one place, preventing duplication and ensuring consistency across all tools.
+
+### Global Installation
+
+Global installations use tool-specific paths in your user home directory. Note that this may lead to conflicts if different projects use different versions of the same prompt.
+
+---
+
+### Tool-Specific Path Details
+
+#### Claude Code
 - **Global**: `~/.claude/commands/{command-name}.md`
-- **Local**: `./.claude/commands/{command-name}.md`
-- **Format**: Markdown file with prompt content, filename becomes `/command-name`
+- **Local**: The tool-specific directory (`./.claude/commands`) will be symlinked to the canonical path.
+- **Format**: Markdown file.
 
-### Cursor
-- **Global**: Not directly supported, use workspace settings
-- **Local**: `.cursor/prompts/{command-name}.md` or add to `.cursorrules`
-- **Format**: Markdown prompt files or rules integration
+#### Cursor
+- **Global**: Not directly supported; use workspace settings.
+- **Local**: The tool-specific directory (`./.cursor/prompts`) will be symlinked to the canonical path.
+- **Format**: Markdown prompt files.
 
-### Amp
+#### Amp
 - **Global**: `~/.config/amp/commands/{command-name}.md`
-- **Local**: `.amp/commands/{command-name}.md`
-- **Format**: Markdown with YAML frontmatter
+- **Local**: The tool-specific directory (`./.amp/commands`) will be symlinked to the canonical path.
+- **Format**: Markdown with YAML frontmatter.
 
-### Gemini CLI
-- **Global**: `~/.config/gemini/commands/`
-- **Local**: `.gemini/commands/`
-- **Format**: Text or markdown files
+#### Gemini CLI (or any compatible Agent CLI)
+- **Global**: `~/.config/agents/commands/incitaciones/`
+- **Local**: Uses `./.agents/commands/incitaciones/` directly. This is the canonical path, so no symlink is needed.
+- **Format**: Text or markdown files.
 
-### Windsurf
+#### Windsurf
 - **Global**: `~/.windsurf/commands/`
-- **Local**: `.windsurf/commands/`
-- **Format**: Markdown files
+- **Local**: The tool-specific directory (`./.windsurf/commands`) will be symlinked to the canonical path.
+- **Format**: Markdown files.
 
-### Aider
-- **Global**: Shell aliases in `.bashrc`/`.zshrc` or `~/.aider/`
-- **Local**: `.aider.conf.yml` or shell scripts
-- **Format**: Configuration or wrapper scripts
+#### Aider
+- **Global**: Shell aliases in `.bashrc`/`.zshrc` or `~/.aider/`.
+- **Local**: `.aider.conf.yml` or shell scripts. For local scope, it's recommended to add a command to `.aider.conf.yml` that sources or runs scripts from the canonical path (`./.agents/commands/incitaciones/`).
+- **Format**: Configuration or wrapper scripts.
 
 ## Step 3: Execute Installation
 
 For each selected prompt:
 
 ### 3.1 Read the source file
+Locate the source file in the `incitaciones` repository (e.g., `content/prompt-workflow-{name}.md`).
 
-Locate the source file in the incitaciones repository:
-- Workflow prompts: `content/prompt-workflow-{name}.md`
-- Task prompts: `content/prompt-task-{name}.md`
+### 3.2 Extract the prompt content
+Extract ONLY the content inside the ` ```markdown ` code block under the `## The Prompt` section. Do not include the fences.
 
-### 3.2 Understand the file structure
+### 3.3 Determine Target Write Path
+- For **Global** scope, the path is the tool-specific global path.
+- For **Local** scope, the path is ALWAYS the canonical path: `./.agents/commands/incitaciones/{command-name}.md`.
 
-Each source file has this structure:
-```
----
-title: Human Readable Title
-type: prompt
-tags: [tag1, tag2]
-tools: [claude-code, cursor, ...]  # Compatible tools
-status: draft|tested|verified
-version: X.Y.Z
----
+### 3.4 Ensure Canonical Directory and Symlinks (Local Installs Only)
 
-# Title
+Before writing any files for a local install, perform these checks:
 
-## When to Use
-[Documentation - DO NOT extract]
+1.  **Create Canonical Directory**:
+    - Ensure the directory `./.agents/commands/incitaciones` exists. If not, create it with permissions `755`.
 
-## The Prompt        <-- START HERE
+2.  **Handle Tool-Specific Directories**:
+    - For each selected tool (except Gemini CLI, which uses the canonical path directly), determine its local command directory (e.g., `./.claude/commands`, `./.cursor/prompts`).
+    - Let's call this `TOOL_PATH`.
 
-```markdown          <-- Extract content INSIDE this code block
-# Actual Prompt Content
-...
-```                   <-- END extraction here
+3.  **Check and Configure `TOOL_PATH`**:
+    - **If `TOOL_PATH` does not exist**: Create the necessary parent directories (e.g., `./.claude`) and then create a relative symbolic link from `TOOL_PATH` to the canonical directory.
+      - Example: `ln -s ../../.agents/commands/incitaciones ./.claude/commands` (the exact relative path `../` depends on the nesting level of `TOOL_PATH`).
+    - **If `TOOL_PATH` exists and is a regular directory**: 
+      - **MOVE** any existing files from `TOOL_PATH` to `./.agents/commands/incitaciones/` to consolidate them. Announce which files were moved.
+      - **Remove** the now-empty `TOOL_PATH` directory.
+      - **Create** the symbolic link as described above.
+    - **If `TOOL_PATH` exists and is already a correct symlink**: Do nothing; the setup is correct.
 
-## Example           <-- DO NOT extract (documentation)
-## Expected Results  <-- DO NOT extract
-## Variations        <-- DO NOT extract (but note for reference)
-## Notes             <-- DO NOT extract
-```
-
-### 3.3 Extract the prompt content
-
-**CRITICAL: Extract ONLY the content inside the code block under "## The Prompt"**
-
-1. Find the line `## The Prompt`
-2. Find the opening fence: ` ```markdown ` or ` ``` `
-3. Extract everything AFTER the opening fence
-4. Stop at the closing fence ` ``` `
-5. Do NOT include the fences themselves
-6. Preserve all internal formatting, indentation, and nested code blocks
-
-**Example extraction from deliberate-commits.md:**
-
-Source file contains:
-```
-## The Prompt
-
-```markdown
-# Commit Changes with Review
-
-Create git commits for changes made during this session.
-...
-```
-```
-
-Extract only:
-```
-# Commit Changes with Review
-
-Create git commits for changes made during this session.
-...
-```
-
-### 3.4 Adapt for the target tool (if needed)
-
-Depending on the tool, you may need to:
-- **Claude Code**: Use as-is, markdown works directly
-- **Cursor**: May need to wrap in specific format or add to .cursorrules
-- **Amp**: Add YAML frontmatter if required
-- **Aider**: Convert to aider convention format
-- **Gemini CLI**: Adjust for gemini's expected format
-
-Add context variable placeholders if the tool supports them:
-- `{{file}}` - current file
-- `{{selection}}` - selected text
-- `{{cwd}}` - current working directory
-
-### 3.5 Write to the correct location
-
-1. Create the target directory if it doesn't exist
-2. Write the extracted content to: `{target-path}/{command-name}.md`
-3. Set appropriate file permissions (644 for files, 755 for directories)
+### 3.5 Write the Prompt File
+1.  Adapt the extracted prompt for the target tool if needed (e.g., add frontmatter for Amp).
+2.  Write the final content to the target path determined in Step 3.3.
+3.  Set file permissions to `644`.
 
 ### 3.6 For updates
-
-1. Check if command already exists at target path
-2. Read the existing file
-3. Compare with new content (show diff if significant changes)
-4. Backup existing to `{command-name}.md.backup`
-5. Write new content
-6. Report what changed
+1.  The process is the same as a fresh install.
+2.  The symlinking logic in Step 3.4 will automatically handle moving any old, non-symlinked commands to the canonical directory.
+3.  When writing the file to the canonical path, you can offer to show a diff or create a backup (`.backup`) of the old version before overwriting.
 
 ## Step 4: Verify and Report
 
