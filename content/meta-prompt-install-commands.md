@@ -60,37 +60,25 @@ Ask me the following questions (use your tool's question interface if available)
 
 ### Q4: Which prompts to install? (if fresh install or update)
 
-**Workflows** (multi-step processes):
-- [ ] `commit` - Deliberate commit workflow with review
-- [ ] `create-plan` - Create implementation plans
-- [ ] `implement-plan` - Execute plans with verification
-- [ ] `iterate-plan` - Refine plans based on results
-- [ ] `plan-tdd` - Complete TDD workflow cycle
-- [ ] `pre-mortem` - Risk analysis before implementation
-- [ ] `create-handoff` - Create handoff documentation
-- [ ] `resume-handoff` - Resume from handoff doc
-- [ ] `rule-of-5` - Multi-agent code review
-- [ ] `parallel-review` - Parallel multi-agent review
-- [ ] `design-practice` - 6-phase design framework
-- [ ] `extract-prompt` - Extract prompt from conversation
-- [ ] `optionality-review` - Strategic flexibility assessment
+Instead of a fixed list, you will dynamically discover the available prompts to ensure the list is always up-to-date.
 
-**Tasks** (focused single activities):
-- [ ] `describe-pr` - Generate PR descriptions
-- [ ] `research-codebase` - Document existing code
-- [ ] `debug` - Systematic debugging (medical diagnosis approach)
-- [ ] `code-review` - Iterative code review
-- [ ] `plan-review` - Review implementation plans
-- [ ] `research-review` - Review research documentation
-- [ ] `issue-review` - Review issues/tickets
-- [ ] `design-review` - Review design decisions
-- [ ] `universal-review` - Universal Rule of 5 for any work product
+**Discovery Process:**
+
+1.  **Scan the `content/` directory** for all prompt files. These are files that start with `prompt-workflow-` or `prompt-task-` and end with `.md`.
+2.  **For each file, determine its command name and type:**
+    *   The **type** is either `workflow` or `task`, based on the filename prefix.
+    *   The **command name** is derived by removing the prefix (`prompt-workflow-` or `prompt-task-`) and the `.md` suffix.
+    *   *Example*: The file `content/prompt-workflow-deliberate-commits.md` corresponds to a `workflow` command named `deliberate-commits`.
+    *   Keep a mapping of `command name` -> `full file path`.
+3.  **Ask the user for their selection:**
+    *   Present the discovered commands, grouped by `Workflows` and `Tasks`.
+    *   Also offer the following bundles. When a bundle is selected, you'll install all the corresponding commands.
 
 **Bundles** (preset collections):
-- [ ] `essentials` - commit, debug, describe-pr, code-review
-- [ ] `planning` - create-plan, implement-plan, iterate-plan, plan-review
-- [ ] `reviews` - rule-of-5, code-review, plan-review, design-review
-- [ ] `all` - Install everything
+- [ ] `essentials` - A good starting set: `deliberate-commits`, `systematic-debugging`, `describe-pr`, `iterative-code-review`
+- [ ] `planning` - For project planning: `create-plan`, `implement-plan`, `iterate-plan`, `plan-review`
+- [ ] `reviews` - For code and design reviews: `rule-of-5-review`, `iterative-code-review`, `plan-review`, `design-review`
+- [ ] `all` - Install all discovered prompts.
 
 ## Step 2: Determine Paths and Format
 
@@ -151,7 +139,7 @@ Global installations use tool-specific paths in your user home directory. Note t
 For each selected prompt:
 
 ### 3.1 Read the Source Prompt File
-Locate the raw prompt definition file in the `incitaciones` repository's *`content/` directory* (e.g., `content/prompt-workflow-{name}.md`). These files contain the untuned prompt definitions.
+Using the mapping you created in Step 1 (Q4), find the full path to the source file for each selected command. Read the content of that file.
 
 ### 3.2 Extract the Core Prompt Content
 Extract ONLY the content inside the first ` ```markdown ` code block found under the `## The Prompt` section within the source file. Do not include the markdown code fences themselves. This extracted content is the core, untuned prompt that will be installed.
@@ -212,9 +200,7 @@ After installation:
 | Amp | `/incitaciones/command-name` |
 | Gemini CLI | `gemini --command incitaciones/name` or alias |
 | Windsurf | Via command palette (e.g., `incitaciones/command-name`) |
-| Aider | `/incitaciones/command-name` or alias |```
-
----
+| Aider | `/incitaciones/command-name` or alias |
 
 ## Example Usage
 
@@ -228,41 +214,12 @@ After installation:
 
 **Result:**
 Creates these files:
-- `~/.claude/commands/commit.md`
-- `~/.claude/commands/debug.md`
+- `~/.claude/commands/deliberate-commits.md`
+- `~/.claude/commands/systematic-debugging.md`
 - `~/.claude/commands/describe-pr.md`
-- `~/.claude/commands/code-review.md`
+- `~/.claude/commands/iterative-code-review.md`
 
-Each invokable as `/commit`, `/debug`, `/describe-pr`, `/code-review`
-
----
-
-## Mapping: Prompt Files to Command Names
-
-| Command Name | Source File |
-|--------------|-------------|
-| commit | prompt-workflow-deliberate-commits.md |
-| create-plan | prompt-workflow-create-plan.md |
-| implement-plan | prompt-workflow-implement-plan.md |
-| iterate-plan | prompt-workflow-iterate-plan.md |
-| plan-tdd | prompt-workflow-plan-implement-verify-tdd.md |
-| pre-mortem | prompt-workflow-pre-mortem-planning.md |
-| create-handoff | prompt-workflow-create-handoff.md |
-| resume-handoff | prompt-workflow-resume-handoff.md |
-| rule-of-5 | prompt-workflow-rule-of-5-review.md |
-| parallel-review | prompt-workflow-multi-agent-parallel-review.md |
-| design-practice | prompt-workflow-design-in-practice.md |
-| extract-prompt | prompt-workflow-extract-prompt-from-conversation.md |
-| optionality-review | prompt-workflow-optionality-review.md |
-| describe-pr | prompt-task-describe-pr.md |
-| research-codebase | prompt-task-research-codebase.md |
-| debug | prompt-task-systematic-debugging.md |
-| code-review | prompt-task-iterative-code-review.md |
-| plan-review | prompt-task-plan-review.md |
-| research-review | prompt-task-research-review.md |
-| issue-review | prompt-task-issue-tracker-review.md |
-| design-review | prompt-task-design-review.md |
-| universal-review | prompt-task-rule-of-5-universal.md |
+Each invokable as `/deliberate-commits`, `/systematic-debugging`, `/describe-pr`, `/iterative-code-review`
 
 ---
 
