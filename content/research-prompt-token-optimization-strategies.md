@@ -102,12 +102,58 @@ While LangChain excels at application logic, **LlamaIndex** is specialized for R
 
 For sophisticated, production-grade systems, the following architectural patterns offer significant long-term benefits.
 
-### a. Model Routing
+### a. Model Routing with Prompt Metadata
 
-Instead of relying on a single, powerful (and expensive) model for all tasks, implement a "router" that selects the most cost-effective model for each specific job.
+Instead of relying on a single, powerful (and expensive) model for all tasks, implement a "router" that selects the most cost-effective model for each specific prompt. This can be achieved by embedding metadata within each prompt file, allowing for dynamic, per-prompt model selection.
 
--   **Example:** A simple task like drafting a commit message could be routed to a cheaper model (e.g., `gpt-3.5-turbo`), while a complex, critical security review would be directed to a more powerful model (e.g., `gpt-4` or `claude-3-opus`).
--   This approach optimizes the cost-performance trade-off for each task. LangChain provides tools to facilitate building such routing logic.
+-   **Core Concept:** The router acts as a gatekeeper. Before executing a prompt, it inspects its metadata to determine the task's complexity and requirements. Based on this information, it dispatches the prompt to the most appropriate and cost-effective model available.
+
+-   **Prompt-Level Metadata:** To inform the router, we can add a metadata block (e.g., YAML frontmatter) to each prompt file. This metadata explicitly defines the characteristics of the model needed for that specific task.
+
+    -   **Example Metadata Block:**
+        ```yaml
+        ---
+        title: "Rule of 5 Universal Review"
+        type: "task"
+        model_selection:
+          class: "reasoning"  # Can be 'simple', 'reasoning', 'creative', etc.
+          min_quality: "medium" # e.g., 'low', 'medium', 'high'
+        ---
+        ```
+
+-   **How the Router Works:**
+    1.  **Parse Metadata:** The system reads the `model_selection` block from the prompt file before processing it.
+    2.  **Apply Logic:** The router contains logic that maps the requested `class` and `min_quality` to a concrete model. For instance:
+        -   `class: 'simple'` might map to a fast, cheap model like `claude-3-haiku` or `gpt-3.5-turbo`.
+        -   `class: 'reasoning'` with `min_quality: 'high'` would map to a powerful model like `claude-3-opus` or `gpt-4`.
+    3.  **Dispatch:** The prompt is sent to the selected model.
+
+-   **Benefits of this Approach:**
+    -   **Decoupling:** Prompts are no longer hardcoded to a specific model version. You can update the routing logic to use new models without touching the original prompt files.
+    -   **Clarity and Intent:** The metadata makes the prompt's requirements explicit and transparent.
+    -   **Optimized Cost-Performance:** Ensures that you are always using the most cost-effective model that can reliably perform the task.
+
+-   **Frameworks:** LangChain and other LLM orchestration tools provide mechanisms to build such routing logic, often with pre-built "Router Chains" that can be customized.
+
+### b. Application to CLI Tools
+
+The same routing principle can be applied to command-line interface (CLI) tools like `claude-code`, `gemini-cli`, or `amp`, even if they don't natively support this feature. This is typically done by creating a custom "orchestrator" or "wrapper" script.
+
+-   **How it Works:** You would create a single script (e.g., a shell script named `ask` or `llm`) that acts as your primary interface. This script would:
+    1.  **Accept a prompt file path** as an argument.
+    2.  **Parse the prompt's metadata** (the `model_selection` block) using a command-line tool like `yq` (for YAML) or a simple script.
+    3.  **Contain the routing logic** to map the metadata (`class: 'reasoning'`) to a specific model name (`claude-3-opus-20240229`) and the corresponding CLI tool (`claude-code`).
+    4.  **Construct and execute the final command**. The script would dynamically build the command string with the correct tool, model parameter, and prompt content.
+
+-   **Example Workflow:**
+    -   You run: `ask content/prompts/my-simple-prompt.md`
+    -   The `ask` script reads the metadata, sees `class: 'simple'`, and maps it to `gemini-cli` with the `gemini-pro` model.
+    -   It executes: `gemini-cli --model gemini-pro < content/prompts/my-simple-prompt.md`
+    -   You run: `ask content/prompts/my-complex-prompt.md`
+    -   The script reads the metadata, sees `class: 'reasoning'`, and maps it to `claude-code` with the `claude-3-opus` model.
+    -   It executes: `claude-code --model claude-3-opus < content/prompts/my-complex-prompt.md`
+
+This wrapper approach provides the full benefit of model routing while still allowing you to work efficiently from the command line.
 
 ### b. Model Selection and Characteristics
 
