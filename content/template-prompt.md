@@ -22,11 +22,20 @@ source: [original|adapted-from-URL|research-based]
 
 ## The Prompt
 
-```
+> **Note:** Use 4 backticks (```````` ) for the outer code fence when your prompt
+> contains nested code blocks. This prevents early termination during extraction.
+
+````
 [The actual prompt text that will be given to the AI tool.
 Be clear, specific, and actionable.
-Include any necessary context or constraints.]
+Include any necessary context or constraints.
+
+If your prompt includes code examples, use standard triple backticks:
+```language
+// example code
 ```
+]
+````
 
 ## Example
 

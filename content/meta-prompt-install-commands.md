@@ -31,7 +31,7 @@ Use this prompt when you want to install prompts from this repository as reusabl
 
 ## The Prompt
 
-```markdown
+````markdown
 # Install Prompts as Commands
 
 You are helping me install prompts from the incitaciones repository as commands in my AI coding tool.
@@ -223,6 +223,7 @@ Creates these files:
 - `~/.claude/commands/iterative-code-review.md`
 
 Each invokable as `/deliberate-commits`, `/systematic-debugging`, `/describe-pr`, `/iterative-code-review`
+````
 
 ---
 
