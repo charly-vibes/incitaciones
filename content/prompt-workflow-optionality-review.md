@@ -35,7 +35,7 @@ A focused review workflow for evaluating **strategic flexibility** in code, arch
 
 ## The Prompt
 
-```
+````
 # Optionality Review
 
 Review this [CODE/ARCHITECTURE/PLAN/DECISION] through the lens of strategic optionality.
@@ -226,7 +226,7 @@ Where should we reassess?
 
 **Human review recommended:** [YES/NO]
 **Reason:** [Why human judgment needed, or why assessment is sufficient]
-```
+````
 
 ---
 

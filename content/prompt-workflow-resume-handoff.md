@@ -30,7 +30,7 @@ Use this prompt when starting a new AI session and need to continue work from a 
 
 ## The Prompt
 
-```
+````
 # Resume from Handoff
 
 Resume work from a handoff document through analysis and verification.
@@ -250,7 +250,7 @@ What would you like to do?
 4. **Respect priorities** - Handoff author prioritized for a reason
 5. **Adapt to changes** - If codebase changed, acknowledge and adapt
 6. **Create new handoff** - When this session ends, update or create new one
-```
+````
 
 ## Example
 

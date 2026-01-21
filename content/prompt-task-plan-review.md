@@ -42,7 +42,7 @@ Use this prompt to perform thorough review of implementation plans using iterati
 
 ## The Prompt
 
-```
+````
 # Iterative Plan Review (Rule of 5)
 
 Perform thorough implementation plan review using the Rule of 5 - iterative refinement until convergence.
@@ -245,6 +245,7 @@ Convergence: Pass [N]
    - MEDIUM: Worth addressing but not blocking
    - LOW: Minor improvements
 5. **If converged before pass 5** - Stop and report, don't continue needlessly
+````
 
 ## Variations
 

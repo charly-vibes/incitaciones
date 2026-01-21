@@ -31,7 +31,7 @@ Use this prompt when you need an AI to **document and explain existing code** wi
 
 ## The Prompt
 
-```
+````
 # Research Codebase
 
 Document and explain the codebase as it exists today.
@@ -248,7 +248,7 @@ grep -r "auth" config/ .env.example
 5. **Capture patterns** - Note conventions used throughout
 6. **Include config** - Environment variables, config files
 7. **Track tests** - Document existing test coverage
-```
+````
 
 ## Example
 

@@ -34,7 +34,7 @@ Use this prompt when working with an AI assistant on code changes that need to b
 
 ## The Prompt
 
-```
+````
 # Commit Changes with Review
 
 Create git commits for changes made during this session.
@@ -168,7 +168,7 @@ Before each commit:
 - [ ] Used explicit file paths in git add
 - [ ] No AI attribution in commit message
 - [ ] Commit message explains why, not just what
-```
+````
 
 ## Example
 

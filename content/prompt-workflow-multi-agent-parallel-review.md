@@ -49,7 +49,7 @@ This is the **extended multi-agent parallel variant** of Steve Yegge's Rule of 5
 
 ## The Prompt
 
-```
+````
 I need a comprehensive multi-agent parallel code review using the Wave/Gate architecture.
 
 CODE TO REVIEW:
@@ -436,7 +436,7 @@ ITERATE if:
 - new_issue_rate >= 0.10
 
 If ITERATE: Start Wave 1 again focusing only on CRITICAL and HIGH issues.
-```
+````
 
 ## Example
 

@@ -32,7 +32,7 @@ Use this prompt when you need to update an existing implementation plan based on
 
 ## The Prompt
 
-```
+````
 # Iterate Implementation Plan
 
 Update an existing implementation plan based on feedback, grounded in codebase reality.
@@ -416,7 +416,7 @@ Alternative approaches:
 2. [Alternative 2 - different tradeoff]
 
 Which direction should we take?
-```
+````
 
 ## References
 

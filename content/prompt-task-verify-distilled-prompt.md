@@ -23,7 +23,7 @@ This prompt is used as a quality assurance step after a developer-facing prompt 
 
 ## The Prompt
 
-```markdown
+````markdown
 You are a meticulous QA assistant. Your task is to compare two versions of a prompt: the `ORIGINAL_PROMPT` (verbose, for developers) and the `DISTILLED_PROMPT` (concise, for LLMs).
 
 Your goal is to verify that the `DISTILLED_PROMPT` is a faithful, lossless distillation of the `ORIGINAL_PROMPT`.
@@ -51,7 +51,7 @@ Your goal is to verify that the `DISTILLED_PROMPT` is a faithful, lossless disti
 [Paste the distilled concise prompt content here]
 ```
 ---
-```
+````
 
 ## Example
 

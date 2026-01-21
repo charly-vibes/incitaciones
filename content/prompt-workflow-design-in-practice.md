@@ -33,10 +33,7 @@ Use this prompt when facing complex problems that require understanding before i
 
 **Key Principle:** If the solution doesn't feel obvious, the problem isn't understood yet.
 
-## The Prompt
-
-```
-# Design in Practice Workflow
+~~~~
 
 Apply the 6-phase design framework to understand a problem before implementing a solution.
 
@@ -60,7 +57,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
    - Observable behaviors, not interpretations
 
 **Output format:**
-```
+~~~~
 ## Description
 
 ### Observed Symptoms
@@ -72,7 +69,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 
 ### Timeline
 - [When symptoms first appeared, any patterns]
-```
+~~~~
 
 **Anti-patterns to avoid:**
 - "The database is slow" (diagnosis, not description)
@@ -100,7 +97,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 3. **Write the Problem Statement:**
 
 **Problem Statement Template:**
-```
+~~~~
 ## Problem Statement
 
 **Current behavior:** [What happens now - factual]
@@ -114,7 +111,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 **Ruled out:**
 - [Hypothesis A]: [Why it's not this]
 - [Hypothesis B]: [Why it's not this]
-```
+~~~~
 
 **Quality check:** The solution should feel obvious after writing the right problem statement. If it doesn't, the diagnosis is incomplete.
 
@@ -133,7 +130,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
    - Nice-to-haves deferred
 
 **Output format:**
-```
+~~~~
 ## Scope
 
 ### In Scope
@@ -148,7 +145,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 - [Technical limitations]
 - [Time/resource constraints]
 - [Compatibility requirements]
-```
+~~~~
 
 **Why this matters:** Prevents scope creep. Sets the "physics" of the project before considering solutions.
 
@@ -165,7 +162,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 2. **Build a Decision Matrix:**
 
 **Decision Matrix Structure:**
-```
+~~~~
 ## Decision Matrix
 
 | Criterion | Status Quo | Approach A | Approach B |
@@ -182,7 +179,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 - Green: Desirable
 - Yellow: Acceptable with trade-offs
 - Red: Problematic or blocking
-```
+~~~~
 
 **Rules for Decision Matrix:**
 - Text is FACT (neutral, objective descriptions)
@@ -191,7 +188,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 - Each cell must be specific, not "good" or "bad"
 
 3. **Select and justify:**
-```
+~~~~
 ### Decision
 
 **Selected approach:** [Approach name]
@@ -199,7 +196,7 @@ Work through each phase sequentially. Do not skip phases. The goal is understand
 **Rationale:** [Why this approach best addresses the scoped problem]
 
 **Trade-offs accepted:** [What we're giving up]
-```
+~~~~
 
 ### PHASE 5: DESIGN (Tactical Plan)
 
@@ -252,29 +249,11 @@ If Phases 1-5 were rigorous, this phase should feel mechanical:
 - **Can't choose between approaches** → Back to Direction (need more criteria or research)
 - **Implementation keeps hitting surprises** → Back to Design (missing edge cases)
 
-## Artifacts Summary
-
-| Phase | Artifact | Purpose |
-|-------|----------|---------|
-| Describe | Symptom Description | Capture reality without interpretation |
-| Diagnose | Problem Statement | Crystallize root cause |
-| Delimit | Scope Document | Set boundaries |
-| Direction | Decision Matrix | Objective trade-off analysis |
-| Design | Implementation Plan | Blueprint for execution |
-| Develop | Working Code | Solution |
-```
-
-## Example
+~~~~
 
 **Context:** Application performance degrading over time
 
-**Input:**
-```
-Use the Design in Practice workflow to address our performance issues. Users are complaining that the app is slow.
-```
-
-**AI Response (following prompt):**
-```
+~~~~
 I'll work through the 6-phase design framework to understand this problem before proposing solutions.
 
 ---
@@ -401,10 +380,7 @@ Let me gather the symptoms without jumping to conclusions.
 
 ---
 
-The solution now feels obvious: add listener cleanup to SessionManager.close(). The 6-phase process helped avoid jumping to "add caching" or "upgrade servers" which wouldn't have addressed the root cause.
-```
-
-## Expected Results
+~~~~
 
 - Clear Problem Statement that makes the solution obvious
 - Decision Matrix with objective trade-off analysis
@@ -414,15 +390,7 @@ The solution now feels obvious: add listener cleanup to SessionManager.close(). 
 
 ## Variations
 
-**For Smaller Problems (< 1 day of work):**
-```
-Combine phases:
-- Phases 1-2: Quick symptom/diagnosis
-- Phase 3-4: Brief scope/direction
-- Phase 5-6: Lightweight plan + implement
-
-Skip formal artifacts, but still think through each phase.
-```
+~~~~
 
 **For Exploratory/Research Problems:**
 ```

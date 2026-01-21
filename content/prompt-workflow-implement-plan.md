@@ -32,7 +32,7 @@ Use this prompt when you have an approved implementation plan and need to execut
 
 ## The Prompt
 
-```
+````
 # Implement Plan
 
 Implement an approved plan following Test-Driven Development methodology.
@@ -489,7 +489,7 @@ Manual verification: None required for this phase.
 **Next:** Phase 2 - CSS variable system
 
 Shall I proceed to Phase 2, or would you like to verify Phase 1 first?
-```
+````
 
 **User confirms, continues to Phase 2 following same Red-Green-Refactor cycle...**
 

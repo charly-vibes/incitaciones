@@ -42,7 +42,7 @@ Use this prompt to perform thorough review of research documents using iterative
 
 ## The Prompt
 
-```
+````
 # Iterative Research Review (Rule of 5)
 
 Perform thorough research document review using the Rule of 5 - iterative refinement until convergence.
@@ -250,6 +250,7 @@ Convergence: Pass [N]
    - MEDIUM: Could be clearer or more complete
    - LOW: Minor improvements
 5. **If converged before pass 5** - Stop and report, don't continue needlessly
+````
 
 ## Variations
 

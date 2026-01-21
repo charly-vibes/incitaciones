@@ -32,7 +32,7 @@ Use this prompt when you need to create a detailed implementation plan before st
 
 ## The Prompt
 
-```
+````
 # Create Implementation Plan
 
 Create a detailed implementation plan for the requested feature.
@@ -264,7 +264,7 @@ Let me research these first, then I'll present options and create the detailed p
 
 [After research, presents 2-3 options with tradeoffs, gets alignment, then creates detailed plan]
 ```
-```
+````
 
 ## Example
 

@@ -22,7 +22,7 @@ This prompt should be used to convert a verbose, developer-facing prompt into a 
 
 ## The Prompt
 
-```
+````
 Analyze the provided DEVELOPER-FACING PROMPT. Your task is to distill it into a concise, token-efficient, LLM-FACING PROMPT.
 
 The distilled prompt must retain only the essential instructions, rules, and structured commands required for the LLM to perform its task.
@@ -39,7 +39,7 @@ DEVELOPER-FACING PROMPT:
 ---
 [Paste the verbose prompt content here]
 ---
-```
+````
 
 ## Example
 

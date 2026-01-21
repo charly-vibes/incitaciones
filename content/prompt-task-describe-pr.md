@@ -30,7 +30,7 @@ Use this prompt when you need to create or update a pull request description bas
 
 ## The Prompt
 
-```
+````
 # Generate PR Description
 
 Create a comprehensive pull request description based on the actual changes in the PR.
@@ -227,7 +227,7 @@ gh pr view {number}
 5. **Highlight breaking changes** - Make them impossible to miss
 6. **Provide testing guidance** - Help reviewers verify
 7. **Be thorough but scannable** - Use headers and bullets
-```
+````
 
 ## Example
 

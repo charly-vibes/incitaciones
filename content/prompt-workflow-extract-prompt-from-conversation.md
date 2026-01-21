@@ -32,7 +32,7 @@ Use this prompt when you've had a successful AI interaction that you want to cap
 
 ## The Prompt
 
-```
+````
 # Extract Reusable Prompt from Conversation
 
 Analyze this conversation and extract a reusable prompt that captures the successful pattern.
@@ -253,7 +253,7 @@ Shall I:
 5. **Start with "draft" status** - Needs testing before "tested" or "verified"
 6. **Cross-reference** - Link to related prompts
 7. **Iterate** - First version doesn't have to be perfect
-```
+````
 
 ## Example
 

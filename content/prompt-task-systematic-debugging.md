@@ -22,7 +22,7 @@ Use this for bugs in complex, interconnected, or distributed systems. Avoid it f
 
 ## The Prompt
 
-```
+````
 You are an expert systems diagnostician. We are going to apply the principles of medical differential diagnosis to debug a software issue.
 
 **1. Symptom & Problem Representation:**
@@ -41,7 +41,7 @@ Follow this seven-step workflow:
     - Assume Test #2 (for your second most likely hypothesis) comes back *positive*.
 6.  **State the Probable Diagnosis:** Based on the simulated results, state the most likely diagnosis (root cause).
 7.  **Recommend Treatment:** Propose a specific, immediate action to mitigate or fix the issue.
-```
+````
 
 ## Example
 

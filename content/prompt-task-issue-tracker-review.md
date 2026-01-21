@@ -49,7 +49,7 @@ Use this prompt to perform thorough review of issues in your issue tracking syst
 
 ## The Prompt
 
-```
+````
 # Iterative Issue Tracker Review (Rule of 5)
 
 Perform thorough issue review using the Rule of 5 - iterative refinement until convergence.
@@ -357,7 +357,7 @@ Success criteria:
 - **Scope**: [Excellent|Good|Fair|Poor] - [brief comment]
 - **Dependencies**: [Excellent|Good|Fair|Poor] - [brief comment]
 - **Completeness**: [Excellent|Good|Fair|Poor] - [brief comment]
-```
+````
 
 ## Rules
 

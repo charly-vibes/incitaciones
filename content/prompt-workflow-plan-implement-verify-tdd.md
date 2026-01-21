@@ -32,7 +32,7 @@ Use this prompt when implementing features or fixes using Test-Driven Developmen
 
 ## The Prompt
 
-```
+````
 # Implement with TDD Workflow
 
 Implement the requested feature following Test-Driven Development and a phased approach.
@@ -229,7 +229,7 @@ If resuming from an existing plan:
 3. Start from first unchecked item
 4. Verify previous work if something seems off
 5. Continue with Red-Green-Refactor cycle
-```
+````
 
 ## Example
 

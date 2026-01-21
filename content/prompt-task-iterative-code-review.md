@@ -57,7 +57,7 @@ This prompt implements **Steve Yegge's original Rule of 5 approach** as found in
 
 This follows Steve Yegge's actual gastown implementation most closely:
 
-```
+````
 I need you to review this code using the Rule of 5 - five stages of iterative refinement.
 
 CODE TO REVIEW:
@@ -134,13 +134,13 @@ FINAL REPORT:
 - Top 3 most critical findings
 - Recommended next actions
 - Production readiness assessment
-```
+````
 
 ### Code Review Variant (Specialized Domains)
 
 This variant focuses on code review domains rather than editorial refinement:
 
-```
+````
 I need you to review this code using the Rule of 5 - iterative refinement until convergence.
 
 CODE TO REVIEW:
@@ -227,7 +227,7 @@ RULES:
 3. Don't just list potential issues - confirm they exist
 4. Prioritize: CRITICAL security > CRITICAL other > HIGH > MEDIUM > LOW
 5. If converged before pass 5, stop and report
-```
+````
 
 ## Example
 

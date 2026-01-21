@@ -50,7 +50,7 @@ These stages are editorial refinement stages that apply to any work product. Whe
 
 ## The Prompt
 
-```
+````
 # Universal Rule of 5 Review
 
 Review this [CODE/PLAN/RESEARCH/ISSUE/SPEC/DOCUMENT] using Steve Yegge's Rule of 5 - five stages of iterative editorial refinement until convergence.
@@ -371,6 +371,7 @@ Total Issues by Severity:
    - LOW: Minor improvements
 6. **Check convergence** - Stop when new issues drop below threshold
 7. **Don't force 5 stages** - If converged earlier, report and stop
+````
 
 ---
 

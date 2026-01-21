@@ -35,7 +35,7 @@ Use this prompt when you need to transfer context from one AI session to another
 
 ## The Prompt
 
-```
+````
 # Create Handoff Document
 
 Create a concise handoff document to transfer context to another agent session.
@@ -216,7 +216,7 @@ The handoff captures:
 3. **Prioritize learnings** - Mistakes and discoveries are most valuable
 4. **Reference, don't duplicate** - Link to files rather than copy code
 5. **Update issue tracking** - If using issues, link the handoff
-```
+````
 
 ## Example
 

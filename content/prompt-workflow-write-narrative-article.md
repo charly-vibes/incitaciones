@@ -31,7 +31,7 @@ Use this workflow when you want to write a compelling, structured, and persuasiv
 
 ## The Prompt
 
-```
+````
 # Write a Narrative-Driven Article
 
 We will collaborate to write a compelling article or blog post using the Three-Act narrative structure. We will work through four phases: Idea, Outline, Draft, and Review.
@@ -92,7 +92,7 @@ Finally, I will perform an editorial review of the draft, checking for:
 -   **Impact:** Does the introduction hook the reader effectively? Does the conclusion provide a satisfying resolution?
 
 I will provide a list of suggested revisions for your approval.
-```
+````
 
 ## Example
 

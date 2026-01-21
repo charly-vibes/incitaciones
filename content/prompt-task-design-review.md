@@ -32,7 +32,7 @@ Use this prompt to review design artifacts produced by the Design in Practice wo
 
 ## The Prompt
 
-```
+````
 # Design Artifact Review
 
 Review design artifacts for rigor, completeness, and adherence to Design in Practice principles.
@@ -454,7 +454,7 @@ Decision → Plan: [ALIGNED | INCONSISTENT]
 
 **Rationale:** [1-2 sentences]
 ```
-```
+````
 
 ## Example
 
