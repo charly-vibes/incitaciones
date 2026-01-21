@@ -6,7 +6,7 @@ tags: [installation, setup, configuration, cli-tools, commands]
 tools: [claude-code, cursor, amp, gemini-cli, windsurf, aider]
 status: draft
 created: 2026-01-18
-updated: 2026-01-19
+updated: 2026-01-20
 version: 1.0.0
 source: original
 ---
@@ -182,8 +182,10 @@ Before writing any files for a local install, perform these checks:
 
 ### 3.5 Write the Prompt File
 1.  Adapt the extracted prompt for the target tool if needed (e.g., add frontmatter for Amp).
-2.  Write the final content to the target path determined in Step 3.3.
-3.  Set file permissions to `644`.
+2.  **Contextualize to Repository (if needed)**: If the prompt requires specific repository context (e.g., file paths, common patterns), use the `research-codebase` task to generate a repository-specific preamble or examples.
+3.  **Distill for Execution**: Apply the `prompt-task-distill-prompt.md` to convert the developer-facing prompt into a concise, token-efficient LLM-facing prompt for execution.
+4.  Write the final content to the target path determined in Step 3.3.
+5.  Set file permissions to `644`.
 
 ---
 
