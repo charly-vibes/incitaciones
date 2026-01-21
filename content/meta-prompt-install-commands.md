@@ -171,9 +171,12 @@ Before writing any files for a local install, perform these checks:
 ### 3.5 Write the Prompt File
 1.  Adapt the extracted prompt for the target tool if needed (e.g., add frontmatter for Amp).
 2.  **Contextualize to Repository (if needed)**: If the prompt requires specific repository context (e.g., file paths, common patterns), use the `research-codebase` task to generate a repository-specific preamble or examples.
-3.  **Distill for Execution**: Apply the `prompt-task-distill-prompt.md` to convert the developer-facing prompt into a concise, token-efficient LLM-facing prompt for execution.
-4.  Write the final content to the target path determined in Step 3.3.
-5.  Set file permissions to `644`.
+3.  **Distill for Execution**: Apply the `prompt-task-distill-prompt.md` to convert the developer-facing prompt into a concise, token-efficient LLM-facing prompt for execution. Let's call the original verbose content (from Step 3.2) the `CORE_PROMPT` and the output of this distillation step the `DISTILLED_PROMPT`.
+4.  **Verify Distillation**: Apply `prompt-task-verify-distilled-prompt.md`.
+    - Use the `CORE_PROMPT` as `ORIGINAL_PROMPT` and the `DISTILLED_PROMPT` as `DISTILLED_PROMPT` for the verification task.
+    - If the verification fails (the output is not `OK`), report the discrepancy to me and ask if I want to proceed with the potentially flawed distillation, edit it manually, or skip installing this command.
+5.  Write the final `DISTILLED_PROMPT` content to the target path determined in Step 3.3.
+6.  Set file permissions to `644`.
 
 ---
 
