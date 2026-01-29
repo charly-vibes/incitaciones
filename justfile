@@ -376,3 +376,159 @@ new-references CATEGORY:
 
     echo "Created: $FILE"
     echo "Edit with: \$EDITOR $FILE"
+
+# ============================================================
+# Distilled Prompts Commands
+# ============================================================
+
+# Install prompts to Claude Code commands directory
+install *ARGS:
+    ./install.sh {{ARGS}}
+
+# List distilled prompts
+list-distilled:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Distilled prompts in content/distilled/:"
+    echo ""
+    ls content/distilled/*.md 2>/dev/null | while read -r file; do
+        name=$(basename "$file" .md)
+        lines=$(wc -l < "$file")
+        echo "  $name ($lines lines)"
+    done
+    echo ""
+    TOTAL=$(ls content/distilled/*.md 2>/dev/null | wc -l)
+    echo "Total: $TOTAL prompts"
+
+# Validate distilled prompts
+validate-distilled:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Validating distilled prompts..."
+    echo ""
+
+    ERRORS=0
+    WARNINGS=0
+
+    for file in content/distilled/*.md; do
+        name=$(basename "$file" .md)
+        issues=""
+
+        # Check 1: No YAML frontmatter
+        if head -1 "$file" | grep -q "^---$"; then
+            issues="$issues [has frontmatter]"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        # Check 2: No metadata sections (When to Use, Example, Notes, References)
+        if grep -Eq "^##\s+(When to Use|Example|Notes|References|Version History)" "$file"; then
+            issues="$issues [has metadata sections]"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        # Check 3: Reasonable length (not empty, not too short)
+        lines=$(wc -l < "$file")
+        if [ "$lines" -lt 5 ]; then
+            issues="$issues [too short: $lines lines]"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        # Check 4: Contains instruction keywords
+        if ! grep -Eiq "(step|task|process|your|analyze|create|review|focus|output)" "$file"; then
+            issues="$issues [missing instruction keywords]"
+            WARNINGS=$((WARNINGS + 1))
+        fi
+
+        # Check 5: No nested code block wrappers (````markdown)
+        if grep -q "^\`\`\`\`" "$file"; then
+            issues="$issues [has nested code blocks]"
+            WARNINGS=$((WARNINGS + 1))
+        fi
+
+        if [ -n "$issues" ]; then
+            echo "  ❌ $name:$issues"
+        else
+            echo "  ✓ $name"
+        fi
+    done
+
+    echo ""
+    if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
+        echo "✅ All distilled prompts valid!"
+    else
+        [ $ERRORS -gt 0 ] && echo "Errors: $ERRORS"
+        [ $WARNINGS -gt 0 ] && echo "Warnings: $WARNINGS"
+        [ $ERRORS -gt 0 ] && exit 1
+    fi
+
+# Show distilled vs source comparison
+compare-distilled NAME:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    DISTILLED="content/distilled/{{NAME}}.md"
+
+    # Find corresponding source file
+    SOURCE=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .source' content/manifest.json 2>/dev/null)
+
+    if [ -z "$SOURCE" ] || [ "$SOURCE" = "null" ]; then
+        echo "Could not find source file for: {{NAME}}"
+        echo "Available prompts:"
+        jq -r '.prompts[].name' content/manifest.json 2>/dev/null | sort
+        exit 1
+    fi
+
+    if [ ! -f "$DISTILLED" ]; then
+        echo "Distilled file not found: $DISTILLED"
+        exit 1
+    fi
+
+    if [ ! -f "$SOURCE" ]; then
+        echo "Source file not found: $SOURCE"
+        exit 1
+    fi
+
+    SRC_LINES=$(wc -l < "$SOURCE")
+    DST_LINES=$(wc -l < "$DISTILLED")
+    REDUCTION=$(echo "scale=0; 100 - ($DST_LINES * 100 / $SRC_LINES)" | bc)
+
+    echo "Comparison for: {{NAME}}"
+    echo "  Source:    $SOURCE ($SRC_LINES lines)"
+    echo "  Distilled: $DISTILLED ($DST_LINES lines)"
+    echo "  Reduction: $REDUCTION%"
+    echo ""
+
+    if command -v delta &> /dev/null; then
+        delta "$SOURCE" "$DISTILLED"
+    elif command -v diff &> /dev/null; then
+        diff --color=auto -u "$SOURCE" "$DISTILLED" | head -100
+    fi
+
+# Show bundle contents
+list-bundles:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    if [ ! -f content/manifest.json ]; then
+        echo "Manifest not found: content/manifest.json"
+        exit 1
+    fi
+
+    echo "Available bundles:"
+    echo ""
+
+    for bundle in essentials planning reviews; do
+        desc=$(jq -r ".bundles.$bundle.description" content/manifest.json)
+        count=$(jq -r ".bundles.$bundle.prompts | length" content/manifest.json)
+        echo "  $bundle ($count prompts)"
+        echo "    $desc"
+        echo "    Prompts:"
+        jq -r ".bundles.$bundle.prompts[]" content/manifest.json | while read -r p; do
+            echo "      - $p"
+        done
+        echo ""
+    done
+
+    TOTAL=$(jq '.prompts | length' content/manifest.json)
+    echo "  all ($TOTAL prompts)"
+    echo "    Complete collection of all prompts"
