@@ -1,0 +1,284 @@
+{
+  "version": "2026-01-29",
+  "schema_version": "1.0",
+  "prompts": [
+    {
+      "name": "commit",
+      "type": "workflow",
+      "title": "Workflow for Deliberate Commits",
+      "description": "Create well-structured, atomic git commits with clear intent",
+      "source": "content/prompt-workflow-deliberate-commits.md",
+      "distilled": "content/distilled/commit.md",
+      "tags": ["git", "commits", "version-control"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "debug",
+      "type": "task",
+      "title": "Systematic Debugging with DDx",
+      "description": "7-step diagnostic workflow for debugging issues",
+      "source": "content/prompt-task-systematic-debugging.md",
+      "distilled": "content/distilled/debug.md",
+      "tags": ["debugging", "diagnosis"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "describe-pr",
+      "type": "task",
+      "title": "Describe Pull Request",
+      "description": "Generate clear PR descriptions from code changes",
+      "source": "content/prompt-task-describe-pr.md",
+      "distilled": "content/distilled/describe-pr.md",
+      "tags": ["git", "pull-request", "documentation"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "code-review",
+      "type": "task",
+      "title": "Iterative Code Review",
+      "description": "Multi-pass code review using Rule of 5 principle",
+      "source": "content/prompt-task-iterative-code-review.md",
+      "distilled": "content/distilled/code-review.md",
+      "tags": ["review", "code-quality"],
+      "bundles": ["essentials", "reviews"]
+    },
+    {
+      "name": "create-plan",
+      "type": "workflow",
+      "title": "Create Implementation Plan",
+      "description": "Design phased implementation plans with TDD approach",
+      "source": "content/prompt-workflow-create-plan.md",
+      "distilled": "content/distilled/create-plan.md",
+      "tags": ["planning", "implementation"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "implement-plan",
+      "type": "workflow",
+      "title": "Implement Plan",
+      "description": "Execute implementation plans phase by phase",
+      "source": "content/prompt-workflow-implement-plan.md",
+      "distilled": "content/distilled/implement-plan.md",
+      "tags": ["planning", "implementation"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "iterate-plan",
+      "type": "workflow",
+      "title": "Iterate on Plan",
+      "description": "Refine and improve existing plans based on feedback",
+      "source": "content/prompt-workflow-iterate-plan.md",
+      "distilled": "content/distilled/iterate-plan.md",
+      "tags": ["planning", "iteration"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "rule-of-5",
+      "type": "workflow",
+      "title": "Rule of 5 Code Review (Multi-Agent)",
+      "description": "High-stakes code review with parallel agent waves",
+      "source": "content/prompt-workflow-rule-of-5-review.md",
+      "distilled": "content/distilled/rule-of-5.md",
+      "tags": ["review", "multi-agent", "code-quality"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "create-issues",
+      "type": "task",
+      "title": "Create Issues from Plan",
+      "description": "Generate trackable issues from implementation plans",
+      "source": "content/prompt-task-create-issues.md",
+      "distilled": "content/distilled/create-issues.md",
+      "tags": ["planning", "issues", "project-management"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "distill-prompt",
+      "type": "task",
+      "title": "Distill Prompt",
+      "description": "Create lean, token-efficient versions of prompts",
+      "source": "content/prompt-task-distill-prompt.md",
+      "distilled": "content/distilled/distill-prompt.md",
+      "tags": ["prompts", "optimization"],
+      "bundles": []
+    },
+    {
+      "name": "verify-prompt",
+      "type": "task",
+      "title": "Verify Distilled Prompt",
+      "description": "Validate distilled prompts preserve essential instructions",
+      "source": "content/prompt-task-verify-distilled-prompt.md",
+      "distilled": "content/distilled/verify-prompt.md",
+      "tags": ["prompts", "validation"],
+      "bundles": []
+    },
+    {
+      "name": "research-codebase",
+      "type": "task",
+      "title": "Research Codebase",
+      "description": "Structured investigation of unfamiliar codebases",
+      "source": "content/prompt-task-research-codebase.md",
+      "distilled": "content/distilled/research-codebase.md",
+      "tags": ["research", "codebase", "exploration"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "create-handoff",
+      "type": "workflow",
+      "title": "Create Handoff Document",
+      "description": "Generate context documents for session continuity",
+      "source": "content/prompt-workflow-create-handoff.md",
+      "distilled": "content/distilled/create-handoff.md",
+      "tags": ["handoff", "documentation", "context"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "resume-handoff",
+      "type": "workflow",
+      "title": "Resume from Handoff",
+      "description": "Continue work from a previous session's handoff document",
+      "source": "content/prompt-workflow-resume-handoff.md",
+      "distilled": "content/distilled/resume-handoff.md",
+      "tags": ["handoff", "context", "continuity"],
+      "bundles": ["essentials"]
+    },
+    {
+      "name": "design-practice",
+      "type": "workflow",
+      "title": "Design in Practice",
+      "description": "Rich Hickey-inspired design methodology workflow",
+      "source": "content/prompt-workflow-design-in-practice.md",
+      "distilled": "content/distilled/design-practice.md",
+      "tags": ["design", "architecture", "methodology"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "extract-prompt",
+      "type": "workflow",
+      "title": "Extract Prompt from Conversation",
+      "description": "Turn successful interactions into reusable prompts",
+      "source": "content/prompt-workflow-extract-prompt-from-conversation.md",
+      "distilled": "content/distilled/extract-prompt.md",
+      "tags": ["prompts", "extraction"],
+      "bundles": []
+    },
+    {
+      "name": "pre-mortem",
+      "type": "workflow",
+      "title": "Pre-Mortem Planning",
+      "description": "Anticipate failures before they happen",
+      "source": "content/prompt-workflow-pre-mortem-planning.md",
+      "distilled": "content/distilled/pre-mortem.md",
+      "tags": ["planning", "risk", "prevention"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "tdd",
+      "type": "workflow",
+      "title": "Plan-Implement-Verify (TDD)",
+      "description": "Test-driven development workflow",
+      "source": "content/prompt-workflow-plan-implement-verify-tdd.md",
+      "distilled": "content/distilled/tdd.md",
+      "tags": ["tdd", "testing", "implementation"],
+      "bundles": ["planning"]
+    },
+    {
+      "name": "narrative-article",
+      "type": "workflow",
+      "title": "Write Narrative Article",
+      "description": "Create engaging technical articles with narrative structure",
+      "source": "content/prompt-workflow-write-narrative-article.md",
+      "distilled": "content/distilled/narrative-article.md",
+      "tags": ["writing", "documentation", "narrative"],
+      "bundles": []
+    },
+    {
+      "name": "optionality-review",
+      "type": "workflow",
+      "title": "Optionality Review",
+      "description": "Evaluate design decisions for flexibility and reversibility",
+      "source": "content/prompt-workflow-optionality-review.md",
+      "distilled": "content/distilled/optionality-review.md",
+      "tags": ["review", "design", "optionality"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "multi-agent-review",
+      "type": "workflow",
+      "title": "Multi-Agent Parallel Review",
+      "description": "Coordinate multiple agents for comprehensive review",
+      "source": "content/prompt-workflow-multi-agent-parallel-review.md",
+      "distilled": "content/distilled/multi-agent-review.md",
+      "tags": ["review", "multi-agent", "parallel"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "plan-review",
+      "type": "task",
+      "title": "Plan Review",
+      "description": "Iterative review of implementation plans",
+      "source": "content/prompt-task-plan-review.md",
+      "distilled": "content/distilled/plan-review.md",
+      "tags": ["review", "planning"],
+      "bundles": ["planning", "reviews"]
+    },
+    {
+      "name": "design-review",
+      "type": "task",
+      "title": "Design Artifact Review",
+      "description": "Review problem statements and decision matrices",
+      "source": "content/prompt-task-design-review.md",
+      "distilled": "content/distilled/design-review.md",
+      "tags": ["review", "design"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "research-review",
+      "type": "task",
+      "title": "Research Review",
+      "description": "Iterative review of research documents using Rule of 5",
+      "source": "content/prompt-task-research-review.md",
+      "distilled": "content/distilled/research-review.md",
+      "tags": ["review", "research"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "issue-review",
+      "type": "task",
+      "title": "Issue Tracker Review",
+      "description": "Review issues for completeness and dependencies",
+      "source": "content/prompt-task-issue-tracker-review.md",
+      "distilled": "content/distilled/issue-review.md",
+      "tags": ["review", "issues", "project-management"],
+      "bundles": ["reviews"]
+    },
+    {
+      "name": "rule-of-5-universal",
+      "type": "task",
+      "title": "Universal Rule of 5 Review",
+      "description": "Steve Yegge's original 5-stage review for any artifact",
+      "source": "content/prompt-task-rule-of-5-universal.md",
+      "distilled": "content/distilled/rule-of-5-universal.md",
+      "tags": ["review", "universal", "rule-of-5"],
+      "bundles": ["reviews"]
+    }
+  ],
+  "bundles": {
+    "essentials": {
+      "description": "Core prompts for everyday development",
+      "prompts": ["commit", "debug", "describe-pr", "code-review", "research-codebase", "create-handoff", "resume-handoff"]
+    },
+    "planning": {
+      "description": "Project planning and implementation workflows",
+      "prompts": ["create-plan", "implement-plan", "iterate-plan", "create-issues", "design-practice", "pre-mortem", "tdd", "plan-review"]
+    },
+    "reviews": {
+      "description": "Code, design, and research review processes",
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal"]
+    },
+    "all": {
+      "description": "Complete collection of all prompts",
+      "prompts": ["*"]
+    }
+  }
+}
