@@ -18,21 +18,45 @@ just new prompt "Your Task Name"
 just search
 ```
 
-### How to Install Commands
+### Quick Install
 
-To install the prompts as commands in your local repository, copy the following prompt and paste it into your AI-powered CLI:
+Clone and install prompts to your Claude Code commands directory:
 
-> **User Prompt to an AI Agent**
->
+```bash
+git clone https://github.com/charly-vibes/incitaciones.git
+cd incitaciones
+./install.sh
+```
+
+**Install options:**
+
+```bash
+./install.sh --bundle essentials  # Core prompts only (7 prompts)
+./install.sh --bundle planning    # Planning workflows (8 prompts)
+./install.sh --bundle reviews     # Review prompts (9 prompts)
+./install.sh --list               # Show available prompts
+./install.sh --help               # Show all options
+```
+
+**After installation:**
+```
+/incitaciones/commit           # Deliberate commit workflow
+/incitaciones/debug            # Systematic debugging
+/incitaciones/create-plan      # Create implementation plans
+/incitaciones/code-review      # Iterative code review
+```
+
+The install script automatically sets up symlinks for Cursor, Windsurf, and Zed if detected.
+
+### Manual Installation (Alternative)
+
+If you prefer AI-assisted installation, paste this into your AI CLI:
+
 > ```
-> Please install the `incitaciones` prompt commands locally in this repository.
->
-> Follow the instructions detailed in https://github.com/charly-vibes/incitaciones/blob/main/content/meta-prompt-install-commands.md to perform the installation. Ensure that you set up the canonical directory and create symbolic links for all relevant tools as specified.
->
-> Start by asking me which tools I use and which prompts I want to install.
+> Please install the `incitaciones` prompt commands locally.
+> Follow the instructions in https://github.com/charly-vibes/incitaciones/blob/main/content/meta-prompt-install-commands.md
+> Start by asking which tools I use and which prompts I want.
 > ```
-
-This will instruct the agent to read the meta-prompt and begin the installation process for this project.
 
 ## Structure
 
@@ -54,6 +78,12 @@ just find [term]         # Search content
 just search              # Interactive fzf search
 just validate            # Check metadata
 just stats               # Show statistics
+
+# Distilled prompts
+just install             # Install prompts to ~/.claude/commands
+just list-distilled      # List all distilled prompts
+just validate-distilled  # Validate distilled prompts
+just list-bundles        # Show available bundles
 ```
 
 ---
