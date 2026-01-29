@@ -9,7 +9,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-create-plan.md, prompt-workflow-plan-implement-verify-tdd.md, prompt-workflow-iterate-plan.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/implement_plan.md
 ---
 
 # Implement Plan
@@ -556,4 +556,4 @@ Each phase should:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro implement_plan command
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer implement_plan.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/implement_plan.md)

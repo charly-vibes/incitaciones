@@ -8,7 +8,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-create-handoff.md, prompt-workflow-deliberate-commits.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/resume_handoff.md
 ---
 
 # Resume Work from Handoff Document
@@ -454,8 +454,7 @@ adapting to the new approach, or would you prefer to discuss first?
 
 ## References
 
-- [Fabbro Agent System](https://github.com/example/fabbro) - Resume handoff workflow
-- [Advanced Context Engineering](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents) - Context restoration techniques
+- [HumanLayer resume_handoff.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/resume_handoff.md) - Original resume handoff workflow
 - [The Phoenix Project](https://itrevolution.com/the-phoenix-project/) - Work handoff principles from DevOps
 
 ## Notes
@@ -504,4 +503,4 @@ In these cases:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro workflow
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer resume_handoff.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/resume_handoff.md)

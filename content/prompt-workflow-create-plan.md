@@ -9,7 +9,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-plan-implement-verify-tdd.md, prompt-workflow-iterate-plan.md, prompt-task-plan-review.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_plan.md
 ---
 
 # Create Implementation Plan
@@ -425,4 +425,4 @@ Plans enable handoffs:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro create_plan command
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer create_plan.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_plan.md)

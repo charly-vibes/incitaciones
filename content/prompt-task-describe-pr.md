@@ -8,7 +8,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-deliberate-commits.md, prompt-workflow-create-handoff.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/describe_pr.md
 ---
 
 # Generate Comprehensive PR Descriptions
@@ -508,7 +508,7 @@ Fixes #123
 
 ## References
 
-- [Fabbro Agent System](https://github.com/example/fabbro) - PR description workflow
+- [HumanLayer describe_pr.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/describe_pr.md) - Original PR description workflow
 - [How to Write the Perfect Pull Request](https://github.blog/2015-01-21-how-to-write-the-perfect-pull-request/)
 - [The Art of Pull Requests](https://hackernoon.com/the-art-of-pull-requests-6f0f099850f9)
 - [Google Code Review Guidelines](https://google.github.io/eng-practices/review/)
@@ -570,4 +570,4 @@ Adapt template to match team conventions:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro and PR best practices
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer describe_pr.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/describe_pr.md)

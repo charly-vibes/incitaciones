@@ -9,7 +9,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-create-plan.md, prompt-workflow-implement-plan.md, prompt-task-plan-review.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/iterate_plan.md
 ---
 
 # Iterate Implementation Plan
@@ -476,4 +476,4 @@ Iterate quickly:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro iterate_plan command
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer iterate_plan.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/iterate_plan.md)

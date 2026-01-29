@@ -8,7 +8,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-create-handoff.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/research_codebase.md
 ---
 
 # Research Codebase Without Suggestions
@@ -594,8 +594,7 @@ libraries used for external communication.
 
 ## References
 
-- [Fabbro Agent System](https://github.com/example/fabbro) - Research workflow inspiration
-- [Advanced Context Engineering](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents) - Documentation techniques
+- [HumanLayer research_codebase.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/research_codebase.md) - Original research workflow
 - [Documentation as Code](https://www.writethedocs.org/) - Documentation principles
 
 ## Notes
@@ -646,4 +645,4 @@ Research feeds into:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro research workflow
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer research_codebase.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/research_codebase.md)

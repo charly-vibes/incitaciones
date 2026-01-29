@@ -8,7 +8,7 @@ created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
 related: [prompt-workflow-resume-handoff.md, prompt-workflow-deliberate-commits.md]
-source: adapted-from-fabbro
+source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_handoff.md
 ---
 
 # Create Context Handoff Between Sessions
@@ -479,8 +479,8 @@ gh issue comment 234 --body "Handoff created: handoffs/2026-01-12_14-30-00_oauth
 
 ## References
 
-- [Fabbro Agent System](https://github.com/example/fabbro) - Handoff workflow inspiration
-- [Advanced Context Engineering](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents) - Context compaction techniques
+- [HumanLayer create_handoff.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_handoff.md) - Original handoff workflow
+- [HumanLayer](https://github.com/humanlayer/humanlayer) - AI agent human-in-the-loop tooling
 - [The Art of the Handoff](https://increment.com/teams/the-art-of-the-handoff/) - Team handoff principles
 - [Working in Public](https://press.stripe.com/working-in-public) - Async collaboration patterns
 
@@ -529,4 +529,4 @@ Handoffs work well with:
 
 ## Version History
 
-- 1.0.0 (2026-01-12): Initial version adapted from fabbro workflow
+- 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer create_handoff.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/create_handoff.md)
