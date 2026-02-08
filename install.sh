@@ -1,13 +1,12 @@
 #!/bin/bash
-# install.sh - Install incitaciones prompts as Claude Code skills or legacy commands
-# Usage: ./install.sh [--bundle NAME] [--dir PATH] [--format FORMAT] [--list] [--uninstall] [--help]
+# install.sh - Install incitaciones prompts to .agents/ with tool integrations
+# Usage: ./install.sh [--local] [--global] [--bundle NAME] [--dir PATH] [--format FORMAT] [--list] [--uninstall] [--help]
 
 set -e
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEFAULT_SKILLS_DIR="$HOME/.claude/skills"
-DEFAULT_COMMANDS_DIR="$HOME/.claude/commands"
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
 DISTILLED_DIR="$SCRIPT_DIR/content/distilled"
 MANIFEST_FILE="$SCRIPT_DIR/content/manifest.json"
 
@@ -30,24 +29,28 @@ usage() {
   cat << EOF
 Usage: $(basename "$0") [OPTIONS]
 
-Install incitaciones prompts as Claude Code skills (or legacy commands).
+Install incitaciones prompts to .agents/skills/ with optional tool integrations
+for Claude Code, Cursor, Windsurf, and Zed.
 
 Options:
+  --local          Install to project .agents/skills/ (default when in a git repo)
+  --global         Install to ~/.agents/skills/ (user-wide)
   --bundle NAME    Install only prompts from a specific bundle
                    Available: essentials, planning, reviews, all (default: all)
-  --dir PATH       Install to custom directory (default: ~/.claude/skills)
+  --dir PATH       Install to custom directory (overrides --local/--global)
   --format FORMAT  Output format: skills (default) or commands (legacy)
   --list           List available prompts and bundles
-  --uninstall      Remove old commands/incitaciones/ directory
+  --uninstall      Remove installed prompts and tool integrations
   --help           Show this help message
 
 Examples:
-  $(basename "$0")                       # Install all prompts as skills
+  $(basename "$0")                       # Local install to .agents/skills/
+  $(basename "$0") --global              # Global install to ~/.agents/skills/
   $(basename "$0") --bundle essentials   # Install only essential prompts
   $(basename "$0") --format commands     # Install as legacy flat commands
   $(basename "$0") --dir ~/my-skills     # Install to custom directory
   $(basename "$0") --list                # Show available prompts
-  $(basename "$0") --uninstall           # Clean up old commands directory
+  $(basename "$0") --uninstall           # Clean up old installations
 
 EOF
 }
@@ -147,26 +150,50 @@ generate_frontmatter() {
   echo ""
 }
 
-# Uninstall old commands/incitaciones/ directory
+# Uninstall installed prompts and tool integrations
 do_uninstall() {
-  local old_dir="$HOME/.claude/commands/incitaciones"
-  if [ -d "$old_dir" ]; then
-    echo "Removing old commands directory: $old_dir"
-    rm -rf "$old_dir"
-    echo -e "${GREEN}Removed: $old_dir${NC}"
-  else
-    echo "No old commands directory found at: $old_dir"
-  fi
+  local base="$1"
 
-  # Also check for tool symlinks pointing to old location
-  for tool in cursor windsurf zed; do
-    local tool_link="$HOME/.$tool/commands/incitaciones"
-    if [ -L "$tool_link" ]; then
-      echo "Removing old symlink: $tool_link"
-      rm -f "$tool_link"
-      echo -e "${GREEN}Removed: $tool_link${NC}"
+  # Remove canonical .agents directory
+  local agents_skills="$base/.agents/skills"
+  local agents_commands="$base/.agents/commands/incitaciones"
+  for dir in "$agents_skills" "$agents_commands"; do
+    if [ -d "$dir" ]; then
+      echo "Removing: $dir"
+      rm -rf "$dir"
+      echo -e "  ${GREEN}Removed: $dir${NC}"
     fi
   done
+
+  # Remove tool integrations
+  for tool in claude cursor windsurf zed; do
+    local skills_dir="$base/.$tool/skills"
+    local commands_dir="$base/.$tool/commands/incitaciones"
+
+    # Remove skills installed by incitaciones (check for our prompts)
+    if [ -d "$skills_dir" ]; then
+      for prompt_dir in "$skills_dir"/*/; do
+        if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
+          echo "Removing: $prompt_dir"
+          rm -rf "$prompt_dir"
+        fi
+      done
+    fi
+
+    if [ -d "$commands_dir" ]; then
+      echo "Removing: $commands_dir"
+      rm -rf "$commands_dir"
+      echo -e "  ${GREEN}Removed: $commands_dir${NC}"
+    fi
+
+    # Legacy symlinks
+    if [ -L "$commands_dir" ]; then
+      echo "Removing old symlink: $commands_dir"
+      rm -f "$commands_dir"
+      echo -e "  ${GREEN}Removed: $commands_dir${NC}"
+    fi
+  done
+
   echo ""
   echo -e "${GREEN}Uninstall complete.${NC}"
 }
@@ -175,11 +202,20 @@ do_uninstall() {
 BUNDLE="all"
 INSTALL_DIR=""
 FORMAT="skills"
+SCOPE=""
 DO_LIST=false
 DO_UNINSTALL=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
+    --local)
+      SCOPE="local"
+      shift
+      ;;
+    --global)
+      SCOPE="global"
+      shift
+      ;;
     --bundle)
       BUNDLE="$2"
       shift 2
@@ -212,13 +248,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Handle --uninstall
-if [ "$DO_UNINSTALL" = true ]; then
-  do_uninstall
-  exit 0
-fi
-
-# Handle --list
+# Handle --list (before scope determination)
 if [ "$DO_LIST" = true ]; then
   list_prompts
   exit 0
@@ -230,12 +260,39 @@ if [ "$FORMAT" != "skills" ] && [ "$FORMAT" != "commands" ]; then
   exit 1
 fi
 
-# Set default install dir based on format
+# Determine scope (local vs global)
+if [ -z "$SCOPE" ]; then
+  if [ -n "$GIT_ROOT" ]; then
+    SCOPE="local"
+  else
+    SCOPE="global"
+  fi
+fi
+
+if [ "$SCOPE" = "local" ] && [ -z "$GIT_ROOT" ]; then
+  echo -e "${YELLOW}Warning: Not in a git repository, falling back to global install.${NC}"
+  SCOPE="global"
+fi
+
+# Set base path based on scope
+if [ "$SCOPE" = "local" ]; then
+  BASE="$GIT_ROOT"
+else
+  BASE="$HOME"
+fi
+
+# Handle --uninstall (after scope determination)
+if [ "$DO_UNINSTALL" = true ]; then
+  do_uninstall "$BASE"
+  exit 0
+fi
+
+# Set default install dir based on format and scope
 if [ -z "$INSTALL_DIR" ]; then
   if [ "$FORMAT" = "skills" ]; then
-    INSTALL_DIR="$DEFAULT_SKILLS_DIR"
+    INSTALL_DIR="$BASE/.agents/skills"
   else
-    INSTALL_DIR="$DEFAULT_COMMANDS_DIR"
+    INSTALL_DIR="$BASE/.agents/commands"
   fi
 fi
 
@@ -254,8 +311,8 @@ if [ ! -d "$DISTILLED_DIR" ]; then
   exit 1
 fi
 
-# Install prompts
-echo "Installing incitaciones prompts (format: $FORMAT)..."
+# Install prompts to canonical .agents/ directory
+echo "Installing incitaciones prompts ($SCOPE, format: $FORMAT)..."
 echo ""
 
 INSTALLED=0
@@ -285,15 +342,8 @@ if [ "$FORMAT" = "skills" ]; then
 
   # Report
   echo ""
-  echo -e "${GREEN}Installation complete!${NC}"
-  echo "  Installed: $INSTALLED skills"
-  [ $SKIPPED -gt 0 ] && echo -e "  ${YELLOW}Skipped: $SKIPPED (not found)${NC}"
-  echo "  Location: $INSTALL_DIR/"
-  echo ""
-  echo "Usage in Claude Code:"
-  echo "  /commit"
-  echo "  /debug"
-  echo "  /create-plan"
+  echo -e "${GREEN}Installed: $INSTALLED skills to $INSTALL_DIR/${NC}"
+  [ $SKIPPED -gt 0 ] && echo -e "${YELLOW}Skipped: $SKIPPED (not found)${NC}"
   echo ""
 
 else
@@ -321,48 +371,82 @@ else
 
   # Report
   echo ""
-  echo -e "${GREEN}Installation complete!${NC}"
-  echo "  Installed: $INSTALLED prompts"
-  [ $SKIPPED -gt 0 ] && echo -e "  ${YELLOW}Skipped: $SKIPPED (not found)${NC}"
-  echo "  Location: $INSTALL_DIR/incitaciones/"
-  echo ""
-  echo "Usage in Claude Code:"
-  echo "  /incitaciones/commit"
-  echo "  /incitaciones/debug"
-  echo "  /incitaciones/create-plan"
+  echo -e "${GREEN}Installed: $INSTALLED prompts to $INSTALL_DIR/incitaciones/${NC}"
+  [ $SKIPPED -gt 0 ] && echo -e "${YELLOW}Skipped: $SKIPPED (not found)${NC}"
   echo ""
 fi
 
-# Setup symlinks for other tools (always use flat commands format)
-setup_tool_symlink() {
+# Setup tool integrations
+setup_tool_integration() {
   local tool="$1"
-  local tool_dir="$HOME/.$tool"
-  local commands_dir="$tool_dir/commands"
+  local tool_dir="$BASE/.$tool"
 
-  # For skills format, create a flat commands copy for other tools
-  if [ "$FORMAT" = "skills" ]; then
-    if [ -d "$tool_dir" ]; then
+  # Skip if tool directory doesn't exist
+  if [ ! -d "$tool_dir" ]; then
+    return 1
+  fi
+
+  if [ "$tool" = "claude" ]; then
+    # Claude Code uses skills format (SKILL.md in subdirectories)
+    if [ "$FORMAT" = "skills" ]; then
+      local skills_dir="$tool_dir/skills"
+      for prompt in $PROMPTS; do
+        local src="$INSTALL_DIR/${prompt}/SKILL.md"
+        if [ -f "$src" ]; then
+          mkdir -p "$skills_dir/${prompt}"
+          cp "$src" "$skills_dir/${prompt}/SKILL.md"
+        fi
+      done
+      echo -e "  ${GREEN}+${NC} $tool (skills)"
+    else
+      local commands_dir="$tool_dir/commands"
       mkdir -p "$commands_dir/incitaciones"
       for prompt in $PROMPTS; do
-        src="$DISTILLED_DIR/${prompt}.md"
+        local src="$DISTILLED_DIR/${prompt}.md"
         if [ -f "$src" ]; then
           cp "$src" "$commands_dir/incitaciones/${prompt}.md"
         fi
       done
-      echo -e "  ${GREEN}+${NC} Copied to $tool (commands format)"
+      echo -e "  ${GREEN}+${NC} $tool (commands)"
     fi
   else
-    # Legacy: symlink to the commands directory
-    if [ -d "$tool_dir" ] && [ ! -e "$commands_dir/incitaciones" ]; then
-      mkdir -p "$commands_dir"
-      ln -s "$INSTALL_DIR/incitaciones" "$commands_dir/incitaciones" 2>/dev/null && \
-        echo -e "  ${GREEN}+${NC} Linked to $tool" || true
-    fi
+    # Other tools use flat commands format
+    local commands_dir="$tool_dir/commands"
+    mkdir -p "$commands_dir/incitaciones"
+    for prompt in $PROMPTS; do
+      local src="$DISTILLED_DIR/${prompt}.md"
+      if [ -f "$src" ]; then
+        cp "$src" "$commands_dir/incitaciones/${prompt}.md"
+      fi
+    done
+    echo -e "  ${GREEN}+${NC} $tool (commands)"
   fi
+
+  return 0
 }
 
-echo "Checking for other AI coding tools..."
-setup_tool_symlink "cursor"
-setup_tool_symlink "windsurf"
-setup_tool_symlink "zed"
+echo "Setting up tool integrations..."
+TOOLS_FOUND=0
+TOOLS_SKIPPED=""
+
+for tool in claude cursor windsurf zed; do
+  if setup_tool_integration "$tool"; then
+    TOOLS_FOUND=$((TOOLS_FOUND + 1))
+  else
+    TOOLS_SKIPPED="$TOOLS_SKIPPED $tool"
+  fi
+done
+
+if [ $TOOLS_FOUND -eq 0 ]; then
+  echo -e "  ${YELLOW}No tool directories found at $BASE/.{claude,cursor,windsurf,zed}/${NC}"
+  echo -e "  Create the directory for your tool to enable integration."
+fi
+
+if [ -n "$TOOLS_SKIPPED" ]; then
+  echo -e "  ${BLUE}Skipped (no dir):${TOOLS_SKIPPED}${NC}"
+fi
+
+echo ""
+echo "Usage:"
+echo "  /commit      /debug      /create-plan"
 echo ""
