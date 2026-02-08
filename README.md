@@ -20,7 +20,7 @@ just search
 
 ### Quick Install
 
-Clone and install prompts to your Claude Code commands directory:
+Clone and install prompts as Claude Code skills:
 
 ```bash
 git clone https://github.com/charly-vibes/incitaciones.git
@@ -31,22 +31,23 @@ cd incitaciones
 **Install options:**
 
 ```bash
-./install.sh --bundle essentials  # Core prompts only (7 prompts)
-./install.sh --bundle planning    # Planning workflows (8 prompts)
-./install.sh --bundle reviews     # Review prompts (9 prompts)
-./install.sh --list               # Show available prompts
-./install.sh --help               # Show all options
+./install.sh --bundle essentials   # Core prompts only (7 prompts)
+./install.sh --bundle planning     # Planning workflows (8 prompts)
+./install.sh --bundle reviews      # Review prompts (9 prompts)
+./install.sh --format commands     # Legacy flat-file format for other tools
+./install.sh --list                # Show available prompts
+./install.sh --help                # Show all options
 ```
 
 **After installation:**
 ```
-/incitaciones/commit           # Deliberate commit workflow
-/incitaciones/debug            # Systematic debugging
-/incitaciones/create-plan      # Create implementation plans
-/incitaciones/code-review      # Iterative code review
+/commit           # Deliberate commit workflow
+/debug            # Systematic debugging
+/create-plan      # Create implementation plans
+/code-review      # Iterative code review
 ```
 
-The install script automatically sets up symlinks for Cursor, Windsurf, and Zed if detected.
+Skills are installed to `~/.claude/skills/<name>/SKILL.md`. The install script also copies prompts for Cursor, Windsurf, and Zed if detected.
 
 ### Manual Installation (Alternative)
 
@@ -79,11 +80,12 @@ just search              # Interactive fzf search
 just validate            # Check metadata
 just stats               # Show statistics
 
-# Distilled prompts
-just install             # Install prompts to ~/.claude/commands
+# Skills installation
+just install             # Install prompts as ~/.claude/skills
 just list-distilled      # List all distilled prompts
 just validate-distilled  # Validate distilled prompts
 just list-bundles        # Show available bundles
+just generate-skill NAME # Preview SKILL.md output for a prompt
 ```
 
 ---

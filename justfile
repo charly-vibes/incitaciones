@@ -378,14 +378,14 @@ new-references CATEGORY:
     echo "Edit with: \$EDITOR $FILE"
 
 # ============================================================
-# Distilled Prompts Commands
+# Skills Installation
 # ============================================================
 
-# Install prompts to Claude Code commands directory
+# Install prompts as Claude Code skills (default) or legacy commands
 install *ARGS:
     ./install.sh {{ARGS}}
 
-# List distilled prompts
+# List distilled prompts (source content for skills)
 list-distilled:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -532,3 +532,27 @@ list-bundles:
     TOTAL=$(jq '.prompts | length' content/manifest.json)
     echo "  all ($TOTAL prompts)"
     echo "    Complete collection of all prompts"
+
+# Preview what a generated SKILL.md would look like for a prompt
+generate-skill NAME:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    DISTILLED="content/distilled/{{NAME}}.md"
+
+    if [ ! -f "$DISTILLED" ]; then
+        echo "Distilled file not found: $DISTILLED"
+        echo "Available prompts:"
+        ls content/distilled/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort
+        exit 1
+    fi
+
+    DESC=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .description // "Incitaciones prompt: {{NAME}}"' content/manifest.json 2>/dev/null)
+
+    echo "---"
+    echo "name: {{NAME}}"
+    echo "description: $DESC"
+    echo "disable-model-invocation: true"
+    echo "---"
+    echo ""
+    cat "$DISTILLED"

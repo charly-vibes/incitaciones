@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-02-08
+
+#### Changed - Migrate from Commands to Skills
+
+- **install.sh** — Rewritten to install prompts as Claude Code skills (`~/.claude/skills/<name>/SKILL.md`) by default. Each skill gets YAML frontmatter (`name`, `description`, `disable-model-invocation: true`) generated from `manifest.json`. Added `--format commands` flag for legacy flat-file format. Added `--uninstall` flag to clean up old `~/.claude/commands/incitaciones/` directory. Skills are now top-level (`/commit` instead of `/incitaciones/commit`).
+- **.claude/skills/install-prompts/SKILL.md** — New skill replacing `.claude/commands/install-prompts.md`. Updated to reference skills directory structure and new install options.
+- **.claude/commands/** — Removed in favor of `.claude/skills/` directory structure.
+- **justfile** — Updated section header to "Skills Installation". Added `generate-skill` recipe to preview SKILL.md output.
+- **README.md** — Updated installation docs: paths, usage examples, and commands reflect skills format.
+- **content/manifest.json** — Bumped `schema_version` to `1.1` and `version` to `2026-02-08`.
+- **content/meta-prompt-install-commands.md** — Updated Claude Code paths and invocation references to include skills format.
+
 ### 2026-01-13
 
 #### Added - Universal Rule of 5 Implementation

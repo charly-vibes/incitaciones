@@ -1,6 +1,12 @@
+---
+name: install-prompts
+description: Install prompts from Incitaciones as Claude Code skills
+disable-model-invocation: true
+---
+
 # Install Prompts from Incitaciones
 
-Install prompts from this repository as reusable commands in your AI coding tool.
+Install prompts from this repository as reusable skills in Claude Code (or commands for other tools).
 
 ## Configuration Questions
 
@@ -13,8 +19,8 @@ Ask me:
 ## Available Prompts
 
 ### Workflows
-| Command | Description |
-|---------|-------------|
+| Skill | Description |
+|-------|-------------|
 | `commit` | Deliberate commit workflow with review |
 | `create-plan` | Create implementation plans |
 | `implement-plan` | Execute plans with verification |
@@ -25,8 +31,8 @@ Ask me:
 | `resume-handoff` | Resume from handoff doc |
 
 ### Tasks
-| Command | Description |
-|---------|-------------|
+| Skill | Description |
+|-------|-------------|
 | `describe-pr` | Generate PR descriptions |
 | `debug` | Systematic debugging |
 | `code-review` | Iterative code review |
@@ -40,12 +46,30 @@ Ask me:
 
 ## Installation Paths
 
+### Claude Code (Skills format — default)
+| Scope | Path |
+|-------|------|
+| Global | `~/.claude/skills/<name>/SKILL.md` |
+| Local | `.claude/skills/<name>/SKILL.md` |
+
+### Other Tools (Commands format — legacy)
 | Tool | Global | Local |
 |------|--------|-------|
-| Claude Code | `~/.claude/commands/` | `.claude/commands/` |
 | Cursor | workspace settings | `.cursor/prompts/` |
 | Amp | `~/.config/amp/commands/` | `.amp/commands/` |
 | Gemini CLI | `~/.config/gemini/commands/` | `.gemini/commands/` |
+
+## Quick Install
+
+Run the install script:
+
+```bash
+./install.sh                       # Install all as skills (default)
+./install.sh --bundle essentials   # Install only essential prompts
+./install.sh --format commands     # Legacy flat-file format
+./install.sh --list                # Show available prompts
+./install.sh --uninstall           # Remove old commands/incitaciones/ dir
+```
 
 ## Extraction Process
 
@@ -59,20 +83,21 @@ type: prompt
 ---
 
 # Title
-## When to Use        ← DO NOT extract (documentation)
-## The Prompt         ← START HERE
-```markdown           ← Extract INSIDE this block
+## When to Use        <- DO NOT extract (documentation)
+## The Prompt         <- START HERE
+```markdown           <- Extract INSIDE this block
 # Actual Prompt
 ...
-```                    ← STOP here
-## Example            ← DO NOT extract
+```                    <- STOP here
+## Example            <- DO NOT extract
 ```
 
 ### For each selected prompt:
 1. Read source: `content/prompt-{workflow|task}-{name}.md`
 2. Find `## The Prompt` section
 3. Extract content INSIDE the ` ```markdown ` code block only
-4. Write to target path as `{command-name}.md`
+4. For Claude Code skills: write to `<name>/SKILL.md` with YAML frontmatter
+5. For other tools: write to target path as `{command-name}.md`
 
 ## Contextualization (Optional)
 

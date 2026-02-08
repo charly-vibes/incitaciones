@@ -41,7 +41,7 @@ You are helping me install prompts from the incitaciones repository as commands 
 Ask me the following questions (use your tool's question interface if available):
 
 ### Q1: Which tool are you using?
-- **Claude Code** - Uses `.claude/commands/` for slash commands
+- **Claude Code** - Uses `.claude/skills/` for skills (or `.claude/commands/` for legacy commands)
 - **Cursor** - Uses `.cursor/prompts/` or settings
 - **Amp** - Uses `.amp/commands/` configuration
 - **Gemini CLI** - Uses custom command configuration
@@ -105,9 +105,10 @@ Global installations use tool-specific paths in your user home directory. Note t
 ### Tool-Specific Path Details
 
 #### Claude Code
-- **Global**: `~/.claude/commands/{command-name}.md`
-- **Local**: The tool-specific directory (`./.claude/commands`) will be symlinked to the canonical path.
-- **Format**: Markdown file.
+- **Global (Skills)**: `~/.claude/skills/{name}/SKILL.md` — recommended, uses YAML frontmatter
+- **Global (Legacy)**: `~/.claude/commands/{command-name}.md`
+- **Local**: The tool-specific directory (`./.claude/commands` or `./.claude/skills`) will be symlinked to the canonical path.
+- **Format**: Markdown file with YAML frontmatter (skills) or plain markdown (commands).
 
 #### Cursor
 - **Global**: Not directly supported; use workspace settings.
@@ -198,7 +199,8 @@ After installation:
 
 | Tool | Invocation |
 |------|------------|
-| Claude Code | `/incitaciones/command-name` |
+| Claude Code (Skills) | `/command-name` |
+| Claude Code (Legacy) | `/incitaciones/command-name` |
 | Cursor | `@incitaciones/command-name` or via command palette |
 | Amp | `/incitaciones/command-name` |
 | Gemini CLI | `gemini --command incitaciones/name` or alias |
@@ -215,12 +217,12 @@ After installation:
 - Action: Fresh install
 - Selection: essentials bundle
 
-**Result:**
-Creates these files:
-- `~/.claude/commands/deliberate-commits.md`
-- `~/.claude/commands/systematic-debugging.md`
-- `~/.claude/commands/describe-pr.md`
-- `~/.claude/commands/iterative-code-review.md`
+**Result (Skills format — default):**
+Creates these directories:
+- `~/.claude/skills/deliberate-commits/SKILL.md`
+- `~/.claude/skills/systematic-debugging/SKILL.md`
+- `~/.claude/skills/describe-pr/SKILL.md`
+- `~/.claude/skills/iterative-code-review/SKILL.md`
 
 Each invokable as `/deliberate-commits`, `/systematic-debugging`, `/describe-pr`, `/iterative-code-review`
 ````
