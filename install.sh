@@ -30,7 +30,7 @@ usage() {
 Usage: $(basename "$0") [OPTIONS]
 
 Install incitaciones prompts to .agents/skills/ with optional tool integrations
-for Claude Code, Cursor, Windsurf, and Zed.
+for Claude Code, Amp, Gemini CLI, Cursor, Windsurf, and Zed.
 
 Options:
   --local          Install to project .agents/skills/ (default when in a git repo)
@@ -150,6 +150,27 @@ generate_frontmatter() {
   echo ""
 }
 
+# Generate a TOML command file for Gemini CLI
+generate_toml_command() {
+  local name="$1"
+  local src="$2"
+  local description=""
+
+  description=$(get_prompt_description "$name")
+  if [ -z "$description" ]; then
+    description="Incitaciones prompt: $name"
+  fi
+
+  # Escape double quotes in description for TOML
+  description=$(echo "$description" | sed 's/"/\\"/g')
+
+  echo "description = \"$description\""
+  echo 'prompt = """'
+  # Escape any triple-quote sequences in content for TOML
+  sed 's/"""/\\"""/g' "$src"
+  echo '"""'
+}
+
 # Uninstall installed prompts and tool integrations
 do_uninstall() {
   local base="$1"
@@ -166,7 +187,7 @@ do_uninstall() {
   done
 
   # Remove tool integrations
-  for tool in claude cursor windsurf zed; do
+  for tool in claude gemini cursor windsurf zed; do
     local skills_dir="$base/.$tool/skills"
     local commands_dir="$base/.$tool/commands/incitaciones"
 
@@ -193,6 +214,17 @@ do_uninstall() {
       echo -e "  ${GREEN}Removed: $commands_dir${NC}"
     fi
   done
+
+  # Amp uses ~/.config/amp/ (non-standard XDG path)
+  local amp_skills="$HOME/.config/amp/skills"
+  if [ -d "$amp_skills" ]; then
+    for prompt_dir in "$amp_skills"/*/; do
+      if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
+        echo "Removing: $prompt_dir"
+        rm -rf "$prompt_dir"
+      fi
+    done
+  fi
 
   echo ""
   echo -e "${GREEN}Uninstall complete.${NC}"
@@ -379,6 +411,62 @@ fi
 # Setup tool integrations
 setup_tool_integration() {
   local tool="$1"
+
+  # Amp: uses ~/.config/amp/ (XDG path), reads .agents/skills/ for local
+  if [ "$tool" = "amp" ]; then
+    local amp_dir="$HOME/.config/amp"
+    if [ ! -d "$amp_dir" ]; then
+      return 1
+    fi
+    if [ "$SCOPE" = "local" ]; then
+      # Local: Amp reads .agents/skills/ directly (discovery priority 3)
+      echo -e "  ${GREEN}+${NC} amp (reads .agents/skills/)"
+    elif [ "$FORMAT" = "skills" ]; then
+      local skills_dir="$amp_dir/skills"
+      for prompt in $PROMPTS; do
+        local src="$INSTALL_DIR/${prompt}/SKILL.md"
+        if [ -f "$src" ]; then
+          mkdir -p "$skills_dir/${prompt}"
+          cp "$src" "$skills_dir/${prompt}/SKILL.md"
+        fi
+      done
+      echo -e "  ${GREEN}+${NC} amp (skills)"
+    else
+      echo -e "  ${YELLOW}-${NC} amp (commands deprecated in Amp, use --format skills)"
+    fi
+    return 0
+  fi
+
+  # Gemini CLI: TOML commands (stable) + SKILL.md skills (experimental)
+  if [ "$tool" = "gemini" ]; then
+    local tool_dir="$BASE/.gemini"
+    if [ ! -d "$tool_dir" ]; then
+      return 1
+    fi
+    # TOML commands (stable, always installed)
+    local commands_dir="$tool_dir/commands/incitaciones"
+    mkdir -p "$commands_dir"
+    for prompt in $PROMPTS; do
+      local src="$DISTILLED_DIR/${prompt}.md"
+      if [ -f "$src" ]; then
+        generate_toml_command "$prompt" "$src" > "$commands_dir/${prompt}.toml"
+      fi
+    done
+    # SKILL.md skills (experimental, for users who enable it)
+    if [ "$FORMAT" = "skills" ]; then
+      for prompt in $PROMPTS; do
+        local src="$INSTALL_DIR/${prompt}/SKILL.md"
+        if [ -f "$src" ]; then
+          mkdir -p "$tool_dir/skills/${prompt}"
+          cp "$src" "$tool_dir/skills/${prompt}/SKILL.md"
+        fi
+      done
+    fi
+    echo -e "  ${GREEN}+${NC} gemini (commands + skills)"
+    return 0
+  fi
+
+  # Standard tools: Claude, Cursor, Windsurf, Zed
   local tool_dir="$BASE/.$tool"
 
   # Skip if tool directory doesn't exist
@@ -429,7 +517,7 @@ echo "Setting up tool integrations..."
 TOOLS_FOUND=0
 TOOLS_SKIPPED=""
 
-for tool in claude cursor windsurf zed; do
+for tool in claude amp gemini cursor windsurf zed; do
   if setup_tool_integration "$tool"; then
     TOOLS_FOUND=$((TOOLS_FOUND + 1))
   else
@@ -438,7 +526,7 @@ for tool in claude cursor windsurf zed; do
 done
 
 if [ $TOOLS_FOUND -eq 0 ]; then
-  echo -e "  ${YELLOW}No tool directories found at $BASE/.{claude,cursor,windsurf,zed}/${NC}"
+  echo -e "  ${YELLOW}No tool directories found (checked: claude, amp, gemini, cursor, windsurf, zed)${NC}"
   echo -e "  Create the directory for your tool to enable integration."
 fi
 
