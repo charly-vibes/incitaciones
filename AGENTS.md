@@ -1,5 +1,18 @@
 # Incitaciones - AI Prompts Repository
 
+## Installing Skills
+
+To install prompts as skills for Claude Code, Amp, Gemini CLI, and other tools:
+
+```bash
+./install.sh --global              # Install all skills globally
+./install.sh --global --bundle essentials  # Just the core set
+./install.sh --list                # Show available prompts and bundles
+./install.sh --help                # All options
+```
+
+Do NOT manually extract prompts or write custom install scripts. Always use `install.sh`.
+
 ## Purpose
 
 A meta repository for collecting and organizing reusable prompts for CLI LLM tools (Claude Code, Gemini, Aider, Cursor, etc.).

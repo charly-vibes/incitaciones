@@ -2,25 +2,9 @@
 
 A collection of reusable prompts and best practices for CLI LLM tools.
 
-## Quick Start
+## Install
 
-```bash
-# Browse content
-ls content/
-
-# Find prompts about a topic
-just find refactoring
-
-# Create new prompt
-just new prompt "Your Task Name"
-
-# Interactive search with fzf
-just search
-```
-
-### Quick Install
-
-Clone and install prompts as Claude Code skills:
+Clone and install prompts as skills for Claude Code, Amp, Gemini CLI, and other tools:
 
 ```bash
 git clone https://github.com/charly-vibes/incitaciones.git
@@ -47,17 +31,23 @@ cd incitaciones
 /code-review      # Iterative code review
 ```
 
-Skills are installed to `~/.claude/skills/<name>/SKILL.md`. The install script also copies prompts for Cursor, Windsurf, and Zed if detected.
+Skills are installed to `~/.agents/skills/` and copied to tool-specific directories (Claude Code, Amp, Gemini CLI, Cursor, Windsurf, Zed) when detected.
 
-### Manual Installation (Alternative)
+## Quick Start
 
-If you prefer AI-assisted installation, paste this into your AI CLI:
+```bash
+# Browse content
+ls content/
 
-> ```
-> Please install the `incitaciones` prompt commands locally.
-> Follow the instructions in https://github.com/charly-vibes/incitaciones/blob/main/content/meta-prompt-install-commands.md
-> Start by asking which tools I use and which prompts I want.
-> ```
+# Find prompts about a topic
+just find refactoring
+
+# Create new prompt
+just new prompt "Your Task Name"
+
+# Interactive search with fzf
+just search
+```
 
 ## Structure
 
