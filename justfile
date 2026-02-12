@@ -378,6 +378,18 @@ new-references CATEGORY:
     echo "Edit with: \$EDITOR $FILE"
 
 # ============================================================
+# Site Build
+# ============================================================
+
+# Build the GitHub Pages site locally
+build-site:
+    bash site/build.sh
+
+# Serve the built site locally for preview
+serve-site: build-site
+    cd _site && python3 -m http.server 8080
+
+# ============================================================
 # Skills Installation
 # ============================================================
 
