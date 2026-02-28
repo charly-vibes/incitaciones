@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-02-28
+
+#### Added - Resonant Coding Refactoring Bundle
+
+Three new prompt skills extracted from the "Improving LLM Code Refactoring Skills" research document and the existing `research-paper-resonant-coding-agentic-refactoring.md` synthesis, completing the integration plan defined in that research:
+
+- **content/prompt-task-abstraction-miner.md** (v1.1.0) — Passive codebase scanner that detects semantic duplication (identical intent, different syntax) and proposes reusable abstractions without modifying files. Uses a 4-phase Fabbro Loop: Semantic Scanning → Cluster Analysis → Abstraction Proposal → Refactoring Blueprint. Advisory-only output; produces a prioritized refactoring backlog.
+- **content/prompt-system-context-guardian.md** (v1.1.0) — System prompt that enforces architectural consistency during development. Requires a Pre-Generation Checklist (Inventory → Gap Analysis → Style Injection) before generating any code. Includes a Refusal Protocol that redirects architecture-violating requests toward resonant alternatives.
+- **content/prompt-workflow-resonant-refactor.md** (v1.1.0) — Human-approved refactoring workflow with 5 phases: Impact Analysis → Shadow Test (baseline run) → Human Latch (APPROVE gate) → Atomic Execution (file-by-file, no commits) → Quality Gates. Uses `git reset --hard HEAD` for full rollback (working tree + index). Self-correction up to 3 attempts per file before rollback.
+- **content/distilled/abstraction-miner.md** — Distilled version with zero-results handling and Needs Human Review section
+- **content/distilled/context-guardian.md** — Distilled version with inventory-failure fallback
+- **content/distilled/resonant-refactor.md** — Distilled version with correct rollback, baseline test run, no-commit directive
+
+#### Changed - install.sh and manifest for refactoring bundle
+
+- **install.sh** — Added `refactoring` bundle to `get_bundle_prompts` and `list_prompts`. Bundle installs `abstraction-miner`, `context-guardian`, `resonant-refactor`. Usage: `./install.sh --bundle refactoring`
+- **content/manifest.json** — Registered 3 new prompts under `refactoring` bundle
+- **content/research-paper-resonant-coding-agentic-refactoring.md** (v1.2.0) — Updated integration plan from TODO to done; extended related prompts section with links to all 3 new files
+
 ### 2026-02-08
 
 #### Changed - Migrate from Commands to Skills

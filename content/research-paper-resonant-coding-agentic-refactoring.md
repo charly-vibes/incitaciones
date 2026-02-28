@@ -192,7 +192,7 @@ An interactive execution skill for applying refactoring plans from the Abstracti
 3. Apply changes file-by-file
 4. Run verification script after each file
 5. If any step fails: 3 self-correction attempts
-6. If repair fails: `git checkout .` and report error
+6. If repair fails: `git reset --hard HEAD` and report error
 7. If all pass: run full test suite + linter
 8. Request human review before merge
 
@@ -238,15 +238,15 @@ Before deploying these skills, ensure:
 
 ## Repository Integration Plan
 
-This research should produce the following incitaciones artifacts:
+This research produced the following incitaciones artifacts:
 
 | File | Type | Status |
 |------|------|--------|
-| `prompt-skill-abstraction-miner.md` | prompt (skill) | TODO |
-| `prompt-skill-context-guardian.md` | prompt (skill) | TODO |
-| `prompt-skill-resonant-refactor.md` | prompt (skill) | TODO |
+| `prompt-task-abstraction-miner.md` | prompt (task) | done |
+| `prompt-system-context-guardian.md` | prompt (system) | done |
+| `prompt-workflow-resonant-refactor.md` | prompt (workflow) | done |
 
-Each prompt file should follow the repository template and include: inputs, outputs, stop conditions, verification commands, the control loop phases, and cognitive architecture mappings.
+Each prompt file follows the repository template and includes: inputs, outputs, stop conditions, verification commands, the control loop phases, and cognitive architecture mappings. All three are registered in `manifest.json` under the `refactoring` bundle.
 
 ## Failure Modes & Mitigations
 
@@ -303,6 +303,9 @@ The Abstraction Miner's phased protocol mirrors the workflow's Describe (scan sy
 - research-paper-cognitive-architectures-for-prompts.md - Provides the cognitive frameworks mapped to each skill
 - research-design-in-practice-methodology.md - Foundational methodology for "understand before acting"
 - prompt-workflow-design-in-practice.md - Operational workflow that parallels the Control Loop phases
+- prompt-task-abstraction-miner.md - Skill 1: passive scan for semantic duplication, produces refactoring backlog
+- prompt-system-context-guardian.md - Skill 2: system prompt that enforces architectural reuse during development
+- prompt-workflow-resonant-refactor.md - Skill 3: safe, human-approved execution of refactoring proposals
 
 ## References
 
@@ -348,5 +351,6 @@ The Abstraction Miner's phased protocol mirrors the workflow's Describe (scan sy
 
 ## Version History
 
+- 1.2.0 (2026-02-28): Integration plan completed. Created prompt-task-abstraction-miner.md, prompt-system-context-guardian.md, prompt-workflow-resonant-refactor.md — all registered in manifest.json under refactoring bundle. Updated related prompts section.
 - 1.1.0 (2026-02-10): Revised based on 5-pass research review. Reframed claims with evidence levels. Added glossary, worked example, metrics, prerequisites, failure modes, cognitive architecture mappings, integration plan, and cross-references to existing repo research. Restructured sections from research-study format to framework-proposal format.
 - 1.0.0 (2026-02-10): Initial synthesis from "Improving LLM Code Refactoring Skills" source document
