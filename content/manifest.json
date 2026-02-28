@@ -261,6 +261,36 @@
       "distilled": "content/distilled/rule-of-5-universal.md",
       "tags": ["review", "universal", "rule-of-5"],
       "bundles": ["reviews"]
+    },
+    {
+      "name": "abstraction-miner",
+      "type": "task",
+      "title": "Abstraction Miner (Dry-Dock Protocol)",
+      "description": "Scan codebase for semantic duplication and propose reusable abstractions — advisory only, no code changes",
+      "source": "content/prompt-task-abstraction-miner.md",
+      "distilled": "content/distilled/abstraction-miner.md",
+      "tags": ["refactoring", "abstraction", "duplication", "resonant-coding", "code-quality"],
+      "bundles": ["refactoring"]
+    },
+    {
+      "name": "context-guardian",
+      "type": "system",
+      "title": "Context Guardian (Architecture-Aware Generation)",
+      "description": "System prompt that enforces reuse of existing abstractions and prevents architectural drift during development",
+      "source": "content/prompt-system-context-guardian.md",
+      "distilled": "content/distilled/context-guardian.md",
+      "tags": ["refactoring", "architecture", "resonant-coding", "reuse", "system-prompt"],
+      "bundles": ["refactoring"]
+    },
+    {
+      "name": "resonant-refactor",
+      "type": "workflow",
+      "title": "Resonant Refactor (HumanLayer Handoff)",
+      "description": "Safe, human-approved refactoring workflow with impact analysis, atomic execution, and automatic rollback",
+      "source": "content/prompt-workflow-resonant-refactor.md",
+      "distilled": "content/distilled/resonant-refactor.md",
+      "tags": ["refactoring", "workflow", "humanlayer", "resonant-coding", "safety"],
+      "bundles": ["refactoring"]
     }
   ],
   "bundles": {
@@ -275,6 +305,10 @@
     "reviews": {
       "description": "Code, design, and research review processes",
       "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal"]
+    },
+    "refactoring": {
+      "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor"]
     },
     "all": {
       "description": "Complete collection of all prompts",
