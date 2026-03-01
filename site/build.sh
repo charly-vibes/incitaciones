@@ -91,14 +91,14 @@ cat > "$LLMS" <<'HEADER'
 HEADER
 
 # --- Bundle sections ---
-for bundle in essentials planning reviews; do
-  bundle_desc=$(jq -r ".bundles.$bundle.description" "$MANIFEST")
+while IFS= read -r bundle; do
+  bundle_desc=$(jq -r --arg b "$bundle" '.bundles[$b].description' "$MANIFEST")
   # Capitalize first letter for H2
-  bundle_title="$(echo "$bundle" | sed 's/./\U&/')"
+  bundle_title="$(printf '%s' "$bundle" | sed 's/./\U&/')"
   printf '\n## %s Bundle\n\n' "$bundle_title" >> "$LLMS"
   printf '> %s\n\n' "$bundle_desc" >> "$LLMS"
 
-  jq -r ".bundles.$bundle.prompts[]" "$MANIFEST" | while read -r name; do
+  jq -r --arg b "$bundle" '.bundles[$b].prompts[]' "$MANIFEST" | while read -r name; do
     title=$(prompt_field "$name" "title")
     desc=$(prompt_field "$name" "description")
     source=$(prompt_field "$name" "source")
@@ -109,7 +109,7 @@ for bundle in essentials planning reviews; do
     fi
     printf '\n' >> "$LLMS"
   done
-done
+done < <(jq -r '.bundles | keys_unsorted[] | select(. != "all")' "$MANIFEST")
 
 # --- Prompts not in any named bundle ---
 printf '\n## All Other Prompts\n\n' >> "$LLMS"
@@ -250,12 +250,12 @@ cat > "$INDEX" <<'HTML_HEAD'
 HTML_HEAD
 
 # Bundle sections
-for bundle in essentials planning reviews; do
-  bundle_desc=$(jq -r ".bundles.$bundle.description" "$MANIFEST")
-  bundle_title="$(echo "$bundle" | sed 's/./\U&/')"
+while IFS= read -r bundle; do
+  bundle_desc=$(jq -r --arg b "$bundle" '.bundles[$b].description' "$MANIFEST")
+  bundle_title="$(printf '%s' "$bundle" | sed 's/./\U&/')"
   printf '<h2>%s</h2>\n<p class="bundle-desc">%s</p>\n<ul>\n' "$bundle_title" "$bundle_desc" >> "$INDEX"
 
-  jq -r ".bundles.$bundle.prompts[]" "$MANIFEST" | while read -r name; do
+  jq -r --arg b "$bundle" '.bundles[$b].prompts[]' "$MANIFEST" | while read -r name; do
     title=$(prompt_field "$name" "title")
     desc=$(prompt_field "$name" "description")
     source=$(prompt_field "$name" "source")
@@ -267,7 +267,7 @@ for bundle in essentials planning reviews; do
     printf '</li>\n' >> "$INDEX"
   done
   printf '</ul>\n' >> "$INDEX"
-done
+done < <(jq -r '.bundles | keys_unsorted[] | select(. != "all")' "$MANIFEST")
 
 # Other prompts
 printf '<h2>Other Prompts</h2>\n<ul>\n' >> "$INDEX"
