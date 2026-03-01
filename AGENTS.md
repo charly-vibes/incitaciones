@@ -33,12 +33,24 @@ incitaciones/
 ├── CONTRIBUTING.md        # Guidelines
 ├── justfile               # Commands
 └── content/               # Everything goes here
+    ├── manifest.json      # Prompt registry (see below)
     ├── prompt-*.md        # Prompts
     ├── research-*.md      # Research
     ├── example-*.md       # Examples
     ├── template-*.md      # Templates
     └── references-*.md    # Link collections
 ```
+
+## Manifest (`content/manifest.json`)
+
+The manifest is the authoritative registry of all prompts. It is consumed by `install.sh` and the site generator.
+
+- **`version`** — date of the last content change (`YYYY-MM-DD`). Update this whenever a prompt is added, removed, or meaningfully edited.
+- **`schema_version`** — bump only when the manifest format itself changes.
+- **`prompts`** — one entry per prompt with `name`, `type`, `source`, `distilled`, `tags`, and `bundles`.
+- **`bundles`** — named groups of prompt names; `"all"` uses `["*"]` as a wildcard.
+
+Both `content/manifest.json` and `_site/manifest.json` must be kept identical. Use `just sync-manifest` to validate all referenced files exist, bump the version date, and sync both copies in one step.
 
 ## File Naming
 
@@ -100,6 +112,7 @@ just list verified
 # Maintenance
 just validate
 just stats
+just sync-manifest  # validate manifest files, update version, sync _site/
 ```
 
 ## Workflow
