@@ -545,6 +545,97 @@ list-bundles:
     echo "  all ($TOTAL prompts)"
     echo "    Complete collection of all prompts"
 
+# Validate manifest file references and update version to today's date; sync to _site/
+sync-manifest:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    MANIFEST="content/manifest.json"
+    SITE_MANIFEST="_site/manifest.json"
+
+    if [ ! -f "$MANIFEST" ]; then
+        echo "Manifest not found: $MANIFEST"
+        exit 1
+    fi
+
+    if ! command -v jq &> /dev/null; then
+        echo "Error: jq is required (install via your package manager)"
+        exit 1
+    fi
+
+    ERRORS=0
+
+    # Check all source files referenced in manifest exist
+    echo "Source files:"
+    while IFS= read -r source; do
+        if [ ! -f "$source" ]; then
+            echo "  ❌ missing: $source"
+            ERRORS=$((ERRORS + 1))
+        else
+            echo "  ✓ $source"
+        fi
+    done < <(jq -r '.prompts[].source' "$MANIFEST")
+
+    echo ""
+
+    # Check all distilled files referenced in manifest exist
+    echo "Distilled files:"
+    while IFS= read -r distilled; do
+        if [ ! -f "$distilled" ]; then
+            echo "  ❌ missing: $distilled"
+            ERRORS=$((ERRORS + 1))
+        else
+            echo "  ✓ $distilled"
+        fi
+    done < <(jq -r '.prompts[].distilled' "$MANIFEST")
+
+    echo ""
+
+    # Warn about source files on disk not registered in manifest
+    ORPHANS=0
+    for file in content/prompt-*.md; do
+        if ! jq -e --arg f "$file" '.prompts[] | select(.source == $f)' "$MANIFEST" > /dev/null 2>&1; then
+            echo "⚠️  unregistered source: $file"
+            ORPHANS=$((ORPHANS + 1))
+        fi
+    done
+    for file in content/distilled/*.md; do
+        if ! jq -e --arg f "$file" '.prompts[] | select(.distilled == $f)' "$MANIFEST" > /dev/null 2>&1; then
+            echo "⚠️  unregistered distilled: $file"
+            ORPHANS=$((ORPHANS + 1))
+        fi
+    done
+
+    if [ $ERRORS -gt 0 ]; then
+        echo ""
+        echo "$ERRORS missing file(s) — fix before updating version."
+        exit 1
+    fi
+
+    # Update version to today
+    TODAY=$(date +%Y-%m-%d)
+    CURRENT=$(jq -r '.version' "$MANIFEST")
+    if [ "$CURRENT" != "$TODAY" ]; then
+        jq --arg date "$TODAY" '.version = $date' "$MANIFEST" > /tmp/manifest_tmp.json
+        mv /tmp/manifest_tmp.json "$MANIFEST"
+        echo "version: $CURRENT → $TODAY"
+    else
+        echo "version: $TODAY (already current)"
+    fi
+
+    # Sync to _site/
+    if [ -f "$SITE_MANIFEST" ]; then
+        cp "$MANIFEST" "$SITE_MANIFEST"
+        echo "synced: $SITE_MANIFEST"
+    fi
+
+    echo ""
+    if [ $ORPHANS -gt 0 ]; then
+        echo "✅ Manifest valid ($ORPHANS unregistered file(s) — consider adding them)"
+    else
+        echo "✅ Manifest OK"
+    fi
+
 # Preview what a generated SKILL.md would look like for a prompt
 generate-skill NAME:
     #!/usr/bin/env bash
