@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-03-01
+
+#### Added - Test Parameterization and PBT Pipeline Research
+
+- **content/research-finding-test-parameterization-pbt-pipeline.md** (v1.0.0) — Research finding documenting a three-stage pipeline for extending the Abstraction Miner to test code: (1) Lazy Test cluster detection via structural isomorphism signals (same SUT, same assertion shape, only literals differ; Rule of Three threshold), (2) parameterization proposals with framework-specific syntax for Jest, pytest, Go table-driven, JUnit 5, and rstest, (3) property escalation from data table to property-based tests using a 7-type property taxonomy (Invariant, Round-trip, Idempotency, Commutativity, Monotonicity, Model-based, Metamorphic) and a decision tree for inferring generators. Includes function name priors as quick heuristics. Automatically included in site build via `content/research-*.md` glob.
+
 ### 2026-02-28
 
 #### Added - Resonant Coding Refactoring Bundle
