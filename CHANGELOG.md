@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-03-01
 
+#### Added - Test Friction as Design Diagnostic and OOP↔FP References
+
+- **content/research-finding-test-friction-design-diagnostic.md** (v1.1.0) — Research finding synthesizing the diagnostic chain from Metz, GOOS, Norvig/Graham, Seemann, and the PBT community into a five-step pipeline: notice friction → identify smell → map to missing abstraction → refactor → verify tests simplify. Includes the full OOP↔FP/algebraic structure Rosetta Stone, Metz's message-boundary test contract, conditional testing mathematics, PBT as a second-order design signal, and OOP/FP path selection rule. Rule of 5 reviewed at v1.1.0.
+- **content/references-oop-fp-pattern-equivalences.md** (v1.0.0) — Standalone lookup reference mapping all 23 GoF patterns to their FP/category-theory equivalents, with plain-language meanings, testing implications per row, Norvig's original language-feature absorption map (1996), inverse FP→OOP table with algebraic laws for PBT verification, testing impact summary, and full source links per mapping.
+
 #### Added - Test Parameterization and PBT Pipeline Research
 
 - **content/research-finding-test-parameterization-pbt-pipeline.md** (v1.0.0) — Research finding documenting a three-stage pipeline for extending the Abstraction Miner to test code: (1) Lazy Test cluster detection via structural isomorphism signals (same SUT, same assertion shape, only literals differ; Rule of Three threshold), (2) parameterization proposals with framework-specific syntax for Jest, pytest, Go table-driven, JUnit 5, and rstest, (3) property escalation from data table to property-based tests using a 7-type property taxonomy (Invariant, Round-trip, Idempotency, Commutativity, Monotonicity, Model-based, Metamorphic) and a decision tree for inferring generators. Includes function name priors as quick heuristics. Automatically included in site build via `content/research-*.md` glob.
