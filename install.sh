@@ -89,7 +89,7 @@ list_prompts() {
     echo "    create-plan, implement-plan, iterate-plan, create-issues, design-practice, pre-mortem, tdd, plan-review"
     echo ""
     echo "  reviews:"
-    echo "    code-review, rule-of-5, optionality-review, multi-agent-review, plan-review, design-review, research-review, issue-review, rule-of-5-universal"
+    echo "    code-review, rule-of-5, optionality-review, multi-agent-review, plan-review, design-review, research-review, issue-review, rule-of-5-universal, bias-audit"
     echo ""
     echo "  refactoring:"
     echo "    abstraction-miner, context-guardian, resonant-refactor, test-friction, test-abstraction-miner"
@@ -119,12 +119,13 @@ get_bundle_prompts() {
     essentials)
       echo "commit debug describe-pr code-review research-codebase create-handoff resume-handoff"
       ;;
-    planning)
+    "planning")
       echo "create-plan implement-plan iterate-plan create-issues design-practice pre-mortem tdd plan-review"
       ;;
-    reviews)
-      echo "code-review rule-of-5 optionality-review multi-agent-review plan-review design-review research-review issue-review rule-of-5-universal"
+    "reviews")
+      echo "code-review rule-of-5 optionality-review multi-agent-review plan-review design-review research-review issue-review rule-of-5-universal bias-audit"
       ;;
+
     refactoring)
       echo "abstraction-miner context-guardian resonant-refactor test-friction test-abstraction-miner"
       ;;

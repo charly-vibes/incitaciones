@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-03-03
 
+#### Added - Bias Research Framework
+
+- **content/research-paper-bias-detection-prevention-mitigation.md** (v1.0.0) — Synthesis of multidisciplinary methodologies for bias detection (Aequitas, DAGs, Red Teaming), prevention (Pre-Mortem, psychological debiasing), and mitigation (Context Engineering, Rule of 5). Establishes a taxonomy of systemic, statistical, and cognitive biases and provides actionable interventions for high-stakes sociotechnical systems.
+- **content/prompt-task-systematic-bias-audit-and-mitigation.md** (v1.0.0) — Actionable prompt skill implementing the 4-phase S-BAM protocol: Taxonomy Diagnostic, Adversarial Red Teaming, Context Recalibration, and Rule of 5 Refinement.
+- **content/distilled/bias-audit.md** — Token-optimized version of the S-BAM prompt with "Needs Human Review" safety gates.
+
 #### Added - Test Quality Prompt Bundle
 
 Two new actionable prompt skills operationalizing the test friction and test parameterization research, plus a new `testing` bundle grouping all test-quality tools:

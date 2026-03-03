@@ -263,6 +263,16 @@
       "bundles": ["reviews"]
     },
     {
+      "name": "bias-audit",
+      "type": "task",
+      "title": "Systematic Bias Audit & Mitigation (S-BAM)",
+      "description": "Detect, prevent, and mitigate systemic, statistical, and cognitive biases using multidisciplinary frameworks",
+      "source": "content/prompt-task-systematic-bias-audit-and-mitigation.md",
+      "distilled": "content/distilled/bias-audit.md",
+      "tags": ["bias", "ethics", "auditing", "safety", "rule-of-5"],
+      "bundles": ["reviews"]
+    },
+    {
       "name": "abstraction-miner",
       "type": "task",
       "title": "Abstraction Miner (Dry-Dock Protocol)",
