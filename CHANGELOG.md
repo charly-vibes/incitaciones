@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-03-03
+
+#### Added - Test Quality Prompt Bundle
+
+Two new actionable prompt skills operationalizing the test friction and test parameterization research, plus a new `testing` bundle grouping all test-quality tools:
+
+- **content/prompt-task-test-friction-diagnostician.md** (v1.1.0) — Advisory-only diagnostic skill that runs the five-step pipeline from `research-finding-test-friction-design-diagnostic.md` on any test+production file pair: (1) Notice the Friction — GOOS-sourced friction signals, (2) Identify the Smell — friction→smell mapping table with attribution footnotes, (3) Map to Missing Abstraction — full OOP/FP column selection with mixed-paradigm tiebreaker, (4) Refactor Proposal — specific refactoring moves, Beck's constraint, (5) Success Signals — acceptance criteria for the refactoring. Includes signal-consolidation rule for multiple signals pointing to the same root smell. Rule of 5 reviewed at v1.1.0.
+- **content/prompt-task-test-abstraction-miner.md** (v1.1.0) — Advisory-only test-mode extension of the Abstraction Miner. Four phases: Phase 0 (detect framework + PBT library; prose-only output if no PBT library found), Phase 1 (Lazy Test cluster detection with cross-file counting and N ≥ 3 threshold), Phase 2 (invariant/variant split), Phase 3 (parameterized test proposal in detected framework syntax — see Framework Reference section), Phase 4 (property escalation using 7-type taxonomy decision tree and function-name priors). Rule of 5 reviewed at v1.1.0.
+- **content/distilled/test-friction.md** — Distilled version with GUARD block, mixed-paradigm tiebreaker, signal-consolidation rule, and Needs Human Review section
+- **content/distilled/test-abstraction-miner.md** — Distilled version with GUARD block (data-variation-only collapse, prose-only PBT when no library), cross-file cluster counting, and Needs Human Review section
+
+#### Changed - manifest, install.sh for testing bundle
+
+- **content/manifest.json** + **_site/manifest.json** — Registered `test-friction` and `test-abstraction-miner` prompts; added new `testing` bundle (`tdd`, `test-friction`, `test-abstraction-miner`); added both prompts to `refactoring` bundle; bumped version to `2026-03-03`
+- **install.sh** — Added `testing` bundle to `get_bundle_prompts`, `list_prompts`, help text, and validation error message
+
 ### 2026-03-01
 
 #### Added - Test Friction as Design Diagnostic and OOP↔FP References

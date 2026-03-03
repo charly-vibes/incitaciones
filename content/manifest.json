@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-01",
+  "version": "2026-03-03",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -291,6 +291,26 @@
       "distilled": "content/distilled/resonant-refactor.md",
       "tags": ["refactoring", "workflow", "humanlayer", "resonant-coding", "safety"],
       "bundles": ["refactoring"]
+    },
+    {
+      "name": "test-friction",
+      "type": "task",
+      "title": "Test Friction Diagnostician",
+      "description": "Diagnose production code design flaws by reading test pain signals — advisory only, no code changes",
+      "source": "content/prompt-task-test-friction-diagnostician.md",
+      "distilled": "content/distilled/test-friction.md",
+      "tags": ["testing", "tdd", "design-patterns", "refactoring", "abstraction", "test-design", "code-quality"],
+      "bundles": ["testing", "refactoring"]
+    },
+    {
+      "name": "test-abstraction-miner",
+      "type": "task",
+      "title": "Test Abstraction Miner",
+      "description": "Detect Lazy Test clusters in test suites and propose parameterized tests and property-based test escalations — advisory only, no code changes",
+      "source": "content/prompt-task-test-abstraction-miner.md",
+      "distilled": "content/distilled/test-abstraction-miner.md",
+      "tags": ["testing", "parameterization", "property-based-testing", "test-smells", "abstraction-miner", "tdd", "lazy-test"],
+      "bundles": ["testing", "refactoring"]
     }
   ],
   "bundles": {
@@ -308,7 +328,11 @@
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor"]
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner"]
+    },
+    "testing": {
+      "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
+      "prompts": ["tdd", "test-friction", "test-abstraction-miner"]
     },
     "all": {
       "description": "Complete collection of all prompts",

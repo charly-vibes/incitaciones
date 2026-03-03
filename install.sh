@@ -36,7 +36,7 @@ Options:
   --local          Install to project .agents/skills/ (default when in a git repo)
   --global         Install to ~/.agents/skills/ (user-wide)
   --bundle NAME    Install only prompts from a specific bundle
-                   Available: essentials, planning, reviews, refactoring, all (default: all)
+                   Available: essentials, planning, reviews, refactoring, testing, all (default: all)
   --dir PATH       Install to custom directory (overrides --local/--global)
   --format FORMAT  Output format: skills (default) or commands (legacy)
   --list           List available prompts and bundles
@@ -68,7 +68,7 @@ list_prompts() {
   echo ""
 
   if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
-    for bundle in essentials planning reviews refactoring; do
+    for bundle in essentials planning reviews refactoring testing; do
       desc=$(jq -r ".bundles.$bundle.description" "$MANIFEST_FILE")
       echo "  $bundle - $desc"
       jq -r ".bundles.$bundle.prompts[]" "$MANIFEST_FILE" 2>/dev/null | while read -r p; do
@@ -92,7 +92,10 @@ list_prompts() {
     echo "    code-review, rule-of-5, optionality-review, multi-agent-review, plan-review, design-review, research-review, issue-review, rule-of-5-universal"
     echo ""
     echo "  refactoring:"
-    echo "    abstraction-miner, context-guardian, resonant-refactor"
+    echo "    abstraction-miner, context-guardian, resonant-refactor, test-friction, test-abstraction-miner"
+    echo ""
+    echo "  testing:"
+    echo "    tdd, test-friction, test-abstraction-miner"
     echo ""
   fi
 
@@ -123,7 +126,10 @@ get_bundle_prompts() {
       echo "code-review rule-of-5 optionality-review multi-agent-review plan-review design-review research-review issue-review rule-of-5-universal"
       ;;
     refactoring)
-      echo "abstraction-miner context-guardian resonant-refactor"
+      echo "abstraction-miner context-guardian resonant-refactor test-friction test-abstraction-miner"
+      ;;
+    testing)
+      echo "tdd test-friction test-abstraction-miner"
       ;;
     all|"")
       ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
@@ -338,7 +344,7 @@ fi
 PROMPTS=$(get_bundle_prompts "$BUNDLE")
 if [ -z "$PROMPTS" ]; then
   echo -e "${RED}Error: Unknown bundle '$BUNDLE'${NC}"
-  echo "Available bundles: essentials, planning, reviews, refactoring, all"
+  echo "Available bundles: essentials, planning, reviews, refactoring, testing, all"
   exit 1
 fi
 
