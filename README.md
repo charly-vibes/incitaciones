@@ -18,6 +18,7 @@ cd incitaciones
 ./install.sh --bundle essentials   # Core prompts only (7 prompts)
 ./install.sh --bundle planning     # Planning workflows (8 prompts)
 ./install.sh --bundle reviews      # Review prompts (9 prompts)
+./install.sh --bundle documentation # Documentation tools (4 prompts)
 ./install.sh --format commands     # Legacy flat-file format for other tools
 ./install.sh --list                # Show available prompts
 ./install.sh --help                # Show all options

@@ -68,7 +68,7 @@ list_prompts() {
   echo ""
 
   if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
-    for bundle in essentials planning reviews refactoring testing; do
+    for bundle in essentials planning reviews refactoring testing documentation; do
       desc=$(jq -r ".bundles.$bundle.description" "$MANIFEST_FILE")
       echo "  $bundle - $desc"
       jq -r ".bundles.$bundle.prompts[]" "$MANIFEST_FILE" 2>/dev/null | while read -r p; do
@@ -96,6 +96,9 @@ list_prompts() {
     echo ""
     echo "  testing:"
     echo "    tdd, test-friction, test-abstraction-miner"
+    echo ""
+    echo "  documentation:"
+    echo "    research-documentation, implement-documentation, review-documentation, narrative-article"
     echo ""
   fi
 
@@ -132,7 +135,10 @@ get_bundle_prompts() {
     testing)
       echo "tdd test-friction test-abstraction-miner"
       ;;
-    all|"")
+    documentation)
+      echo "research-documentation implement-documentation review-documentation narrative-article"
+      ;;
+    all)
       ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
       ;;
     *)
@@ -345,7 +351,7 @@ fi
 PROMPTS=$(get_bundle_prompts "$BUNDLE")
 if [ -z "$PROMPTS" ]; then
   echo -e "${RED}Error: Unknown bundle '$BUNDLE'${NC}"
-  echo "Available bundles: essentials, planning, reviews, refactoring, testing, all"
+  echo "Available bundles: essentials, planning, reviews, refactoring, testing, documentation, all"
   exit 1
 fi
 

@@ -190,7 +190,7 @@
       "source": "content/prompt-workflow-write-narrative-article.md",
       "distilled": "content/distilled/narrative-article.md",
       "tags": ["writing", "documentation", "narrative"],
-      "bundles": []
+      "bundles": ["documentation"]
     },
     {
       "name": "optionality-review",
@@ -321,6 +321,36 @@
       "distilled": "content/distilled/test-abstraction-miner.md",
       "tags": ["testing", "parameterization", "property-based-testing", "test-smells", "abstraction-miner", "tdd", "lazy-test"],
       "bundles": ["testing", "refactoring"]
+    },
+    {
+      "name": "research-documentation",
+      "type": "task",
+      "title": "Research and Audit Documentation Architecture",
+      "description": "Audit existing documentation or plan a new suite using advanced frameworks",
+      "source": "content/prompt-task-research-documentation.md",
+      "distilled": "content/distilled/research-documentation.md",
+      "tags": ["research", "documentation", "audit", "information-architecture"],
+      "bundles": ["documentation", "research"]
+    },
+    {
+      "name": "implement-documentation",
+      "type": "task",
+      "title": "Implement High-Signal Documentation Topics",
+      "description": "Write documentation using Diátaxis, Info Mapping, and EPPO principles",
+      "source": "content/prompt-task-implement-documentation.md",
+      "distilled": "content/distilled/implement-documentation.md",
+      "tags": ["implementation", "documentation", "technical-writing"],
+      "bundles": ["documentation"]
+    },
+    {
+      "name": "review-documentation",
+      "type": "task",
+      "title": "Review Documentation Quality (Rule of 5)",
+      "description": "Iterative review of documentation for cognitive scannability and AI-readiness",
+      "source": "content/prompt-task-review-documentation.md",
+      "distilled": "content/distilled/review-documentation.md",
+      "tags": ["review", "documentation", "technical-writing", "rule-of-5"],
+      "bundles": ["documentation", "reviews"]
     }
   ],
   "bundles": {
@@ -343,6 +373,10 @@
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
       "prompts": ["tdd", "test-friction", "test-abstraction-miner"]
+    },
+    "documentation": {
+      "description": "Documentation architecture, implementation, and review tools",
+      "prompts": ["research-documentation", "implement-documentation", "review-documentation", "narrative-article"]
     },
     "all": {
       "description": "Complete collection of all prompts",
