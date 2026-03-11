@@ -35,8 +35,7 @@ for Claude Code, Amp, Gemini CLI, Cursor, Windsurf, and Zed.
 Options:
   --local          Install to project .agents/skills/ (default when in a git repo)
   --global         Install to ~/.agents/skills/ (user-wide)
-  --bundle NAME    Install only prompts from a specific bundle
-                   Available: essentials, planning, reviews, refactoring, testing, all (default: all)
+  --bundle NAME    Install only prompts from a specific bundle (see --list)
   --dir PATH       Install to custom directory (overrides --local/--global)
   --format FORMAT  Output format: skills (default) or commands (legacy)
   --list           List available prompts and bundles
@@ -68,10 +67,10 @@ list_prompts() {
   echo ""
 
   if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
-    for bundle in essentials planning reviews refactoring testing documentation; do
-      desc=$(jq -r ".bundles.$bundle.description" "$MANIFEST_FILE")
+    jq -r '.bundles | to_entries[] | select(.key != "all") | .key' "$MANIFEST_FILE" | while read -r bundle; do
+      desc=$(jq -r --arg b "$bundle" '.bundles[$b].description' "$MANIFEST_FILE")
       echo "  $bundle - $desc"
-      jq -r ".bundles.$bundle.prompts[]" "$MANIFEST_FILE" 2>/dev/null | while read -r p; do
+      jq -r --arg b "$bundle" '.bundles[$b].prompts[]' "$MANIFEST_FILE" 2>/dev/null | while read -r p; do
         pdesc=$(get_prompt_description "$p")
         if [ -n "$pdesc" ]; then
           echo "    - $p — $pdesc"
@@ -82,23 +81,7 @@ list_prompts() {
       echo ""
     done
   else
-    echo "  essentials:"
-    echo "    commit, debug, describe-pr, code-review, research-codebase, create-handoff, resume-handoff"
-    echo ""
-    echo "  planning:"
-    echo "    create-plan, implement-plan, iterate-plan, create-issues, design-practice, pre-mortem, tdd, plan-review"
-    echo ""
-    echo "  reviews:"
-    echo "    code-review, rule-of-5, optionality-review, multi-agent-review, plan-review, design-review, research-review, issue-review, rule-of-5-universal, bias-audit"
-    echo ""
-    echo "  refactoring:"
-    echo "    abstraction-miner, context-guardian, resonant-refactor, test-friction, test-abstraction-miner"
-    echo ""
-    echo "  testing:"
-    echo "    tdd, test-friction, test-abstraction-miner"
-    echo ""
-    echo "  documentation:"
-    echo "    research-documentation, implement-documentation, review-documentation, narrative-article"
+    echo "  (install jq for detailed bundle listing, or see content/manifest.json)"
     echo ""
   fi
 
@@ -118,33 +101,16 @@ list_prompts() {
 get_bundle_prompts() {
   local bundle="$1"
 
-  case "$bundle" in
-    essentials)
-      echo "commit debug describe-pr code-review research-codebase create-handoff resume-handoff"
-      ;;
-    "planning")
-      echo "create-plan implement-plan iterate-plan create-issues design-practice pre-mortem tdd plan-review"
-      ;;
-    "reviews")
-      echo "code-review rule-of-5 optionality-review multi-agent-review plan-review design-review research-review issue-review rule-of-5-universal bias-audit"
-      ;;
+  if [ "$bundle" = "all" ]; then
+    ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
+    return
+  fi
 
-    refactoring)
-      echo "abstraction-miner context-guardian resonant-refactor test-friction test-abstraction-miner"
-      ;;
-    testing)
-      echo "tdd test-friction test-abstraction-miner"
-      ;;
-    documentation)
-      echo "research-documentation implement-documentation review-documentation narrative-article"
-      ;;
-    all)
-      ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
-      ;;
-    *)
-      echo ""
-      ;;
-  esac
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    local prompts
+    prompts=$(jq -r --arg b "$bundle" '.bundles[$b].prompts // empty | .[]' "$MANIFEST_FILE" 2>/dev/null | tr '\n' ' ')
+    echo "$prompts"
+  fi
 }
 
 # Generate YAML frontmatter for a SKILL.md file
@@ -351,7 +317,12 @@ fi
 PROMPTS=$(get_bundle_prompts "$BUNDLE")
 if [ -z "$PROMPTS" ]; then
   echo -e "${RED}Error: Unknown bundle '$BUNDLE'${NC}"
-  echo "Available bundles: essentials, planning, reviews, refactoring, testing, documentation, all"
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    available=$(jq -r '.bundles | keys | join(", ")' "$MANIFEST_FILE")
+  else
+    available="(install jq to list bundles, or see content/manifest.json)"
+  fi
+  echo "Available bundles: $available"
   exit 1
 fi
 

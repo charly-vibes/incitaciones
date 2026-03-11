@@ -529,13 +529,13 @@ list-bundles:
     echo "Available bundles:"
     echo ""
 
-    for bundle in essentials planning reviews; do
-        desc=$(jq -r ".bundles.$bundle.description" content/manifest.json)
-        count=$(jq -r ".bundles.$bundle.prompts | length" content/manifest.json)
+    jq -r '.bundles | to_entries[] | select(.key != "all") | .key' content/manifest.json | while read -r bundle; do
+        desc=$(jq -r --arg b "$bundle" '.bundles[$b].description' content/manifest.json)
+        count=$(jq -r --arg b "$bundle" '.bundles[$b].prompts | length' content/manifest.json)
         echo "  $bundle ($count prompts)"
         echo "    $desc"
         echo "    Prompts:"
-        jq -r ".bundles.$bundle.prompts[]" content/manifest.json | while read -r p; do
+        jq -r --arg b "$bundle" '.bundles[$b].prompts[]' content/manifest.json | while read -r p; do
             echo "      - $p"
         done
         echo ""

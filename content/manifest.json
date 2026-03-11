@@ -364,7 +364,7 @@
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal"]
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "review-documentation"]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
