@@ -3,6 +3,16 @@
   "schema_version": "1.1",
   "prompts": [
     {
+      "name": "specification-review",
+      "type": "task",
+      "title": "Standalone Specification Review (Rule of 5)",
+      "description": "Iterative review of technical specifications for autonomy, precision, and AI-readiness",
+      "source": "content/prompt-task-specification-review.md",
+      "distilled": "content/distilled/specification-review.md",
+      "tags": ["review", "specification", "ieee-29148", "rule-of-5", "openspec"],
+      "bundles": ["reviews"]
+    },
+    {
       "name": "commit",
       "type": "workflow",
       "title": "Workflow for Deliberate Commits",
@@ -364,7 +374,7 @@
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "review-documentation"]
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "review-documentation", "specification-review"]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
