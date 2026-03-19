@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-03",
+  "version": "2026-03-19",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -333,6 +333,16 @@
       "bundles": ["testing", "refactoring"]
     },
     {
+      "name": "pwa-accessibility-review",
+      "type": "task",
+      "title": "PWA Accessibility & Reliability Review for Micro-Merchants",
+      "description": "4-domain heuristic review of PWAs targeting non-technical merchants on entry-level devices with volatile connectivity",
+      "source": "content/prompt-task-pwa-accessibility-review.md",
+      "distilled": "content/distilled/pwa-accessibility-review.md",
+      "tags": ["pwa", "accessibility", "wcag", "offline-first", "mobile-performance", "security", "review"],
+      "bundles": ["reviews"]
+    },
+    {
       "name": "research-documentation",
       "type": "task",
       "title": "Research and Audit Documentation Architecture",
@@ -374,7 +384,7 @@
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "review-documentation", "specification-review"]
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review"]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
