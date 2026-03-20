@@ -391,6 +391,16 @@
       "distilled": "content/distilled/mutability-diagnostician.md",
       "tags": ["refactoring", "immutability", "functional-programming", "code-smells", "side-effects", "concurrency", "value-objects"],
       "bundles": ["refactoring"]
+    },
+    {
+      "name": "composability-diagnostician",
+      "type": "task",
+      "title": "Composability Diagnostician",
+      "description": "Diagnose composition friction — type mismatches, missed endomorphisms, ad-hoc patterns without algebraic guarantees — and map findings to category-theoretic refactoring patterns",
+      "source": "content/prompt-task-composability-diagnostician.md",
+      "distilled": "content/distilled/composability-diagnostician.md",
+      "tags": ["refactoring", "composability", "category-theory", "type-systems", "endomorphisms", "property-based-testing", "architecture"],
+      "bundles": ["refactoring"]
     }
   ],
   "bundles": {
@@ -408,7 +418,7 @@
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician"]
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician"]
     },
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
