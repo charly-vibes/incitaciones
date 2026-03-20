@@ -381,6 +381,16 @@
       "distilled": "content/distilled/red-team-review.md",
       "tags": ["red-teaming", "bug-detection", "review", "reliability", "security", "ci-cd", "edge-cases", "failure-modes"],
       "bundles": ["reviews"]
+    },
+    {
+      "name": "mutability-diagnostician",
+      "type": "task",
+      "title": "Mutability Diagnostician",
+      "description": "Diagnose pathological mutable state, side effect entanglement, and temporal coupling — map findings to immutability refactoring patterns",
+      "source": "content/prompt-task-mutability-diagnostician.md",
+      "distilled": "content/distilled/mutability-diagnostician.md",
+      "tags": ["refactoring", "immutability", "functional-programming", "code-smells", "side-effects", "concurrency", "value-objects"],
+      "bundles": ["refactoring"]
     }
   ],
   "bundles": {
@@ -398,7 +408,7 @@
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner"]
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician"]
     },
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
