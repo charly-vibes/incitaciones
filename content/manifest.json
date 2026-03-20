@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-19",
+  "version": "2026-03-20",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -371,6 +371,16 @@
       "distilled": "content/distilled/review-documentation.md",
       "tags": ["review", "documentation", "technical-writing", "rule-of-5"],
       "bundles": ["documentation", "reviews"]
+    },
+    {
+      "name": "red-team-review",
+      "type": "task",
+      "title": "Adversarial Bug Detection Review",
+      "description": "Red-team-style adversarial review finding logic bugs, failure modes, security vulnerabilities, and deployment risks",
+      "source": "content/prompt-task-red-team-review.md",
+      "distilled": "content/distilled/red-team-review.md",
+      "tags": ["red-teaming", "bug-detection", "review", "reliability", "security", "ci-cd", "edge-cases", "failure-modes"],
+      "bundles": ["reviews"]
     }
   ],
   "bundles": {
@@ -384,7 +394,7 @@
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review"]
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review", "red-team-review"]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
