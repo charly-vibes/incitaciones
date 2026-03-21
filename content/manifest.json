@@ -401,6 +401,16 @@
       "distilled": "content/distilled/composability-diagnostician.md",
       "tags": ["refactoring", "composability", "category-theory", "type-systems", "endomorphisms", "property-based-testing", "architecture"],
       "bundles": ["refactoring"]
+    },
+    {
+      "name": "julia-performance-diagnostician",
+      "type": "task",
+      "title": "Julia Performance Diagnostician",
+      "description": "Diagnose Julia performance pathologies — type instabilities, heap allocation floods, cache-hostile access, dynamic dispatch — and map findings to optimization patterns grounded in the compilation pipeline",
+      "source": "content/prompt-task-julia-performance-diagnostician.md",
+      "distilled": "content/distilled/julia-performance-diagnostician.md",
+      "tags": ["julia", "performance", "type-stability", "profiling", "anti-patterns", "refactoring", "benchmarking", "memory-allocation", "simd", "multiple-dispatch"],
+      "bundles": ["refactoring"]
     }
   ],
   "bundles": {
@@ -418,7 +428,7 @@
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician"]
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician", "julia-performance-diagnostician"]
     },
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
