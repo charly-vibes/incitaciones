@@ -431,6 +431,16 @@
       "distilled": "content/distilled/verification-diagnostician.md",
       "tags": ["fact-checking", "verification", "hallucination-detection", "knowledge-graphs", "source-authority", "logical-consistency", "provenance", "review"],
       "bundles": ["reviews"]
+    },
+    {
+      "name": "specification-evaluation-diagnostician",
+      "type": "task",
+      "title": "Specification Evaluation Diagnostician",
+      "description": "Evaluate specifications across Completeness, Correctness, and Coherence dimensions mapped to ISO 29148 — cross-domain quality gate for software, hardware, business process, and research specifications",
+      "source": "content/prompt-task-specification-evaluation-diagnostician.md",
+      "distilled": "content/distilled/specification-evaluation-diagnostician.md",
+      "tags": ["specification-evaluation", "completeness", "correctness", "coherence", "iso-29148", "review"],
+      "bundles": ["reviews"]
     }
   ],
   "bundles": {
@@ -444,7 +454,7 @@
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review", "red-team-review", "verification-diagnostician"]
+      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review", "red-team-review", "verification-diagnostician", "specification-evaluation-diagnostician"]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
