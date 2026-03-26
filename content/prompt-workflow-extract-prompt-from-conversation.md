@@ -124,7 +124,7 @@ source: extracted-from-conversation
 
 ## The Prompt
 
-\```
+```
 [The actual prompt text, generalized and structured]
 
 [Include key sections like:]
@@ -146,7 +146,7 @@ source: extracted-from-conversation
 ## Guidelines
 
 [Best practices and recommendations]
-\```
+```
 
 ## Example
 
@@ -154,14 +154,14 @@ source: extracted-from-conversation
 [Describe a concrete scenario]
 
 **Input:**
-\```
+```
 [What you would actually say to the AI]
-\```
+```
 
 **Expected Output:**
-\```
+```
 [What the AI should produce]
-\```
+```
 
 ## Expected Results
 
@@ -324,7 +324,7 @@ without suggesting improvements, refactoring, or changes.
 
 ## The Prompt
 
-\```
+```
 # Research Codebase
 
 Document and explain the codebase as it exists today.
@@ -341,7 +341,7 @@ Document and explain the codebase as it exists today.
 6. ❌ DO NOT: Recommend refactoring
 
 [... rest of prompt structure ...]
-\```
+```
 
 ## Example
 
@@ -349,13 +349,13 @@ Document and explain the codebase as it exists today.
 New to a codebase, need to understand how authentication works.
 
 **Input:**
-\```
+```
 Research how authentication currently works in this codebase. Document what
 exists without suggesting improvements.
-\```
+```
 
 **Expected Output:**
-\```
+```
 # Research: Authentication System
 
 **Date:** 2026-01-12
@@ -371,7 +371,7 @@ The application uses JWT-based authentication with email/password credentials...
 [Documentation of each component]
 
 [No suggestions or critiques, pure documentation]
-\```
+```
 
 ## Expected Results
 
@@ -426,9 +426,9 @@ Shall I:
 [Brief description]
 
 ## The Prompt
-\```
+```
 [Core instructions]
-\```
+```
 
 ## Example
 [From this conversation]

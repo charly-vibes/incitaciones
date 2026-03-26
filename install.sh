@@ -118,18 +118,19 @@ generate_frontmatter() {
   local name="$1"
   local description=""
 
-  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
-    description=$(jq -r --arg n "$name" '.prompts[] | select(.name == $n) | .description // empty' "$MANIFEST_FILE" 2>/dev/null)
-  fi
+  description=$(get_prompt_description "$name")
 
   # Fallback description if not found in manifest
   if [ -z "$description" ]; then
     description="Incitaciones prompt: $name"
   fi
 
+  # Escape backslashes and double quotes for YAML double-quoted string
+  description_escaped=$(printf '%s' "$description" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
   echo "---"
   echo "name: $name"
-  echo "description: $description"
+  echo "description: \"$description_escaped\""
   echo "disable-model-invocation: true"
   echo "---"
   echo ""
@@ -142,17 +143,20 @@ generate_toml_command() {
   local description=""
 
   description=$(get_prompt_description "$name")
+
   if [ -z "$description" ]; then
     description="Incitaciones prompt: $name"
   fi
 
-  # Escape double quotes in description for TOML
-  description=$(echo "$description" | sed 's/"/\\"/g')
+  # Escape backslashes and double quotes for TOML double-quoted string
+  description_escaped=$(printf '%s' "$description" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
-  echo "description = \"$description\""
+  echo "description = \"$description_escaped\""
   echo 'prompt = """'
-  # Escape any triple-quote sequences in content for TOML
-  sed 's/"""/\\"""/g' "$src"
+  # Escape backslashes and triple-quote sequences for TOML multi-line string
+  # 1. Escape backslashes FIRST (\ -> \\)
+  # 2. Escape triple-quotes (""" -> \""" or \"\"\", but \""" is enough)
+  sed 's/\\/\\\\/g; s/"""/\\"""/g' "$src"
   echo '"""'
 }
 

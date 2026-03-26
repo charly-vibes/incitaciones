@@ -89,7 +89,7 @@ source: extracted-from-conversation
 
 ## The Prompt
 
-\```
+```
 [The actual prompt text, generalized and structured]
 
 [Include key sections like:]
@@ -111,7 +111,7 @@ source: extracted-from-conversation
 ## Guidelines
 
 [Best practices and recommendations]
-\```
+```
 
 ## Usage Scenario
 
@@ -119,14 +119,14 @@ source: extracted-from-conversation
 [Describe a concrete scenario]
 
 **Input:**
-\```
+```
 [What you would actually say to the AI]
-\```
+```
 
 **Expected Output:**
-\```
+```
 [What the AI should produce]
-\```
+```
 
 ## Success Criteria
 
