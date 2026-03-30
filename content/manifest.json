@@ -794,6 +794,31 @@
       "bundles": [
         "reviews"
       ]
+    },
+    {
+      "name": "ux-dx-evaluation-diagnostician",
+      "type": "task",
+      "title": "UX/DX Evaluation Diagnostician",
+      "description": "Five-layer diagnostic evaluation of products, APIs, CLIs, libraries, and documentation against HEART, SPACE/DX Core 4, CLI/API heuristics, CHAOSS, and Diataxis frameworks",
+      "source": "content/prompt-task-ux-dx-evaluation-diagnostician.md",
+      "distilled": "content/distilled/ux-dx-evaluation-diagnostician.md",
+      "tags": [
+        "ux",
+        "dx",
+        "developer-experience",
+        "heart-framework",
+        "space-framework",
+        "dx-core-4",
+        "diataxis",
+        "chaoss",
+        "api-design",
+        "cli-usability",
+        "evaluation",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     }
   ],
   "bundles": {
@@ -841,7 +866,8 @@
         "red-team-review",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
-        "adversarial-stakeholder-evaluation"
+        "adversarial-stakeholder-evaluation",
+        "ux-dx-evaluation-diagnostician"
       ]
     },
     "refactoring": {
