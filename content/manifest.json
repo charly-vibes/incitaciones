@@ -423,6 +423,16 @@
       "bundles": ["refactoring"]
     },
     {
+      "name": "modularity-diagnostician",
+      "type": "task",
+      "title": "Modularity Diagnostician",
+      "description": "Diagnose modularity violations — high coupling, low cohesion, cyclic dependencies, God Objects, boundary erosion, temporal coupling — and map findings to decomposition patterns grounded in the Unix philosophy",
+      "source": "content/prompt-task-modularity-diagnostician.md",
+      "distilled": "content/distilled/modularity-diagnostician.md",
+      "tags": ["refactoring", "modularity", "unix-philosophy", "coupling", "cohesion", "architectural-metrics", "dependency-graphs", "decomposition", "anti-patterns", "code-smells"],
+      "bundles": ["refactoring"]
+    },
+    {
       "name": "verification-diagnostician",
       "type": "task",
       "title": "Verification Diagnostician",
@@ -458,7 +468,7 @@
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician", "invalid-states-diagnostician", "julia-performance-diagnostician"]
+      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician", "invalid-states-diagnostician", "julia-performance-diagnostician", "modularity-diagnostician"]
     },
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
