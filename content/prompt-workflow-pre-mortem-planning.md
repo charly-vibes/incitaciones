@@ -8,7 +8,7 @@ status: verified
 created: 2026-01-12
 updated: 2026-01-12
 version: 1.0.0
-related: [research-paper-cognitive-architectures-for-prompts.md]
+related: [research-paper-cognitive-architectures-for-prompts.md, research-paper-adversarial-stakeholder-role-play-evaluation.md]
 source: research-based
 ---
 

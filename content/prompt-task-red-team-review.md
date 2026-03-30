@@ -8,7 +8,7 @@ status: draft
 created: 2026-03-20
 updated: 2026-03-20
 version: 2.1.0
-related: [research-paper-automated-red-teaming-vulnerability-discovery.md, prompt-workflow-pre-mortem-planning.md, prompt-task-iterative-code-review.md]
+related: [research-paper-automated-red-teaming-vulnerability-discovery.md, research-paper-adversarial-stakeholder-role-play-evaluation.md, prompt-workflow-pre-mortem-planning.md, prompt-task-iterative-code-review.md]
 source: research-paper-automated-red-teaming-vulnerability-discovery.md
 ---
 

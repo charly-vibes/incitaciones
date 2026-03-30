@@ -8,7 +8,7 @@ status: draft
 created: 2026-01-18
 updated: 2026-01-18
 version: 1.0.0
-related: [prompt-workflow-design-in-practice.md, prompt-task-plan-review.md, research-design-in-practice-methodology.md]
+related: [prompt-workflow-design-in-practice.md, prompt-task-plan-review.md, research-design-in-practice-methodology.md, research-paper-adversarial-stakeholder-role-play-evaluation.md]
 source: research-based
 ---
 

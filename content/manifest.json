@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-25-1",
+  "version": "2026-03-30",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -9,8 +9,16 @@
       "description": "Iterative review of technical specifications for autonomy, precision, and AI-readiness",
       "source": "content/prompt-task-specification-review.md",
       "distilled": "content/distilled/specification-review.md",
-      "tags": ["review", "specification", "ieee-29148", "rule-of-5", "openspec"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "specification",
+        "ieee-29148",
+        "rule-of-5",
+        "openspec"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "commit",
@@ -19,8 +27,14 @@
       "description": "Create well-structured, atomic git commits with clear intent",
       "source": "content/prompt-workflow-deliberate-commits.md",
       "distilled": "content/distilled/commit.md",
-      "tags": ["git", "commits", "version-control"],
-      "bundles": ["essentials"]
+      "tags": [
+        "git",
+        "commits",
+        "version-control"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "debug",
@@ -29,8 +43,13 @@
       "description": "7-step diagnostic workflow for debugging issues",
       "source": "content/prompt-task-systematic-debugging.md",
       "distilled": "content/distilled/debug.md",
-      "tags": ["debugging", "diagnosis"],
-      "bundles": ["essentials"]
+      "tags": [
+        "debugging",
+        "diagnosis"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "describe-pr",
@@ -39,8 +58,14 @@
       "description": "Generate clear PR descriptions from code changes",
       "source": "content/prompt-task-describe-pr.md",
       "distilled": "content/distilled/describe-pr.md",
-      "tags": ["git", "pull-request", "documentation"],
-      "bundles": ["essentials"]
+      "tags": [
+        "git",
+        "pull-request",
+        "documentation"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "code-review",
@@ -49,8 +74,14 @@
       "description": "Multi-pass code review using Rule of 5 principle",
       "source": "content/prompt-task-iterative-code-review.md",
       "distilled": "content/distilled/code-review.md",
-      "tags": ["review", "code-quality"],
-      "bundles": ["essentials", "reviews"]
+      "tags": [
+        "review",
+        "code-quality"
+      ],
+      "bundles": [
+        "essentials",
+        "reviews"
+      ]
     },
     {
       "name": "create-plan",
@@ -59,8 +90,13 @@
       "description": "Design phased implementation plans with TDD approach",
       "source": "content/prompt-workflow-create-plan.md",
       "distilled": "content/distilled/create-plan.md",
-      "tags": ["planning", "implementation"],
-      "bundles": ["planning"]
+      "tags": [
+        "planning",
+        "implementation"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "implement-plan",
@@ -69,8 +105,13 @@
       "description": "Execute implementation plans phase by phase",
       "source": "content/prompt-workflow-implement-plan.md",
       "distilled": "content/distilled/implement-plan.md",
-      "tags": ["planning", "implementation"],
-      "bundles": ["planning"]
+      "tags": [
+        "planning",
+        "implementation"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "iterate-plan",
@@ -79,8 +120,13 @@
       "description": "Refine and improve existing plans based on feedback",
       "source": "content/prompt-workflow-iterate-plan.md",
       "distilled": "content/distilled/iterate-plan.md",
-      "tags": ["planning", "iteration"],
-      "bundles": ["planning"]
+      "tags": [
+        "planning",
+        "iteration"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "rule-of-5",
@@ -89,8 +135,14 @@
       "description": "High-stakes code review with parallel agent waves",
       "source": "content/prompt-workflow-rule-of-5-review.md",
       "distilled": "content/distilled/rule-of-5.md",
-      "tags": ["review", "multi-agent", "code-quality"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "multi-agent",
+        "code-quality"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "create-issues",
@@ -99,8 +151,14 @@
       "description": "Generate trackable issues from implementation plans",
       "source": "content/prompt-task-create-issues.md",
       "distilled": "content/distilled/create-issues.md",
-      "tags": ["planning", "issues", "project-management"],
-      "bundles": ["planning"]
+      "tags": [
+        "planning",
+        "issues",
+        "project-management"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "distill-prompt",
@@ -109,7 +167,10 @@
       "description": "Create lean, token-efficient versions of prompts",
       "source": "content/prompt-task-distill-prompt.md",
       "distilled": "content/distilled/distill-prompt.md",
-      "tags": ["prompts", "optimization"],
+      "tags": [
+        "prompts",
+        "optimization"
+      ],
       "bundles": []
     },
     {
@@ -119,7 +180,10 @@
       "description": "Validate distilled prompts preserve essential instructions",
       "source": "content/prompt-task-verify-distilled-prompt.md",
       "distilled": "content/distilled/verify-prompt.md",
-      "tags": ["prompts", "validation"],
+      "tags": [
+        "prompts",
+        "validation"
+      ],
       "bundles": []
     },
     {
@@ -129,8 +193,14 @@
       "description": "Structured investigation of unfamiliar codebases",
       "source": "content/prompt-task-research-codebase.md",
       "distilled": "content/distilled/research-codebase.md",
-      "tags": ["research", "codebase", "exploration"],
-      "bundles": ["essentials"]
+      "tags": [
+        "research",
+        "codebase",
+        "exploration"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "create-handoff",
@@ -139,8 +209,14 @@
       "description": "Generate context documents for session continuity",
       "source": "content/prompt-workflow-create-handoff.md",
       "distilled": "content/distilled/create-handoff.md",
-      "tags": ["handoff", "documentation", "context"],
-      "bundles": ["essentials"]
+      "tags": [
+        "handoff",
+        "documentation",
+        "context"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "resume-handoff",
@@ -149,8 +225,14 @@
       "description": "Continue work from a previous session's handoff document",
       "source": "content/prompt-workflow-resume-handoff.md",
       "distilled": "content/distilled/resume-handoff.md",
-      "tags": ["handoff", "context", "continuity"],
-      "bundles": ["essentials"]
+      "tags": [
+        "handoff",
+        "context",
+        "continuity"
+      ],
+      "bundles": [
+        "essentials"
+      ]
     },
     {
       "name": "design-practice",
@@ -159,8 +241,14 @@
       "description": "Rich Hickey-inspired design methodology workflow",
       "source": "content/prompt-workflow-design-in-practice.md",
       "distilled": "content/distilled/design-practice.md",
-      "tags": ["design", "architecture", "methodology"],
-      "bundles": ["planning"]
+      "tags": [
+        "design",
+        "architecture",
+        "methodology"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "extract-prompt",
@@ -169,7 +257,10 @@
       "description": "Turn successful interactions into reusable prompts",
       "source": "content/prompt-workflow-extract-prompt-from-conversation.md",
       "distilled": "content/distilled/extract-prompt.md",
-      "tags": ["prompts", "extraction"],
+      "tags": [
+        "prompts",
+        "extraction"
+      ],
       "bundles": []
     },
     {
@@ -179,8 +270,14 @@
       "description": "Anticipate failures before they happen",
       "source": "content/prompt-workflow-pre-mortem-planning.md",
       "distilled": "content/distilled/pre-mortem.md",
-      "tags": ["planning", "risk", "prevention"],
-      "bundles": ["planning"]
+      "tags": [
+        "planning",
+        "risk",
+        "prevention"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "tdd",
@@ -189,8 +286,14 @@
       "description": "Test-driven development workflow",
       "source": "content/prompt-workflow-plan-implement-verify-tdd.md",
       "distilled": "content/distilled/tdd.md",
-      "tags": ["tdd", "testing", "implementation"],
-      "bundles": ["planning"]
+      "tags": [
+        "tdd",
+        "testing",
+        "implementation"
+      ],
+      "bundles": [
+        "planning"
+      ]
     },
     {
       "name": "narrative-article",
@@ -199,8 +302,14 @@
       "description": "Create engaging technical articles with narrative structure",
       "source": "content/prompt-workflow-write-narrative-article.md",
       "distilled": "content/distilled/narrative-article.md",
-      "tags": ["writing", "documentation", "narrative"],
-      "bundles": ["documentation"]
+      "tags": [
+        "writing",
+        "documentation",
+        "narrative"
+      ],
+      "bundles": [
+        "documentation"
+      ]
     },
     {
       "name": "optionality-review",
@@ -209,8 +318,14 @@
       "description": "Evaluate design decisions for flexibility and reversibility",
       "source": "content/prompt-workflow-optionality-review.md",
       "distilled": "content/distilled/optionality-review.md",
-      "tags": ["review", "design", "optionality"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "design",
+        "optionality"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "multi-agent-review",
@@ -219,8 +334,14 @@
       "description": "Coordinate multiple agents for comprehensive review",
       "source": "content/prompt-workflow-multi-agent-parallel-review.md",
       "distilled": "content/distilled/multi-agent-review.md",
-      "tags": ["review", "multi-agent", "parallel"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "multi-agent",
+        "parallel"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "plan-review",
@@ -229,8 +350,14 @@
       "description": "Iterative review of implementation plans",
       "source": "content/prompt-task-plan-review.md",
       "distilled": "content/distilled/plan-review.md",
-      "tags": ["review", "planning"],
-      "bundles": ["planning", "reviews"]
+      "tags": [
+        "review",
+        "planning"
+      ],
+      "bundles": [
+        "planning",
+        "reviews"
+      ]
     },
     {
       "name": "design-review",
@@ -239,8 +366,13 @@
       "description": "Review problem statements and decision matrices",
       "source": "content/prompt-task-design-review.md",
       "distilled": "content/distilled/design-review.md",
-      "tags": ["review", "design"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "design"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "research-review",
@@ -249,8 +381,13 @@
       "description": "Iterative review of research documents using Rule of 5",
       "source": "content/prompt-task-research-review.md",
       "distilled": "content/distilled/research-review.md",
-      "tags": ["review", "research"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "research"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "issue-review",
@@ -259,8 +396,14 @@
       "description": "Review issues for completeness and dependencies",
       "source": "content/prompt-task-issue-tracker-review.md",
       "distilled": "content/distilled/issue-review.md",
-      "tags": ["review", "issues", "project-management"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "issues",
+        "project-management"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "rule-of-5-universal",
@@ -269,8 +412,14 @@
       "description": "Steve Yegge's original 5-stage review for any artifact",
       "source": "content/prompt-task-rule-of-5-universal.md",
       "distilled": "content/distilled/rule-of-5-universal.md",
-      "tags": ["review", "universal", "rule-of-5"],
-      "bundles": ["reviews"]
+      "tags": [
+        "review",
+        "universal",
+        "rule-of-5"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "bias-audit",
@@ -279,8 +428,16 @@
       "description": "Detect, prevent, and mitigate systemic, statistical, and cognitive biases using multidisciplinary frameworks",
       "source": "content/prompt-task-systematic-bias-audit-and-mitigation.md",
       "distilled": "content/distilled/bias-audit.md",
-      "tags": ["bias", "ethics", "auditing", "safety", "rule-of-5"],
-      "bundles": ["reviews"]
+      "tags": [
+        "bias",
+        "ethics",
+        "auditing",
+        "safety",
+        "rule-of-5"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "abstraction-miner",
@@ -289,8 +446,16 @@
       "description": "Scan codebase for semantic duplication and propose reusable abstractions — advisory only, no code changes",
       "source": "content/prompt-task-abstraction-miner.md",
       "distilled": "content/distilled/abstraction-miner.md",
-      "tags": ["refactoring", "abstraction", "duplication", "resonant-coding", "code-quality"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "abstraction",
+        "duplication",
+        "resonant-coding",
+        "code-quality"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "context-guardian",
@@ -299,8 +464,16 @@
       "description": "System prompt that enforces reuse of existing abstractions and prevents architectural drift during development",
       "source": "content/prompt-system-context-guardian.md",
       "distilled": "content/distilled/context-guardian.md",
-      "tags": ["refactoring", "architecture", "resonant-coding", "reuse", "system-prompt"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "architecture",
+        "resonant-coding",
+        "reuse",
+        "system-prompt"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "resonant-refactor",
@@ -309,8 +482,16 @@
       "description": "Safe, human-approved refactoring workflow with impact analysis, atomic execution, and automatic rollback",
       "source": "content/prompt-workflow-resonant-refactor.md",
       "distilled": "content/distilled/resonant-refactor.md",
-      "tags": ["refactoring", "workflow", "humanlayer", "resonant-coding", "safety"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "workflow",
+        "humanlayer",
+        "resonant-coding",
+        "safety"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "test-friction",
@@ -319,8 +500,19 @@
       "description": "Diagnose production code design flaws by reading test pain signals — advisory only, no code changes",
       "source": "content/prompt-task-test-friction-diagnostician.md",
       "distilled": "content/distilled/test-friction.md",
-      "tags": ["testing", "tdd", "design-patterns", "refactoring", "abstraction", "test-design", "code-quality"],
-      "bundles": ["testing", "refactoring"]
+      "tags": [
+        "testing",
+        "tdd",
+        "design-patterns",
+        "refactoring",
+        "abstraction",
+        "test-design",
+        "code-quality"
+      ],
+      "bundles": [
+        "testing",
+        "refactoring"
+      ]
     },
     {
       "name": "test-abstraction-miner",
@@ -329,8 +521,19 @@
       "description": "Detect Lazy Test clusters in test suites and propose parameterized tests and property-based test escalations — advisory only, no code changes",
       "source": "content/prompt-task-test-abstraction-miner.md",
       "distilled": "content/distilled/test-abstraction-miner.md",
-      "tags": ["testing", "parameterization", "property-based-testing", "test-smells", "abstraction-miner", "tdd", "lazy-test"],
-      "bundles": ["testing", "refactoring"]
+      "tags": [
+        "testing",
+        "parameterization",
+        "property-based-testing",
+        "test-smells",
+        "abstraction-miner",
+        "tdd",
+        "lazy-test"
+      ],
+      "bundles": [
+        "testing",
+        "refactoring"
+      ]
     },
     {
       "name": "pwa-accessibility-review",
@@ -339,8 +542,18 @@
       "description": "4-domain heuristic review of PWAs targeting non-technical merchants on entry-level devices with volatile connectivity",
       "source": "content/prompt-task-pwa-accessibility-review.md",
       "distilled": "content/distilled/pwa-accessibility-review.md",
-      "tags": ["pwa", "accessibility", "wcag", "offline-first", "mobile-performance", "security", "review"],
-      "bundles": ["reviews"]
+      "tags": [
+        "pwa",
+        "accessibility",
+        "wcag",
+        "offline-first",
+        "mobile-performance",
+        "security",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "research-documentation",
@@ -349,8 +562,16 @@
       "description": "Audit existing documentation or plan a new suite using advanced frameworks",
       "source": "content/prompt-task-research-documentation.md",
       "distilled": "content/distilled/research-documentation.md",
-      "tags": ["research", "documentation", "audit", "information-architecture"],
-      "bundles": ["documentation", "research"]
+      "tags": [
+        "research",
+        "documentation",
+        "audit",
+        "information-architecture"
+      ],
+      "bundles": [
+        "documentation",
+        "research"
+      ]
     },
     {
       "name": "implement-documentation",
@@ -359,8 +580,14 @@
       "description": "Write documentation using Diátaxis, Info Mapping, and EPPO principles",
       "source": "content/prompt-task-implement-documentation.md",
       "distilled": "content/distilled/implement-documentation.md",
-      "tags": ["implementation", "documentation", "technical-writing"],
-      "bundles": ["documentation"]
+      "tags": [
+        "implementation",
+        "documentation",
+        "technical-writing"
+      ],
+      "bundles": [
+        "documentation"
+      ]
     },
     {
       "name": "review-documentation",
@@ -369,8 +596,16 @@
       "description": "Iterative review of documentation for cognitive scannability and AI-readiness",
       "source": "content/prompt-task-review-documentation.md",
       "distilled": "content/distilled/review-documentation.md",
-      "tags": ["review", "documentation", "technical-writing", "rule-of-5"],
-      "bundles": ["documentation", "reviews"]
+      "tags": [
+        "review",
+        "documentation",
+        "technical-writing",
+        "rule-of-5"
+      ],
+      "bundles": [
+        "documentation",
+        "reviews"
+      ]
     },
     {
       "name": "red-team-review",
@@ -379,8 +614,19 @@
       "description": "Red-team-style adversarial review finding logic bugs, failure modes, security vulnerabilities, and deployment risks",
       "source": "content/prompt-task-red-team-review.md",
       "distilled": "content/distilled/red-team-review.md",
-      "tags": ["red-teaming", "bug-detection", "review", "reliability", "security", "ci-cd", "edge-cases", "failure-modes"],
-      "bundles": ["reviews"]
+      "tags": [
+        "red-teaming",
+        "bug-detection",
+        "review",
+        "reliability",
+        "security",
+        "ci-cd",
+        "edge-cases",
+        "failure-modes"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "mutability-diagnostician",
@@ -389,8 +635,18 @@
       "description": "Diagnose pathological mutable state, side effect entanglement, and temporal coupling — map findings to immutability refactoring patterns",
       "source": "content/prompt-task-mutability-diagnostician.md",
       "distilled": "content/distilled/mutability-diagnostician.md",
-      "tags": ["refactoring", "immutability", "functional-programming", "code-smells", "side-effects", "concurrency", "value-objects"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "immutability",
+        "functional-programming",
+        "code-smells",
+        "side-effects",
+        "concurrency",
+        "value-objects"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "composability-diagnostician",
@@ -399,8 +655,18 @@
       "description": "Diagnose composition friction — type mismatches, missed endomorphisms, ad-hoc patterns without algebraic guarantees — and map findings to category-theoretic refactoring patterns",
       "source": "content/prompt-task-composability-diagnostician.md",
       "distilled": "content/distilled/composability-diagnostician.md",
-      "tags": ["refactoring", "composability", "category-theory", "type-systems", "endomorphisms", "property-based-testing", "architecture"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "composability",
+        "category-theory",
+        "type-systems",
+        "endomorphisms",
+        "property-based-testing",
+        "architecture"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "invalid-states-diagnostician",
@@ -409,8 +675,20 @@
       "description": "Diagnose representable invalid states — primitive obsession, boolean blindness, implicit coupling, shotgun parsing, ad-hoc state machines, exhaustiveness gaps — and map findings to type-tightening refactoring patterns",
       "source": "content/prompt-task-invalid-states-diagnostician.md",
       "distilled": "content/distilled/invalid-states-diagnostician.md",
-      "tags": ["refactoring", "type-systems", "domain-modeling", "algebraic-data-types", "code-review", "state-machines", "parse-dont-validate", "typestate", "value-objects"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "type-systems",
+        "domain-modeling",
+        "algebraic-data-types",
+        "code-review",
+        "state-machines",
+        "parse-dont-validate",
+        "typestate",
+        "value-objects"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "julia-performance-diagnostician",
@@ -419,8 +697,21 @@
       "description": "Diagnose Julia performance pathologies — type instabilities, heap allocation floods, cache-hostile access, dynamic dispatch — and map findings to optimization patterns grounded in the compilation pipeline",
       "source": "content/prompt-task-julia-performance-diagnostician.md",
       "distilled": "content/distilled/julia-performance-diagnostician.md",
-      "tags": ["julia", "performance", "type-stability", "profiling", "anti-patterns", "refactoring", "benchmarking", "memory-allocation", "simd", "multiple-dispatch"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "julia",
+        "performance",
+        "type-stability",
+        "profiling",
+        "anti-patterns",
+        "refactoring",
+        "benchmarking",
+        "memory-allocation",
+        "simd",
+        "multiple-dispatch"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "modularity-diagnostician",
@@ -429,8 +720,21 @@
       "description": "Diagnose modularity violations — high coupling, low cohesion, cyclic dependencies, God Objects, boundary erosion, temporal coupling — and map findings to decomposition patterns grounded in the Unix philosophy",
       "source": "content/prompt-task-modularity-diagnostician.md",
       "distilled": "content/distilled/modularity-diagnostician.md",
-      "tags": ["refactoring", "modularity", "unix-philosophy", "coupling", "cohesion", "architectural-metrics", "dependency-graphs", "decomposition", "anti-patterns", "code-smells"],
-      "bundles": ["refactoring"]
+      "tags": [
+        "refactoring",
+        "modularity",
+        "unix-philosophy",
+        "coupling",
+        "cohesion",
+        "architectural-metrics",
+        "dependency-graphs",
+        "decomposition",
+        "anti-patterns",
+        "code-smells"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     },
     {
       "name": "verification-diagnostician",
@@ -439,8 +743,19 @@
       "description": "Diagnose factual errors, unsupported claims, logical inconsistencies, misattributed sources, and integrity concerns in documents — four-layer verification protocol (source authority, factual accuracy, logical consistency, provenance)",
       "source": "content/prompt-task-verification-diagnostician.md",
       "distilled": "content/distilled/verification-diagnostician.md",
-      "tags": ["fact-checking", "verification", "hallucination-detection", "knowledge-graphs", "source-authority", "logical-consistency", "provenance", "review"],
-      "bundles": ["reviews"]
+      "tags": [
+        "fact-checking",
+        "verification",
+        "hallucination-detection",
+        "knowledge-graphs",
+        "source-authority",
+        "logical-consistency",
+        "provenance",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     },
     {
       "name": "specification-evaluation-diagnostician",
@@ -449,38 +764,123 @@
       "description": "Evaluate specifications across Completeness, Correctness, and Coherence dimensions mapped to ISO 29148 — cross-domain quality gate for software, hardware, business process, and research specifications",
       "source": "content/prompt-task-specification-evaluation-diagnostician.md",
       "distilled": "content/distilled/specification-evaluation-diagnostician.md",
-      "tags": ["specification-evaluation", "completeness", "correctness", "coherence", "iso-29148", "review"],
-      "bundles": ["reviews"]
+      "tags": [
+        "specification-evaluation",
+        "completeness",
+        "correctness",
+        "coherence",
+        "iso-29148",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
+    },
+    {
+      "name": "adversarial-stakeholder-evaluation",
+      "type": "task",
+      "title": "Adversarial Stakeholder Evaluation",
+      "description": "Three-tier adversarial evaluation of proposals: Simulated Stakeholder Council, Anti-Persona stress testing, and Pre-Mortem protocol with contradiction analysis",
+      "source": "content/prompt-task-adversarial-stakeholder-evaluation.md",
+      "distilled": "content/distilled/adversarial-stakeholder-evaluation.md",
+      "tags": [
+        "adversarial-evaluation",
+        "stakeholder-simulation",
+        "pre-mortem",
+        "anti-persona",
+        "red-teaming",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     }
   ],
   "bundles": {
     "essentials": {
       "description": "Core prompts for everyday development",
-      "prompts": ["commit", "debug", "describe-pr", "code-review", "research-codebase", "create-handoff", "resume-handoff"]
+      "prompts": [
+        "commit",
+        "debug",
+        "describe-pr",
+        "code-review",
+        "research-codebase",
+        "create-handoff",
+        "resume-handoff"
+      ]
     },
     "planning": {
       "description": "Project planning and implementation workflows",
-      "prompts": ["create-plan", "implement-plan", "iterate-plan", "create-issues", "design-practice", "pre-mortem", "tdd", "plan-review"]
+      "prompts": [
+        "create-plan",
+        "implement-plan",
+        "iterate-plan",
+        "create-issues",
+        "design-practice",
+        "pre-mortem",
+        "tdd",
+        "plan-review"
+      ]
     },
     "reviews": {
       "description": "Code, design, and research review processes",
-      "prompts": ["code-review", "rule-of-5", "optionality-review", "multi-agent-review", "plan-review", "design-review", "research-review", "issue-review", "rule-of-5-universal", "bias-audit", "pwa-accessibility-review", "review-documentation", "specification-review", "red-team-review", "verification-diagnostician", "specification-evaluation-diagnostician"]
+      "prompts": [
+        "code-review",
+        "rule-of-5",
+        "optionality-review",
+        "multi-agent-review",
+        "plan-review",
+        "design-review",
+        "research-review",
+        "issue-review",
+        "rule-of-5-universal",
+        "bias-audit",
+        "pwa-accessibility-review",
+        "review-documentation",
+        "specification-review",
+        "red-team-review",
+        "verification-diagnostician",
+        "specification-evaluation-diagnostician",
+        "adversarial-stakeholder-evaluation"
+      ]
     },
     "refactoring": {
       "description": "Resonant Coding refactoring skills: scan, guard, and safely execute architectural improvements",
-      "prompts": ["abstraction-miner", "context-guardian", "resonant-refactor", "test-friction", "test-abstraction-miner", "mutability-diagnostician", "composability-diagnostician", "invalid-states-diagnostician", "julia-performance-diagnostician", "modularity-diagnostician"]
+      "prompts": [
+        "abstraction-miner",
+        "context-guardian",
+        "resonant-refactor",
+        "test-friction",
+        "test-abstraction-miner",
+        "mutability-diagnostician",
+        "composability-diagnostician",
+        "invalid-states-diagnostician",
+        "julia-performance-diagnostician",
+        "modularity-diagnostician"
+      ]
     },
     "testing": {
       "description": "Test quality tools: diagnose test friction, collapse test duplication, and escalate to property-based tests",
-      "prompts": ["tdd", "test-friction", "test-abstraction-miner"]
+      "prompts": [
+        "tdd",
+        "test-friction",
+        "test-abstraction-miner"
+      ]
     },
     "documentation": {
       "description": "Documentation architecture, implementation, and review tools",
-      "prompts": ["research-documentation", "implement-documentation", "review-documentation", "narrative-article"]
+      "prompts": [
+        "research-documentation",
+        "implement-documentation",
+        "review-documentation",
+        "narrative-article"
+      ]
     },
     "all": {
       "description": "Complete collection of all prompts",
-      "prompts": ["*"]
+      "prompts": [
+        "*"
+      ]
     }
   }
 }
