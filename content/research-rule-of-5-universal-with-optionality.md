@@ -4,7 +4,7 @@ type: prompt
 subtype: task
 tags: [review, rule-of-5, universal, iteration, convergence, optionality, flexibility, strategic-thinking, finance, real-options, antifragile]
 tools: [claude-code, cursor, aider, gemini, any-cli-llm]
-status: enhanced
+status: tested
 created: 2026-01-16
 updated: 2026-01-18
 version: 2.1.0

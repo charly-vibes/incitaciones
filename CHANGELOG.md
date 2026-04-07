@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-04-07
+
+#### Fixed - Manifest-Driven Publishing Workflow
+
+- **justfile** — `just new prompt` now scaffolds a distilled companion file and prints the required manifest publication steps. `validate` now checks stricter frontmatter/status rules, and `sync-manifest` now fails when prompt or distilled files exist on disk without manifest registration.
+- **install.sh** — `--list` and `--bundle all` now derive prompt availability from `content/manifest.json`, making the manifest the source of truth for installation and listing behavior.
+- **content/manifest.json** + **_site/manifest.json** — Registered `rigidity-diagnostician` and `testability-implementability-evaluator`, keeping shipped prompts aligned with the manifest and site output.
+- **README.md**, **CONTRIBUTING.md**, **AGENTS.md** — Updated contributor guidance so the documented workflow matches the actual scaffold, validation, and explicit `git add` policy.
+- **content/example-rule-of-5-repository-review.md** — Added a real repository-review example showing how the Rule of 5 workflow was applied to this repository.
+
 ### 2026-03-03
 
 #### Added - Bias Research Framework

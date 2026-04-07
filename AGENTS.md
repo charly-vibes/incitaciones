@@ -88,8 +88,10 @@ tags: [tag1, tag2]
 tools: [claude-code, aider]
 status: draft|tested|verified
 created: 2026-01-12
+updated: 2026-01-12
 version: 1.0.0
 related: [other-file.md]
+source: original|adapted-from-URL|research-based
 ---
 
 # Content here
@@ -118,11 +120,13 @@ just sync-manifest  # validate manifest files, update version, sync _site/
 ## Workflow
 
 1. **Create** - `just new prompt "Name"`
-2. **Edit** - Add content and examples
-3. **Test** - Try it with real AI tools
-4. **Update status** - draft → tested → verified
-5. **Link** - Add to `related` field
-6. **Commit** - Update CHANGELOG.md and commit (see Git Guidelines below)
+2. **Edit** - Fill in the source prompt and the distilled runtime form
+3. **Register** - Add the prompt to `content/manifest.json`
+4. **Validate** - Run `just validate-distilled` and `just sync-manifest`
+5. **Test** - Try it with real AI tools
+6. **Update status** - draft → tested → verified
+7. **Link** - Add related files where they materially help navigation
+8. **Commit** - Update CHANGELOG.md and commit (see Git Guidelines below)
 
 ## Git Commit Guidelines
 
@@ -177,6 +181,6 @@ No folders needed - the flat structure and metadata make relationships clear.
 2. Prompts include tested examples
 3. Research cites sources
 4. Examples show real usage
-5. Related field connects minimum 2 files
+5. Related files are linked when they materially improve navigation
 
 See CONTRIBUTING.md for full guidelines.

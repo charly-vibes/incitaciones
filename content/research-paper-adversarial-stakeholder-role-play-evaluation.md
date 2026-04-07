@@ -10,6 +10,7 @@ updated: 2026-03-30
 version: 1.0.0
 related:
   - prompt-task-adversarial-stakeholder-evaluation.md
+  - prompt-task-systematic-bias-audit-and-mitigation.md
   - research-paper-automated-red-teaming-vulnerability-discovery.md
   - research-paper-cognitive-architectures-for-prompts.md
   - research-paper-bias-detection-prevention-mitigation.md

@@ -1,5 +1,5 @@
 {
-  "version": "2026-03-30",
+  "version": "2026-04-07",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -840,6 +840,52 @@
       "bundles": [
         "reviews"
       ]
+    },
+    {
+      "name": "testability-implementability-evaluator",
+      "type": "task",
+      "title": "Testability and Implementability Evaluator",
+      "description": "Evaluate software specifications for whether they can be built and verified before implementation begins",
+      "source": "content/prompt-task-testability-implementability-evaluator.md",
+      "distilled": "content/distilled/testability-implementability-evaluator.md",
+      "tags": [
+        "specification-evaluation",
+        "testability",
+        "implementability",
+        "iso-29148",
+        "pieces",
+        "glia",
+        "ears",
+        "bach-testability",
+        "definition-of-ready",
+        "feasibility-analysis",
+        "shift-left"
+      ],
+      "bundles": [
+        "reviews"
+      ]
+    },
+    {
+      "name": "rigidity-diagnostician",
+      "type": "task",
+      "title": "Rigidity Diagnostician",
+      "description": "Diagnose structural rigidity from excessive coupling, inheritance, and OCP violations, then map findings to composition-based remediation patterns",
+      "source": "content/prompt-task-rigidity-diagnostician.md",
+      "distilled": "content/distilled/rigidity-diagnostician.md",
+      "tags": [
+        "refactoring",
+        "rigidity",
+        "open-closed-principle",
+        "solid",
+        "composition-over-inheritance",
+        "design-patterns",
+        "coupling",
+        "code-smells",
+        "architecture"
+      ],
+      "bundles": [
+        "refactoring"
+      ]
     }
   ],
   "bundles": {
@@ -889,7 +935,8 @@
         "specification-evaluation-diagnostician",
         "adversarial-stakeholder-evaluation",
         "ux-dx-evaluation-diagnostician",
-        "formal-verification-evaluator"
+        "formal-verification-evaluator",
+        "testability-implementability-evaluator"
       ]
     },
     "refactoring": {
@@ -902,6 +949,7 @@
         "test-abstraction-miner",
         "mutability-diagnostician",
         "composability-diagnostician",
+        "rigidity-diagnostician",
         "invalid-states-diagnostician",
         "julia-performance-diagnostician",
         "modularity-diagnostician"

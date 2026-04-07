@@ -9,6 +9,7 @@ created: 2026-03-30
 updated: 2026-03-30
 version: 1.0.0
 related:
+  - prompt-task-ux-dx-evaluation-diagnostician.md
   - prompt-task-pwa-accessibility-review.md
   - research-paper-pwa-accessibility-micro-merchants.md
   - research-paper-specification-evaluation-generic-framework.md

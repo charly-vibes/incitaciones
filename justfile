@@ -11,6 +11,7 @@ new TYPE NAME:
     set -euo pipefail
     DATE=$(date +%Y-%m-%d)
     SLUG=$(echo "{{NAME}}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
+    DISTILLED=""
 
     if [ -z "$SLUG" ]; then
         echo "Error: Invalid name results in empty slug." >&2
@@ -21,6 +22,7 @@ new TYPE NAME:
         prompt)
             FILE="content/prompt-task-${SLUG}.md"
             TEMPLATE="content/template-prompt.md"
+            DISTILLED="content/distilled/${SLUG}.md"
             ;;
         research)
             FILE="content/research-finding-${SLUG}.md"
@@ -42,6 +44,11 @@ new TYPE NAME:
         exit 1
     fi
 
+    if [ -n "$DISTILLED" ] && [ -f "$DISTILLED" ]; then
+        echo "Distilled file already exists: $DISTILLED"
+        exit 1
+    fi
+
     # Copy template and update dates
     cp "$TEMPLATE" "$FILE"
     sed -i "s/\[YYYY-MM-DD\]/$DATE/g" "$FILE"
@@ -49,7 +56,23 @@ new TYPE NAME:
     sed -i "s/# \[Title\]/# {{NAME}}/g" "$FILE"
 
     echo "Created: $FILE"
+    if [ -n "$DISTILLED" ]; then
+        {
+            echo "<!-- Full version: $FILE -->"
+            echo "[Distilled prompt goes here. Keep only the instructions needed at runtime.]"
+        } > "$DISTILLED"
+        echo "Created: $DISTILLED"
+    fi
+
     echo "Edit with: \$EDITOR $FILE"
+    if [ -n "$DISTILLED" ]; then
+        echo ""
+        echo "Next steps:"
+        echo "  1. Edit both files"
+        echo "  2. Add a manifest entry in content/manifest.json"
+        echo "  3. Run just validate-distilled"
+        echo "  4. Run just sync-manifest"
+    fi
 
 # Interactive search with fzf (preview enabled)
 search:
@@ -145,7 +168,7 @@ show-related FILE:
         echo "$RELATED"
     fi
 
-# Validate all content files (check metadata completeness)
+# Validate all content files against repository metadata rules
 validate:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -153,7 +176,9 @@ validate:
     echo ""
 
     ERRORS=0
-    REQUIRED_FIELDS=("title" "type" "tags" "status" "created" "version")
+    WARNINGS=0
+    REQUIRED_FIELDS=("title" "type" "tags" "status" "created" "updated" "version" "source")
+    VALID_STATUSES_REGEX='^(draft|tested|verified)$'
 
     for file in content/*.md; do
         # Skip templates
@@ -162,28 +187,73 @@ validate:
         fi
 
         BASENAME=$(basename "$file")
+        FRONTMATTER=$(awk '
+            BEGIN { in_frontmatter = 0; started = 0 }
+            /^---$/ {
+                if (started == 0) {
+                    started = 1
+                    in_frontmatter = 1
+                    next
+                }
+                if (in_frontmatter == 1) {
+                    exit
+                }
+            }
+            in_frontmatter == 1 { print }
+        ' "$file")
+
+        if [ -z "$FRONTMATTER" ]; then
+            echo "❌ $BASENAME: missing frontmatter block"
+            ERRORS=$((ERRORS + 1))
+            continue
+        fi
 
         # Check for required frontmatter fields
         for field in "${REQUIRED_FIELDS[@]}"; do
-            if ! grep -q "^${field}:" "$file"; then
+            if ! printf '%s\n' "$FRONTMATTER" | grep -q "^${field}:"; then
                 echo "❌ $BASENAME: missing field '$field'"
                 ERRORS=$((ERRORS + 1))
             fi
         done
 
+        STATUS=$(printf '%s\n' "$FRONTMATTER" | sed -n 's/^status:[[:space:]]*//p' | head -1)
+        if [ -n "$STATUS" ] && ! printf '%s\n' "$STATUS" | grep -Eq "$VALID_STATUSES_REGEX"; then
+            echo "❌ $BASENAME: invalid status '$STATUS' (expected draft|tested|verified)"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        TAGS_LINE=$(printf '%s\n' "$FRONTMATTER" | sed -n 's/^tags:[[:space:]]*\[\(.*\)\]/\1/p' | head -1)
+        if [ -n "$TAGS_LINE" ]; then
+            TAG_COUNT=$(printf '%s\n' "$TAGS_LINE" | tr ',' '\n' | sed '/^[[:space:]]*$/d' | wc -l)
+            if [ "$TAG_COUNT" -lt 3 ]; then
+                echo "❌ $BASENAME: expected at least 3 tags"
+                ERRORS=$((ERRORS + 1))
+            fi
+        fi
+
         # Check if related files exist
-        RELATED=$(sed -n '/^related:/,/^[a-z]/p' "$file" | grep -E '^\s*-' | sed 's/^\s*-\s*//' || true)
+        RELATED=$(printf '%s\n' "$FRONTMATTER" | sed -n '/^related:/,/^[a-z]/p' | grep -E '^\s*-' | sed 's/^\s*-\s*//' || true)
+        if ! printf '%s\n' "$FRONTMATTER" | grep -q '^related:'; then
+            echo "⚠️  $BASENAME: missing related field"
+            WARNINGS=$((WARNINGS + 1))
+        fi
         while IFS= read -r related_file; do
             if [ -n "$related_file" ] && [ ! -f "content/$related_file" ]; then
-                echo "⚠️  $BASENAME: related file not found: $related_file"
+                echo "❌ $BASENAME: related file not found: $related_file"
+                ERRORS=$((ERRORS + 1))
             fi
         done <<< "$RELATED"
     done
 
-    if [ $ERRORS -eq 0 ]; then
+    if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
         echo "✅ All files valid!"
+    elif [ $ERRORS -eq 0 ]; then
+        echo ""
+        echo "Warnings: $WARNINGS"
+        echo "✅ No validation errors"
     else
         echo ""
+        [ $WARNINGS -gt 0 ] && echo "Warnings: $WARNINGS"
         echo "Found $ERRORS validation error(s)"
         exit 1
     fi
@@ -591,24 +661,25 @@ sync-manifest:
 
     echo ""
 
-    # Warn about source files on disk not registered in manifest
+    # Fail if prompt files on disk are not registered in the manifest.
     ORPHANS=0
     for file in content/prompt-*.md; do
         if ! jq -e --arg f "$file" '.prompts[] | select(.source == $f)' "$MANIFEST" > /dev/null 2>&1; then
-            echo "⚠️  unregistered source: $file"
+            echo "  ❌ unregistered source: $file"
             ORPHANS=$((ORPHANS + 1))
         fi
     done
     for file in content/distilled/*.md; do
         if ! jq -e --arg f "$file" '.prompts[] | select(.distilled == $f)' "$MANIFEST" > /dev/null 2>&1; then
-            echo "⚠️  unregistered distilled: $file"
+            echo "  ❌ unregistered distilled: $file"
             ORPHANS=$((ORPHANS + 1))
         fi
     done
 
-    if [ $ERRORS -gt 0 ]; then
+    if [ $ERRORS -gt 0 ] || [ $ORPHANS -gt 0 ]; then
         echo ""
-        echo "$ERRORS missing file(s) — fix before updating version."
+        [ $ERRORS -gt 0 ] && echo "$ERRORS missing file(s) — fix before updating version."
+        [ $ORPHANS -gt 0 ] && echo "$ORPHANS unregistered prompt file(s) — add them to the manifest before updating version."
         exit 1
     fi
 
@@ -630,11 +701,7 @@ sync-manifest:
     fi
 
     echo ""
-    if [ $ORPHANS -gt 0 ]; then
-        echo "✅ Manifest valid ($ORPHANS unregistered file(s) — consider adding them)"
-    else
-        echo "✅ Manifest OK"
-    fi
+    echo "✅ Manifest OK"
 
 # Preview what a generated SKILL.md would look like for a prompt
 generate-skill NAME:

@@ -17,7 +17,11 @@ just validate
 just changelog "Added prompt for X"
 
 # Commit
-git add content/ CHANGELOG.md
+git add content/prompt-task-your-prompt-name.md
+git add content/distilled/your-prompt-name.md
+git add content/manifest.json
+git add _site/manifest.json
+git add CHANGELOG.md
 git commit -m "Add prompt for X"
 ```
 
@@ -79,7 +83,9 @@ type: prompt|research|example|references
 tags: [at, least, three, tags]
 status: draft|tested|verified
 created: YYYY-MM-DD
+updated: YYYY-MM-DD
 version: 1.0.0
+source: original|adapted-from-URL|research-based
 ---
 ```
 
@@ -88,7 +94,6 @@ version: 1.0.0
 ```yaml
 tools: [claude-code, aider, cursor, gemini]
 related: [other-file.md, another-file.md]
-source: original|adapted-from-URL|research-based
 author: your-name
 difficulty: beginner|intermediate|advanced
 ```
@@ -157,8 +162,8 @@ Content should progress through these stages:
 
 Update status with:
 ```bash
-just mark-tested content/prompt-task-example.md
-just mark-verified content/prompt-task-example.md
+just mark-tested prompt-task-example.md
+just mark-verified prompt-task-example.md
 ```
 
 ## Quality Checklist
@@ -179,6 +184,8 @@ Run validation:
 ```bash
 just validate
 just check-links
+just validate-distilled
+just sync-manifest
 ```
 
 ## Relating Content

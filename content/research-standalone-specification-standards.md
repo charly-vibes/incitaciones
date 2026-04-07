@@ -2,9 +2,12 @@
 title: "Research: Standalone Specification Standards for AI-Ready Systems"
 type: research
 tags: [spec-driven-development, openspec, ai-ready-docs, requirements-engineering, standalone-specs, ieee-29148]
-status: final
+status: tested
 created: 2026-03-16
+updated: 2026-03-16
 version: 1.1.0
+related: [prompt-task-specification-review.md, prompt-task-specification-evaluation-diagnostician.md]
+source: synthesis of ISO/IEC/IEEE 29148, OpenSpec, BDD, and spec-driven development literature
 ---
 
 # Research: Standalone Specification Standards for AI-Ready Systems

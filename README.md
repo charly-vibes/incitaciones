@@ -15,10 +15,10 @@ cd incitaciones
 **Install options:**
 
 ```bash
-./install.sh --bundle essentials   # Core prompts only (7 prompts)
-./install.sh --bundle planning     # Planning workflows (8 prompts)
-./install.sh --bundle reviews      # Review prompts (9 prompts)
-./install.sh --bundle documentation # Documentation tools (4 prompts)
+./install.sh --bundle essentials    # Core prompts only
+./install.sh --bundle planning      # Planning workflows
+./install.sh --bundle reviews       # Review prompts
+./install.sh --bundle documentation # Documentation tools
 ./install.sh --format commands     # Legacy flat-file format for other tools
 ./install.sh --list                # Show available prompts
 ./install.sh --help                # Show all options
@@ -43,7 +43,7 @@ ls content/
 # Find prompts about a topic
 just find refactoring
 
-# Create new prompt
+# Create new prompt scaffold
 just new prompt "Your Task Name"
 
 # Interactive search with fzf
@@ -72,10 +72,11 @@ just validate            # Check metadata
 just stats               # Show statistics
 
 # Skills installation
-just install             # Install prompts as ~/.claude/skills
+just install             # Run ./install.sh with any flags you pass through
 just list-distilled      # List all distilled prompts
 just validate-distilled  # Validate distilled prompts
 just list-bundles        # Show available bundles
+just sync-manifest       # Validate manifest references and sync _site/manifest.json
 just generate-skill NAME # Preview SKILL.md output for a prompt
 ```
 
@@ -151,7 +152,10 @@ Focus on simplicity and discoverability over complex organization.
 ```bash
 just new prompt "Incremental Refactoring"
 # Edit content/prompt-task-incremental-refactoring.md
-# Add frontmatter, prompt text, examples
+# Edit content/distilled/incremental-refactoring.md
+# Add prompt text, examples, and distilled runtime form
+# Register the prompt in content/manifest.json
+# Run just validate-distilled && just sync-manifest
 # Test it with Claude Code
 # Mark as tested and commit
 ```
@@ -168,8 +172,7 @@ just search
 **Validating content:**
 ```bash
 just validate
-# Checks all files have required metadata
-# Verifies related files exist
+# Checks required metadata, status values, and related links
 # Reports any issues
 ```
 

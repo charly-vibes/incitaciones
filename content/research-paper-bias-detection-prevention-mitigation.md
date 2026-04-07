@@ -4,7 +4,7 @@ type: research
 subtype: paper
 tags: [bias, ethics, ai-safety, detection, mitigation, pre-mortem, context-engineering]
 tools: [gemini, red-teaming, aequitas]
-status: published
+status: verified
 created: 2026-03-03
 updated: 2026-03-03
 version: 1.0.0

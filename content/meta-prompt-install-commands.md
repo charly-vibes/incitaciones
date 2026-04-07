@@ -8,6 +8,7 @@ status: draft
 created: 2026-01-18
 updated: 2026-01-20
 version: 1.0.0
+related: [research-skill-installation-amp-gemini.md, prompt-workflow-deliberate-commits.md]
 source: original
 ---
 

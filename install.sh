@@ -85,24 +85,45 @@ list_prompts() {
     echo ""
   fi
 
-  echo "  all - Complete collection ($(ls "$DISTILLED_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ') prompts)"
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    total=$(jq '.prompts | length' "$MANIFEST_FILE")
+  else
+    total=$(ls "$DISTILLED_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+  fi
+
+  echo "  all - Complete collection ($total prompts)"
   echo ""
   echo "All available prompts:"
-  ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort | while read -r p; do
-    pdesc=$(get_prompt_description "$p")
-    if [ -n "$pdesc" ]; then
-      echo "  - $p — $pdesc"
-    else
-      echo "  - $p"
-    fi
-  done
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    jq -r '.prompts[].name' "$MANIFEST_FILE" | sort | while read -r p; do
+      pdesc=$(get_prompt_description "$p")
+      if [ -n "$pdesc" ]; then
+        echo "  - $p — $pdesc"
+      else
+        echo "  - $p"
+      fi
+    done
+  else
+    ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort | while read -r p; do
+      pdesc=$(get_prompt_description "$p")
+      if [ -n "$pdesc" ]; then
+        echo "  - $p — $pdesc"
+      else
+        echo "  - $p"
+      fi
+    done
+  fi
 }
 
 get_bundle_prompts() {
   local bundle="$1"
 
   if [ "$bundle" = "all" ]; then
-    ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
+    if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+      jq -r '.prompts[].name' "$MANIFEST_FILE" | tr '\n' ' '
+    else
+      ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
+    fi
     return
   fi
 
