@@ -43,7 +43,7 @@ incitaciones/
 
 ## Distilled Formats
 
-Prompts are stored in two forms: the **source** (`content/prompt-*.md`) and the **distilled** (`content/distilled/*.md`). The distilled form is what the agent actually sees at runtime.
+Prompts are stored in two forms: the **source** (`content/prompt-*.md`) and the **distilled** (`content/distilled/{name}.md` or `content/distilled/{name}/SKILL.md`). The distilled form is what the agent actually sees at runtime.
 
 ### Single-File Skills
 The standard format. A single Markdown file containing only instructions, templates, and rules.

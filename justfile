@@ -473,13 +473,18 @@ list-distilled:
     set -euo pipefail
     echo "Distilled prompts in content/distilled/:"
     echo ""
-    ls content/distilled/*.md 2>/dev/null | while read -r file; do
-        name=$(basename "$file" .md)
-        lines=$(wc -l < "$file")
-        echo "  $name ($lines lines)"
+    jq -r '.prompts[] | "\(.name)\t\(.distilled)"' content/manifest.json | while IFS=$'\t' read -r name distilled; do
+        if [[ "$distilled" == */SKILL.md ]]; then
+            core_lines=$(wc -l < "$distilled")
+            ref_count=$(find "$(dirname "$distilled")/references" -maxdepth 1 -name '*.md' -type f 2>/dev/null | wc -l)
+            echo "  $name ($core_lines core lines, $ref_count references)"
+        else
+            lines=$(wc -l < "$distilled")
+            echo "  $name ($lines lines)"
+        fi
     done
     echo ""
-    TOTAL=$(ls content/distilled/*.md 2>/dev/null | wc -l)
+    TOTAL=$(jq '.prompts | length' content/manifest.json)
     echo "Total: $TOTAL prompts"
 
 # Analyze exported traces from multiple agent tools
@@ -504,39 +509,75 @@ validate-distilled:
     ERRORS=0
     WARNINGS=0
 
-    for file in content/distilled/*.md; do
-        name=$(basename "$file" .md)
-        issues=""
+    validate_core() {
+        local file="$1"
+        local issues=""
+        local lines
 
-        # Check 1: No YAML frontmatter
         if head -1 "$file" | grep -q "^---$"; then
             issues="$issues [has frontmatter]"
             ERRORS=$((ERRORS + 1))
         fi
 
-        # Check 2: No metadata sections (When to Use, Example, Notes, References)
-        if grep -Eq "^##\s+(When to Use|Example|Notes|References|Version History)" "$file"; then
+        if grep -Eq "^##\s+(When to Use|Example|Notes|Version History)" "$file"; then
             issues="$issues [has metadata sections]"
             ERRORS=$((ERRORS + 1))
         fi
 
-        # Check 3: Reasonable length (not empty, not too short)
         lines=$(wc -l < "$file")
         if [ "$lines" -lt 5 ]; then
             issues="$issues [too short: $lines lines]"
             ERRORS=$((ERRORS + 1))
         fi
 
-        # Check 4: Contains instruction keywords
         if ! grep -Eiq "(step|task|process|your|analyze|create|review|focus|output)" "$file"; then
             issues="$issues [missing instruction keywords]"
             WARNINGS=$((WARNINGS + 1))
         fi
 
-        # Check 5: No nested code block wrappers (````markdown)
         if grep -q "^\`\`\`\`" "$file"; then
             issues="$issues [has nested code blocks]"
             WARNINGS=$((WARNINGS + 1))
+        fi
+
+        printf '%s' "$issues"
+    }
+
+    validate_reference() {
+        local file="$1"
+        local issues=""
+        local lines
+
+        if head -1 "$file" | grep -q "^---$"; then
+            issues="$issues [reference has frontmatter]"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        lines=$(wc -l < "$file")
+        if [ "$lines" -lt 3 ]; then
+            issues="$issues [reference too short: $lines lines]"
+            ERRORS=$((ERRORS + 1))
+        fi
+
+        printf '%s' "$issues"
+    }
+
+    while IFS=$'\t' read -r name distilled; do
+        issues=""
+
+        if [[ "$distilled" == */SKILL.md ]]; then
+            issues="$(validate_core "$distilled")"
+            ref_dir="$(dirname "$distilled")/references"
+            if [ -d "$ref_dir" ]; then
+                while IFS= read -r ref; do
+                    ref_issues="$(validate_reference "$ref")"
+                    if [ -n "$ref_issues" ]; then
+                        issues="$issues [$(basename "$ref"):$ref_issues]"
+                    fi
+                done < <(find "$ref_dir" -maxdepth 1 -name '*.md' -type f | sort)
+            fi
+        else
+            issues="$(validate_core "$distilled")"
         fi
 
         if [ -n "$issues" ]; then
@@ -544,7 +585,7 @@ validate-distilled:
         else
             echo "  ✓ $name"
         fi
-    done
+    done < <(jq -r '.prompts[] | "\(.name)\t\(.distilled)"' content/manifest.json)
 
     echo ""
     if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
@@ -560,12 +601,11 @@ compare-distilled NAME:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    DISTILLED="content/distilled/{{NAME}}.md"
-
     # Find corresponding source file
     SOURCE=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .source' content/manifest.json 2>/dev/null)
+    DISTILLED=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .distilled' content/manifest.json 2>/dev/null)
 
-    if [ -z "$SOURCE" ] || [ "$SOURCE" = "null" ]; then
+    if [ -z "$SOURCE" ] || [ "$SOURCE" = "null" ] || [ -z "$DISTILLED" ] || [ "$DISTILLED" = "null" ]; then
         echo "Could not find source file for: {{NAME}}"
         echo "Available prompts:"
         jq -r '.prompts[].name' content/manifest.json 2>/dev/null | sort
@@ -582,21 +622,42 @@ compare-distilled NAME:
         exit 1
     fi
 
+    TMP_DISTILLED=$(mktemp /tmp/incitaciones-distilled-XXXXXX.md)
+    if [[ "$DISTILLED" == */SKILL.md ]]; then
+        {
+            cat "$DISTILLED"
+            REF_DIR="$(dirname "$DISTILLED")/references"
+            if [ -d "$REF_DIR" ]; then
+                while IFS= read -r ref; do
+                    printf '\n\n---\n\n'
+                    printf '## Reference: %s\n\n' "$(basename "$ref")"
+                    cat "$ref"
+                done < <(find "$REF_DIR" -maxdepth 1 -name '*.md' -type f | sort)
+            fi
+        } > "$TMP_DISTILLED"
+        DISTILLED_LABEL="$DISTILLED (+ references)"
+    else
+        cp "$DISTILLED" "$TMP_DISTILLED"
+        DISTILLED_LABEL="$DISTILLED"
+    fi
+
     SRC_LINES=$(wc -l < "$SOURCE")
-    DST_LINES=$(wc -l < "$DISTILLED")
+    DST_LINES=$(wc -l < "$TMP_DISTILLED")
     REDUCTION=$(echo "scale=0; 100 - ($DST_LINES * 100 / $SRC_LINES)" | bc)
 
     echo "Comparison for: {{NAME}}"
     echo "  Source:    $SOURCE ($SRC_LINES lines)"
-    echo "  Distilled: $DISTILLED ($DST_LINES lines)"
+    echo "  Distilled: $DISTILLED_LABEL ($DST_LINES lines)"
     echo "  Reduction: $REDUCTION%"
     echo ""
 
     if command -v delta &> /dev/null; then
-        delta "$SOURCE" "$DISTILLED"
+        delta "$SOURCE" "$TMP_DISTILLED"
     elif command -v diff &> /dev/null; then
-        diff --color=auto -u "$SOURCE" "$DISTILLED" | head -100
+        diff --color=auto -u "$SOURCE" "$TMP_DISTILLED" | head -100
     fi
+
+    rm -f "$TMP_DISTILLED"
 
 # Show bundle contents
 list-bundles:
@@ -681,7 +742,8 @@ sync-manifest:
             ORPHANS=$((ORPHANS + 1))
         fi
     done
-    for file in content/distilled/*.md; do
+    for file in content/distilled/*.md content/distilled/*/SKILL.md; do
+        [ -f "$file" ] || continue
         if ! jq -e --arg f "$file" '.prompts[] | select(.distilled == $f)' "$MANIFEST" > /dev/null 2>&1; then
             echo "  ❌ unregistered distilled: $file"
             ORPHANS=$((ORPHANS + 1))
@@ -720,12 +782,12 @@ generate-skill NAME:
     #!/usr/bin/env bash
     set -euo pipefail
 
-    DISTILLED="content/distilled/{{NAME}}.md"
+    DISTILLED=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .distilled' content/manifest.json 2>/dev/null)
 
-    if [ ! -f "$DISTILLED" ]; then
+    if [ -z "$DISTILLED" ] || [ "$DISTILLED" = "null" ] || [ ! -f "$DISTILLED" ]; then
         echo "Distilled file not found: $DISTILLED"
         echo "Available prompts:"
-        ls content/distilled/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort
+        jq -r '.prompts[].name' content/manifest.json 2>/dev/null | sort
         exit 1
     fi
 

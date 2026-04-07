@@ -88,7 +88,7 @@ list_prompts() {
   if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
     total=$(jq '.prompts | length' "$MANIFEST_FILE")
   else
-    total=$(ls "$DISTILLED_DIR"/*.md 2>/dev/null | wc -l | tr -d ' ')
+    total=$(list_distilled_names | wc -l | tr -d ' ')
   fi
 
   echo "  all - Complete collection ($total prompts)"
@@ -104,7 +104,7 @@ list_prompts() {
       fi
     done
   else
-    ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | sort | while read -r p; do
+    list_distilled_names | while read -r p; do
       pdesc=$(get_prompt_description "$p")
       if [ -n "$pdesc" ]; then
         echo "  - $p — $pdesc"
@@ -122,7 +122,7 @@ get_bundle_prompts() {
     if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
       jq -r '.prompts[].name' "$MANIFEST_FILE" | tr '\n' ' '
     else
-      ls "$DISTILLED_DIR"/*.md 2>/dev/null | xargs -n1 basename | sed 's/\.md$//' | tr '\n' ' '
+      list_distilled_names | tr '\n' ' '
     fi
     return
   fi
@@ -132,6 +132,106 @@ get_bundle_prompts() {
     prompts=$(jq -r --arg b "$bundle" '.bundles[$b].prompts // empty | .[]' "$MANIFEST_FILE" 2>/dev/null | tr '\n' ' ')
     echo "$prompts"
   fi
+}
+
+list_distilled_names() {
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    jq -r '.prompts[].name' "$MANIFEST_FILE"
+  else
+    find "$DISTILLED_DIR" -maxdepth 2 \( -name "*.md" -o -name "SKILL.md" \) -type f | \
+      sed "s|$DISTILLED_DIR/||" | \
+      sed 's|/SKILL\.md$||; s|\.md$||' | \
+      sort -u
+  fi
+}
+
+resolve_distilled_path() {
+  local name="$1"
+  local manifest_path=""
+
+  if command -v jq &> /dev/null && [ -f "$MANIFEST_FILE" ]; then
+    manifest_path=$(jq -r --arg n "$name" '.prompts[] | select(.name == $n) | .distilled // empty' "$MANIFEST_FILE" 2>/dev/null)
+    if [ -n "$manifest_path" ] && [ -f "$SCRIPT_DIR/$manifest_path" ]; then
+      echo "$SCRIPT_DIR/$manifest_path"
+      return 0
+    fi
+  fi
+
+  if [ -f "$DISTILLED_DIR/${name}.md" ]; then
+    echo "$DISTILLED_DIR/${name}.md"
+    return 0
+  fi
+
+  if [ -f "$DISTILLED_DIR/${name}/SKILL.md" ]; then
+    echo "$DISTILLED_DIR/${name}/SKILL.md"
+    return 0
+  fi
+
+  return 1
+}
+
+is_multi_file_distilled_path() {
+  local path="$1"
+  [[ "$path" == */SKILL.md ]]
+}
+
+emit_flat_distilled_content() {
+  local name="$1"
+  local path=""
+  local skill_dir=""
+
+  path=$(resolve_distilled_path "$name") || return 1
+
+  cat "$path"
+
+  if is_multi_file_distilled_path "$path"; then
+    skill_dir=$(dirname "$path")
+    if [ -d "$skill_dir/references" ]; then
+      for ref in "$skill_dir"/references/*.md; do
+        [ -f "$ref" ] || continue
+        printf '\n\n---\n\n'
+        printf '## Reference: %s\n\n' "$(basename "$ref")"
+        cat "$ref"
+      done
+    fi
+  fi
+}
+
+install_canonical_skill() {
+  local name="$1"
+  local dst_root="$2"
+  local path=""
+  local src_dir=""
+  local dst_dir="$dst_root/$name"
+  local dst="$dst_dir/SKILL.md"
+
+  path=$(resolve_distilled_path "$name") || return 1
+
+  rm -rf "$dst_dir"
+  mkdir -p "$dst_dir"
+
+  {
+    generate_frontmatter "$name"
+    cat "$path"
+  } > "$dst"
+
+  if is_multi_file_distilled_path "$path"; then
+    src_dir=$(dirname "$path")
+    find "$src_dir" -maxdepth 1 -mindepth 1 -not -name "SKILL.md" -exec cp -R {} "$dst_dir/" \;
+  fi
+
+  return 0
+}
+
+copy_skill_tree() {
+  local src_dir="$1"
+  local dst_dir="$2"
+
+  [ -d "$src_dir" ] || return 1
+
+  rm -rf "$dst_dir"
+  mkdir -p "$dst_dir"
+  cp -R "$src_dir"/. "$dst_dir/"
 }
 
 # Generate YAML frontmatter for a SKILL.md file
@@ -368,35 +468,13 @@ SKIPPED=0
 if [ "$FORMAT" = "skills" ]; then
   # Skills format: <name>/SKILL.md with YAML frontmatter
   for prompt in $PROMPTS; do
-    src_file="$DISTILLED_DIR/${prompt}.md"
-    src_dir="$DISTILLED_DIR/${prompt}"
-    dst_dir="$INSTALL_DIR/${prompt}"
-    dst="$dst_dir/SKILL.md"
-
-    # Support for multi-file skills in directories
-    if [ -d "$src_dir" ] && [ -f "$src_dir/SKILL.md" ]; then
-      mkdir -p "$dst_dir"
-      # Generate frontmatter + directory-based SKILL.md content
-      {
-        generate_frontmatter "$prompt"
-        cat "$src_dir/SKILL.md"
-      } > "$dst"
-      
-      # Copy all other files/directories from src_dir
-      # Using find to copy everything except SKILL.md at the top level
-      find "$src_dir" -maxdepth 1 -mindepth 1 -not -name "SKILL.md" -exec cp -R {} "$dst_dir/" \;
-      
+    if install_canonical_skill "$prompt" "$INSTALL_DIR"; then
       INSTALLED=$((INSTALLED + 1))
-      echo -e "  ${GREEN}+${NC} $prompt (multi-file)"
-    elif [ -f "$src_file" ]; then
-      mkdir -p "$dst_dir"
-      # Generate frontmatter + single-file distilled content
-      {
-        generate_frontmatter "$prompt"
-        cat "$src_file"
-      } > "$dst"
-      INSTALLED=$((INSTALLED + 1))
-      echo -e "  ${GREEN}+${NC} $prompt"
+      if is_multi_file_distilled_path "$(resolve_distilled_path "$prompt")"; then
+        echo -e "  ${GREEN}+${NC} $prompt (multi-file)"
+      else
+        echo -e "  ${GREEN}+${NC} $prompt"
+      fi
     else
       echo -e "  ${YELLOW}?${NC} $prompt (not found)"
       SKIPPED=$((SKIPPED + 1))
@@ -414,11 +492,9 @@ else
   mkdir -p "$INSTALL_DIR/incitaciones"
 
   for prompt in $PROMPTS; do
-    src="$DISTILLED_DIR/${prompt}.md"
     dst="$INSTALL_DIR/incitaciones/${prompt}.md"
 
-    if [ -f "$src" ]; then
-      cp "$src" "$dst"
+    if emit_flat_distilled_content "$prompt" > "$dst"; then
       INSTALLED=$((INSTALLED + 1))
       echo -e "  ${GREEN}+${NC} $prompt"
     else
@@ -455,10 +531,9 @@ setup_tool_integration() {
     elif [ "$FORMAT" = "skills" ]; then
       local skills_dir="$amp_dir/skills"
       for prompt in $PROMPTS; do
-        local src="$INSTALL_DIR/${prompt}/SKILL.md"
-        if [ -f "$src" ]; then
-          mkdir -p "$skills_dir/${prompt}"
-          cp "$src" "$skills_dir/${prompt}/SKILL.md"
+        local src_dir="$INSTALL_DIR/${prompt}"
+        if [ -d "$src_dir" ]; then
+          copy_skill_tree "$src_dir" "$skills_dir/${prompt}"
         fi
       done
       echo -e "  ${GREEN}+${NC} amp (skills)"
@@ -478,18 +553,18 @@ setup_tool_integration() {
     local commands_dir="$tool_dir/commands/incitaciones"
     mkdir -p "$commands_dir"
     for prompt in $PROMPTS; do
-      local src="$DISTILLED_DIR/${prompt}.md"
-      if [ -f "$src" ]; then
-        generate_toml_command "$prompt" "$src" > "$commands_dir/${prompt}.toml"
+      local tmp_src="/tmp/incitaciones-gemini-${prompt}.md"
+      if emit_flat_distilled_content "$prompt" > "$tmp_src"; then
+        generate_toml_command "$prompt" "$tmp_src" > "$commands_dir/${prompt}.toml"
       fi
+      rm -f "$tmp_src"
     done
     # SKILL.md skills (experimental, for users who enable it)
     if [ "$FORMAT" = "skills" ]; then
       for prompt in $PROMPTS; do
-        local src="$INSTALL_DIR/${prompt}/SKILL.md"
-        if [ -f "$src" ]; then
-          mkdir -p "$tool_dir/skills/${prompt}"
-          cp "$src" "$tool_dir/skills/${prompt}/SKILL.md"
+        local src_dir="$INSTALL_DIR/${prompt}"
+        if [ -d "$src_dir" ]; then
+          copy_skill_tree "$src_dir" "$tool_dir/skills/${prompt}"
         fi
       done
     fi
@@ -510,10 +585,9 @@ setup_tool_integration() {
     if [ "$FORMAT" = "skills" ]; then
       local skills_dir="$tool_dir/skills"
       for prompt in $PROMPTS; do
-        local src="$INSTALL_DIR/${prompt}/SKILL.md"
-        if [ -f "$src" ]; then
-          mkdir -p "$skills_dir/${prompt}"
-          cp "$src" "$skills_dir/${prompt}/SKILL.md"
+        local src_dir="$INSTALL_DIR/${prompt}"
+        if [ -d "$src_dir" ]; then
+          copy_skill_tree "$src_dir" "$skills_dir/${prompt}"
         fi
       done
       echo -e "  ${GREEN}+${NC} $tool (skills)"
@@ -521,9 +595,8 @@ setup_tool_integration() {
       local commands_dir="$tool_dir/commands"
       mkdir -p "$commands_dir/incitaciones"
       for prompt in $PROMPTS; do
-        local src="$DISTILLED_DIR/${prompt}.md"
-        if [ -f "$src" ]; then
-          cp "$src" "$commands_dir/incitaciones/${prompt}.md"
+        if emit_flat_distilled_content "$prompt" > "$commands_dir/incitaciones/${prompt}.md"; then
+          :
         fi
       done
       echo -e "  ${GREEN}+${NC} $tool (commands)"
@@ -533,9 +606,8 @@ setup_tool_integration() {
     local commands_dir="$tool_dir/commands"
     mkdir -p "$commands_dir/incitaciones"
     for prompt in $PROMPTS; do
-      local src="$DISTILLED_DIR/${prompt}.md"
-      if [ -f "$src" ]; then
-        cp "$src" "$commands_dir/incitaciones/${prompt}.md"
+      if emit_flat_distilled_content "$prompt" > "$commands_dir/incitaciones/${prompt}.md"; then
+        :
       fi
     done
     echo -e "  ${GREEN}+${NC} $tool (commands)"

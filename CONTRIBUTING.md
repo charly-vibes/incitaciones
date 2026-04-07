@@ -18,7 +18,7 @@ just changelog "Added prompt for X"
 
 # Commit
 git add content/prompt-task-your-prompt-name.md
-git add content/distilled/your-prompt-name.md
+git add content/distilled/your-prompt-name.md  # or content/distilled/your-prompt-name/
 git add content/manifest.json
 git add _site/manifest.json
 git add CHANGELOG.md
