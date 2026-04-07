@@ -26,7 +26,18 @@ You have exported conversation or event traces from multiple agent tools and wan
 ## Example
 
 ```bash
+just trace-insights
+```
+
+```bash
 node scripts/analyze-traces.js examples/trace-analysis --format markdown
+```
+
+```bash
+node scripts/analyze-traces.js \
+  examples/trace-analysis \
+  --session-records-out /tmp/session-records.jsonl \
+  --label-queue-out /tmp/label-queue.jsonl
 ```
 
 ## Expected Results
@@ -39,6 +50,8 @@ The analyzer emits a report with:
 - top prompt-to-tool pairs
 - top workflow transitions
 - heuristic session outcomes
+- normalized session records for downstream analysis
+- unlabeled-session queues for human review
 - a short conclusions section
 
 ## Notes
@@ -50,3 +63,5 @@ Use the output for directional conclusions such as:
 - which prompts are really being used
 - which agents convert prompts into tool activity
 - which workflows tend to end in success versus blockage
+
+Add a labels file when you want to move from usage analytics to effectiveness analytics.

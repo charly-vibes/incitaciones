@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-07
 
+#### Added - Trace Insights and Session Labeling Workflow
+
+- **scripts/trace-insights.js** — Added a thin wrapper that auto-detects local trace histories, runs the analyzer with cache reuse, prints a compact markdown summary, and writes reusable artifacts to `.cache/trace-insights/`.
+- **scripts/analyze-traces.js** — Added normalized session-record export, manual label ingestion, unlabeled-session queue export, and labeled effectiveness summaries so trace processing can move from raw usage counts toward prompt-effectiveness analysis.
+- **justfile** — Added `trace-insights` for the simple “process traces -> get insights” workflow.
+- **README.md** + **content/example-trace-analysis-usage.md** — Documented the wrapper, session-record outputs, label-queue generation, and label-join workflow.
+- **examples/trace-analysis/labels-sample.jsonl** — Added a sample labels file for verifying the effectiveness-analysis path end to end.
+
 #### Added - Cross-Agent Trace Analysis
 
 - **scripts/analyze-traces.js** — Added a local trace analysis CLI for Claude, Gemini, Codex, and other agent-tool histories. It supports direct path input and `--auto-detect`, extracts prompt/tool/model/workflow signals, and now uses an incremental cache at `.cache/trace-analysis-cache.json` keyed by file metadata with analyzer/manifest version invalidation.

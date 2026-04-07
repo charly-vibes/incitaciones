@@ -1,0 +1,2 @@
+{"session_id":"claude-sample","outcome":"succeeded","verification_present":true,"human_rescue_needed":false,"prompt_helpfulness":{"create-plan":"helpful"},"notes":"Prompt led directly to implementation and verification."}
+{"session_id":"gemini-sample","outcome":"failed","verification_present":false,"human_rescue_needed":true,"prompt_helpfulness":{"debug":"partial"},"notes":"Debug framing was relevant, but the session ended blocked."}

@@ -80,6 +80,7 @@ just sync-manifest       # Validate manifest references and sync _site/manifest.
 just generate-skill NAME # Preview SKILL.md output for a prompt
 just analyze-traces PATH # Analyze trace exports from agent tools
 just analyze-traces-auto # Auto-detect local CLI history locations
+just trace-insights      # Process traces and write insight artifacts
 ```
 
 ## Trace Analysis
@@ -102,8 +103,46 @@ Or directly:
 node scripts/analyze-traces.js --auto-detect --format markdown
 ```
 
+For the simplest workflow, use the wrapper command:
+
+```bash
+just trace-insights
+```
+
+That will:
+
+- auto-detect local trace sources
+- print a readable markdown summary
+- write `.cache/trace-insights/latest-report.json`
+- write `.cache/trace-insights/session-records.jsonl`
+- write `.cache/trace-insights/label-queue.jsonl`
+
 The analyzer now uses an incremental cache at `.cache/trace-analysis-cache.json`.
 Unchanged files are reused automatically on later runs. Use `--no-cache` if you want a full recomputation.
+
+It can also emit normalized session records and join manual labels:
+
+```bash
+node scripts/analyze-traces.js \
+  --auto-detect \
+  --session-records-out /tmp/session-records.jsonl \
+  --label-queue-out /tmp/label-queue.jsonl
+```
+
+To join labels back into the analysis:
+
+```bash
+node scripts/analyze-traces.js \
+  --auto-detect \
+  --labels examples/trace-analysis/labels-sample.jsonl \
+  --format markdown
+```
+
+Or with the wrapper:
+
+```bash
+just trace-insights --labels examples/trace-analysis/labels-sample.jsonl
+```
 
 This scans JSON, JSONL, NDJSON, log, text, and markdown exports, then reports:
 
@@ -129,6 +168,25 @@ The new session-level signals are heuristic, not authoritative:
 - `outcomes` classify sessions as `succeeded`, `failed`, `needs_input`, or `unknown` from assistant language
 
 This is strongest for comparative usage analysis, not for hard evaluation of prompt quality.
+
+Normalized session records include fields such as:
+
+- `session_id`
+- `provider`
+- `model`
+- `task_type`
+- `prompts_used`
+- `tools_used`
+- `tests_run_or_mentioned`
+- `verification_present`
+- `commit_created`
+- `tokens_total`
+- `turn_count`
+- `outcome_guess`
+- `first_user_excerpt`
+- `last_assistant_excerpt`
+
+The label queue is intended for manual annotation. Each queued record includes suggested questions so you can build a labeled evaluation set over time.
 
 Current auto-detected sources include common local paths such as:
 

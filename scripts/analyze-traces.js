@@ -64,6 +64,9 @@ function parseArgs(argv) {
     format: "markdown",
     top: 10,
     jsonOut: null,
+    sessionRecordsOut: null,
+    labelsPath: null,
+    labelQueueOut: null,
     autoDetect: false,
     noCache: false,
     verbose: false,
@@ -83,6 +86,21 @@ function parseArgs(argv) {
     }
     if (value === "--json-out") {
       args.jsonOut = argv[index + 1] || null;
+      index += 1;
+      continue;
+    }
+    if (value === "--session-records-out") {
+      args.sessionRecordsOut = argv[index + 1] || null;
+      index += 1;
+      continue;
+    }
+    if (value === "--labels") {
+      args.labelsPath = argv[index + 1] || null;
+      index += 1;
+      continue;
+    }
+    if (value === "--label-queue-out") {
+      args.labelQueueOut = argv[index + 1] || null;
       index += 1;
       continue;
     }
@@ -126,6 +144,9 @@ Options:
   --format markdown|json|both   Output format (default: markdown)
   --top N                       Top N items per ranking (default: 10)
   --json-out PATH               Write JSON report to PATH
+  --session-records-out PATH    Write normalized per-session records as JSONL
+  --labels PATH                 Join manual labels from JSON or JSONL
+  --label-queue-out PATH        Write unlabeled session queue as JSONL
   --auto-detect                 Scan common local CLI history locations
   --no-cache                    Disable incremental per-file cache
   --verbose                     Include full source and file inventories in markdown
@@ -141,6 +162,9 @@ function listFiles(inputPath) {
   const absolute = path.resolve(inputPath);
   const stats = fs.statSync(absolute);
   if (stats.isFile()) {
+    if (/labels.*\.(json|jsonl|ndjson)$/i.test(path.basename(absolute))) {
+      return [];
+    }
     return [absolute];
   }
 
@@ -148,7 +172,13 @@ function listFiles(inputPath) {
   for (const entry of fs.readdirSync(absolute, { withFileTypes: true })) {
     const entryPath = path.join(absolute, entry.name);
     if (entry.isDirectory()) {
+      if (entry.name === ".cache") {
+        continue;
+      }
       files.push(...listFiles(entryPath));
+      continue;
+    }
+    if (/labels.*\.(json|jsonl|ndjson)$/i.test(entry.name)) {
       continue;
     }
     if (/\.(json|jsonl|ndjson|log|txt|md)$/i.test(entry.name)) {
@@ -197,6 +227,58 @@ function saveCache(cache, disabled = false) {
   }
   ensureDirectory(CACHE_DIR);
   fs.writeFileSync(CACHE_PATH, JSON.stringify(cache, null, 2));
+}
+
+function writeJsonl(outputPath, rows) {
+  ensureDirectory(path.dirname(path.resolve(outputPath)));
+  const body = rows.map((row) => JSON.stringify(row)).join("\n");
+  fs.writeFileSync(path.resolve(outputPath), body.length > 0 ? `${body}\n` : "");
+}
+
+function loadLabels(labelsPath) {
+  if (!labelsPath) {
+    return [];
+  }
+
+  const resolved = path.resolve(labelsPath);
+  if (!fileExists(resolved)) {
+    throw new Error(`Labels file not found: ${resolved}`);
+  }
+
+  const content = fs.readFileSync(resolved, "utf8").trim();
+  if (!content) {
+    return [];
+  }
+
+  if (/\.jsonl$/i.test(resolved) || /\.ndjson$/i.test(resolved)) {
+    return content
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => JSON.parse(line));
+  }
+
+  const parsed = JSON.parse(content);
+  if (Array.isArray(parsed)) {
+    return parsed;
+  }
+  return [parsed];
+}
+
+function buildLabelIndex(labels) {
+  const bySessionId = new Map();
+  const byFilePath = new Map();
+
+  for (const label of labels) {
+    if (label.session_id) {
+      bySessionId.set(label.session_id, label);
+    }
+    if (label.file_path) {
+      byFilePath.set(path.resolve(label.file_path), label);
+    }
+  }
+
+  return { bySessionId, byFilePath };
 }
 
 function getFileSignature(filePath) {
@@ -319,6 +401,11 @@ function autoDetectInputs() {
   }));
 }
 
+function deriveSessionId(filePath) {
+  const base = path.basename(filePath).replace(/\.(json|jsonl|ndjson|log|txt|md)$/i, "");
+  return base || hashText(filePath).slice(0, 12);
+}
+
 function inferProviderForDetectedPath(targetPath) {
   const sample = targetPath.toLowerCase();
   for (const [provider, needles] of PROVIDER_DETECTION_RULES) {
@@ -343,8 +430,13 @@ function emptyMetrics(provider, filePath) {
   return {
     provider,
     filePath,
+    sessionId: deriveSessionId(filePath),
     traceCount: 1,
     messageCount: 0,
+    firstTimestamp: null,
+    lastTimestamp: null,
+    firstUserExcerpt: "",
+    lastAssistantExcerpt: "",
     roleCounts: {},
     toolCalls: {},
     modelCounts: {},
@@ -419,6 +511,27 @@ function accumulateTokens(tokenUsage, candidate) {
   tokenUsage.input += input;
   tokenUsage.output += output;
   tokenUsage.total += total;
+}
+
+function clipText(text, maxLength = 240) {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+  return `${normalized.slice(0, maxLength - 1)}…`;
+}
+
+function maybeUpdateTimestamps(metrics, object) {
+  const candidate = object.timestamp || object.created || object.modified || object.updated_at || null;
+  if (typeof candidate !== "string" || !candidate) {
+    return;
+  }
+  if (!metrics.firstTimestamp || candidate < metrics.firstTimestamp) {
+    metrics.firstTimestamp = candidate;
+  }
+  if (!metrics.lastTimestamp || candidate > metrics.lastTimestamp) {
+    metrics.lastTimestamp = candidate;
+  }
 }
 
 function extractText(value) {
@@ -709,6 +822,11 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
     if (typeof modelName === "string" && modelName) {
       increment(metrics.modelCounts, modelName);
     }
+
+    if (typeof object.sessionId === "string" && object.sessionId) {
+      metrics.sessionId = object.sessionId;
+    }
+    maybeUpdateTimestamps(metrics, object);
   }
 
   for (const message of messages) {
@@ -733,9 +851,15 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
 
     if (role === "user") {
       metrics.promptRefsInUserMessages += promptRefs.length;
+      if (!metrics.firstUserExcerpt && text) {
+        metrics.firstUserExcerpt = clipText(text);
+      }
     }
     if (role === "assistant") {
       metrics.promptRefsInAssistantMessages += promptRefs.length;
+      if (text) {
+        metrics.lastAssistantExcerpt = clipText(text);
+      }
       if (text.includes("```")) {
         metrics.outputSignals.codeBlocks += 1;
       }
@@ -771,6 +895,8 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
 function analyzeTextContent(content, filePath, promptMatchers, provider) {
   const metrics = emptyMetrics(provider, filePath);
   const text = content.toLowerCase();
+  metrics.firstUserExcerpt = clipText(content);
+  metrics.lastAssistantExcerpt = clipText(content);
 
   metrics.messageCount = (text.match(/\b(user|assistant|tool|system)\b/g) || []).length;
 
@@ -826,6 +952,169 @@ function parseContent(filePath, promptMatchers, sourceProvider = null) {
   }
 
   return analyzeTextContent(content, filePath, promptMatchers, provider);
+}
+
+function sumMapValues(map) {
+  return Object.values(map).reduce((sum, value) => sum + value, 0);
+}
+
+function inferTaskType(record) {
+  const promptNames = record.prompts_used;
+  const excerpt = `${record.first_user_excerpt} ${record.last_assistant_excerpt}`.toLowerCase();
+
+  if (promptNames.includes("debug") || /bug|debug|error|failing|broken/.test(excerpt)) {
+    return "debugging";
+  }
+  if (promptNames.includes("commit") || /git commit|commit/.test(excerpt)) {
+    return "commit";
+  }
+  if (promptNames.includes("tdd") || /test|pytest|jest|vitest|cargo test/.test(excerpt)) {
+    return "testing";
+  }
+  if (promptNames.includes("code-review") || promptNames.includes("rule-of-5")) {
+    return "review";
+  }
+  if (/plan|roadmap|phase/.test(excerpt)) {
+    return "planning";
+  }
+  if (/document|docs|readme/.test(excerpt)) {
+    return "documentation";
+  }
+  return "unknown";
+}
+
+function buildSessionRecord(fileReport) {
+  const promptsUsed = topEntries(fileReport.promptCounts, 50).map((entry) => entry.name);
+  const slashCommands = topEntries(fileReport.slashCommandCounts, 50).map((entry) => entry.name);
+  const toolsUsed = topEntries(fileReport.toolCalls, 50).map((entry) => entry.name);
+  const topModel = topEntries(fileReport.modelCounts, 1)[0]?.name || null;
+
+  const record = {
+    session_id: fileReport.sessionId,
+    file_path: fileReport.filePath,
+    provider: fileReport.provider,
+    model: topModel,
+    task_type: "unknown",
+    prompts_used: promptsUsed,
+    prompt_sequence_hints: topEntries(fileReport.promptToolPairs, 20).map((entry) => entry.name),
+    slash_commands: slashCommands,
+    tools_used: toolsUsed,
+    tool_call_count: sumMapValues(fileReport.toolCalls),
+    file_mentions_count: sumMapValues(fileReport.fileMentions),
+    files_mentioned_top: topEntries(fileReport.fileMentions, 10).map((entry) => entry.name),
+    tests_run_or_mentioned: fileReport.testsMentioned > 0,
+    verification_present:
+      fileReport.testsMentioned > 0 || fileReport.outputSignals.checklists > 0,
+    commit_created:
+      promptsUsed.includes("commit") ||
+      slashCommands.includes("/commit") ||
+      /git commit|create commit|committed/.test(fileReport.lastAssistantExcerpt),
+    tokens_total: fileReport.tokenUsage.total,
+    turn_count: fileReport.messageCount,
+    role_counts: fileReport.roleCounts,
+    outcome_guess: fileReport.outcome,
+    outcome_evidence: fileReport.outcomeEvidence,
+    first_timestamp: fileReport.firstTimestamp,
+    last_timestamp: fileReport.lastTimestamp,
+    first_user_excerpt: fileReport.firstUserExcerpt,
+    last_assistant_excerpt: fileReport.lastAssistantExcerpt,
+    prompt_help_signals: {
+      prompt_refs_in_user_messages: fileReport.promptRefsInUserMessages,
+      prompt_refs_in_assistant_messages: fileReport.promptRefsInAssistantMessages,
+      prompt_to_tool_runs: fileReport.toolRunsAfterPrompt,
+      code_blocks: fileReport.outputSignals.codeBlocks,
+      checklists: fileReport.outputSignals.checklists,
+    },
+    human_labeled: false,
+    label: null,
+  };
+
+  record.task_type = inferTaskType(record);
+  return record;
+}
+
+function joinLabels(sessionRecords, labelIndex) {
+  return sessionRecords.map((record) => {
+    const label =
+      labelIndex.bySessionId.get(record.session_id) ||
+      labelIndex.byFilePath.get(path.resolve(record.file_path)) ||
+      null;
+
+    if (!label) {
+      return record;
+    }
+
+    return {
+      ...record,
+      human_labeled: true,
+      label,
+    };
+  });
+}
+
+function buildLabelQueue(sessionRecords) {
+  return sessionRecords
+    .filter((record) => !record.human_labeled)
+    .map((record) => ({
+      session_id: record.session_id,
+      file_path: record.file_path,
+      provider: record.provider,
+      model: record.model,
+      task_type_guess: record.task_type,
+      prompts_used: record.prompts_used,
+      outcome_guess: record.outcome_guess,
+      first_user_excerpt: record.first_user_excerpt,
+      last_assistant_excerpt: record.last_assistant_excerpt,
+      questions: [
+        "What is the task type?",
+        "What was the final outcome? (succeeded|partial|failed|abandoned|needs_input)",
+        "Which prompts were actually helpful?",
+        "Was human rescue needed?",
+        "Was verification present?",
+      ],
+    }));
+}
+
+function buildEffectivenessSummary(sessionRecords) {
+  const labeled = sessionRecords.filter((record) => record.human_labeled && record.label);
+  const byPrompt = {};
+
+  for (const record of labeled) {
+    const outcome = record.label.outcome || "unknown";
+    for (const prompt of record.prompts_used) {
+      if (!byPrompt[prompt]) {
+        byPrompt[prompt] = {
+          labeled_sessions: 0,
+          outcomes: {},
+          human_rescue_needed: 0,
+          verification_present: 0,
+          helpful_votes: 0,
+        };
+      }
+      const bucket = byPrompt[prompt];
+      bucket.labeled_sessions += 1;
+      increment(bucket.outcomes, outcome);
+      if (record.label.human_rescue_needed === true) {
+        bucket.human_rescue_needed += 1;
+      }
+      if (record.label.verification_present === true) {
+        bucket.verification_present += 1;
+      }
+      const helpful = record.label.prompt_helpfulness || record.label.prompt_effectiveness || null;
+      if (
+        helpful === true ||
+        helpful === "helpful" ||
+        (typeof helpful === "object" && helpful[prompt] && ["helpful", true].includes(helpful[prompt]))
+      ) {
+        bucket.helpful_votes += 1;
+      }
+    }
+  }
+
+  return {
+    labeled_sessions: labeled.length,
+    prompts: byPrompt,
+  };
 }
 
 function mergeMaps(target, source) {
@@ -1074,6 +1363,28 @@ function formatMarkdown(report, top, verbose = false) {
   }
   lines.push("");
 
+  if (report.effectiveness) {
+    lines.push("## Labels");
+    lines.push("");
+    lines.push(`- Labeled sessions: ${report.effectiveness.labeled_sessions}`);
+    const rankedPrompts = Object.entries(report.effectiveness.prompts)
+      .sort((left, right) => right[1].labeled_sessions - left[1].labeled_sessions)
+      .slice(0, top);
+    if (rankedPrompts.length === 0) {
+      lines.push("- No labeled prompt effectiveness data yet");
+    } else {
+      for (const [prompt, stats] of rankedPrompts) {
+        const outcomes = topEntries(stats.outcomes, 3)
+          .map((entry) => `${entry.name}=${entry.count}`)
+          .join(", ");
+        lines.push(
+          `- ${prompt}: labeled=${stats.labeled_sessions}, helpful_votes=${stats.helpful_votes}, verification=${stats.verification_present}, rescue=${stats.human_rescue_needed}${outcomes ? `, outcomes: ${outcomes}` : ""}`,
+        );
+      }
+    }
+    lines.push("");
+  }
+
   lines.push("## Files");
   lines.push("");
   if (verbose) {
@@ -1137,19 +1448,27 @@ function main() {
       cache,
       cacheStats,
       args.noCache,
-      providerByFile.get(filePath) || null,
+      providerByFile.get(filePath) === "explicit" ? null : providerByFile.get(filePath) || null,
     ),
   );
   saveCache(cache, args.noCache);
   const aggregate = buildAggregate(fileReports);
+  const rawSessionRecords = fileReports.map((fileReport) => buildSessionRecord(fileReport));
+  const labels = loadLabels(args.labelsPath);
+  const labeledSessionRecords = joinLabels(rawSessionRecords, buildLabelIndex(labels));
+  const effectiveness = labels.length > 0 ? buildEffectivenessSummary(labeledSessionRecords) : null;
+  const labelQueue = buildLabelQueue(labeledSessionRecords);
+
   const report = {
     generated_at: new Date().toISOString(),
     inputs: allInputs.map((input) => input.path),
     detectedInputs: allInputs,
     cache: cacheStats,
     aggregate,
+    effectiveness,
     files: fileReports.map((fileReport) => ({
       provider: fileReport.provider,
+      sessionId: fileReport.sessionId,
       filePath: fileReport.filePath,
       messageCount: fileReport.messageCount,
       roleCounts: fileReport.roleCounts,
@@ -1165,9 +1484,22 @@ function main() {
       outcome: fileReport.outcome,
       outcomeEvidence: fileReport.outcomeEvidence,
       summary: fileReport.summary,
+      firstTimestamp: fileReport.firstTimestamp,
+      lastTimestamp: fileReport.lastTimestamp,
+      firstUserExcerpt: fileReport.firstUserExcerpt,
+      lastAssistantExcerpt: fileReport.lastAssistantExcerpt,
     })),
+    session_records: labeledSessionRecords,
+    label_queue_size: labelQueue.length,
     conclusions: inferConclusions(aggregate, args.top),
   };
+
+  if (args.sessionRecordsOut) {
+    writeJsonl(args.sessionRecordsOut, labeledSessionRecords);
+  }
+  if (args.labelQueueOut) {
+    writeJsonl(args.labelQueueOut, labelQueue);
+  }
 
   if (args.jsonOut) {
     fs.writeFileSync(path.resolve(args.jsonOut), JSON.stringify(report, null, 2));

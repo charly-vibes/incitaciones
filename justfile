@@ -490,6 +490,10 @@ analyze-traces PATH *ARGS:
 analyze-traces-auto *ARGS:
     node scripts/analyze-traces.js --auto-detect {{ARGS}}
 
+# Process traces and write insight artifacts to .cache/trace-insights/
+trace-insights *ARGS:
+    node scripts/trace-insights.js {{ARGS}}
+
 # Validate distilled prompts
 validate-distilled:
     #!/usr/bin/env bash
