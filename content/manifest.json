@@ -819,6 +819,27 @@
       "bundles": [
         "reviews"
       ]
+    },
+    {
+      "name": "formal-verification-evaluator",
+      "type": "task",
+      "title": "Formal Verification Readiness Evaluator",
+      "description": "Evaluate specifications for formal verification readiness — paradigm assessment, safety/liveness property extraction, invalidity risk analysis, toolchain recommendation, and selective verification scoping",
+      "source": "content/prompt-task-formal-verification-evaluator.md",
+      "distilled": "content/distilled/formal-verification-evaluator.md",
+      "tags": [
+        "formal-verification",
+        "specification-evaluation",
+        "model-checking",
+        "theorem-proving",
+        "safety-liveness",
+        "property-extraction",
+        "auto-formalization",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     }
   ],
   "bundles": {
@@ -867,7 +888,8 @@
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
         "adversarial-stakeholder-evaluation",
-        "ux-dx-evaluation-diagnostician"
+        "ux-dx-evaluation-diagnostician",
+        "formal-verification-evaluator"
       ]
     },
     "refactoring": {
