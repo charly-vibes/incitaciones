@@ -86,18 +86,18 @@ Use search tools efficiently:
 
 ```bash
 # Find auth-related files
-find . -name "*auth*" -type f
+rg --files | rg "auth"
 
 # Search for authentication patterns
-grep -r "authenticate" --include="*.ts" --include="*.js"
-grep -r "login" --include="*.ts" --include="*.js"
+rg -n "authenticate" .
+rg -n "login" .
 
 # Look for middleware or hooks
-grep -r "middleware" --include="*.ts"
-grep -r "useAuth" --include="*.tsx"
+rg -n "middleware" .
+rg -n "useAuth" .
 
 # Find configuration
-grep -r "auth" config/ .env.example
+rg -n "auth" config .env.example
 ```
 
 ### Step 4: Read Identified Files

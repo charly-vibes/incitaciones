@@ -51,7 +51,7 @@ Explicitly tell the agent when to read reference files.
 The `SKILL.md` should contain the "how-to" (the algorithm), while the `references/` contain the "what" (the data).
 
 ### 3. Progressive Loading
-Instruct the agent to use `read_file` (or the tool equivalent) on specific reference files only when it reaches that step in the procedure.
+Instruct the agent to read specific reference files only when it reaches that step in the procedure, using whatever file-reading tool the runtime provides.
 
 ## Implementation in Incitaciones
 

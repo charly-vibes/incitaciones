@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-07
 
+#### Changed - Progressive Disclosure Rollout Across Distilled Skills
+
+- **content/distilled/** — Converted `describe-pr`, `create-plan`, `implement-plan`, `iterate-plan`, `research-codebase`, `create-handoff`, `resume-handoff`, `design-review`, and `issue-review` from unified distilled files into multi-file skills with compact `SKILL.md` entrypoints and on-demand `references/`.
+- **content/manifest.json** + **_site/manifest.json** — Updated the affected prompt registrations to point at `content/distilled/<name>/SKILL.md` so installers and the site build resolve the new runtime layout correctly.
+- **content/prompt-task-research-codebase.md** — Replaced `find` and `grep -r` examples with `rg`-based search guidance to match repository agent conventions.
+- **content/prompt-workflow-create-plan.md** + **content/prompt-workflow-iterate-plan.md** — Removed stale references to a nonexistent `AskUserQuestion` tool and rewrote those instructions in tool-agnostic terms.
+- **content/research-finding-skill-progressive-disclosure.md** — Generalized the progressive-loading guidance so it refers to runtime-appropriate file-reading tools instead of a specific API.
+
 #### Added - Progressive Disclosure Pattern for Complex Skills
 
 - **content/distilled/** — Refactored complex skills (`rule-of-5-universal`, `ux-dx-evaluation-diagnostician`) into a modular structure with a core `SKILL.md` and an on-demand `references/` directory.

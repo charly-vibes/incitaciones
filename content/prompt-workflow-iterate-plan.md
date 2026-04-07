@@ -65,7 +65,7 @@ Update an existing implementation plan based on feedback, grounded in codebase r
 - Fixing errors or omissions?
 
 **Ask clarifying questions if unclear:**
-- Use AskUserQuestion tool for ambiguous requests
+- Ask the user directly for ambiguous requests
 - Confirm understanding before making changes
 - Get specific about what success looks like
 

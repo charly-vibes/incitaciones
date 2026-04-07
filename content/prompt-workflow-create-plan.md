@@ -192,7 +192,7 @@ Save to `plans/YYYY-MM-DD-description.md`:
 2. **Follow TDD**: Plan tests before implementation for each phase
 3. **Break into phases**: Each phase should be independently verifiable and take <2 hours ideally
 4. **Track progress**: Use todo list throughout planning process
-5. **No open questions**: Resolve all questions before finalizing (use AskUserQuestion tool)
+5. **No open questions**: Resolve all questions before finalizing using normal clarification with the user
 6. **Consider the user**: Plans should be readable by both humans and AI agents
 7. **Be realistic**: Account for complexity, don't oversimplify
 
@@ -223,7 +223,7 @@ The plan follows our existing API patterns and includes TDD approach. Any feedba
 ```
 User: I need to add pagination to the user list endpoint
 
-Agent: I'll create a plan for adding pagination. What would you like me to document?
+Agent: I'll create a plan for adding pagination. Let me first confirm the endpoint and current constraints, then I'll map the existing pagination patterns in the codebase.
 
 Let me research the codebase first to understand:
 1. How other endpoints handle pagination

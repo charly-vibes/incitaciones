@@ -57,7 +57,7 @@
       "title": "Describe Pull Request",
       "description": "Generate clear PR descriptions from code changes",
       "source": "content/prompt-task-describe-pr.md",
-      "distilled": "content/distilled/describe-pr.md",
+      "distilled": "content/distilled/describe-pr/SKILL.md",
       "tags": [
         "git",
         "pull-request",
@@ -89,7 +89,7 @@
       "title": "Create Implementation Plan",
       "description": "Design phased implementation plans with TDD approach",
       "source": "content/prompt-workflow-create-plan.md",
-      "distilled": "content/distilled/create-plan.md",
+      "distilled": "content/distilled/create-plan/SKILL.md",
       "tags": [
         "planning",
         "implementation"
@@ -104,7 +104,7 @@
       "title": "Implement Plan",
       "description": "Execute implementation plans phase by phase",
       "source": "content/prompt-workflow-implement-plan.md",
-      "distilled": "content/distilled/implement-plan.md",
+      "distilled": "content/distilled/implement-plan/SKILL.md",
       "tags": [
         "planning",
         "implementation"
@@ -119,7 +119,7 @@
       "title": "Iterate on Plan",
       "description": "Refine and improve existing plans based on feedback",
       "source": "content/prompt-workflow-iterate-plan.md",
-      "distilled": "content/distilled/iterate-plan.md",
+      "distilled": "content/distilled/iterate-plan/SKILL.md",
       "tags": [
         "planning",
         "iteration"
@@ -192,7 +192,7 @@
       "title": "Research Codebase",
       "description": "Structured investigation of unfamiliar codebases",
       "source": "content/prompt-task-research-codebase.md",
-      "distilled": "content/distilled/research-codebase.md",
+      "distilled": "content/distilled/research-codebase/SKILL.md",
       "tags": [
         "research",
         "codebase",
@@ -208,7 +208,7 @@
       "title": "Create Handoff Document",
       "description": "Generate context documents for session continuity",
       "source": "content/prompt-workflow-create-handoff.md",
-      "distilled": "content/distilled/create-handoff.md",
+      "distilled": "content/distilled/create-handoff/SKILL.md",
       "tags": [
         "handoff",
         "documentation",
@@ -224,7 +224,7 @@
       "title": "Resume from Handoff",
       "description": "Continue work from a previous session's handoff document",
       "source": "content/prompt-workflow-resume-handoff.md",
-      "distilled": "content/distilled/resume-handoff.md",
+      "distilled": "content/distilled/resume-handoff/SKILL.md",
       "tags": [
         "handoff",
         "context",
@@ -365,7 +365,7 @@
       "title": "Design Artifact Review",
       "description": "Review problem statements and decision matrices",
       "source": "content/prompt-task-design-review.md",
-      "distilled": "content/distilled/design-review.md",
+      "distilled": "content/distilled/design-review/SKILL.md",
       "tags": [
         "review",
         "design"
@@ -395,7 +395,7 @@
       "title": "Issue Tracker Review",
       "description": "Review issues for completeness and dependencies",
       "source": "content/prompt-task-issue-tracker-review.md",
-      "distilled": "content/distilled/issue-review.md",
+      "distilled": "content/distilled/issue-review/SKILL.md",
       "tags": [
         "review",
         "issues",
