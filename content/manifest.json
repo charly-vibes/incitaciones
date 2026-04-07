@@ -411,7 +411,7 @@
       "title": "Universal Rule of 5 Review",
       "description": "Steve Yegge's original 5-stage review for any artifact",
       "source": "content/prompt-task-rule-of-5-universal.md",
-      "distilled": "content/distilled/rule-of-5-universal.md",
+      "distilled": "content/distilled/rule-of-5-universal/SKILL.md",
       "tags": [
         "review",
         "universal",
@@ -801,7 +801,7 @@
       "title": "UX/DX Evaluation Diagnostician",
       "description": "Five-layer diagnostic evaluation of products, APIs, CLIs, libraries, and documentation against HEART, SPACE/DX Core 4, CLI/API heuristics, CHAOSS, and Diataxis frameworks",
       "source": "content/prompt-task-ux-dx-evaluation-diagnostician.md",
-      "distilled": "content/distilled/ux-dx-evaluation-diagnostician.md",
+      "distilled": "content/distilled/ux-dx-evaluation-diagnostician/SKILL.md",
       "tags": [
         "ux",
         "dx",

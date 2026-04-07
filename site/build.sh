@@ -36,16 +36,48 @@ cp "$REPO_ROOT/CONTRIBUTING.md" "$SITE/CONTRIBUTING.md"
 cp "$REPO_ROOT/AGENTS.md"       "$SITE/AGENTS.md"
 [ -f "$REPO_ROOT/CHANGELOG.md" ] && cp "$REPO_ROOT/CHANGELOG.md" "$SITE/CHANGELOG.md"
 
-# Copy content tree (all .md files, preserving distilled/ subdir)
-for f in "$REPO_ROOT"/content/*.md; do
-  [ -f "$f" ] && cp "$f" "$SITE/content/"
-done
-for f in "$REPO_ROOT"/content/distilled/*.md; do
-  [ -f "$f" ] && cp "$f" "$SITE/content/distilled/"
-done
+# Copy content tree (all .md files, preserving distilled/ and other subdirs)
+# Using find to replicate structure in _site/content/
+(
+  cd "$REPO_ROOT/content"
+  find . -name "*.md" -type f -exec cp --parents {} "$SITE/content/" \;
+)
 
 # Copy manifest
 cp "$MANIFEST" "$SITE/manifest.json"
+
+# ------------------------------------------------------------------
+# Generate Unified Skills for Web
+# ------------------------------------------------------------------
+# Create unified .md files for multi-file skills so they can be referenced as a single URL
+echo "Generating unified skill documents..."
+jq -r '.prompts[] | select(.distilled != null) | "\(.name)\t\(.distilled)"' "$MANIFEST" | \
+while IFS=$'\t' read -r name distilled_path; do
+  if [[ "$distilled_path" == *"/SKILL.md" ]]; then
+    unified_name="${name}-unified.md"
+    unified_path="$SITE/content/distilled/$unified_name"
+    skill_dir=$(dirname "$distilled_path")
+    
+    echo "  + $unified_name"
+    {
+      printf '# %s (Unified Skill)\n\n' "$name"
+      printf '## Core Instructions (SKILL.md)\n\n'
+      cat "$REPO_ROOT/$distilled_path"
+      printf '\n\n---\n\n'
+      
+      if [ -d "$REPO_ROOT/$skill_dir/references" ]; then
+        for ref in "$REPO_ROOT/$skill_dir/references"/*.md; do
+          if [ -f "$ref" ]; then
+            ref_name=$(basename "$ref")
+            printf '## Reference: %s\n\n' "$ref_name"
+            cat "$ref"
+            printf '\n\n---\n\n'
+          fi
+        done
+      fi
+    } > "$unified_path"
+  fi
+done
 
 # Disable Jekyll
 touch "$SITE/.nojekyll"
@@ -57,6 +89,18 @@ prompt_field() {
   local name="$1" field="$2"
   jq -r --arg n "$name" --arg f "$field" \
     '.prompts[] | select(.name == $n) | .[$f] // empty' "$MANIFEST"
+}
+
+# ------------------------------------------------------------------
+# Helper: resolve skill URL (unified or single file)
+# ------------------------------------------------------------------
+skill_url() {
+  local name="$1" distilled_path="$2"
+  if [[ "$distilled_path" == *"/SKILL.md" ]]; then
+    echo "content/distilled/${name}-unified.md"
+  else
+    echo "$distilled_path"
+  fi
 }
 
 # ------------------------------------------------------------------
@@ -102,7 +146,8 @@ while IFS= read -r bundle; do
     title=$(prompt_field "$name" "title")
     desc=$(prompt_field "$name" "description")
     source=$(prompt_field "$name" "source")
-    distilled=$(prompt_field "$name" "distilled")
+    distilled_raw=$(prompt_field "$name" "distilled")
+    distilled=$(skill_url "$name" "$distilled_raw")
     printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
     if [ -n "$distilled" ]; then
       printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
@@ -124,7 +169,8 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   title=$(prompt_field "$name" "title")
   desc=$(prompt_field "$name" "description")
   source=$(prompt_field "$name" "source")
-  distilled=$(prompt_field "$name" "distilled")
+  distilled_raw=$(prompt_field "$name" "distilled")
+  distilled=$(skill_url "$name" "$distilled_raw")
   printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
   if [ -n "$distilled" ]; then
     printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
@@ -191,7 +237,29 @@ FULL="$SITE/llms-full.txt"
     fi
     printf '### %s — %s\n\n' "$title" "$desc"
     printf '> Skill name: `%s`\n\n' "$name"
-    cat "$REPO_ROOT/$distilled_path"
+    
+    # If it's a multi-file skill (ends in SKILL.md), merge references
+    if [[ "$distilled_path" == *"/SKILL.md" ]]; then
+      skill_dir=$(dirname "$distilled_path")
+      printf '#### Core Instructions (%s)\n\n' "SKILL.md"
+      cat "$REPO_ROOT/$distilled_path"
+      printf '\n\n'
+      
+      # Append all reference files
+      if [ -d "$REPO_ROOT/$skill_dir/references" ]; then
+        for ref in "$REPO_ROOT/$skill_dir/references"/*.md; do
+          if [ -f "$ref" ]; then
+            ref_name=$(basename "$ref")
+            printf '#### Reference: %s\n\n' "$ref_name"
+            cat "$ref"
+            printf '\n\n'
+          fi
+        done
+      fi
+    else
+      # Single-file skill
+      cat "$REPO_ROOT/$distilled_path"
+    fi
     printf '\n\n---\n\n'
   done
 
@@ -259,7 +327,8 @@ while IFS= read -r bundle; do
     title=$(prompt_field "$name" "title")
     desc=$(prompt_field "$name" "description")
     source=$(prompt_field "$name" "source")
-    distilled=$(prompt_field "$name" "distilled")
+    distilled_raw=$(prompt_field "$name" "distilled")
+    distilled=$(skill_url "$name" "$distilled_raw")
     printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
     if [ -n "$distilled" ]; then
       printf ' <span class="links">(<a href="%s">distilled</a>)</span>' "$distilled" >> "$INDEX"
@@ -278,7 +347,8 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   title=$(prompt_field "$name" "title")
   desc=$(prompt_field "$name" "description")
   source=$(prompt_field "$name" "source")
-  distilled=$(prompt_field "$name" "distilled")
+  distilled_raw=$(prompt_field "$name" "distilled")
+  distilled=$(skill_url "$name" "$distilled_raw")
   printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
   if [ -n "$distilled" ]; then
     printf ' <span class="links">(<a href="%s">distilled</a>)</span>' "$distilled" >> "$INDEX"

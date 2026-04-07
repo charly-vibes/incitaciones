@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-07
 
+#### Added - Progressive Disclosure Pattern for Complex Skills
+
+- **content/distilled/** — Refactored complex skills (`rule-of-5-universal`, `ux-dx-evaluation-diagnostician`) into a modular structure with a core `SKILL.md` and an on-demand `references/` directory.
+- **install.sh** — Updated to support multi-file skills by recursively copying reference directories while preserving the core `SKILL.md` as the main entry point.
+- **site/build.sh** — Updated the static site generator to merge multi-file skills into unified `.md` documents for easy web reference and inclusion in `llms-full.txt`.
+- **content/research-finding-skill-progressive-disclosure.md** — Documented the pattern, its benefits for context optimization, and the implementation details.
+- **AGENTS.md** + **README.md** — Updated documentation to guide developers on creating and using single-file vs. multi-file distilled prompts.
+
 #### Added - Trace Insights and Session Labeling Workflow
 
 - **scripts/trace-insights.js** — Added a thin wrapper that auto-detects local trace histories, runs the analyzer with cache reuse, prints a compact markdown summary, and writes reusable artifacts to `.cache/trace-insights/`.

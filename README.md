@@ -54,7 +54,8 @@ just search
 
 Everything lives in `content/` with descriptive filenames:
 
-- `prompt-*.md` - Reusable prompts
+- `prompt-*.md` - Reusable prompts (source)
+- `distilled/` - Optimized prompts for agent consumption (single file or multi-file)
 - `research-*.md` - Experiments and findings
 - `example-*.md` - Real-world examples
 - `template-*.md` - Templates for new content
@@ -269,7 +270,7 @@ Focus on simplicity and discoverability over complex organization.
 ```bash
 just new prompt "Incremental Refactoring"
 # Edit content/prompt-task-incremental-refactoring.md
-# Edit content/distilled/incremental-refactoring.md
+# Edit content/distilled/incremental-refactoring.md (or create a directory for multi-file)
 # Add prompt text, examples, and distilled runtime form
 # Register the prompt in content/manifest.json
 # Run just validate-distilled && just sync-manifest

@@ -368,16 +368,32 @@ SKIPPED=0
 if [ "$FORMAT" = "skills" ]; then
   # Skills format: <name>/SKILL.md with YAML frontmatter
   for prompt in $PROMPTS; do
-    src="$DISTILLED_DIR/${prompt}.md"
+    src_file="$DISTILLED_DIR/${prompt}.md"
+    src_dir="$DISTILLED_DIR/${prompt}"
     dst_dir="$INSTALL_DIR/${prompt}"
     dst="$dst_dir/SKILL.md"
 
-    if [ -f "$src" ]; then
+    # Support for multi-file skills in directories
+    if [ -d "$src_dir" ] && [ -f "$src_dir/SKILL.md" ]; then
       mkdir -p "$dst_dir"
-      # Generate frontmatter + distilled content
+      # Generate frontmatter + directory-based SKILL.md content
       {
         generate_frontmatter "$prompt"
-        cat "$src"
+        cat "$src_dir/SKILL.md"
+      } > "$dst"
+      
+      # Copy all other files/directories from src_dir
+      # Using find to copy everything except SKILL.md at the top level
+      find "$src_dir" -maxdepth 1 -mindepth 1 -not -name "SKILL.md" -exec cp -R {} "$dst_dir/" \;
+      
+      INSTALLED=$((INSTALLED + 1))
+      echo -e "  ${GREEN}+${NC} $prompt (multi-file)"
+    elif [ -f "$src_file" ]; then
+      mkdir -p "$dst_dir"
+      # Generate frontmatter + single-file distilled content
+      {
+        generate_frontmatter "$prompt"
+        cat "$src_file"
       } > "$dst"
       INSTALLED=$((INSTALLED + 1))
       echo -e "  ${GREEN}+${NC} $prompt"

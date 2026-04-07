@@ -41,6 +41,21 @@ incitaciones/
     └── references-*.md    # Link collections
 ```
 
+## Distilled Formats
+
+Prompts are stored in two forms: the **source** (`content/prompt-*.md`) and the **distilled** (`content/distilled/*.md`). The distilled form is what the agent actually sees at runtime.
+
+### Single-File Skills
+The standard format. A single Markdown file containing only instructions, templates, and rules.
+- **Path:** `content/distilled/{name}.md`
+
+### Multi-File Skills (Progressive Disclosure)
+For complex skills that would exceed 500 lines or 5,000 tokens. Uses a core `SKILL.md` and a `references/` directory.
+- **Structure:**
+  - `content/distilled/{name}/SKILL.md` - Core procedure and rules.
+  - `content/distilled/{name}/references/` - On-demand templates, examples, and criteria.
+- **Trigger Protocol:** The `SKILL.md` must explicitly instruct the agent to read specific files in `references/` when needed.
+
 ## Manifest (`content/manifest.json`)
 
 The manifest is the authoritative registry of all prompts. It is consumed by `install.sh` and the site generator.
@@ -120,8 +135,8 @@ just sync-manifest  # validate manifest files, update version, sync _site/
 ## Workflow
 
 1. **Create** - `just new prompt "Name"`
-2. **Edit** - Fill in the source prompt and the distilled runtime form
-3. **Register** - Add the prompt to `content/manifest.json`
+2. **Edit** - Fill in the source prompt and the distilled runtime form (single file or multi-file directory)
+3. **Register** - Add the prompt to `content/manifest.json` (pointing `distilled` to the file or `SKILL.md`)
 4. **Validate** - Run `just validate-distilled` and `just sync-manifest`
 5. **Test** - Try it with real AI tools
 6. **Update status** - draft → tested → verified
