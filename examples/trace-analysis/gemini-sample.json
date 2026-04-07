@@ -1,0 +1,27 @@
+{
+  "provider": "gemini",
+  "model": "gemini-2.5-pro",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "text": "Use /debug to inspect the failing workflow and then run npm test."
+        }
+      ]
+    },
+    {
+      "role": "model",
+      "parts": [
+        {
+          "text": "I found the issue, but npm test failed with an exception and I need user input before proceeding."
+        }
+      ]
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 900,
+    "candidatesTokenCount": 220,
+    "totalTokenCount": 1120
+  }
+}

@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-07
 
+#### Added - Cross-Agent Trace Analysis
+
+- **scripts/analyze-traces.js** — Added a local trace analysis CLI for Claude, Gemini, Codex, and other agent-tool histories. It supports direct path input and `--auto-detect`, extracts prompt/tool/model/workflow signals, and now uses an incremental cache at `.cache/trace-analysis-cache.json` keyed by file metadata with analyzer/manifest version invalidation.
+- **justfile** — Added `analyze-traces` and `analyze-traces-auto` recipes for running the analyzer against explicit paths or detected local history locations.
+- **README.md** — Documented trace analysis usage, auto-detection behavior, heuristic report semantics, and cache behavior.
+- **content/example-trace-analysis-usage.md** — Added a usage example describing the analyzer’s outputs and intended interpretation.
+- **examples/trace-analysis/** — Added sample Claude, Codex, and Gemini trace fixtures for local verification of parsing, reporting, and cache behavior.
+
 #### Fixed - Manifest-Driven Publishing Workflow
 
 - **justfile** — `just new prompt` now scaffolds a distilled companion file and prints the required manifest publication steps. `validate` now checks stricter frontmatter/status rules, and `sync-manifest` now fails when prompt or distilled files exist on disk without manifest registration.

@@ -482,6 +482,14 @@ list-distilled:
     TOTAL=$(ls content/distilled/*.md 2>/dev/null | wc -l)
     echo "Total: $TOTAL prompts"
 
+# Analyze exported traces from multiple agent tools
+analyze-traces PATH *ARGS:
+    node scripts/analyze-traces.js {{PATH}} {{ARGS}}
+
+# Analyze traces from common local CLI history locations
+analyze-traces-auto *ARGS:
+    node scripts/analyze-traces.js --auto-detect {{ARGS}}
+
 # Validate distilled prompts
 validate-distilled:
     #!/usr/bin/env bash

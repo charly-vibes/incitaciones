@@ -78,7 +78,66 @@ just validate-distilled  # Validate distilled prompts
 just list-bundles        # Show available bundles
 just sync-manifest       # Validate manifest references and sync _site/manifest.json
 just generate-skill NAME # Preview SKILL.md output for a prompt
+just analyze-traces PATH # Analyze trace exports from agent tools
+just analyze-traces-auto # Auto-detect local CLI history locations
 ```
+
+## Trace Analysis
+
+You can analyze exported traces from Claude, Gemini, Codex, AmpCode, and OpenCode with:
+
+```bash
+just analyze-traces examples/trace-analysis
+```
+
+If your histories live in the default local CLI directories, use auto-detection:
+
+```bash
+just analyze-traces-auto
+```
+
+Or directly:
+
+```bash
+node scripts/analyze-traces.js --auto-detect --format markdown
+```
+
+The analyzer now uses an incremental cache at `.cache/trace-analysis-cache.json`.
+Unchanged files are reused automatically on later runs. Use `--no-cache` if you want a full recomputation.
+
+This scans JSON, JSONL, NDJSON, log, text, and markdown exports, then reports:
+
+- provider mix
+- prompt references matched against `content/manifest.json`
+- slash commands
+- tool and model usage
+- prompt-to-tool pairs
+- workflow transitions
+- heuristic session outcomes
+- rough conclusions across the analyzed traces
+
+For raw JSON output:
+
+```bash
+node scripts/analyze-traces.js examples/trace-analysis --format json
+```
+
+The new session-level signals are heuristic, not authoritative:
+
+- `prompt -> tool` pairs estimate when a prompt mention actually led to tool execution
+- `workflow transitions` show common session shapes like `prompt -> tool` or `user -> assistant`
+- `outcomes` classify sessions as `succeeded`, `failed`, `needs_input`, or `unknown` from assistant language
+
+This is strongest for comparative usage analysis, not for hard evaluation of prompt quality.
+
+Current auto-detected sources include common local paths such as:
+
+- `~/.claude/projects`
+- `~/.gemini/tmp/**/chats/session-*.json`
+- `~/.codex/history.jsonl`
+- `~/.codex/log/codex-tui.log`
+
+AmpCode and OpenCode are only included when conversation-like files are found.
 
 ---
 
