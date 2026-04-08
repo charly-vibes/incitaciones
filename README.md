@@ -149,6 +149,8 @@ This scans JSON, JSONL, NDJSON, log, text, and markdown exports, then reports:
 
 - provider mix
 - prompt references matched against `content/manifest.json`
+- skill format counts (`single-file` vs `progressive-disclosure`)
+- progressive-disclosure reference mentions and stage hints
 - slash commands
 - tool and model usage
 - prompt-to-tool pairs
@@ -177,6 +179,10 @@ Normalized session records include fields such as:
 - `model`
 - `task_type`
 - `prompts_used`
+- `skill_formats`
+- `progressive_skills_used`
+- `references_used`
+- `stage_hints`
 - `tools_used`
 - `tests_run_or_mentioned`
 - `verification_present`
@@ -188,6 +194,16 @@ Normalized session records include fields such as:
 - `last_assistant_excerpt`
 
 The label queue is intended for manual annotation. Each queued record includes suggested questions so you can build a labeled evaluation set over time.
+
+For progressive-disclosure skills, the analyzer now reads optional manifest metadata such as `skill_format`, `eval.stages`, and `eval.references`. That makes it possible to compare not just prompt usage, but also which stages and reference files were actually involved in successful sessions.
+
+The aggregate report now separates adoption from evidence:
+
+- `Top Skills By Session` and `Skill Formats By Session` count each skill at most once per session.
+- `Top References By Session` and `Top Stages By Session` count whether a reference or stage appeared in a session.
+- `Skill Evidence Hits`, `Top Reference Evidence Hits`, and `Top Stage Evidence Hits` count repeated detections across messages and tool inputs.
+
+Use the session-level sections for effectiveness comparisons. Use the evidence-hit sections to understand how often the analyzer observed supporting signals.
 
 Current auto-detected sources include common local paths such as:
 

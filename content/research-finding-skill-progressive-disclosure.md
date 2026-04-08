@@ -53,6 +53,43 @@ The `SKILL.md` should contain the "how-to" (the algorithm), while the `reference
 ### 3. Progressive Loading
 Instruct the agent to read specific reference files only when it reaches that step in the procedure, using whatever file-reading tool the runtime provides.
 
+### 4. Evaluability by Design
+Treat each multi-file skill as an execution system, not just a prompt blob.
+
+- Define explicit stages in order, such as `read-task`, `research`, `draft-output`, or `verify-report`.
+- Give each reference file a single purpose and map it to one stage.
+- Prefer narrow trigger language such as "Use `references/plan-template.md` when writing the final plan" over generic "read references if needed".
+- Keep output contracts stable so traces and labeled sessions can be compared across revisions.
+- Record evaluation metadata in the manifest, not in `SKILL.md`, so runtime instructions stay lean while analytics can evolve independently.
+
+### Suggested Evaluation Metadata
+For progressive-disclosure skills, attach a small schema in `content/manifest.json`:
+
+```json
+{
+  "skill_format": "progressive-disclosure",
+  "eval": {
+    "task_types": ["planning"],
+    "success_signals": ["phased_plan_present", "tests_planned"],
+    "failure_signals": ["missing_test_strategy"],
+    "stages": [
+      { "name": "research-codebase", "hints": ["existing patterns"] }
+    ],
+    "references": [
+      {
+        "id": "plan-template",
+        "path": "content/distilled/create-plan/references/plan-template.md",
+        "purpose": "output-template",
+        "stage": "write-plan",
+        "optional": false
+      }
+    ]
+  }
+}
+```
+
+This keeps the analytics unit aligned with the actual design of the skill: activation, stage progression, reference usage, outcome, and cost.
+
 ## Implementation in Incitaciones
 
 The `install.sh` script has been updated to support this directory-based structure. If a directory named `my-skill` exists in `content/distilled/` containing a `SKILL.md`, it is treated as a multi-file skill.

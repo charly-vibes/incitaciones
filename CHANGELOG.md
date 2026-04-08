@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-07
 
+#### Changed - Progressive Disclosure Analytics Schema
+
+- **content/manifest.json** + **_site/manifest.json** — Added `skill_format` and initial `eval` metadata for representative progressive-disclosure skills so analytics can track stages, references, and success/failure signals without inflating runtime `SKILL.md` files.
+- **scripts/analyze-traces.js** — Extended trace analysis to distinguish single-file vs. progressive-disclosure skill activations, emit reference and stage-hint metrics, enrich session records with `references_used` and `stage_hints`, summarize labeled reference effectiveness alongside prompt effectiveness, improve extraction precision with slash-command activation, persistent active-skill windows, and exact file-path reference matching, and split session-level adoption counts from message-level evidence-hit counts in the final report.
+- **README.md** + **content/research-finding-skill-progressive-disclosure.md** — Documented the new evaluation-oriented skill design pattern and the trace fields it enables.
+
 #### Changed - Progressive Disclosure Rollout Across Distilled Skills
 
 - **content/distilled/** — Converted `describe-pr`, `create-plan`, `implement-plan`, `iterate-plan`, `research-codebase`, `create-handoff`, `resume-handoff`, `design-review`, and `issue-review` from unified distilled files into multi-file skills with compact `SKILL.md` entrypoints and on-demand `references/`.

@@ -44,6 +44,17 @@ const PROVIDER_HINTS = {
   },
 };
 
+function defaultArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function loadManifest() {
   return JSON.parse(fs.readFileSync(MANIFEST_PATH, "utf8"));
 }
@@ -292,6 +303,7 @@ function getFileSignature(filePath) {
 function readMetricsWithCache(
   filePath,
   promptMatchers,
+  skillCatalog,
   cache,
   cacheStats,
   cacheDisabled = false,
@@ -312,7 +324,7 @@ function readMetricsWithCache(
   }
 
   cacheStats.misses += 1;
-  const metrics = parseContent(filePath, promptMatchers, sourceProvider);
+  const metrics = parseContent(filePath, promptMatchers, skillCatalog, sourceProvider);
   cache.files[filePath] = {
     mtimeMs: signature.mtimeMs,
     size: signature.size,
@@ -441,8 +453,14 @@ function emptyMetrics(provider, filePath) {
     toolCalls: {},
     modelCounts: {},
     promptCounts: {},
+    skillFormatCounts: {},
     slashCommandCounts: {},
     fileMentions: {},
+    referenceCounts: {},
+    referenceCountsBySkill: {},
+    referenceStageCounts: {},
+    stageCounts: {},
+    skillsUsed: {},
     tokenUsage: {
       input: 0,
       output: 0,
@@ -664,6 +682,95 @@ function buildPromptMatchers(manifest) {
   });
 }
 
+function deriveSkillFormat(prompt) {
+  if (prompt.skill_format) {
+    return prompt.skill_format;
+  }
+  return /\/SKILL\.md$/i.test(prompt.distilled) ? "progressive-disclosure" : "single-file";
+}
+
+function deriveEvalReferences(prompt) {
+  const configured = defaultArray(prompt.eval?.references).map((reference) => ({
+    ...reference,
+    aliases: defaultArray(reference.aliases).map(normalizeText),
+  }));
+  if (configured.length > 0) {
+    return configured;
+  }
+
+  if (deriveSkillFormat(prompt) !== "progressive-disclosure") {
+    return [];
+  }
+
+  const referenceDir = path.join(path.dirname(prompt.distilled), "references");
+  const absoluteReferenceDir = path.join(REPO_ROOT, referenceDir);
+  if (!fileExists(absoluteReferenceDir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(absoluteReferenceDir, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && /\.md$/i.test(entry.name))
+    .sort((left, right) => left.name.localeCompare(right.name))
+    .map((entry) => ({
+      id: entry.name.replace(/\.md$/i, ""),
+      path: path.join(referenceDir, entry.name),
+      purpose: "reference",
+      stage: null,
+      optional: true,
+      aliases: [
+        normalizeText(`references/${entry.name}`),
+        normalizeText(entry.name),
+        normalizeText(entry.name.replace(/\.md$/i, "").replace(/-/g, " ")),
+      ],
+    }));
+}
+
+function buildSkillCatalog(manifest) {
+  const byName = {};
+
+  for (const prompt of manifest.prompts) {
+    const skillFormat = deriveSkillFormat(prompt);
+    const stages = defaultArray(prompt.eval?.stages).map((stage) => ({
+      name: stage.name,
+      hints: Array.from(
+        new Set([
+          normalizeText(stage.name).replace(/-/g, " "),
+          ...defaultArray(stage.hints).map(normalizeText),
+        ]),
+      ),
+    }));
+    const references = deriveEvalReferences(prompt).map((reference) => {
+      const normalizedPath = normalizeText(reference.path);
+      const relativeToSkill = normalizeText(
+        path.relative(path.dirname(prompt.distilled), reference.path).replace(/\\/g, "/"),
+      );
+      return {
+        ...reference,
+        aliases: Array.from(
+          new Set([
+            normalizedPath,
+            relativeToSkill,
+            ...defaultArray(reference.aliases).map(normalizeText),
+          ]),
+        ),
+      };
+    });
+
+    byName[prompt.name] = {
+      name: prompt.name,
+      title: prompt.title,
+      distilled: prompt.distilled,
+      skillFormat,
+      stages,
+      references,
+      eval: prompt.eval || null,
+    };
+  }
+
+  return byName;
+}
+
 function extractPromptRefs(text, promptMatchers) {
   const matches = new Set();
   for (const matcher of promptMatchers) {
@@ -675,7 +782,103 @@ function extractPromptRefs(text, promptMatchers) {
 }
 
 function extractFileMentions(text) {
-  return text.match(/\b[\w./-]+\.(md|json|js|ts|tsx|jsx|py|rb|go|rs|sh)\b/g) || [];
+  return (
+    text.match(/(?:content\/|references\/)?[\w./-]+\.(md|json|js|ts|tsx|jsx|py|rb|go|rs|sh)\b/g) || []
+  ).map((match) => match.replace(/^['"`]+|['"`]+$/g, ""));
+}
+
+function extractSkillRefsFromSlashCommands(slashCommands, skillCatalog) {
+  const matches = new Set();
+  for (const slashCommand of slashCommands) {
+    const normalized = normalizeText(slashCommand).replace(/^\//, "");
+    if (skillCatalog[normalized]) {
+      matches.add(normalized);
+    }
+  }
+  return Array.from(matches);
+}
+
+function resolveActiveSkills(promptRefs, slashCommands, activeSkills, skillCatalog) {
+  const matches = new Set();
+  for (const promptRef of promptRefs) {
+    matches.add(promptRef);
+  }
+  for (const skillRef of extractSkillRefsFromSlashCommands(slashCommands, skillCatalog)) {
+    matches.add(skillRef);
+  }
+  for (const activeSkill of activeSkills) {
+    matches.add(activeSkill);
+  }
+  return Array.from(matches);
+}
+
+function extractStageHints(text, activeSkills, skillCatalog, fileMentions = []) {
+  const matches = [];
+  const seen = new Set();
+  const normalizedFileMentions = fileMentions.map(normalizeText);
+
+  for (const skillName of activeSkills) {
+    const skill = skillCatalog[skillName];
+    if (!skill) {
+      continue;
+    }
+    for (const stage of skill.stages) {
+      if (!stage.name || stage.hints.length === 0) {
+        continue;
+      }
+      if (
+        stage.hints.some((hint) => text.includes(hint)) ||
+        normalizedFileMentions.some((fileMention) =>
+          stage.hints.some((hint) => fileMention.includes(hint) || hint.includes(fileMention)),
+        )
+      ) {
+        const key = `${skillName}:${stage.name}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          matches.push({ skill: skillName, stage: stage.name });
+        }
+      }
+    }
+  }
+
+  return matches;
+}
+
+function extractReferenceMentions(text, activeSkills, skillCatalog, fileMentions = []) {
+  const matches = [];
+  const seen = new Set();
+  const normalizedFileMentions = fileMentions.map(normalizeText);
+
+  for (const skillName of activeSkills) {
+    const skill = skillCatalog[skillName];
+    if (!skill) {
+      continue;
+    }
+    for (const reference of skill.references) {
+      if (!reference.id || defaultArray(reference.aliases).length === 0) {
+        continue;
+      }
+      if (
+        reference.aliases.some((alias) => text.includes(alias)) ||
+        normalizedFileMentions.some((fileMention) =>
+          reference.aliases.some((alias) => fileMention === alias || fileMention.endsWith(alias) || alias.endsWith(fileMention)),
+        )
+      ) {
+        const key = `${skillName}:${reference.id}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          matches.push({
+            skill: skillName,
+            reference: reference.id,
+            stage: reference.stage || null,
+            optional: reference.optional !== false,
+          });
+        }
+      }
+    }
+  }
+
+  return matches;
 }
 
 function extractSlashCommands(text) {
@@ -787,13 +990,14 @@ function classifyOutcome(messages) {
   return { outcome: "unknown", evidence };
 }
 
-function analyzeStructuredContent(structured, filePath, promptMatchers, provider) {
+function analyzeStructuredContent(structured, filePath, promptMatchers, skillCatalog, provider) {
   const metrics = emptyMetrics(provider, filePath);
   metrics.summary.structured = true;
 
   const objects = flattenObjects(structured);
   const messages = collectPotentialMessages(structured);
   const events = [];
+  const activeSkills = new Set();
 
   for (const hint of PROVIDER_HINTS[provider]?.eventKeys || []) {
     if (JSON.stringify(structured).toLowerCase().includes(`"${hint.toLowerCase()}"`)) {
@@ -835,17 +1039,42 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
     const promptRefs = extractPromptRefs(text, promptMatchers);
     const slashCommands = extractSlashCommands(text);
     const toolName = role === "tool" ? extractToolName(message) : null;
+    const fileMentions = extractFileMentions(text);
+    const resolvedSkills = resolveActiveSkills(promptRefs, slashCommands, Array.from(activeSkills), skillCatalog);
+    const stageHints = extractStageHints(text, resolvedSkills, skillCatalog, fileMentions);
+    const referenceMentions = extractReferenceMentions(text, resolvedSkills, skillCatalog, fileMentions);
 
     metrics.messageCount += 1;
     increment(metrics.roleCounts, role);
 
     for (const promptRef of promptRefs) {
       increment(metrics.promptCounts, promptRef);
+      metrics.skillsUsed[promptRef] = skillCatalog[promptRef] || {
+        name: promptRef,
+        skillFormat: "unknown",
+        stages: [],
+        references: [],
+        eval: null,
+      };
+      increment(metrics.skillFormatCounts, metrics.skillsUsed[promptRef].skillFormat || "unknown");
     }
     for (const slashCommand of slashCommands) {
       increment(metrics.slashCommandCounts, slashCommand);
     }
-    for (const fileMention of extractFileMentions(text)) {
+    for (const promptRef of extractSkillRefsFromSlashCommands(slashCommands, skillCatalog)) {
+      metrics.skillsUsed[promptRef] = skillCatalog[promptRef] || {
+        name: promptRef,
+        skillFormat: "unknown",
+        stages: [],
+        references: [],
+        eval: null,
+      };
+      increment(metrics.skillFormatCounts, metrics.skillsUsed[promptRef].skillFormat || "unknown");
+    }
+    for (const activeSkill of resolvedSkills) {
+      activeSkills.add(activeSkill);
+    }
+    for (const fileMention of fileMentions) {
       increment(metrics.fileMentions, fileMention);
     }
 
@@ -870,6 +1099,17 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
     if (detectTestsMentioned(text)) {
       metrics.testsMentioned += 1;
     }
+    for (const stageHint of stageHints) {
+      increment(metrics.stageCounts, `${stageHint.skill}:${stageHint.stage}`);
+    }
+    for (const referenceMention of referenceMentions) {
+      increment(metrics.referenceCounts, `${referenceMention.skill}:${referenceMention.reference}`);
+      increment(metrics.referenceCountsBySkill, referenceMention.skill);
+      if (referenceMention.stage) {
+        increment(metrics.referenceStageCounts, `${referenceMention.skill}:${referenceMention.stage}`);
+        increment(metrics.stageCounts, `${referenceMention.skill}:${referenceMention.stage}`);
+      }
+    }
 
     const kind = classifyEventFromMessage(message, promptRefs, slashCommands, toolName);
     if (kind) {
@@ -881,6 +1121,14 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
     const fallbackText = JSON.stringify(structured).toLowerCase();
     for (const promptRef of extractPromptRefs(fallbackText, promptMatchers)) {
       increment(metrics.promptCounts, promptRef);
+      metrics.skillsUsed[promptRef] = skillCatalog[promptRef] || {
+        name: promptRef,
+        skillFormat: "unknown",
+        stages: [],
+        references: [],
+        eval: null,
+      };
+      increment(metrics.skillFormatCounts, metrics.skillsUsed[promptRef].skillFormat || "unknown");
     }
   }
 
@@ -892,7 +1140,7 @@ function analyzeStructuredContent(structured, filePath, promptMatchers, provider
   return metrics;
 }
 
-function analyzeTextContent(content, filePath, promptMatchers, provider) {
+function analyzeTextContent(content, filePath, promptMatchers, skillCatalog, provider) {
   const metrics = emptyMetrics(provider, filePath);
   const text = content.toLowerCase();
   metrics.firstUserExcerpt = clipText(content);
@@ -902,12 +1150,44 @@ function analyzeTextContent(content, filePath, promptMatchers, provider) {
 
   for (const promptRef of extractPromptRefs(text, promptMatchers)) {
     increment(metrics.promptCounts, promptRef);
+    metrics.skillsUsed[promptRef] = skillCatalog[promptRef] || {
+      name: promptRef,
+      skillFormat: "unknown",
+      stages: [],
+      references: [],
+      eval: null,
+    };
+    increment(metrics.skillFormatCounts, metrics.skillsUsed[promptRef].skillFormat || "unknown");
   }
-  for (const slashCommand of extractSlashCommands(text)) {
+  const slashCommands = extractSlashCommands(text);
+  const fileMentions = extractFileMentions(text);
+  for (const slashCommand of slashCommands) {
     increment(metrics.slashCommandCounts, slashCommand);
   }
-  for (const fileMention of extractFileMentions(text)) {
+  for (const promptRef of extractSkillRefsFromSlashCommands(slashCommands, skillCatalog)) {
+    metrics.skillsUsed[promptRef] = skillCatalog[promptRef] || {
+      name: promptRef,
+      skillFormat: "unknown",
+      stages: [],
+      references: [],
+      eval: null,
+    };
+    increment(metrics.skillFormatCounts, metrics.skillsUsed[promptRef].skillFormat || "unknown");
+  }
+  for (const fileMention of fileMentions) {
     increment(metrics.fileMentions, fileMention);
+  }
+  const activeSkills = Object.keys(metrics.skillsUsed);
+  for (const stageHint of extractStageHints(text, activeSkills, skillCatalog, fileMentions)) {
+    increment(metrics.stageCounts, `${stageHint.skill}:${stageHint.stage}`);
+  }
+  for (const referenceMention of extractReferenceMentions(text, activeSkills, skillCatalog, fileMentions)) {
+    increment(metrics.referenceCounts, `${referenceMention.skill}:${referenceMention.reference}`);
+    increment(metrics.referenceCountsBySkill, referenceMention.skill);
+    if (referenceMention.stage) {
+      increment(metrics.referenceStageCounts, `${referenceMention.skill}:${referenceMention.stage}`);
+      increment(metrics.stageCounts, `${referenceMention.skill}:${referenceMention.stage}`);
+    }
   }
   if (detectTestsMentioned(text)) {
     metrics.testsMentioned += 1;
@@ -931,7 +1211,7 @@ function analyzeTextContent(content, filePath, promptMatchers, provider) {
   return metrics;
 }
 
-function parseContent(filePath, promptMatchers, sourceProvider = null) {
+function parseContent(filePath, promptMatchers, skillCatalog, sourceProvider = null) {
   const content = fs.readFileSync(filePath, "utf8");
   const provider = sourceProvider || detectProvider(filePath, content);
 
@@ -942,16 +1222,16 @@ function parseContent(filePath, promptMatchers, sourceProvider = null) {
         .map((line) => line.trim())
         .filter(Boolean)
         .map((line) => JSON.parse(line));
-      return analyzeStructuredContent(records, filePath, promptMatchers, provider);
+      return analyzeStructuredContent(records, filePath, promptMatchers, skillCatalog, provider);
     }
     if (/\.json$/i.test(filePath)) {
-      return analyzeStructuredContent(JSON.parse(content), filePath, promptMatchers, provider);
+      return analyzeStructuredContent(JSON.parse(content), filePath, promptMatchers, skillCatalog, provider);
     }
   } catch (error) {
-    return analyzeTextContent(content, filePath, promptMatchers, provider);
+    return analyzeTextContent(content, filePath, promptMatchers, skillCatalog, provider);
   }
 
-  return analyzeTextContent(content, filePath, promptMatchers, provider);
+  return analyzeTextContent(content, filePath, promptMatchers, skillCatalog, provider);
 }
 
 function sumMapValues(map) {
@@ -988,6 +1268,11 @@ function buildSessionRecord(fileReport) {
   const slashCommands = topEntries(fileReport.slashCommandCounts, 50).map((entry) => entry.name);
   const toolsUsed = topEntries(fileReport.toolCalls, 50).map((entry) => entry.name);
   const topModel = topEntries(fileReport.modelCounts, 1)[0]?.name || null;
+  const stageHints = topEntries(fileReport.stageCounts, 50).map((entry) => entry.name);
+  const referencesUsed = topEntries(fileReport.referenceCounts, 50).map((entry) => entry.name);
+  const skillFormats = Object.fromEntries(
+    Object.entries(fileReport.skillsUsed).map(([skillName, skill]) => [skillName, skill.skillFormat || "unknown"]),
+  );
 
   const record = {
     session_id: fileReport.sessionId,
@@ -996,6 +1281,10 @@ function buildSessionRecord(fileReport) {
     model: topModel,
     task_type: "unknown",
     prompts_used: promptsUsed,
+    skill_formats: skillFormats,
+    progressive_skills_used: promptsUsed.filter((promptName) => skillFormats[promptName] === "progressive-disclosure"),
+    references_used: referencesUsed,
+    stage_hints: stageHints,
     prompt_sequence_hints: topEntries(fileReport.promptToolPairs, 20).map((entry) => entry.name),
     slash_commands: slashCommands,
     tools_used: toolsUsed,
@@ -1024,6 +1313,8 @@ function buildSessionRecord(fileReport) {
       prompt_to_tool_runs: fileReport.toolRunsAfterPrompt,
       code_blocks: fileReport.outputSignals.codeBlocks,
       checklists: fileReport.outputSignals.checklists,
+      references_loaded_or_mentioned: sumMapValues(fileReport.referenceCounts),
+      stages_detected: sumMapValues(fileReport.stageCounts),
     },
     human_labeled: false,
     label: null,
@@ -1062,6 +1353,9 @@ function buildLabelQueue(sessionRecords) {
       model: record.model,
       task_type_guess: record.task_type,
       prompts_used: record.prompts_used,
+      progressive_skills_used: record.progressive_skills_used,
+      references_used: record.references_used,
+      stage_hints: record.stage_hints,
       outcome_guess: record.outcome_guess,
       first_user_excerpt: record.first_user_excerpt,
       last_assistant_excerpt: record.last_assistant_excerpt,
@@ -1069,6 +1363,7 @@ function buildLabelQueue(sessionRecords) {
         "What is the task type?",
         "What was the final outcome? (succeeded|partial|failed|abandoned|needs_input)",
         "Which prompts were actually helpful?",
+        "Which references were actually helpful?",
         "Was human rescue needed?",
         "Was verification present?",
       ],
@@ -1078,6 +1373,7 @@ function buildLabelQueue(sessionRecords) {
 function buildEffectivenessSummary(sessionRecords) {
   const labeled = sessionRecords.filter((record) => record.human_labeled && record.label);
   const byPrompt = {};
+  const byReference = {};
 
   for (const record of labeled) {
     const outcome = record.label.outcome || "unknown";
@@ -1109,11 +1405,35 @@ function buildEffectivenessSummary(sessionRecords) {
         bucket.helpful_votes += 1;
       }
     }
+
+    const helpfulReferences = record.label.reference_helpfulness || record.label.reference_effectiveness || null;
+    for (const referenceName of defaultArray(record.references_used)) {
+      if (!byReference[referenceName]) {
+        byReference[referenceName] = {
+          labeled_sessions: 0,
+          outcomes: {},
+          helpful_votes: 0,
+        };
+      }
+      const bucket = byReference[referenceName];
+      bucket.labeled_sessions += 1;
+      increment(bucket.outcomes, outcome);
+      if (
+        helpfulReferences === true ||
+        helpfulReferences === "helpful" ||
+        (typeof helpfulReferences === "object" &&
+          helpfulReferences[referenceName] &&
+          ["helpful", true].includes(helpfulReferences[referenceName]))
+      ) {
+        bucket.helpful_votes += 1;
+      }
+    }
   }
 
   return {
     labeled_sessions: labeled.length,
     prompts: byPrompt,
+    references: byReference,
   };
 }
 
@@ -1140,10 +1460,19 @@ function buildAggregate(fileReports) {
     },
     roleCounts: {},
     promptCounts: {},
+    skillFormatCounts: {},
+    skillSessionCounts: {},
+    skillSessionCountsByFormat: {},
     slashCommandCounts: {},
     toolCalls: {},
     modelCounts: {},
     fileMentions: {},
+    referenceCounts: {},
+    referenceCountsBySkill: {},
+    referenceStageCounts: {},
+    stageCounts: {},
+    stageSessionCounts: {},
+    referenceSessionCounts: {},
     eventTypes: {},
     transitions: {},
     promptToolPairs: {},
@@ -1191,16 +1520,38 @@ function buildAggregate(fileReports) {
 
     mergeMaps(aggregate.roleCounts, report.roleCounts);
     mergeMaps(aggregate.promptCounts, report.promptCounts);
+    mergeMaps(aggregate.skillFormatCounts, report.skillFormatCounts);
     mergeMaps(aggregate.slashCommandCounts, report.slashCommandCounts);
     mergeMaps(aggregate.toolCalls, report.toolCalls);
     mergeMaps(aggregate.modelCounts, report.modelCounts);
     mergeMaps(aggregate.fileMentions, report.fileMentions);
+    mergeMaps(aggregate.referenceCounts, report.referenceCounts);
+    mergeMaps(aggregate.referenceCountsBySkill, report.referenceCountsBySkill);
+    mergeMaps(aggregate.referenceStageCounts, report.referenceStageCounts);
+    mergeMaps(aggregate.stageCounts, report.stageCounts);
     mergeMaps(aggregate.eventTypes, report.eventTypes);
     mergeMaps(aggregate.transitions, report.transitions);
     mergeMaps(aggregate.promptToolPairs, report.promptToolPairs);
     increment(aggregate.outcomes, report.outcome);
     aggregate.outputSignals.codeBlocks += report.outputSignals.codeBlocks;
     aggregate.outputSignals.checklists += report.outputSignals.checklists;
+  }
+
+  return aggregate;
+}
+
+function augmentAggregateWithSessionRecords(aggregate, sessionRecords) {
+  for (const record of sessionRecords) {
+    for (const promptName of defaultArray(record.prompts_used)) {
+      increment(aggregate.skillSessionCounts, promptName);
+      increment(aggregate.skillSessionCountsByFormat, record.skill_formats?.[promptName] || "unknown");
+    }
+    for (const referenceName of defaultArray(record.references_used)) {
+      increment(aggregate.referenceSessionCounts, referenceName);
+    }
+    for (const stageName of defaultArray(record.stage_hints)) {
+      increment(aggregate.stageSessionCounts, stageName);
+    }
   }
 
   return aggregate;
@@ -1224,8 +1575,9 @@ function inferConclusions(aggregate, top) {
     Object.fromEntries(Object.entries(aggregate.providers).map(([name, metrics]) => [name, metrics.traces])),
     1,
   )[0];
-  const promptLeaders = topEntries(aggregate.promptCounts, 3);
+  const promptLeaders = topEntries(aggregate.skillSessionCounts, 3);
   const toolLeaders = topEntries(aggregate.toolCalls, 3);
+  const referenceLeaders = topEntries(aggregate.referenceSessionCounts, 3);
   const transitionLeaders = topEntries(aggregate.transitions, 3);
   const outcomeLeaders = topEntries(aggregate.outcomes, 3);
 
@@ -1237,7 +1589,7 @@ function inferConclusions(aggregate, top) {
 
   if (promptLeaders.length > 0) {
     conclusions.push(
-      `The most referenced prompts were ${promptLeaders.map((item) => `${item.name} (${item.count})`).join(", ")}.`,
+      `The most used skills by session were ${promptLeaders.map((item) => `${item.name} (${item.count})`).join(", ")}.`,
     );
   } else {
     conclusions.push("No prompt references were detected. The traces may need richer exports or additional aliases.");
@@ -1246,6 +1598,12 @@ function inferConclusions(aggregate, top) {
   if (toolLeaders.length > 0) {
     conclusions.push(
       `The heaviest tool usage clustered around ${toolLeaders.map((item) => `${item.name} (${item.count})`).join(", ")}.`,
+    );
+  }
+
+  if (referenceLeaders.length > 0) {
+    conclusions.push(
+      `The most frequently used progressive-disclosure references by session were ${referenceLeaders.map((item) => `${item.name} (${item.count})`).join(", ")}.`,
     );
   }
 
@@ -1315,6 +1673,8 @@ function formatMarkdown(report, top, verbose = false) {
   lines.push(`- Total tokens: ${aggregate.totals.tokenUsage.total}`);
   lines.push(`- Prompt -> tool executions: ${aggregate.totals.toolRunsAfterPrompt}`);
   lines.push(`- Test mentions: ${aggregate.totals.testsMentioned}`);
+  lines.push(`- Reference evidence hits: ${sumMapValues(aggregate.referenceCounts)}`);
+  lines.push(`- Stage evidence hits: ${sumMapValues(aggregate.stageCounts)}`);
   lines.push(`- Assistant code blocks: ${aggregate.outputSignals.codeBlocks}`);
   lines.push(`- Assistant checklists: ${aggregate.outputSignals.checklists}`);
   lines.push(`- Cache hits: ${report.cache.hits}`);
@@ -1331,11 +1691,43 @@ function formatMarkdown(report, top, verbose = false) {
   }
   lines.push("");
 
+  lines.push("## Progressive Disclosure");
+  lines.push("");
+  const progressiveSessions = report.session_records.filter(
+    (record) => defaultArray(record.progressive_skills_used).length > 0,
+  );
+  lines.push(`- Sessions using progressive-disclosure skills: ${progressiveSessions.length}`);
+  lines.push(`- Progressive-disclosure skill sessions: ${aggregate.skillSessionCountsByFormat["progressive-disclosure"] || 0}`);
+  lines.push(`- Single-file skill sessions: ${aggregate.skillSessionCountsByFormat["single-file"] || 0}`);
+  lines.push(`- Progressive-disclosure evidence hits: ${aggregate.skillFormatCounts["progressive-disclosure"] || 0}`);
+  lines.push(`- Single-file evidence hits: ${aggregate.skillFormatCounts["single-file"] || 0}`);
+  if (progressiveSessions.length > 0) {
+    const avgReferences =
+      progressiveSessions.reduce((sum, record) => sum + defaultArray(record.references_used).length, 0) /
+      progressiveSessions.length;
+    const avgStages =
+      progressiveSessions.reduce((sum, record) => sum + defaultArray(record.stage_hints).length, 0) /
+      progressiveSessions.length;
+    lines.push(`- Average references per progressive session: ${avgReferences.toFixed(2)}`);
+    lines.push(`- Average stage hints per progressive session: ${avgStages.toFixed(2)}`);
+  } else {
+    lines.push("- No progressive-disclosure skill usage detected");
+  }
+  lines.push("");
+
   const sections = [
-    ["Top Prompts", aggregate.promptCounts],
+    ["Top Skills By Session", aggregate.skillSessionCounts],
+    ["Skill Formats By Session", aggregate.skillSessionCountsByFormat],
+    ["Skill Evidence Hits", aggregate.skillFormatCounts],
+    ["Top Prompt Mentions", aggregate.promptCounts],
     ["Top Slash Commands", aggregate.slashCommandCounts],
     ["Top Tools", aggregate.toolCalls],
     ["Top Models", aggregate.modelCounts],
+    ["Top References By Session", aggregate.referenceSessionCounts],
+    ["Top Reference Evidence Hits", aggregate.referenceCounts],
+    ["Reference Usage By Skill", aggregate.referenceCountsBySkill],
+    ["Top Stages By Session", aggregate.stageSessionCounts],
+    ["Top Stage Evidence Hits", aggregate.stageCounts],
     ["Top Prompt -> Tool Pairs", aggregate.promptToolPairs],
     ["Top Workflow Transitions", aggregate.transitions],
     ["Top File Mentions", aggregate.fileMentions],
@@ -1382,6 +1774,21 @@ function formatMarkdown(report, top, verbose = false) {
         );
       }
     }
+    const rankedReferences = Object.entries(report.effectiveness.references || {})
+      .sort((left, right) => right[1].labeled_sessions - left[1].labeled_sessions)
+      .slice(0, top);
+    if (rankedReferences.length === 0) {
+      lines.push("- No labeled reference effectiveness data yet");
+    } else {
+      for (const [referenceName, stats] of rankedReferences) {
+        const outcomes = topEntries(stats.outcomes, 3)
+          .map((entry) => `${entry.name}=${entry.count}`)
+          .join(", ");
+        lines.push(
+          `- ${referenceName}: labeled=${stats.labeled_sessions}, helpful_votes=${stats.helpful_votes}${outcomes ? `, outcomes: ${outcomes}` : ""}`,
+        );
+      }
+    }
     lines.push("");
   }
 
@@ -1391,7 +1798,7 @@ function formatMarkdown(report, top, verbose = false) {
     for (const fileReport of report.files) {
       const relativePath = path.relative(REPO_ROOT, fileReport.filePath);
       lines.push(
-        `- ${relativePath}: ${fileReport.provider}, ${fileReport.messageCount} messages, outcome=${fileReport.outcome}, hints=${fileReport.summary.providerHintsMatched}`,
+        `- ${relativePath}: ${fileReport.provider}, ${fileReport.messageCount} messages, outcome=${fileReport.outcome}, hints=${fileReport.summary.providerHintsMatched}, references=${sumMapValues(fileReport.referenceCounts || {})}, stages=${sumMapValues(fileReport.stageCounts || {})}`,
       );
     }
   } else {
@@ -1415,6 +1822,7 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const manifest = loadManifest();
   const promptMatchers = buildPromptMatchers(manifest);
+  const skillCatalog = buildSkillCatalog(manifest);
   const detectedInputs = args.autoDetect ? autoDetectInputs() : [];
   const explicitInputs = args.inputs.map((input) => ({
     provider: "explicit",
@@ -1445,6 +1853,7 @@ function main() {
     readMetricsWithCache(
       filePath,
       promptMatchers,
+      skillCatalog,
       cache,
       cacheStats,
       args.noCache,
@@ -1452,8 +1861,8 @@ function main() {
     ),
   );
   saveCache(cache, args.noCache);
-  const aggregate = buildAggregate(fileReports);
   const rawSessionRecords = fileReports.map((fileReport) => buildSessionRecord(fileReport));
+  const aggregate = augmentAggregateWithSessionRecords(buildAggregate(fileReports), rawSessionRecords);
   const labels = loadLabels(args.labelsPath);
   const labeledSessionRecords = joinLabels(rawSessionRecords, buildLabelIndex(labels));
   const effectiveness = labels.length > 0 ? buildEffectivenessSummary(labeledSessionRecords) : null;
@@ -1473,9 +1882,14 @@ function main() {
       messageCount: fileReport.messageCount,
       roleCounts: fileReport.roleCounts,
       promptCounts: fileReport.promptCounts,
+      skillFormatCounts: fileReport.skillFormatCounts,
       slashCommandCounts: fileReport.slashCommandCounts,
       toolCalls: fileReport.toolCalls,
       modelCounts: fileReport.modelCounts,
+      referenceCounts: fileReport.referenceCounts,
+      referenceCountsBySkill: fileReport.referenceCountsBySkill,
+      referenceStageCounts: fileReport.referenceStageCounts,
+      stageCounts: fileReport.stageCounts,
       tokenUsage: fileReport.tokenUsage,
       promptToolPairs: fileReport.promptToolPairs,
       transitions: fileReport.transitions,
