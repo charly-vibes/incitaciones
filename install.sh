@@ -229,9 +229,43 @@ copy_skill_tree() {
 
   [ -d "$src_dir" ] || return 1
 
+  # If dst_dir resolves to the same directory as src_dir, skip the copy
+  local src_real dst_real
+  src_real=$(readlink -f "$src_dir" 2>/dev/null) || src_real="$src_dir"
+  dst_real=$(readlink -f "$dst_dir" 2>/dev/null) || dst_real="$dst_dir"
+  if [ "$src_real" = "$dst_real" ]; then
+    return 0
+  fi
+
   rm -rf "$dst_dir"
   mkdir -p "$dst_dir"
   cp -R "$src_dir"/. "$dst_dir/"
+}
+
+# Check if a skills directory is a symlink pointing to (or into) the install dir
+skills_dir_is_symlinked() {
+  local skills_dir="$1"
+  [ -L "$skills_dir" ] || return 1
+  local target
+  target=$(readlink -f "$skills_dir" 2>/dev/null) || return 1
+  local install_real
+  install_real=$(readlink -f "$INSTALL_DIR" 2>/dev/null) || install_real="$INSTALL_DIR"
+  [ "$target" = "$install_real" ]
+}
+
+# Get git version info for installed-version metadata
+get_install_version() {
+  local version=""
+  if git -C "$SCRIPT_DIR" rev-parse --git-dir &>/dev/null; then
+    local sha date_str
+    sha=$(git -C "$SCRIPT_DIR" rev-parse --short HEAD 2>/dev/null)
+    date_str=$(git -C "$SCRIPT_DIR" log -1 --format=%cd --date=short 2>/dev/null)
+    if [ -n "$sha" ]; then
+      version="${sha}"
+      [ -n "$date_str" ] && version="${version} (${date_str})"
+    fi
+  fi
+  echo "$version"
 }
 
 # Generate YAML frontmatter for a SKILL.md file
@@ -249,9 +283,15 @@ generate_frontmatter() {
   # Escape backslashes and double quotes for YAML double-quoted string
   description_escaped=$(printf '%s' "$description" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
+  local version
+  version=$(get_install_version)
+
   echo "---"
   echo "name: $name"
   echo "description: \"$description_escaped\""
+  echo "installed-from: incitaciones"
+  [ -n "$version" ] && echo "installed-version: \"$version\""
+  echo "installed-at: \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\""
   echo "disable-model-invocation: true"
   echo "---"
   echo ""
@@ -301,8 +341,11 @@ do_uninstall() {
     local skills_dir="$base/.$tool/skills"
     local commands_dir="$base/.$tool/commands/incitaciones"
 
-    # Remove skills installed by incitaciones (check for our prompts)
-    if [ -d "$skills_dir" ]; then
+    # Skip symlinked skills directories (managed externally)
+    if [ -L "$skills_dir" ]; then
+      echo -e "  ${YELLOW}Skipping symlink: $skills_dir${NC}"
+    elif [ -d "$skills_dir" ]; then
+      # Remove skills installed by incitaciones (check for our prompts)
       for prompt_dir in "$skills_dir"/*/; do
         if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
           echo "Removing: $prompt_dir"
@@ -327,7 +370,9 @@ do_uninstall() {
 
   # Amp uses ~/.config/amp/ (non-standard XDG path)
   local amp_skills="$HOME/.config/amp/skills"
-  if [ -d "$amp_skills" ]; then
+  if [ -L "$amp_skills" ]; then
+    echo -e "  ${YELLOW}Skipping symlink: $amp_skills${NC}"
+  elif [ -d "$amp_skills" ]; then
     for prompt_dir in "$amp_skills"/*/; do
       if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
         echo "Removing: $prompt_dir"
@@ -525,6 +570,10 @@ setup_tool_integration() {
     if [ ! -d "$amp_dir" ]; then
       return 1
     fi
+    if skills_dir_is_symlinked "$amp_dir/skills"; then
+      echo -e "  ${GREEN}+${NC} amp (symlinked)"
+      return 0
+    fi
     if [ "$SCOPE" = "local" ]; then
       # Local: Amp reads .agents/skills/ directly (discovery priority 3)
       echo -e "  ${GREEN}+${NC} amp (reads .agents/skills/)"
@@ -561,14 +610,20 @@ setup_tool_integration() {
     done
     # SKILL.md skills (experimental, for users who enable it)
     if [ "$FORMAT" = "skills" ]; then
-      for prompt in $PROMPTS; do
-        local src_dir="$INSTALL_DIR/${prompt}"
-        if [ -d "$src_dir" ]; then
-          copy_skill_tree "$src_dir" "$tool_dir/skills/${prompt}"
-        fi
-      done
+      if skills_dir_is_symlinked "$tool_dir/skills"; then
+        echo -e "  ${GREEN}+${NC} gemini (commands + skills symlinked)"
+      else
+        for prompt in $PROMPTS; do
+          local src_dir="$INSTALL_DIR/${prompt}"
+          if [ -d "$src_dir" ]; then
+            copy_skill_tree "$src_dir" "$tool_dir/skills/${prompt}"
+          fi
+        done
+        echo -e "  ${GREEN}+${NC} gemini (commands + skills)"
+      fi
+    else
+      echo -e "  ${GREEN}+${NC} gemini (commands)"
     fi
-    echo -e "  ${GREEN}+${NC} gemini (commands + skills)"
     return 0
   fi
 
@@ -584,13 +639,17 @@ setup_tool_integration() {
     # Claude Code uses skills format (SKILL.md in subdirectories)
     if [ "$FORMAT" = "skills" ]; then
       local skills_dir="$tool_dir/skills"
-      for prompt in $PROMPTS; do
-        local src_dir="$INSTALL_DIR/${prompt}"
-        if [ -d "$src_dir" ]; then
-          copy_skill_tree "$src_dir" "$skills_dir/${prompt}"
-        fi
-      done
-      echo -e "  ${GREEN}+${NC} $tool (skills)"
+      if skills_dir_is_symlinked "$skills_dir"; then
+        echo -e "  ${GREEN}+${NC} $tool (symlinked)"
+      else
+        for prompt in $PROMPTS; do
+          local src_dir="$INSTALL_DIR/${prompt}"
+          if [ -d "$src_dir" ]; then
+            copy_skill_tree "$src_dir" "$skills_dir/${prompt}"
+          fi
+        done
+        echo -e "  ${GREEN}+${NC} $tool (skills)"
+      fi
     else
       local commands_dir="$tool_dir/commands"
       mkdir -p "$commands_dir/incitaciones"
