@@ -1690,6 +1690,27 @@
       ]
     },
     {
+      "name": "rca-diagnostician",
+      "type": "task",
+      "title": "RCA Diagnostician",
+      "description": "Conduct or evaluate root cause analysis using cross-disciplinary principles — structured investigation from symptom to systemic cause with method selection, cognitive bias countermeasures, and corrective actions ranked by strength",
+      "source": "content/prompt-task-rca-diagnostician.md",
+      "distilled": "content/distilled/rca-diagnostician/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "root-cause-analysis",
+        "causal-inference",
+        "incident-analysis",
+        "systems-thinking",
+        "safety-engineering",
+        "diagnostician",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
+    },
+    {
       "name": "verification-diagnostician",
       "type": "task",
       "title": "Verification Diagnostician",
@@ -2048,6 +2069,7 @@
         "review-documentation",
         "specification-review",
         "red-team-review",
+        "rca-diagnostician",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
         "adversarial-stakeholder-evaluation",
