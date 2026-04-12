@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-04-11
+
+#### Changed - Standardized "Skill" Architecture & Eval Enrichment
+
+- **content/distilled/** — Converted `specification-review`, `plan-review`, and `research-review` from single-file prompts into directory-based "Skills" utilizing progressive disclosure (`SKILL.md` + `references/`).
+- **content/manifest.json** — Enriched `eval` metadata for standardized skills, including 100% coverage for `task_types`, `success_signals`, `failure_signals`, and `stages` with semantic hints.
+- **Skill Standardization** — Implemented "Content First" strategy:
+    - Added mandatory **Verification Phase** to distilled skills (instructing agents to use `read_file`/`grep_search` to validate claims).
+    - Added **Metadata Headers** to `SKILL.md` files for runtime version and status tracking.
+    - Refactored passive templates into agentic **Role-based Procedures** (Ask → Execute → Verify).
+
 ### 2026-04-07
 
 #### Changed - Progressive Disclosure Analytics Schema

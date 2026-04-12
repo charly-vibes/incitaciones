@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-07",
+  "version": "2026-04-11",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -8,7 +8,8 @@
       "title": "Standalone Specification Review (Rule of 5)",
       "description": "Iterative review of technical specifications for autonomy, precision, and AI-readiness",
       "source": "content/prompt-task-specification-review.md",
-      "distilled": "content/distilled/specification-review.md",
+      "distilled": "content/distilled/specification-review/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
         "specification",
@@ -18,7 +19,59 @@
       ],
       "bundles": [
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "documentation"
+        ],
+        "success_signals": [
+          "amnesia_test_passed",
+          "gherkin_scenarios_verified",
+          "convergence_reached",
+          "precision_language_enforced"
+        ],
+        "failure_signals": [
+          "vague_language_missed",
+          "missing_context_not_flagged",
+          "incomplete_iteration"
+        ],
+        "stages": [
+          {
+            "name": "context-identification",
+            "hints": [
+              "identifying specification",
+              "reading specification"
+            ]
+          },
+          {
+            "name": "iterative-analysis",
+            "hints": [
+              "pass 1",
+              "pass 2",
+              "pass 3",
+              "pass 4",
+              "pass 5",
+              "convergence check"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "verifying external references",
+              "checking schemas",
+              "read_file"
+            ]
+          },
+          {
+            "name": "final-synthesis",
+            "hints": [
+              "final report",
+              "verdict"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "commit",
@@ -26,15 +79,75 @@
       "title": "Workflow for Deliberate Commits",
       "description": "Create well-structured, atomic git commits with clear intent",
       "source": "content/prompt-workflow-deliberate-commits.md",
-      "distilled": "content/distilled/commit.md",
+      "distilled": "content/distilled/commit/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "git",
         "commits",
-        "version-control"
+        "version-control",
+        "best-practices"
       ],
       "bundles": [
         "essentials"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "version-control",
+          "workflow"
+        ],
+        "success_signals": [
+          "git_diff_reviewed",
+          "logical_grouping_performed",
+          "explicit_file_paths_used",
+          "descriptive_commit_message_written",
+          "rationale_provided_in_message"
+        ],
+        "failure_signals": [
+          "git_add_dot_used",
+          "generic_commit_message",
+          "co_author_attribution_added"
+        ],
+        "stages": [
+          {
+            "name": "review-changes",
+            "hints": [
+              "git status",
+              "git diff",
+              "review each file"
+            ]
+          },
+          {
+            "name": "describe-changes",
+            "hints": [
+              "structured description",
+              "logical commits",
+              "grouping changes"
+            ]
+          },
+          {
+            "name": "user-gate",
+            "hints": [
+              "wait for confirmation",
+              "user confirms"
+            ]
+          },
+          {
+            "name": "execute-commits",
+            "hints": [
+              "git add",
+              "git commit",
+              "descriptive message"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "git log",
+              "verification checklist"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "debug",
@@ -42,14 +155,84 @@
       "title": "Systematic Debugging with DDx",
       "description": "7-step diagnostic workflow for debugging issues",
       "source": "content/prompt-task-systematic-debugging.md",
-      "distilled": "content/distilled/debug.md",
+      "distilled": "content/distilled/debug/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "debugging",
-        "diagnosis"
+        "diagnosis",
+        "root-cause-analysis"
       ],
       "bundles": [
         "essentials"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "debugging",
+          "diagnosis"
+        ],
+        "success_signals": [
+          "problem_refined",
+          "multiple_hypotheses_generated",
+          "zebra_hypothesis_included",
+          "diagnostic_tests_proposed",
+          "root_cause_identified",
+          "verification_performed"
+        ],
+        "failure_signals": [
+          "anchoring_bias_detected",
+          "missing_diagnostic_tests",
+          "unverified_root_cause"
+        ],
+        "stages": [
+          {
+            "name": "symptom-representation",
+            "hints": [
+              "identifying symptom",
+              "system context",
+              "refined representation"
+            ]
+          },
+          {
+            "name": "differential-diagnosis",
+            "hints": [
+              "generating hypotheses",
+              "zebra diagnosis",
+              "most likely to least likely"
+            ]
+          },
+          {
+            "name": "illness-scripts",
+            "hints": [
+              "defining illness script",
+              "how it manifests"
+            ]
+          },
+          {
+            "name": "diagnostic-testing",
+            "hints": [
+              "proposing test",
+              "rule out",
+              "verification phase",
+              "run_shell_command",
+              "grep_search"
+            ]
+          },
+          {
+            "name": "evidence-synthesis",
+            "hints": [
+              "probable diagnosis",
+              "confidence score"
+            ]
+          },
+          {
+            "name": "treatment-plan",
+            "hints": [
+              "immediate mitigation",
+              "long-term fix"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "describe-pr",
@@ -138,15 +321,80 @@
       "title": "Iterative Code Review",
       "description": "Multi-pass code review using Rule of 5 principle",
       "source": "content/prompt-task-iterative-code-review.md",
-      "distilled": "content/distilled/code-review.md",
+      "distilled": "content/distilled/code-review/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
-        "code-quality"
+        "code-quality",
+        "rule-of-5",
+        "iteration",
+        "qa"
       ],
       "bundles": [
         "essentials",
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "quality-assurance"
+        ],
+        "success_signals": [
+          "logical_correctness_verified",
+          "security_vulnerabilities_checked",
+          "edge_cases_identified",
+          "convergence_reached",
+          "actionable_fix_provided"
+        ],
+        "failure_signals": [
+          "unverified_bugs",
+          "missing_context_not_flagged",
+          "incomplete_iteration_before_convergence"
+        ],
+        "stages": [
+          {
+            "name": "context-identification",
+            "hints": [
+              "identifying code",
+              "reading tests",
+              "reading code"
+            ]
+          },
+          {
+            "name": "iterative-analysis",
+            "hints": [
+              "stage 1",
+              "stage 2",
+              "stage 3",
+              "stage 4",
+              "stage 5",
+              "pass 1",
+              "pass 2",
+              "pass 3",
+              "pass 4",
+              "pass 5",
+              "convergence check"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "verifying suggested library",
+              "checking package.json",
+              "checking requirements.txt",
+              "grep_search",
+              "checking patterns"
+            ]
+          },
+          {
+            "name": "final-synthesis",
+            "hints": [
+              "final report",
+              "verdict"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "create-plan",
@@ -451,15 +699,88 @@
       "title": "Rule of 5 Code Review (Multi-Agent)",
       "description": "High-stakes code review with parallel agent waves",
       "source": "content/prompt-workflow-rule-of-5-review.md",
-      "distilled": "content/distilled/rule-of-5.md",
+      "distilled": "content/distilled/rule-of-5/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
         "multi-agent",
-        "code-quality"
+        "rule-of-5",
+        "qa",
+        "high-stakes"
       ],
       "bundles": [
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "quality-assurance"
+        ],
+        "success_signals": [
+          "multi_perspective_analysis_complete",
+          "conflict_resolution_performed",
+          "cross_validation_performed",
+          "verified_critical_findings_reported",
+          "convergence_reached"
+        ],
+        "failure_signals": [
+          "unverified_simulated_findings",
+          "missing_specialist_perspectives",
+          "incomplete_orchestration"
+        ],
+        "stages": [
+          {
+            "name": "context-building",
+            "hints": [
+              "identifying requirements",
+              "reading code",
+              "reading tests"
+            ]
+          },
+          {
+            "name": "parallel-analysis",
+            "hints": [
+              "wave 1",
+              "security reviewer",
+              "performance reviewer",
+              "maintainer reviewer",
+              "requirements validator",
+              "operations reviewer"
+            ]
+          },
+          {
+            "name": "synthesis-resolution",
+            "hints": [
+              "gate 1",
+              "consolidating findings",
+              "resolving conflicts"
+            ]
+          },
+          {
+            "name": "cross-validation",
+            "hints": [
+              "wave 2",
+              "false positive checker",
+              "integration validator"
+            ]
+          },
+          {
+            "name": "final-synthesis",
+            "hints": [
+              "gate 2",
+              "final report",
+              "verified findings"
+            ]
+          },
+          {
+            "name": "convergence-check",
+            "hints": [
+              "wave 3",
+              "convergence reached"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "create-issues",
@@ -467,15 +788,81 @@
       "title": "Create Issues from Plan",
       "description": "Generate trackable issues from implementation plans",
       "source": "content/prompt-task-create-issues.md",
-      "distilled": "content/distilled/create-issues.md",
+      "distilled": "content/distilled/create-issues/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "planning",
         "issues",
-        "project-management"
+        "project-management",
+        "automation"
       ],
       "bundles": [
         "planning"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "project-management",
+          "planning"
+        ],
+        "success_signals": [
+          "logical_units_identified",
+          "acceptance_criteria_binary",
+          "workflow_mandate_included",
+          "ids_captured_via_variables",
+          "dependencies_correctly_wired"
+        ],
+        "failure_signals": [
+          "guess_issue_ids",
+          "missing_workflow_mandate",
+          "broad_non_atomic_issues",
+          "broken_dependency_commands"
+        ],
+        "stages": [
+          {
+            "name": "plan-identification",
+            "hints": [
+              "identifying plan",
+              "reading plan",
+              "parsing phases"
+            ]
+          },
+          {
+            "name": "issue-tracker-identification",
+            "hints": [
+              "target system",
+              "cli tools",
+              "gh issue",
+              "bd create"
+            ]
+          },
+          {
+            "name": "issue-drafting",
+            "hints": [
+              "drafting issue",
+              "acceptance criteria",
+              "workflow mandate",
+              "tdd",
+              "tidy first"
+            ]
+          },
+          {
+            "name": "execution",
+            "hints": [
+              "generating commands",
+              "runnable shell commands",
+              "capturing ids",
+              "linking dependencies"
+            ]
+          },
+          {
+            "name": "final-report",
+            "hints": [
+              "summary of created issues",
+              "creation summary"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "distill-prompt",
@@ -483,12 +870,78 @@
       "title": "Distill Prompt",
       "description": "Create lean, token-efficient versions of prompts",
       "source": "content/prompt-task-distill-prompt.md",
-      "distilled": "content/distilled/distill-prompt.md",
+      "distilled": "content/distilled/distill-prompt/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "prompts",
-        "optimization"
+        "optimization",
+        "distillation"
       ],
-      "bundles": []
+      "bundles": [
+        "meta"
+      ],
+      "eval": {
+        "task_types": [
+          "prompt-engineering",
+          "optimization"
+        ],
+        "success_signals": [
+          "metadata_removed",
+          "human_context_filtered",
+          "essential_rules_preserved",
+          "imperative_commands_used",
+          "structured_output_maintained",
+          "compression_ratio_provided"
+        ],
+        "failure_signals": [
+          "rule_loss_detected",
+          "template_discarded",
+          "commentary_included",
+          "vague_distillation"
+        ],
+        "stages": [
+          {
+            "name": "input-identification",
+            "hints": [
+              "identifying verbose prompt",
+              "reading source"
+            ]
+          },
+          {
+            "name": "amnesia-filter",
+            "hints": [
+              "removing metadata",
+              "removing front-matter",
+              "filtering human context",
+              "removing fluff"
+            ]
+          },
+          {
+            "name": "instruction-compression",
+            "hints": [
+              "converting to imperative",
+              "consolidating rules",
+              "maximizing density"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "checking rule retention",
+              "validating negative constraints",
+              "preserving formats"
+            ]
+          },
+          {
+            "name": "final-output",
+            "hints": [
+              "distilled prompt",
+              "token compression ratio",
+              "no commentary"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "verify-prompt",
@@ -496,12 +949,70 @@
       "title": "Verify Distilled Prompt",
       "description": "Validate distilled prompts preserve essential instructions",
       "source": "content/prompt-task-verify-distilled-prompt.md",
-      "distilled": "content/distilled/verify-prompt.md",
+      "distilled": "content/distilled/verify-prompt/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "prompts",
-        "validation"
+        "validation",
+        "qa"
       ],
-      "bundles": []
+      "bundles": [
+        "meta"
+      ],
+      "eval": {
+        "task_types": [
+          "prompt-engineering",
+          "quality-assurance"
+        ],
+        "success_signals": [
+          "parity_audit_performed",
+          "negative_constraints_verified",
+          "output_schemas_verified",
+          "human_context_removal_confirmed",
+          "correct_verdict_provided"
+        ],
+        "failure_signals": [
+          "missing_essential_rule",
+          "altered_instruction_meaning",
+          "incorrect_ok_verdict",
+          "commentary_included"
+        ],
+        "stages": [
+          {
+            "name": "input-identification",
+            "hints": [
+              "original prompt",
+              "distilled prompt",
+              "comparing versions"
+            ]
+          },
+          {
+            "name": "parity-audit",
+            "hints": [
+              "lossless check",
+              "rule mapping",
+              "negative constraint check",
+              "format check"
+            ]
+          },
+          {
+            "name": "efficiency-audit",
+            "hints": [
+              "fluff check",
+              "removing metadata",
+              "removing human context"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "verdict",
+              "responding with OK",
+              "discrepancy report"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "research-codebase",
@@ -838,15 +1349,80 @@
       "title": "Plan-Implement-Verify (TDD)",
       "description": "Test-driven development workflow",
       "source": "content/prompt-workflow-plan-implement-verify-tdd.md",
-      "distilled": "content/distilled/tdd.md",
+      "distilled": "content/distilled/tdd/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "tdd",
         "testing",
-        "implementation"
+        "implementation",
+        "best-practices"
       ],
       "bundles": [
         "planning"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "implementation",
+          "testing"
+        ],
+        "success_signals": [
+          "phased_plan_approved",
+          "red_phase_verified",
+          "green_phase_verified",
+          "refactor_phase_verified",
+          "manual_verification_performed",
+          "no_regressions_introduced"
+        ],
+        "failure_signals": [
+          "implementation_before_test",
+          "skipping_red_phase",
+          "failing_tests_at_completion",
+          "incomplete_verification"
+        ],
+        "stages": [
+          {
+            "name": "planning",
+            "hints": [
+              "identifying requirements",
+              "phased plan",
+              "success criteria",
+              "user gate"
+            ]
+          },
+          {
+            "name": "red-phase",
+            "hints": [
+              "write failing test",
+              "confirm it fails",
+              "expected reason"
+            ]
+          },
+          {
+            "name": "green-phase",
+            "hints": [
+              "minimal implementation",
+              "confirm it passes",
+              "tests are green"
+            ]
+          },
+          {
+            "name": "refactor-phase",
+            "hints": [
+              "cleaning up",
+              "keeping tests green",
+              "no behavior change"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "full automated suite",
+              "manual verification",
+              "phase completion"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "narrative-article",
@@ -899,18 +1475,75 @@
     {
       "name": "plan-review",
       "type": "task",
-      "title": "Plan Review",
+      "title": "Iterative Plan Review (Rule of 5)",
       "description": "Iterative review of implementation plans",
       "source": "content/prompt-task-plan-review.md",
-      "distilled": "content/distilled/plan-review.md",
+      "distilled": "content/distilled/plan-review/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
-        "planning"
+        "planning",
+        "rule-of-5",
+        "quality-assurance",
+        "validation"
       ],
       "bundles": [
         "planning",
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "planning"
+        ],
+        "success_signals": [
+          "feasibility_verified",
+          "tdd_alignment_confirmed",
+          "convergence_reached",
+          "verifiable_phases_defined"
+        ],
+        "failure_signals": [
+          "missing_verification_steps",
+          "impossible_ordering_missed",
+          "hidden_complexity_not_flagged"
+        ],
+        "stages": [
+          {
+            "name": "plan-identification",
+            "hints": [
+              "identifying plan",
+              "reading plan"
+            ]
+          },
+          {
+            "name": "iterative-analysis",
+            "hints": [
+              "pass 1",
+              "pass 2",
+              "pass 3",
+              "pass 4",
+              "pass 5",
+              "convergence check"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "verifying technical claims",
+              "checking file existence",
+              "read_file",
+              "grep_search"
+            ]
+          },
+          {
+            "name": "final-synthesis",
+            "hints": [
+              "final report",
+              "verdict"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "design-review",
@@ -1040,17 +1673,75 @@
     {
       "name": "research-review",
       "type": "task",
-      "title": "Research Review",
+      "title": "Iterative Research Review (Rule of 5)",
       "description": "Iterative review of research documents using Rule of 5",
       "source": "content/prompt-task-research-review.md",
-      "distilled": "content/distilled/research-review.md",
+      "distilled": "content/distilled/research-review/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
-        "research"
+        "research",
+        "rule-of-5",
+        "quality-assurance",
+        "validation"
       ],
       "bundles": [
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "research"
+        ],
+        "success_signals": [
+          "factual_accuracy_verified",
+          "research_questions_answered",
+          "convergence_reached",
+          "actionable_recommendations_present"
+        ],
+        "failure_signals": [
+          "unverified_technical_claims",
+          "missing_trade_off_analysis",
+          "vague_conclusions"
+        ],
+        "stages": [
+          {
+            "name": "research-identification",
+            "hints": [
+              "identifying research",
+              "reading document"
+            ]
+          },
+          {
+            "name": "iterative-analysis",
+            "hints": [
+              "pass 1",
+              "pass 2",
+              "pass 3",
+              "pass 4",
+              "pass 5",
+              "convergence check"
+            ]
+          },
+          {
+            "name": "verification",
+            "hints": [
+              "verifying technical claims",
+              "checking code references",
+              "read_file",
+              "grep_search"
+            ]
+          },
+          {
+            "name": "final-synthesis",
+            "hints": [
+              "final report",
+              "verdict",
+              "quality assessment"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "issue-review",
@@ -1690,6 +2381,27 @@
       ]
     },
     {
+      "name": "rca-diagnostician",
+      "type": "task",
+      "title": "RCA Diagnostician",
+      "description": "Conduct or evaluate root cause analysis using cross-disciplinary principles — structured investigation from symptom to systemic cause with method selection, cognitive bias countermeasures, and corrective actions ranked by strength",
+      "source": "content/prompt-task-rca-diagnostician.md",
+      "distilled": "content/distilled/rca-diagnostician/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "root-cause-analysis",
+        "causal-inference",
+        "incident-analysis",
+        "systems-thinking",
+        "safety-engineering",
+        "diagnostician",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
+    },
+    {
       "name": "verification-diagnostician",
       "type": "task",
       "title": "Verification Diagnostician",
@@ -2048,6 +2760,7 @@
         "review-documentation",
         "specification-review",
         "red-team-review",
+        "rca-diagnostician",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
         "adversarial-stakeholder-evaluation",
