@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-11",
+  "version": "2026-04-13",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2442,6 +2442,30 @@
       ]
     },
     {
+      "name": "edge-case-discovery",
+      "type": "task",
+      "title": "Specification Edge Case Discovery (Six-Boundary Protocol)",
+      "description": "Systematically discover edge cases, failure modes, and specification gaps before implementation using a six-boundary framework: Human, Business, Mathematical, Architectural, Failure, and Formal",
+      "source": "content/prompt-task-edge-case-discovery.md",
+      "distilled": "content/distilled/edge-case-discovery.md",
+      "tags": [
+        "edge-cases",
+        "specification",
+        "gap-analysis",
+        "bdd",
+        "example-mapping",
+        "bva",
+        "design-by-contract",
+        "fmea",
+        "stride",
+        "extreme-personas",
+        "sdd"
+      ],
+      "bundles": [
+        "reviews"
+      ]
+    },
+    {
       "name": "adversarial-stakeholder-evaluation",
       "type": "task",
       "title": "Adversarial Stakeholder Evaluation",
@@ -2763,6 +2787,7 @@
         "rca-diagnostician",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
+        "edge-case-discovery",
         "adversarial-stakeholder-evaluation",
         "ux-dx-evaluation-diagnostician",
         "formal-verification-evaluator",
