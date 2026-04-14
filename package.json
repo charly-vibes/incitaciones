@@ -1,0 +1,28 @@
+{
+  "name": "incitaciones",
+  "version": "0.1.0",
+  "description": "Reusable prompts and skills for CLI LLM tools, with native pi package support.",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "prompts",
+    "skills",
+    "pi-cli"
+  ],
+  "scripts": {
+    "prepare": "node scripts/generate-pi-resources.mjs",
+    "prepare-pi": "node scripts/generate-pi-resources.mjs",
+    "prepack": "node scripts/generate-pi-resources.mjs",
+    "postinstall": "node scripts/generate-pi-resources.mjs"
+  },
+  "pi": {
+    "skills": [
+      "./pi-package/skills"
+    ],
+    "prompts": [
+      "./pi-package/prompts"
+    ]
+  }
+}
