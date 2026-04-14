@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-04-14
+
+#### Added - Native pi CLI Integration
+
+- **install.sh** — Added explicit pi CLI integration, including local/project prompt-template installation to `.pi/prompts`, global prompt-template installation to `~/.pi/agent/prompts`, reliance on `.agents/skills` / `~/.agents/skills` for pi skill discovery, pi-aware tool detection, and a `--disable-model-invocation` flag so skills can remain auto-discoverable by default in pi.
+- **README.md** + **justfile** — Documented pi-specific usage (`/skill:name` and prompt-template shortcuts), added `generate-pi-resources` and `validate-pi-package` workflows, and documented direct `pi install` package usage.
+- **package.json** + **scripts/generate-pi-resources.mjs** + **pi-package/** — Added native pi package support with a `pi` manifest, standard package lifecycle hooks, lightweight prompt-template shortcuts, and checked-in pi-ready skills and prompt templates so `pi install .` works from a clean checkout.
+
 ### 2026-04-11
 
 #### Changed - Standardized "Skill" Architecture & Eval Enrichment

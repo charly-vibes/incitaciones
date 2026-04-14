@@ -4,7 +4,7 @@ A collection of reusable prompts and best practices for CLI LLM tools.
 
 ## Install
 
-Clone and install prompts as skills for Claude Code, Amp, Gemini CLI, and other tools:
+Clone and install prompts as skills for pi CLI, Claude Code, Amp, Gemini CLI, and other tools:
 
 ```bash
 git clone https://github.com/charly-vibes/incitaciones.git
@@ -19,20 +19,50 @@ cd incitaciones
 ./install.sh --bundle planning      # Planning workflows
 ./install.sh --bundle reviews       # Review prompts
 ./install.sh --bundle documentation # Documentation tools
-./install.sh --format commands     # Legacy flat-file format for other tools
-./install.sh --list                # Show available prompts
-./install.sh --help                # Show all options
+./install.sh --format commands      # Legacy flat-file format for other tools
+./install.sh --disable-model-invocation # Require explicit /skill:name usage
+./install.sh --list                 # Show available prompts
+./install.sh --help                 # Show all options
 ```
 
 **After installation:**
 ```
-/commit           # Deliberate commit workflow
-/debug            # Systematic debugging
-/create-plan      # Create implementation plans
-/code-review      # Iterative code review
+# pi CLI native skill invocation
+/skill:commit
+/skill:debug
+/skill:create-plan
+
+# pi CLI prompt-template shortcuts
+/commit
+/debug
+/create-plan
+
+# Other compatible tools
+/debug
+/create-plan
+/code-review
 ```
 
-Skills are installed to `~/.agents/skills/` and copied to tool-specific directories (Claude Code, Amp, Gemini CLI, Cursor, Windsurf, Zed) when detected.
+For non-pi tools, exact command syntax depends on the harness, but slash-command usage like the examples above is the common case.
+
+Skills are installed to `~/.agents/skills/` (or project `.agents/skills/`) and copied to tool-specific directories when detected. For pi, skills are discovered from `.agents/skills/` / `~/.agents/skills/`, and the installer also writes prompt templates to `~/.pi/agent/prompts/` or project `.pi/prompts/` so pi users can invoke either `/skill:<name>` or the shorter `/<name>` template command.
+
+### Native pi package install
+
+This repository now includes a `package.json` with a `pi` manifest, so pi can install it directly as a package:
+
+```bash
+pi install https://github.com/charly-vibes/incitaciones
+# or from a local clone
+pi install .
+```
+
+The repository includes checked-in pi package resources under `pi-package/`, and the generation step can refresh them when content changes:
+
+- `pi-package/skills/` — Agent Skills with pi-compatible frontmatter
+- `pi-package/prompts/` — prompt templates for slash-command shortcuts
+
+After changing distilled content or manifest entries, run `just generate-pi-resources` and commit the updated `pi-package/` files.
 
 ## Quick Start
 
@@ -73,15 +103,17 @@ just validate            # Check metadata
 just stats               # Show statistics
 
 # Skills installation
-just install             # Run ./install.sh with any flags you pass through
-just list-distilled      # List all distilled prompts
-just validate-distilled  # Validate distilled prompts
-just list-bundles        # Show available bundles
-just sync-manifest       # Validate manifest references and sync _site/manifest.json
-just generate-skill NAME # Preview SKILL.md output for a prompt
-just analyze-traces PATH # Analyze trace exports from agent tools
-just analyze-traces-auto # Auto-detect local CLI history locations
-just trace-insights      # Process traces and write insight artifacts
+just install                  # Run ./install.sh with any flags you pass through
+just generate-pi-resources    # Build pi package skills + prompt templates
+just validate-pi-package      # Verify pi package resources match the manifest
+just list-distilled           # List all distilled prompts
+just validate-distilled       # Validate distilled prompts
+just list-bundles             # Show available bundles
+just sync-manifest            # Validate manifest references and sync _site/manifest.json
+just generate-skill NAME      # Preview SKILL.md output for a prompt
+just analyze-traces PATH      # Analyze trace exports from agent tools
+just analyze-traces-auto      # Auto-detect local CLI history locations
+just trace-insights           # Process traces and write insight artifacts
 ```
 
 ## Trace Analysis

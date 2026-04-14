@@ -463,9 +463,25 @@ serve-site: build-site
 # Skills Installation
 # ============================================================
 
-# Install prompts as Claude Code skills (default) or legacy commands
+# Install prompts as cross-tool skills (pi, Claude Code, Amp, Gemini CLI, etc.)
 install *ARGS:
     ./install.sh {{ARGS}}
+
+# Generate pi package resources (skills + prompt templates)
+generate-pi-resources:
+    node scripts/generate-pi-resources.mjs
+
+# Validate pi package resources and manifest paths
+validate-pi-package:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    node scripts/generate-pi-resources.mjs >/dev/null
+    test -f package.json
+    test -d pi-package/skills
+    test -d pi-package/prompts
+    test "$(jq '.prompts | length' content/manifest.json)" -eq "$(find pi-package/skills -mindepth 1 -maxdepth 1 -type d | wc -l)"
+    test "$(jq '.prompts | length' content/manifest.json)" -eq "$(find pi-package/prompts -mindepth 1 -maxdepth 1 -type f -name '*.md' | wc -l)"
+    echo "pi package resources valid"
 
 # List distilled prompts (source content for skills)
 list-distilled:

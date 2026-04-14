@@ -1,6 +1,6 @@
 #!/bin/bash
 # install.sh - Install incitaciones prompts to .agents/ with tool integrations
-# Usage: ./install.sh [--local] [--global] [--bundle NAME] [--dir PATH] [--format FORMAT] [--list] [--uninstall] [--help]
+# Usage: ./install.sh [--local] [--global] [--bundle NAME] [--dir PATH] [--format FORMAT] [--disable-model-invocation] [--list] [--uninstall] [--help]
 
 set -e
 
@@ -30,26 +30,28 @@ usage() {
 Usage: $(basename "$0") [OPTIONS]
 
 Install incitaciones prompts to .agents/skills/ with optional tool integrations
-for Claude Code, Amp, Gemini CLI, Cursor, Windsurf, and Zed.
+for pi CLI, Claude Code, Amp, Gemini CLI, Cursor, Windsurf, and Zed.
 
 Options:
-  --local          Install to project .agents/skills/ (default when in a git repo)
-  --global         Install to ~/.agents/skills/ (user-wide)
-  --bundle NAME    Install only prompts from a specific bundle (see --list)
-  --dir PATH       Install to custom directory (overrides --local/--global)
-  --format FORMAT  Output format: skills (default) or commands (legacy)
-  --list           List available prompts and bundles
-  --uninstall      Remove installed prompts and tool integrations
-  --help           Show this help message
+  --local                     Install to project .agents/skills/ (default when in a git repo)
+  --global                    Install to ~/.agents/skills/ (user-wide)
+  --bundle NAME               Install only prompts from a specific bundle (see --list)
+  --dir PATH                  Install to custom directory (overrides --local/--global)
+  --format FORMAT             Output format: skills (default) or commands (legacy)
+  --disable-model-invocation  Hide installed skills from automatic model discovery; require explicit invocation
+  --list                      List available prompts and bundles
+  --uninstall                 Remove installed prompts and tool integrations
+  --help                      Show this help message
 
 Examples:
-  $(basename "$0")                       # Local install to .agents/skills/
-  $(basename "$0") --global              # Global install to ~/.agents/skills/
-  $(basename "$0") --bundle essentials   # Install only essential prompts
-  $(basename "$0") --format commands     # Install as legacy flat commands
-  $(basename "$0") --dir ~/my-skills     # Install to custom directory
-  $(basename "$0") --list                # Show available prompts
-  $(basename "$0") --uninstall           # Clean up old installations
+  $(basename "$0")                                  # Local install to .agents/skills/
+  $(basename "$0") --global                         # Global install to ~/.agents/skills/
+  $(basename "$0") --bundle essentials              # Install only essential prompts
+  $(basename "$0") --format commands                # Install as legacy flat commands
+  $(basename "$0") --disable-model-invocation       # Require explicit /skill:name usage in compatible tools
+  $(basename "$0") --dir ~/my-skills                # Install to custom directory
+  $(basename "$0") --list                           # Show available prompts
+  $(basename "$0") --uninstall                      # Clean up old installations
 
 EOF
 }
@@ -292,7 +294,9 @@ generate_frontmatter() {
   echo "installed-from: incitaciones"
   [ -n "$version" ] && echo "installed-version: \"$version\""
   echo "installed-at: \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\""
-  echo "disable-model-invocation: true"
+  if [ "$DISABLE_MODEL_INVOCATION" = true ]; then
+    echo "disable-model-invocation: true"
+  fi
   echo "---"
   echo ""
 }
@@ -321,6 +325,39 @@ generate_toml_command() {
   echo '"""'
 }
 
+generate_prompt_template() {
+  local name="$1"
+  local description=""
+
+  description=$(get_prompt_description "$name")
+
+  if [ -z "$description" ]; then
+    description="Incitaciones prompt: $name"
+  fi
+
+  description_escaped=$(printf '%s' "$description" | sed 's/\\/\\\\/g; s/"/\\"/g')
+
+  echo "---"
+  echo "description: \"Shortcut for the $name skill. $description_escaped\""
+  echo "---"
+  echo "<!-- installed-from: incitaciones -->"
+  echo ""
+  echo "Use the installed \`$name\` skill for this task."
+  echo ""
+  echo "If the skill is not automatically loaded, invoke \`/skill:$name\` and follow it."
+  echo ""
+  echo 'User context: $@'
+}
+
+install_prompt_templates() {
+  local dest_dir="$1"
+  mkdir -p "$dest_dir"
+
+  for prompt in $PROMPTS; do
+    generate_prompt_template "$prompt" > "$dest_dir/${prompt}.md"
+  done
+}
+
 # Uninstall installed prompts and tool integrations
 do_uninstall() {
   local base="$1"
@@ -347,7 +384,7 @@ do_uninstall() {
     elif [ -d "$skills_dir" ]; then
       # Remove skills installed by incitaciones (check for our prompts)
       for prompt_dir in "$skills_dir"/*/; do
-        if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
+        if [ -f "$prompt_dir/SKILL.md" ] && head -10 "$prompt_dir/SKILL.md" | grep -q "installed-from: incitaciones"; then
           echo "Removing: $prompt_dir"
           rm -rf "$prompt_dir"
         fi
@@ -374,12 +411,35 @@ do_uninstall() {
     echo -e "  ${YELLOW}Skipping symlink: $amp_skills${NC}"
   elif [ -d "$amp_skills" ]; then
     for prompt_dir in "$amp_skills"/*/; do
-      if [ -f "$prompt_dir/SKILL.md" ] && head -5 "$prompt_dir/SKILL.md" | grep -q "Incitaciones"; then
+      if [ -f "$prompt_dir/SKILL.md" ] && head -10 "$prompt_dir/SKILL.md" | grep -q "installed-from: incitaciones"; then
         echo "Removing: $prompt_dir"
         rm -rf "$prompt_dir"
       fi
     done
   fi
+
+  # pi: project/global prompt templates, plus cleanup for any previously mirrored skills
+  for pi_root in "$base/.pi" "$HOME/.pi/agent"; do
+    [ -d "$pi_root" ] || continue
+
+    if [ -d "$pi_root/skills" ]; then
+      for prompt_dir in "$pi_root/skills"/*/; do
+        if [ -f "$prompt_dir/SKILL.md" ] && head -10 "$prompt_dir/SKILL.md" | grep -q "installed-from: incitaciones"; then
+          echo "Removing: $prompt_dir"
+          rm -rf "$prompt_dir"
+        fi
+      done
+    fi
+
+    if [ -d "$pi_root/prompts" ]; then
+      find "$pi_root/prompts" -maxdepth 1 -type f -name '*.md' | while read -r prompt_file; do
+        if head -10 "$prompt_file" | grep -q "installed-from: incitaciones"; then
+          echo "Removing: $prompt_file"
+          rm -f "$prompt_file"
+        fi
+      done
+    fi
+  done
 
   echo ""
   echo -e "${GREEN}Uninstall complete.${NC}"
@@ -392,6 +452,7 @@ FORMAT="skills"
 SCOPE=""
 DO_LIST=false
 DO_UNINSTALL=false
+DISABLE_MODEL_INVOCATION=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -414,6 +475,10 @@ while [[ $# -gt 0 ]]; do
     --format)
       FORMAT="$2"
       shift 2
+      ;;
+    --disable-model-invocation)
+      DISABLE_MODEL_INVOCATION=true
+      shift
       ;;
     --list)
       DO_LIST=true
@@ -564,6 +629,27 @@ fi
 setup_tool_integration() {
   local tool="$1"
 
+  # pi CLI: reads .agents/skills/ directly; prompt templates live in .pi/prompts or ~/.pi/agent/prompts
+  if [ "$tool" = "pi" ]; then
+    if [ "$SCOPE" = "local" ]; then
+      local pi_dir="$BASE/.pi"
+      mkdir -p "$pi_dir/prompts"
+      install_prompt_templates "$pi_dir/prompts"
+      echo -e "  ${GREEN}+${NC} pi (reads .agents/skills/ + prompt templates)"
+      return 0
+    fi
+
+    if ! command -v pi >/dev/null 2>&1 && [ ! -d "$HOME/.pi/agent" ]; then
+      return 1
+    fi
+
+    local pi_dir="$HOME/.pi/agent"
+    mkdir -p "$pi_dir/prompts"
+    install_prompt_templates "$pi_dir/prompts"
+    echo -e "  ${GREEN}+${NC} pi (reads ~/.agents/skills/ + prompt templates)"
+    return 0
+  fi
+
   # Amp: uses ~/.config/amp/ (XDG path), reads .agents/skills/ for local
   if [ "$tool" = "amp" ]; then
     local amp_dir="$HOME/.config/amp"
@@ -679,7 +765,7 @@ echo "Setting up tool integrations..."
 TOOLS_FOUND=0
 TOOLS_SKIPPED=""
 
-for tool in claude amp gemini cursor windsurf zed; do
+for tool in pi claude amp gemini cursor windsurf zed; do
   if setup_tool_integration "$tool"; then
     TOOLS_FOUND=$((TOOLS_FOUND + 1))
   else
@@ -688,7 +774,7 @@ for tool in claude amp gemini cursor windsurf zed; do
 done
 
 if [ $TOOLS_FOUND -eq 0 ]; then
-  echo -e "  ${YELLOW}No tool directories found (checked: claude, amp, gemini, cursor, windsurf, zed)${NC}"
+  echo -e "  ${YELLOW}No tool directories found (checked: pi, claude, amp, gemini, cursor, windsurf, zed)${NC}"
   echo -e "  Create the directory for your tool to enable integration."
 fi
 
@@ -698,5 +784,6 @@ fi
 
 echo ""
 echo "Usage:"
-echo "  /commit      /debug      /create-plan"
+echo "  Skills: /skill:commit  /skill:debug  /skill:create-plan"
+echo "  pi templates (if installed): /commit  /debug  /create-plan"
 echo ""
