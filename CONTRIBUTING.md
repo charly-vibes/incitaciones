@@ -20,7 +20,6 @@ just changelog "Added prompt for X"
 git add content/prompt-task-your-prompt-name.md
 git add content/distilled/your-prompt-name.md  # or content/distilled/your-prompt-name/
 git add content/manifest.json
-git add _site/manifest.json
 git add CHANGELOG.md
 git commit -m "Add prompt for X"
 ```
@@ -187,6 +186,8 @@ just check-links
 just validate-distilled
 just sync-manifest
 ```
+
+`content/manifest.json` is the only manifest you should edit and commit. `_site/manifest.json` is generated during site builds and CI deployment.
 
 ## Relating Content
 

@@ -704,13 +704,12 @@ list-bundles:
     echo "  all ($TOTAL prompts)"
     echo "    Complete collection of all prompts"
 
-# Validate manifest file references and update version to today's date; sync to _site/
+# Validate manifest file references and update version to today's date
 sync-manifest:
     #!/usr/bin/env bash
     set -euo pipefail
 
     MANIFEST="content/manifest.json"
-    SITE_MANIFEST="_site/manifest.json"
 
     if [ ! -f "$MANIFEST" ]; then
         echo "Manifest not found: $MANIFEST"
@@ -782,12 +781,6 @@ sync-manifest:
         echo "version: $CURRENT → $TODAY"
     else
         echo "version: $TODAY (already current)"
-    fi
-
-    # Sync to _site/
-    if [ -f "$SITE_MANIFEST" ]; then
-        cp "$MANIFEST" "$SITE_MANIFEST"
-        echo "synced: $SITE_MANIFEST"
     fi
 
     echo ""

@@ -109,7 +109,7 @@ just validate-pi-package      # Verify pi package resources match the manifest
 just list-distilled           # List all distilled prompts
 just validate-distilled       # Validate distilled prompts
 just list-bundles             # Show available bundles
-just sync-manifest            # Validate manifest references and sync _site/manifest.json
+just sync-manifest            # Validate manifest references and update content/manifest.json version
 just generate-skill NAME      # Preview SKILL.md output for a prompt
 just analyze-traces PATH      # Analyze trace exports from agent tools
 just analyze-traces-auto      # Auto-detect local CLI history locations
@@ -407,4 +407,4 @@ The LLM writes. The human knows what it should say.
 
 There is a distinction, even if looking at the commit history makes it hard to find. The distinction is that a machine can produce correct code without understanding anything, the same way a calculator can solve an integral without knowing what time is. Understanding what that integral is *for*, whether it actually solves the problem, whether the problem was the right problem to begin with — that remains human territory. For now.
 
-*[Leer en español](https://charly-vibes.github.io/charly-vibes/)*
+[Leer en español](https://charly-vibes.github.io/charly-vibes/)

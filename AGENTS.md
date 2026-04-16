@@ -65,7 +65,7 @@ The manifest is the authoritative registry of all prompts. It is consumed by `in
 - **`prompts`** — one entry per prompt with `name`, `type`, `source`, `distilled`, `tags`, and `bundles`.
 - **`bundles`** — named groups of prompt names; `"all"` uses `["*"]` as a wildcard.
 
-Both `content/manifest.json` and `_site/manifest.json` must be kept identical. Use `just sync-manifest` to validate all referenced files exist, bump the version date, and sync both copies in one step.
+`content/manifest.json` is the authoritative manifest. The site copy (`_site/manifest.json`) is generated during `site/build.sh` and GitHub Pages CI deployment, so contributors should update only `content/manifest.json`. Use `just sync-manifest` to validate all referenced files exist and bump the version date.
 
 ## File Naming
 
@@ -129,7 +129,7 @@ just list verified
 # Maintenance
 just validate
 just stats
-just sync-manifest  # validate manifest files, update version, sync _site/
+just sync-manifest  # validate manifest files and update version
 ```
 
 ## Workflow
