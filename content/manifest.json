@@ -2841,6 +2841,26 @@
       "bundles": [
         "refactoring"
       ]
+    },
+    {
+      "name": "error-handling-diagnostician",
+      "type": "task",
+      "title": "Error Handling Diagnostician",
+      "description": "Diagnose failure handling across detection, classification, communication, recovery, and learning — map findings to resilient boundary, contract, and observability improvements",
+      "source": "content/prompt-task-error-handling-diagnostician.md",
+      "distilled": "content/distilled/error-handling-diagnostician.md",
+      "tags": [
+        "error-handling",
+        "resilience",
+        "reliability",
+        "incident-response",
+        "software-architecture",
+        "observability",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     }
   ],
   "bundles": {
@@ -2889,6 +2909,7 @@
         "rca-diagnostician",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
+        "error-handling-diagnostician",
         "edge-case-discovery",
         "adversarial-stakeholder-evaluation",
         "ux-dx-evaluation-diagnostician",
