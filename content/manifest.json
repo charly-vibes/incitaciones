@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-13",
+  "version": "2026-04-16",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2719,6 +2719,108 @@
       ]
     },
     {
+      "name": "doc-link-verifier",
+      "type": "task",
+      "title": "Documentation Link Verifier",
+      "description": "Audit repository documentation for broken links and contextual correctness — covers HTTP status, relative paths, anchors, and semantic mismatches between link text and target content",
+      "source": "content/prompt-task-doc-link-verifier.md",
+      "distilled": "content/distilled/doc-link-verifier/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "documentation",
+        "links",
+        "verification",
+        "broken-links",
+        "link-rot",
+        "audit",
+        "qa"
+      ],
+      "bundles": [
+        "documentation",
+        "reviews"
+      ],
+      "eval": {
+        "task_types": [
+          "audit",
+          "documentation",
+          "verification"
+        ],
+        "success_signals": [
+          "links_extracted_from_repo",
+          "external_links_checked",
+          "relative_links_checked",
+          "anchors_verified",
+          "contextual_mismatches_flagged",
+          "structured_report_produced",
+          "fixes_offered_with_confirmation"
+        ],
+        "failure_signals": [
+          "fixes_applied_without_confirmation",
+          "external_links_skipped_without_notice",
+          "placeholder_urls_flagged_as_broken",
+          "report_is_raw_json_dump"
+        ],
+        "stages": [
+          {
+            "name": "extract-links",
+            "hints": [
+              "extract_links.py",
+              "walking the tree",
+              "link count",
+              "JSON output"
+            ]
+          },
+          {
+            "name": "check-links",
+            "hints": [
+              "check_links.py",
+              "HEAD request",
+              "file not found",
+              "anchor-missing"
+            ]
+          },
+          {
+            "name": "triage-structural",
+            "hints": [
+              "broken",
+              "redirected",
+              "anchor-missing",
+              "unknown",
+              "group by source file"
+            ]
+          },
+          {
+            "name": "contextual-correctness",
+            "hints": [
+              "shallow check",
+              "deep check",
+              "contextual mismatch",
+              "link text vs target title"
+            ]
+          },
+          {
+            "name": "produce-report",
+            "hints": [
+              "link audit",
+              "summary",
+              "broken links",
+              "missing anchors",
+              "contextual mismatches"
+            ]
+          },
+          {
+            "name": "offer-fixes",
+            "hints": [
+              "safe fixes",
+              "likely fixes",
+              "needs review",
+              "confirmation required"
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "rigidity-diagnostician",
       "type": "task",
       "title": "Rigidity Diagnostician",
@@ -2791,7 +2893,8 @@
         "adversarial-stakeholder-evaluation",
         "ux-dx-evaluation-diagnostician",
         "formal-verification-evaluator",
-        "testability-implementability-evaluator"
+        "testability-implementability-evaluator",
+        "doc-link-verifier"
       ]
     },
     "refactoring": {
@@ -2824,7 +2927,8 @@
         "research-documentation",
         "implement-documentation",
         "review-documentation",
-        "narrative-article"
+        "narrative-article",
+        "doc-link-verifier"
       ]
     },
     "all": {
