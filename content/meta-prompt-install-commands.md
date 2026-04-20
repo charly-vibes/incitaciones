@@ -78,7 +78,7 @@ Instead of a fixed list, you will dynamically discover the available prompts to 
 **Bundles** (preset collections):
 - [ ] `essentials` - A good starting set: `deliberate-commits`, `systematic-debugging`, `describe-pr`, `iterative-code-review`
 - [ ] `planning` - For project planning: `create-plan`, `implement-plan`, `iterate-plan`, `plan-review`
-- [ ] `reviews` - For code and design reviews: `rule-of-5-review`, `iterative-code-review`, `plan-review`, `design-review`
+- [ ] `reviews` - For code and design reviews: `parallel-review`, `iterative-code-review`, `plan-review`, `design-review`
 - [ ] `all` - Install all discovered prompts.
 
 ## Step 2: Determine Paths and Format

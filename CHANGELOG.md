@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-04-20
+
+#### Changed - Renamed Parallel Review Workflow
+
+- **content/prompt-workflow-parallel-review.md** + **content/distilled/parallel-review/** + **pi-package/prompts/parallel-review.md** + **pi-package/skills/parallel-review/** — Renamed the former `rule-of-5` multi-agent workflow to `parallel-review` so it no longer conflicts with `rule-of-5-universal`, while preserving the docs language that this variant is inspired by Rule of 5.
+- **content/manifest.json** + **scripts/analyze-traces.js** — Updated manifest registrations, bundle references, and trace heuristics to recognize `parallel-review` while retaining backward compatibility for historical `rule-of-5` trace data.
+- **Cross-references** — Updated source prompts, research notes, and install docs to point at `prompt-workflow-parallel-review.md` and the new skill name.
+
 ### 2026-04-14
 
 #### Added - Native pi CLI Integration
@@ -149,7 +157,7 @@ Three new prompt skills extracted from the "Improving LLM Code Refactoring Skill
 **All Rule of 5 prompts updated to v1.1.0+ with consistent references:**
 - **research-paper-rule-of-5-multi-agent-review.md** (v1.2.0) - Distinguished Steve Yegge's actual gastown implementation (linear 5-stage) from extended parallel multi-agent variant. Added detailed documentation of original implementation with comparison tables and guidance on when to use each approach. Updated references to recommend universal prompt.
 - **prompt-task-iterative-code-review.md** (v1.1.0) - Added "Original Variant" matching Steve's actual gastown stages alongside existing domain-focused variant. Clarified this is Steve's original approach to use for 80% of reviews. Added comparison table and gastown reference.
-- **prompt-workflow-rule-of-5-review.md** (v1.1.0) - Clarified as "Extended Variant" not Steve's original. Added comparison table showing cost/benefit trade-offs. Updated to recommend original for most cases.
+- **prompt-workflow-parallel-review.md** (v1.1.0) - Clarified as "Extended Variant" not Steve's original. Added comparison table showing cost/benefit trade-offs. Updated to recommend original for most cases.
 - **prompt-workflow-multi-agent-parallel-review.md** (v1.1.0) - Updated as most comprehensive extended variant. Added guidance on when to use vs. original approach. Added gastown references.
 - **prompt-task-plan-review.md** (v1.1.0) - Clarified relationship to Steve's Rule of 5 principle. Uses domain-specific passes (Feasibility → Completeness → TDD → Ordering → Executability) while maintaining core iterative refinement approach.
 - **prompt-task-research-review.md** (v1.1.0) - Clarified as adaptation of Rule of 5 principle for research. Uses research-specific passes (Accuracy → Completeness → Clarity → Actionability → Integration).

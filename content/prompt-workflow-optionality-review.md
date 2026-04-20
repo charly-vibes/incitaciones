@@ -8,7 +8,7 @@ status: tested
 created: 2026-01-19
 updated: 2026-01-19
 version: 1.1.0
-related: [research-rule-of-5-universal-with-optionality.md, prompt-workflow-rule-of-5-review.md, prompt-task-rule-of-5-universal.md]
+related: [research-rule-of-5-universal-with-optionality.md, prompt-workflow-parallel-review.md, prompt-task-rule-of-5-universal.md]
 source: taleb-antifragile + bezos-two-way-doors + real-options-theory + financial-options
 ---
 

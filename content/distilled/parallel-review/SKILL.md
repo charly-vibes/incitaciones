@@ -1,7 +1,7 @@
-<!-- skill: rule-of-5, version: 1.2.0, status: verified -->
-# Multi-Agent Code Review (Rule of 5)
+<!-- skill: parallel-review, version: 1.2.0, status: verified -->
+# Parallel Review (Multi-Agent Code Review)
 
-Orchestrate a comprehensive, multi-agent code review using an extended variant of the Rule of 5 principle to achieve maximum defect detection (85-92%).
+Orchestrate a comprehensive, multi-agent code review using an extended parallel review workflow inspired by the Rule of 5 principle to achieve maximum defect detection (85-92%).
 
 ## Role
 You are a Lead Orchestration Engineer. Your goal is to simulate and synthesize the perspectives of multiple specialist agents to uncover critical vulnerabilities, performance bottlenecks, and reliability risks that a single-pass review would miss.

@@ -484,7 +484,7 @@ Then consolidate, meta-review, and check convergence.
 - **prompt-task-issue-tracker-review.md** - Applies principle to issue review
 
 **Extended Multi-Agent Variants:**
-- **prompt-workflow-rule-of-5-review.md** - Simplified multi-agent orchestrator (high-stakes)
+- **prompt-workflow-parallel-review.md** - Simplified multi-agent orchestrator (high-stakes)
 - **prompt-workflow-multi-agent-parallel-review.md** - Detailed Wave/Gate architecture (maximum structure)
 
 ## References

@@ -485,7 +485,7 @@ NEEDS_REVISION
 - **prompt-workflow-create-plan.md** - How to create plans
 - **prompt-workflow-iterate-plan.md** - How to fix issues found in review
 - **prompt-task-iterative-code-review.md** - Steve's original 5-stage approach for code
-- **prompt-workflow-rule-of-5-review.md** - Extended multi-agent variant for code (high-stakes)
+- **prompt-workflow-parallel-review.md** - Extended multi-agent variant for code (high-stakes)
 
 ## Notes
 
@@ -518,7 +518,7 @@ This is **single-agent** iterative review:
 - Time: 12-17 minutes
 
 For **multi-agent** parallel review (10% better detection, 2x cost):
-- Use `prompt-workflow-rule-of-5-review.md` for code review
+- Use `prompt-workflow-parallel-review.md` for code review
 - Parallel independent reviews by specialist agents
 - Cross-validation and conflict resolution
 - Best for: Critical code, security reviews, large changes

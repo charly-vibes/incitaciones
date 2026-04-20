@@ -442,7 +442,7 @@ Don't stop until: 0 CRITICAL, <3 HIGH, and explicit "READY FOR PRODUCTION" state
 | **Time** | 12-17 minutes | 10-15 minutes |
 | **Complexity** | Simple, easy to understand | Complex orchestration |
 | **Best For** | Daily workflow, most reviews | Critical systems, security |
-| **Prompt File** | This file | prompt-workflow-rule-of-5-review.md |
+| **Prompt File** | This file | prompt-workflow-parallel-review.md |
 
 **Recommendation:** Start with this original approach. Use extended only when additional 10% detection justifies 2x cost.
 
@@ -455,7 +455,7 @@ Don't stop until: 0 CRITICAL, <3 HIGH, and explicit "READY FOR PRODUCTION" state
 
 **Related Prompts:**
 - **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
-- **Extended Multi-Agent:** prompt-workflow-rule-of-5-review.md (for critical systems)
+- **Extended Multi-Agent:** prompt-workflow-parallel-review.md (for critical systems)
 - **Detailed Parallel:** prompt-workflow-multi-agent-parallel-review.md (full Wave/Gate architecture)
 
 ## Notes

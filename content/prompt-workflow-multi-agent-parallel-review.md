@@ -8,7 +8,7 @@ status: tested
 created: 2026-01-12
 updated: 2026-01-13
 version: 1.1.0
-related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-task-iterative-code-review.md, prompt-workflow-rule-of-5-review.md]
+related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-task-iterative-code-review.md, prompt-workflow-parallel-review.md]
 source: extended-from-steve-yegge-rule-of-5-principle
 ---
 
@@ -644,7 +644,7 @@ Iteration 2+:
 
 **Related Prompts:**
 - **prompt-task-iterative-code-review.md** - Steve's original linear approach (use this for 80% of reviews)
-- **prompt-workflow-rule-of-5-review.md** - Simplified multi-agent orchestrator (less prescriptive than this)
+- **prompt-workflow-parallel-review.md** - Simplified multi-agent orchestrator (less prescriptive than this)
 - **prompt-task-plan-review.md** - Apply Rule of 5 principle to plan review
 - **prompt-task-research-review.md** - Apply Rule of 5 principle to research review
 

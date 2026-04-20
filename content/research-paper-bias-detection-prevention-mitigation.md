@@ -72,7 +72,7 @@ In the context of LLMs, the probabilistic nature of the engine must be constrain
 
 - `prompt-workflow-pre-mortem-planning.md` - Implements the pre-mortem methodology.
 - `prompt-task-rule-of-5-universal.md` - Applies the 5-stage refinement protocol.
-- `prompt-workflow-rule-of-5-review.md` - Multi-agent implementation of the Rule of 5.
+- `prompt-workflow-parallel-review.md` - Multi-agent implementation of the Rule of 5.
 
 ## References
 

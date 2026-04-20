@@ -9,7 +9,7 @@ created: 2026-01-16
 updated: 2026-01-18
 version: 2.1.0
 extends: rule-of-5-universal
-related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-code-review.md, prompt-workflow-rule-of-5-review.md]
+related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-code-review.md, prompt-workflow-parallel-review.md]
 source: steve-yegge-gastown-rule-of-five-formula + optionality-thinking + financial-options-theory + real-options + taleb-antifragile + bezos-two-way-doors
 ---
 

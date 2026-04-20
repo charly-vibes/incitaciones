@@ -514,7 +514,7 @@ NEEDS_REVISION
 - **prompt-task-research-codebase.md** - How to conduct research
 - **prompt-task-plan-review.md** - Similar iterative review for plans
 - **prompt-task-iterative-code-review.md** - Steve's original 5-stage approach for code
-- **prompt-workflow-rule-of-5-review.md** - Extended multi-agent variant for code (high-stakes)
+- **prompt-workflow-parallel-review.md** - Extended multi-agent variant for code (high-stakes)
 
 ## Notes
 

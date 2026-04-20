@@ -8,7 +8,7 @@ status: tested
 created: 2026-01-13
 updated: 2026-01-13
 version: 1.0.0
-related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-code-review.md, prompt-workflow-rule-of-5-review.md]
+related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-code-review.md, prompt-workflow-parallel-review.md]
 source: steve-yegge-gastown-rule-of-five-formula
 ---
 
@@ -538,7 +538,7 @@ Production Ready: NO - Fix CLAR-001 before starting work
 
 **Research & Extensions:**
 - **Research Paper:** research-paper-rule-of-5-multi-agent-review.md
-- **Extended Multi-Agent:** prompt-workflow-rule-of-5-review.md
+- **Extended Multi-Agent:** prompt-workflow-parallel-review.md
 - **Detailed Wave/Gate:** prompt-workflow-multi-agent-parallel-review.md
 
 **Domain-Specific Adaptations:**

@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-16",
+  "version": "2026-04-20",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -14,7 +14,7 @@
         "review",
         "specification",
         "ieee-29148",
-        "rule-of-5",
+        "parallel-review",
         "openspec"
       ],
       "bundles": [
@@ -326,7 +326,7 @@
       "tags": [
         "review",
         "code-quality",
-        "rule-of-5",
+        "parallel-review",
         "iteration",
         "qa"
       ],
@@ -694,17 +694,17 @@
       }
     },
     {
-      "name": "rule-of-5",
+      "name": "parallel-review",
       "type": "workflow",
-      "title": "Rule of 5 Code Review (Multi-Agent)",
+      "title": "Parallel Review (Multi-Agent Code Review)",
       "description": "High-stakes code review with parallel agent waves",
-      "source": "content/prompt-workflow-rule-of-5-review.md",
-      "distilled": "content/distilled/rule-of-5/SKILL.md",
+      "source": "content/prompt-workflow-parallel-review.md",
+      "distilled": "content/distilled/parallel-review/SKILL.md",
       "skill_format": "progressive-disclosure",
       "tags": [
         "review",
         "multi-agent",
-        "rule-of-5",
+        "parallel-review",
         "qa",
         "high-stakes"
       ],
@@ -1483,7 +1483,7 @@
       "tags": [
         "review",
         "planning",
-        "rule-of-5",
+        "parallel-review",
         "quality-assurance",
         "validation"
       ],
@@ -1681,7 +1681,7 @@
       "tags": [
         "review",
         "research",
-        "rule-of-5",
+        "parallel-review",
         "quality-assurance",
         "validation"
       ],
@@ -1953,7 +1953,7 @@
       "tags": [
         "review",
         "universal",
-        "rule-of-5"
+        "parallel-review"
       ],
       "bundles": [
         "reviews"
@@ -2077,7 +2077,7 @@
         "ethics",
         "auditing",
         "safety",
-        "rule-of-5"
+        "parallel-review"
       ],
       "bundles": [
         "reviews"
@@ -2244,7 +2244,7 @@
         "review",
         "documentation",
         "technical-writing",
-        "rule-of-5"
+        "parallel-review"
       ],
       "bundles": [
         "documentation",
@@ -2893,7 +2893,7 @@
       "description": "Code, design, and research review processes",
       "prompts": [
         "code-review",
-        "rule-of-5",
+        "parallel-review",
         "optionality-review",
         "multi-agent-review",
         "plan-review",

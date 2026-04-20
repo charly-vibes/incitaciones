@@ -1,8 +1,8 @@
 ---
-title: Workflow for Rule of 5 Multi-Agent Code Review (Extended Variant)
+title: Workflow for Parallel Review (Multi-Agent Code Review)
 type: prompt
 subtype: workflow
-tags: [code-review, multi-agent, rule-of-5, quality-assurance, testing, parallel]
+tags: [code-review, multi-agent, parallel-review, quality-assurance, testing, parallel]
 tools: [claude-code, cursor, gemini]
 status: verified
 created: 2026-01-12
@@ -12,11 +12,11 @@ related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-
 source: extended-from-steve-yegge-gastown
 ---
 
-# Rule of 5 Multi-Agent Code Review (Extended Variant)
+# Parallel Review (Multi-Agent Code Review)
 
 ## About This Prompt
 
-This prompt implements an **extended multi-agent variant** of Steve Yegge's Rule of 5 principle. It orchestrates multiple specialized reviewers in a simulated multi-agent workflow.
+This prompt implements an **extended multi-agent review workflow** inspired by Steve Yegge's Rule of 5 principle. It orchestrates multiple specialized reviewers in a simulated multi-agent workflow.
 
 **Note:** This is NOT Steve Yegge's original implementation. For Steve's actual linear 5-stage approach (Draft → Correctness → Clarity → Edge Cases → Excellence), see **prompt-task-iterative-code-review.md**.
 

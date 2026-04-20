@@ -1251,7 +1251,7 @@ function inferTaskType(record) {
   if (promptNames.includes("tdd") || /test|pytest|jest|vitest|cargo test/.test(excerpt)) {
     return "testing";
   }
-  if (promptNames.includes("code-review") || promptNames.includes("rule-of-5")) {
+  if (promptNames.includes("code-review") || promptNames.includes("parallel-review") || promptNames.includes("rule-of-5")) {
     return "review";
   }
   if (/plan|roadmap|phase/.test(excerpt)) {
