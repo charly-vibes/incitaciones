@@ -42,6 +42,10 @@ cp "$REPO_ROOT/AGENTS.md"       "$SITE/AGENTS.md"
   cd "$REPO_ROOT/content"
   find . -name "*.md" -type f -exec cp --parents {} "$SITE/content/" \;
 )
+if [ -d "$REPO_ROOT/content/compiled/nucleus" ]; then
+    mkdir -p "$SITE/content/compiled/nucleus"
+    cp -R "$REPO_ROOT/content/compiled/nucleus/." "$SITE/content/compiled/nucleus/"
+fi
 
 # Copy manifest
 cp "$MANIFEST" "$SITE/manifest.json"
@@ -148,9 +152,17 @@ while IFS= read -r bundle; do
     source=$(prompt_field "$name" "source")
     distilled_raw=$(prompt_field "$name" "distilled")
     distilled=$(skill_url "$name" "$distilled_raw")
+    lambda_path="content/compiled/nucleus/${name}.lambda.md"
+    roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
     printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
     if [ -n "$distilled" ]; then
       printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
+    fi
+    if [ -f "$SITE/$lambda_path" ]; then
+        printf ' — [lambda](%s)' "$lambda_path" >> "$LLMS"
+    fi
+    if [ -f "$SITE/$roundtrip_path" ]; then
+        printf ' — [roundtrip](%s)' "$roundtrip_path" >> "$LLMS"
     fi
     printf '\n' >> "$LLMS"
   done
@@ -171,9 +183,17 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   source=$(prompt_field "$name" "source")
   distilled_raw=$(prompt_field "$name" "distilled")
   distilled=$(skill_url "$name" "$distilled_raw")
+  lambda_path="content/compiled/nucleus/${name}.lambda.md"
+  roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
   printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
   if [ -n "$distilled" ]; then
     printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
+  fi
+  if [ -f "$SITE/$lambda_path" ]; then
+      printf ' — [lambda](%s)' "$lambda_path" >> "$LLMS"
+  fi
+  if [ -f "$SITE/$roundtrip_path" ]; then
+      printf ' — [roundtrip](%s)' "$roundtrip_path" >> "$LLMS"
   fi
   printf '\n' >> "$LLMS"
 done
@@ -329,11 +349,25 @@ while IFS= read -r bundle; do
     source=$(prompt_field "$name" "source")
     distilled_raw=$(prompt_field "$name" "distilled")
     distilled=$(skill_url "$name" "$distilled_raw")
+    lambda_path="content/compiled/nucleus/${name}.lambda.md"
+    roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
     printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
+    printf ' <span class="links">(' >> "$INDEX"
+    has_link=false
     if [ -n "$distilled" ]; then
-      printf ' <span class="links">(<a href="%s">distilled</a>)</span>' "$distilled" >> "$INDEX"
+      printf '<a href="%s">distilled</a>' "$distilled" >> "$INDEX"
+      has_link=true
     fi
-    printf '</li>\n' >> "$INDEX"
+    if [ -f "$SITE/$lambda_path" ]; then
+        $has_link && printf '<span class="sep">|</span>' >> "$INDEX"
+        printf '<a href="%s">lambda</a>' "$lambda_path" >> "$INDEX"
+        has_link=true
+    fi
+    if [ -f "$SITE/$roundtrip_path" ]; then
+        $has_link && printf '<span class="sep">|</span>' >> "$INDEX"
+        printf '<a href="%s">roundtrip</a>' "$roundtrip_path" >> "$INDEX"
+    fi
+    printf ')</span></li>\n' >> "$INDEX"
   done
   printf '</ul>\n' >> "$INDEX"
 done < <(jq -r '.bundles | keys_unsorted[] | select(. != "all")' "$MANIFEST")
@@ -349,11 +383,25 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   source=$(prompt_field "$name" "source")
   distilled_raw=$(prompt_field "$name" "distilled")
   distilled=$(skill_url "$name" "$distilled_raw")
+  lambda_path="content/compiled/nucleus/${name}.lambda.md"
+  roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
   printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
+  printf ' <span class="links">(' >> "$INDEX"
+  has_link=false
   if [ -n "$distilled" ]; then
-    printf ' <span class="links">(<a href="%s">distilled</a>)</span>' "$distilled" >> "$INDEX"
+    printf '<a href="%s">distilled</a>' "$distilled" >> "$INDEX"
+    has_link=true
   fi
-  printf '</li>\n' >> "$INDEX"
+  if [ -f "$SITE/$lambda_path" ]; then
+      $has_link && printf '<span class="sep">|</span>' >> "$INDEX"
+      printf '<a href="%s">lambda</a>' "$lambda_path" >> "$INDEX"
+      has_link=true
+  fi
+  if [ -f "$SITE/$roundtrip_path" ]; then
+      $has_link && printf '<span class="sep">|</span>' >> "$INDEX"
+      printf '<a href="%s">roundtrip</a>' "$roundtrip_path" >> "$INDEX"
+  fi
+  printf ')</span></li>\n' >> "$INDEX"
 done
 printf '</ul>\n' >> "$INDEX"
 
