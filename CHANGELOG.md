@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 2026-04-28
+
+#### Added - Grill Me Skill
+
+- **content/prompt-task-grill-me.md** + **content/distilled/grill-me.md** — Added a new interactive planning/design interview skill that grills the user one question at a time, recommends an answer for each branch, and inspects the codebase directly when repository evidence can resolve a question.
+- **content/manifest.json** — Registered `grill-me` and added it to the `planning` and `reviews` bundles for installation and discovery.
+
 ### 2026-04-20
 
 #### Changed - Renamed Parallel Review Workflow
