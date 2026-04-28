@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-20",
+  "version": "2026-04-28",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2861,6 +2861,25 @@
       "bundles": [
         "reviews"
       ]
+    },
+    {
+      "name": "grill-me",
+      "type": "task",
+      "title": "Grill Me",
+      "description": "Interview the user relentlessly about a plan or design until shared understanding is reached",
+      "source": "content/prompt-task-grill-me.md",
+      "distilled": "content/distilled/grill-me.md",
+      "tags": [
+        "planning",
+        "design",
+        "review",
+        "productivity",
+        "questioning"
+      ],
+      "bundles": [
+        "planning",
+        "reviews"
+      ]
     }
   ],
   "bundles": {
@@ -2886,7 +2905,8 @@
         "design-practice",
         "pre-mortem",
         "tdd",
-        "plan-review"
+        "plan-review",
+        "grill-me"
       ]
     },
     "reviews": {
@@ -2915,7 +2935,8 @@
         "ux-dx-evaluation-diagnostician",
         "formal-verification-evaluator",
         "testability-implementability-evaluator",
-        "doc-link-verifier"
+        "doc-link-verifier",
+        "grill-me"
       ]
     },
     "refactoring": {
