@@ -5,6 +5,7 @@
 
 System: [Beads/GitHub/Linear/Jira]
 Scope: [All issues / Milestone / Label set]
+Source: [Plan/spec/parent issue if known]
 
 ### Summary
 
@@ -17,6 +18,12 @@ Issues Found by Severity:
 - LOW: [count]
 
 Convergence: Pass [N]
+
+### Tracer-Bullet Assessment
+
+- Slice quality: [Excellent|Good|Fair|Poor]
+- Horizontal-ticket leakage: [None|Low|Moderate|High]
+- AFK/HITL clarity: [Excellent|Good|Fair|Poor]
 
 ### Top 3 Most Critical Findings
 
@@ -35,7 +42,8 @@ Convergence: Pass [N]
 ### Recommended Actions
 
 - Provide exact tracker commands where practical.
-- Include file paths, tests, and plan references when missing.
+- Collapse horizontal tickets into tracer bullets when possible.
+- Include file paths, tests, and plan/story references when missing.
 
 ### Verdict
 

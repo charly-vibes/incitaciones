@@ -6,8 +6,8 @@ tags: [review, issue-tracking, rule-of-5, project-management, quality-assurance,
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-13
-version: 1.1.0
+updated: 2026-04-28
+version: 1.2.0
 related: [prompt-workflow-create-plan.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
 source: adapted-from-fabbro-with-rule-of-5-principle
 ---
@@ -16,10 +16,10 @@ source: adapted-from-fabbro-with-rule-of-5-principle
 
 ## About This Prompt
 
-This prompt applies the **Rule of 5 principle** (iterative refinement until convergence) to issue tracker review. It uses a single-agent, 5-pass approach with domain-focused passes adapted for issue quality:
+This prompt applies the **Rule of 5 principle** (iterative refinement until convergence) to issue tracker review. It uses a single-agent, 5-pass approach with domain-focused passes adapted for issue quality, with a strong emphasis on **tracer-bullet vertical slices**:
 
 - **Approach:** Single agent, sequential passes
-- **Passes:** Completeness → Scope → Dependencies → Alignment → Executability
+- **Passes:** Completeness → Scope/Tracer-Bullet Shape → Dependencies → Alignment → Executability
 - **Philosophy:** Iterative refinement with convergence checking
 
 **Note:** This is not Steve Yegge's original Draft/Correctness/Clarity/EdgeCases/Excellence structure, but applies his core principle to issue management concerns.
@@ -30,7 +30,7 @@ Use this prompt to perform thorough review of issues in your issue tracking syst
 
 **Critical for:**
 - Reviewing issues after creating them from a plan
-- Validating issue quality before starting work
+- Validating that issues are true tracer bullets rather than horizontal layer tickets
 - Checking issue dependencies and ordering
 - Ensuring issues are actionable and clear
 - Quality gate for project management hygiene
@@ -129,23 +129,24 @@ gh issue edit <number> --title "New title"
 gh issue edit <number> --body "New description"
 ```
 
-### PASS 2 - Scope & Atomicity
+### PASS 2 - Scope, Atomicity & Tracer-Bullet Shape
 
 **Focus on:**
 - Each issue represents one logical unit of work
+- Each issue is a thin vertical slice, not a horizontal layer ticket
 - Issues not too large (should complete in one session)
 - Issues not too small (trivial changes bundled appropriately)
 - Clear boundaries between issues
-- No overlapping scope between issues
-- Each issue independently valuable
+- Each issue independently valuable or verifiable
 
 **Prefix:** SCOPE-001, SCOPE-002, etc.
 
 **What to look for:**
 - "Implement entire authentication system" (too large)
+- Backend-only / UI-only / schema-only tickets that should be one slice
 - "Fix typo in README line 42" (maybe too small, could bundle)
 - Two issues both say "update user model"
-- Issue requires changes across 10+ files
+- Issue requires changes across 10+ files without one coherent outcome
 - Issue mixes refactoring with feature work
 
 **For Beads:**
@@ -169,6 +170,7 @@ bd update main-issue --description="Now includes work from small-issue-1"
 - Critical path is sensible
 - Parallelizable work not falsely serialized
 - Dependency rationale is clear
+- Whether dependencies are real or artifacts of poor horizontal decomposition
 
 **Prefix:** DEP-001, DEP-002, etc.
 
@@ -200,12 +202,12 @@ gh issue edit <number> --add-label "blocked-by-#123"
 ### PASS 4 - Plan & Spec Alignment
 
 **Focus on:**
-- Issues trace back to plan phases
+- Issues trace back to plan phases, user stories, or specs
 - Plan references in descriptions
 - Related specs linked where applicable
 - TDD approach clear (tests defined before impl)
-- All plan phases have corresponding issues
-- Issue breakdown matches plan structure
+- All intended workflows have corresponding issues
+- Issue breakdown matches the desired user outcomes, not just implementation layers
 
 **Prefix:** ALIGN-001, ALIGN-002, etc.
 
@@ -350,6 +352,12 @@ Success criteria:
 [READY_TO_WORK | NEEDS_UPDATES | NEEDS_REPLANNING]
 
 **Rationale:** [1-2 sentences explaining the verdict]
+
+### Tracer-Bullet Assessment
+
+- **Slice Quality**: [Excellent|Good|Fair|Poor] - [brief comment]
+- **Horizontal-Ticket Leakage**: [None|Low|Moderate|High] - [brief comment]
+- **AFK/HITL Clarity**: [Excellent|Good|Fair|Poor] - [brief comment]
 
 ### Issue Quality Assessment
 

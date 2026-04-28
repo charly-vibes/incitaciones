@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 2026-04-28
 
+#### Changed - Tracer-Bullet Issue Skills
+
+- **content/prompt-task-create-issues.md** + **content/distilled/create-issues/** — Reworked `create-issues` around tracer-bullet vertical slices, requiring an approval pass before publishing, AFK/HITL classification, stronger end-to-end acceptance criteria, and templates that describe behavioral slices instead of horizontal layer tickets.
+- **content/prompt-task-issue-tracker-review.md** + **content/distilled/issue-review/** — Updated `issue-review` to evaluate tracer-bullet slice quality explicitly, detect horizontal-ticket leakage and dependency artifacts from poor decomposition, and report AFK/HITL clarity in the final review summary.
+
 #### Added - Grill Me Skill
 
 - **content/prompt-task-grill-me.md** + **content/distilled/grill-me.md** — Added a new interactive planning/design interview skill that grills the user one question at a time, recommends an answer for each branch, and inspects the codebase directly when repository evidence can resolve a question.

@@ -1,16 +1,17 @@
-## Pass 4: Plan and Spec Alignment
+## Pass 4: Plan, Story, and Spec Alignment
 
 Focus on:
-- Traceability to plan phases
-- Plan references in issue descriptions
-- Related spec links
+- Traceability to plan/spec sections or user stories
+- Coverage of the intended workflow end-to-end
+- Alignment between the chosen issue breakdown and the source material
 - Explicit tests before implementation
-- Coverage of all plan phases
+- AFK/HITL classification when relevant
 
 Watch for:
-- Missing plan references
-- Gaps between plan and issue set
-- Spec requirements with no corresponding issue
-- Issues that contradict the chosen approach
+- Missing plan or story references
+- Gaps where a user story is only partially covered across layer tickets
+- Specs with no corresponding issue
+- Issues that contradict the intended implementation approach
+- Breakdown by phase/component when the source material describes user outcomes
 
 Prefix findings with `ALIGN-`.
