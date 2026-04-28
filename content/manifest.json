@@ -2880,6 +2880,25 @@
         "planning",
         "reviews"
       ]
+    },
+    {
+      "name": "guided-review",
+      "type": "task",
+      "title": "Guided Review",
+      "description": "Guide an interactive code review that teaches the human the change and the surrounding codebase",
+      "source": "content/prompt-task-guided-review.md",
+      "distilled": "content/distilled/guided-review.md",
+      "tags": [
+        "code-review",
+        "learning",
+        "mentoring",
+        "guided",
+        "onboarding",
+        "codebase-understanding"
+      ],
+      "bundles": [
+        "reviews"
+      ]
     }
   ],
   "bundles": {
@@ -2927,6 +2946,7 @@
         "specification-review",
         "red-team-review",
         "rca-diagnostician",
+        "guided-review",
         "verification-diagnostician",
         "specification-evaluation-diagnostician",
         "error-handling-diagnostician",
