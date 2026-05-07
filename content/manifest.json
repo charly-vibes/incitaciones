@@ -2917,6 +2917,70 @@
       "bundles": [
         "reviews"
       ]
+    },
+    {
+      "name": "anti-slop-prose",
+      "type": "task",
+      "title": "Anti-Slop Prose Audit",
+      "description": "Tag AI-generated prose for overused vocabulary, formulaic constructions, empty hedges, and vague generic claims — advisory-only, no rewrites unless requested",
+      "source": "content/prompt-task-anti-slop-prose.md",
+      "distilled": "content/distilled/anti-slop-prose.md",
+      "skill_format": "single-file",
+      "tags": [
+        "writing",
+        "prose",
+        "llm-quality",
+        "anti-slop",
+        "editing",
+        "style",
+        "content-quality"
+      ],
+      "bundles": [
+        "reviews"
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "writing"
+        ],
+        "success_signals": [
+          "slop_tags_inserted_inline",
+          "summary_table_produced",
+          "verdict_given",
+          "no_rewrites_without_request"
+        ],
+        "failure_signals": [
+          "hallucinated_tags",
+          "rewrite_without_permission",
+          "empty_table_on_sloppy_text",
+          "missing_verdict"
+        ],
+        "stages": [
+          {
+            "name": "slop-scanning",
+            "hints": [
+              "reading draft",
+              "scanning for",
+              "tagging"
+            ]
+          },
+          {
+            "name": "summary",
+            "hints": [
+              "summary table",
+              "tag count"
+            ]
+          },
+          {
+            "name": "verdict",
+            "hints": [
+              "clean",
+              "needs editing",
+              "heavy rewrite"
+            ]
+          }
+        ]
+      }
     }
   ],
   "bundles": {
@@ -2974,7 +3038,8 @@
         "formal-verification-evaluator",
         "testability-implementability-evaluator",
         "doc-link-verifier",
-        "grill-me"
+        "grill-me",
+        "anti-slop-prose"
       ]
     },
     "refactoring": {
