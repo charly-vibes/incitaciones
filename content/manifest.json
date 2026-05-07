@@ -1943,6 +1943,24 @@
       }
     },
     {
+      "name": "ui-align",
+      "type": "task",
+      "title": "UI Align (Vibe-to-Spec)",
+      "description": "High-alignment UI specification workflow using interactive grilling and methodology verification",
+      "source": "content/prompt-task-ui-align.md",
+      "distilled": "content/distilled/ui-align.md",
+      "tags": [
+        "ui",
+        "alignment",
+        "specification",
+        "planning",
+        "kiro-triad"
+      ],
+      "bundles": [
+        "planning"
+      ]
+    },
+    {
       "name": "rule-of-5-universal",
       "type": "task",
       "title": "Universal Rule of 5 Review",
