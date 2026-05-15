@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+### 2026-05-15
+
+#### Added - Systematic Housekeeping Skill
+
+- **content/prompt-task-systematic-housekeeping.md** + **content/distilled/systematic-housekeeping.md** — Added a four-layer 5S repository housekeeping prompt for Code/CI, Docs, Prompts/Skills, and Context/Artifacts, with explicit audit-only/safe-fix/approval-required safety gates.
+- **content/research-paper-codebase-housekeeping-systematic-refactoring.md** — Added supporting research synthesis for AI-augmented codebase housekeeping and prompt/context lifecycle maintenance.
+- **content/manifest.json** — Registered `systematic-housekeeping` in the documentation and reviews bundles.
+
 ### 2026-04-28
 
 - Add Guided Review skill for teaching-oriented code reviews

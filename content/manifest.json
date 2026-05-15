@@ -1,5 +1,5 @@
 {
-  "version": "2026-04-28",
+  "version": "2026-05-15",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2835,6 +2835,45 @@
               "confirmation required"
             ]
           }
+        ]
+      }
+    },
+    {
+      "name": "systematic-housekeeping",
+      "type": "task",
+      "title": "Systematic Repository Housekeeping (5S Protocol)",
+      "description": "Comprehensive repository maintenance across Code/CI, Documentation, Prompts/Skills, and Context/Artifacts using 5S principles",
+      "source": "content/prompt-task-systematic-housekeeping.md",
+      "distilled": "content/distilled/systematic-housekeeping.md",
+      "tags": [
+        "housekeeping",
+        "maintenance",
+        "5s",
+        "hygiene",
+        "technical-debt",
+        "audit"
+      ],
+      "bundles": [
+        "documentation",
+        "reviews"
+      ],
+      "eval": {
+        "task_types": [
+          "audit",
+          "maintenance"
+        ],
+        "success_signals": [
+          "four_layers_audited",
+          "dead_code_detected",
+          "manifest_lockfile_sync_verified",
+          "en_es_parity_checked",
+          "stale_reports_archived",
+          "structured_report_produced"
+        ],
+        "failure_signals": [
+          "large_scale_refactor_without_approval",
+          "layers_skipped",
+          "failure_to_verify_distilled_parity"
         ]
       }
     },
