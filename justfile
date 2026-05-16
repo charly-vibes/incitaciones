@@ -675,6 +675,72 @@ compare-distilled NAME:
 
     rm -f "$TMP_DISTILLED"
 
+# Run a Nucleus lambda compile + decompile roundtrip for a prompt using pi
+nucleus-roundtrip NAME *PI_ARGS:
+    ./scripts/nucleus-roundtrip.sh {{NAME}} {{PI_ARGS}}
+
+# Compare an experimental Nucleus roundtrip against the canonical distilled prompt
+compare-nucleus NAME:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    flatten_distilled() {
+        local distilled_path="$1"
+        cat "$distilled_path"
+        if [[ "$distilled_path" == */SKILL.md ]]; then
+            local ref_dir
+            ref_dir="$(dirname "$distilled_path")/references"
+            if [ -d "$ref_dir" ]; then
+                while IFS= read -r ref; do
+                    printf '\n\n---\n\n'
+                    printf '## Reference: %s\n\n' "$(basename "$ref")"
+                    cat "$ref"
+                done < <(find "$ref_dir" -maxdepth 1 -name '*.md' -type f | sort)
+            fi
+        fi
+    }
+
+    DISTILLED=$(jq -r --arg name "{{NAME}}" '.prompts[] | select(.name == $name) | .distilled' content/manifest.json 2>/dev/null)
+    LAMBDA="content/compiled/nucleus/{{NAME}}.lambda.md"
+    ROUNDTRIP="content/compiled/nucleus/{{NAME}}.roundtrip.md"
+    TMP_DISTILLED=$(mktemp)
+    trap 'rm -f "$TMP_DISTILLED"' EXIT
+
+    if [ -z "$DISTILLED" ] || [ "$DISTILLED" = "null" ] || [ ! -f "$DISTILLED" ]; then
+        echo "Distilled file not found for: {{NAME}}"
+        exit 1
+    fi
+
+    if [ ! -f "$LAMBDA" ]; then
+        echo "Lambda variant not found: $LAMBDA"
+        exit 1
+    fi
+
+    if [ ! -f "$ROUNDTRIP" ]; then
+        echo "Roundtrip file not found: $ROUNDTRIP"
+        exit 1
+    fi
+
+    flatten_distilled "$DISTILLED" > "$TMP_DISTILLED"
+
+    if [[ "$DISTILLED" == */SKILL.md ]]; then
+        DISTILLED_LABEL="$DISTILLED (+ references)"
+    else
+        DISTILLED_LABEL="$DISTILLED"
+    fi
+
+    echo "Nucleus comparison for: {{NAME}}"
+    echo "  Distilled: $DISTILLED_LABEL ($(wc -l < "$TMP_DISTILLED") lines)"
+    echo "  Lambda:    $LAMBDA ($(wc -l < "$LAMBDA") lines)"
+    echo "  Roundtrip: $ROUNDTRIP ($(wc -l < "$ROUNDTRIP") lines)"
+    echo ""
+
+    if command -v delta &> /dev/null; then
+        delta "$TMP_DISTILLED" "$ROUNDTRIP"
+    else
+        diff --color=auto -u "$TMP_DISTILLED" "$ROUNDTRIP" | head -200 || true
+    fi
+
 # Show bundle contents
 list-bundles:
     #!/usr/bin/env bash

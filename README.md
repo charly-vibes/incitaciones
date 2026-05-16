@@ -111,6 +111,8 @@ just validate-distilled       # Validate distilled prompts
 just list-bundles             # Show available bundles
 just sync-manifest            # Validate manifest references and update content/manifest.json version
 just generate-skill NAME      # Preview SKILL.md output for a prompt
+just nucleus-roundtrip NAME   # Use pi to compile+decompile a prompt via Nucleus lambda
+just compare-nucleus NAME     # Diff a Nucleus roundtrip against the canonical distilled prompt
 just analyze-traces PATH      # Analyze trace exports from agent tools
 just analyze-traces-auto      # Auto-detect local CLI history locations
 just trace-insights           # Process traces and write insight artifacts
@@ -341,6 +343,23 @@ just validate
 # Checks required metadata, status values, and related links
 # Reports any issues
 ```
+
+**Experimenting with Nucleus lambda roundtrips:**
+```bash
+just nucleus-roundtrip distill-prompt
+# Uses pi -p to compile the distilled prompt to lambda and decompile it back to prose
+# Writes content/compiled/nucleus/distill-prompt.lambda.md
+# Writes content/compiled/nucleus/distill-prompt.roundtrip.md
+just compare-nucleus distill-prompt
+# Diffs the roundtrip prose against the canonical distilled prompt
+```
+
+Pass extra pi flags through when needed:
+```bash
+just nucleus-roundtrip distill-prompt --model sonnet:high
+```
+
+The `content/compiled/nucleus/` directory is experimental. It is intentionally kept outside `content/distilled/` so these comparison artifacts do not affect installation or packaged skills.
 
 ## What Goes Here?
 
