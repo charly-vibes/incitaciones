@@ -1,0 +1,13 @@
+pre-commit:
+  commands:
+    validate:
+      run: just validate
+    links:
+      run: just check-links
+
+pre-push:
+  commands:
+    distilled:
+      run: just validate-distilled
+    pi-package:
+      run: just validate-pi-package
