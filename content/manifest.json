@@ -1,5 +1,5 @@
 {
-  "version": "2026-05-15",
+  "version": "2026-05-22",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -3016,6 +3016,101 @@
               "clean",
               "needs editing",
               "heavy rewrite"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "project-status-report",
+      "type": "task",
+      "title": "Evidence-Backed Project Status Report",
+      "description": "Create audience-specific project status reports grounded in evidence, variance, blockers, decisions, and agentic AI provenance when applicable",
+      "source": "content/prompt-task-project-status-report.md",
+      "distilled": "content/distilled/project-status-report.md",
+      "skill_format": "single-file",
+      "tags": [
+        "project-management",
+        "status-reporting",
+        "agentic-coding",
+        "software-delivery",
+        "observability"
+      ],
+      "bundles": [
+        "planning",
+        "documentation"
+      ],
+      "eval": {
+        "task_types": [
+          "documentation",
+          "project-management",
+          "reporting"
+        ],
+        "success_signals": [
+          "audience_identified",
+          "evidence_linked_or_unknown_marked",
+          "rag_status_justified",
+          "amber_red_items_have_owner_mitigation_date",
+          "decisions_needed_explicit",
+          "agentic_provenance_included_when_applicable"
+        ],
+        "failure_signals": [
+          "green_without_evidence",
+          "invented_missing_evidence",
+          "blocked_and_at_risk_conflated",
+          "sensitive_trace_content_pasted",
+          "tests_passed_treated_as_deployed"
+        ],
+        "stages": [
+          {
+            "name": "context-gathering",
+            "hints": [
+              "reporting period",
+              "audience",
+              "baseline",
+              "evidence sources"
+            ]
+          },
+          {
+            "name": "evidence-review",
+            "hints": [
+              "tickets",
+              "prs",
+              "commits",
+              "ci",
+              "metrics",
+              "traces",
+              "risk log"
+            ]
+          },
+          {
+            "name": "status-assessment",
+            "hints": [
+              "unknown",
+              "green",
+              "amber",
+              "red",
+              "variance",
+              "dimension-specific status"
+            ]
+          },
+          {
+            "name": "risk-decision-synthesis",
+            "hints": [
+              "blockers",
+              "risks",
+              "owners",
+              "mitigation",
+              "decisions needed"
+            ]
+          },
+          {
+            "name": "final-report",
+            "hints": [
+              "executive summary",
+              "forecast",
+              "next commitments",
+              "agentic AI evidence"
             ]
           }
         ]
