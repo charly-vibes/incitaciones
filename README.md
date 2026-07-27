@@ -2,7 +2,28 @@
 
 A collection of reusable prompts and best practices for CLI LLM tools.
 
-## Install
+## Quick Install
+
+### Via npm / npx (recommended)
+
+```bash
+# Install as pi package (native skills, best UX):
+pi install npm:incitaciones
+
+# Or install across all tools (pi, Claude Code, Amp, Gemini CLI, etc.):
+npx incitaciones install
+
+# Install only the essentials bundle:
+npx incitaciones install --bundle essentials
+
+# List available skills:
+npx incitaciones list
+
+# Show skill details:
+npx incitaciones info commit
+```
+
+### From git
 
 Clone and install prompts as skills for pi CLI, Claude Code, Amp, Gemini CLI, and other tools:
 
@@ -49,10 +70,12 @@ Skills are installed to `~/.agents/skills/` (or project `.agents/skills/`) and c
 
 ### Native pi package install
 
-This repository now includes a `package.json` with a `pi` manifest, so pi can install it directly as a package:
+This repository is published as an npm package with a `pi` manifest, so pi can install it directly:
 
 ```bash
-pi install https://github.com/charly-vibes/incitaciones
+pi install npm:incitaciones
+# or from git
+pi install git:github.com/charly-vibes/incitaciones
 # or from a local clone
 pi install .
 ```

@@ -2,6 +2,14 @@
   "name": "incitaciones",
   "version": "0.1.0",
   "description": "Reusable prompts and skills for CLI LLM tools, with native pi package support.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:charly-vibes/incitaciones.git"
+  },
+  "homepage": "https://github.com/charly-vibes/incitaciones",
+  "bugs": {
+    "url": "https://github.com/charly-vibes/incitaciones/issues"
+  },
   "license": "MIT",
   "type": "module",
   "keywords": [
@@ -10,6 +18,17 @@
     "prompts",
     "skills",
     "pi-cli"
+  ],
+  "bin": {
+    "incitaciones": "./scripts/cli.mjs"
+  },
+  "files": [
+    "content/distilled",
+    "content/manifest.json",
+    "pi-package/",
+    "scripts/cli.mjs",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "prepare": "node scripts/generate-pi-resources.mjs",
@@ -24,5 +43,8 @@
     "prompts": [
       "./pi-package/prompts"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -105,6 +105,14 @@ function main() {
     "- `skills/` contains pi-compatible Agent Skills",
     "- `prompts/` contains pi prompt templates",
     "",
+    "## Install from npm",
+    "",
+    "```bash",
+    "pi install npm:incitaciones",
+    "```",
+    "",
+    "This package is published as [`incitaciones` on npm](https://www.npmjs.com/package/incitaciones).",
+    "",
   ].join("\n");
   fs.writeFileSync(path.join(outRoot, "README.md"), readme, "utf8");
 
