@@ -102,6 +102,25 @@ git push --tags     # triggers CI → auto-publishes to npm
 
 CI workflow: `.github/workflows/npm-publish.yml` — runs on `v*` tags, generates pi resources, then publishes.
 
+## Top 10 Most Used Skills
+
+Based on analysis of 621 pi sessions across 43 repositories:
+
+| Skill | Invocations | Repos | What it does |
+|-------|:-----------:|:-----:|-------------|
+| **commit** | 513 | 41 | Create well-structured, atomic git commits with clear intent |
+| **rule-of-5-universal** | 254 | 35 | 5-stage review for any artifact (Steve Yegge's method) |
+| **tdd** | 168 | 28 | Test-driven development workflow |
+| **issue-review** | 158 | 31 | Review issues for completeness and dependencies |
+| **debug** | 94 | 27 | 7-step diagnostic workflow for debugging issues |
+| **create-issues** | 44 | 19 | Generate trackable issues from implementation plans |
+| **create-handoff** | 31 | 10 | Generate context documents for session continuity |
+| **grill-me** | 28 | 12 | Interview the user relentlessly about a plan or design |
+| **doc-link-verifier** | 27 | 9 | Audit documentation for broken links |
+| **review-documentation** | 27 | 9 | Review docs for cognitive scannability and AI-readiness |
+
+Full analysis: [`content/research-finding-skill-usage-analysis.md`](content/research-finding-skill-usage-analysis.md)
+
 ## Quick Start
 
 ```bash
