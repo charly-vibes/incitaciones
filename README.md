@@ -1,5 +1,8 @@
 # Incitaciones 🤖
 
+[![npm](https://img.shields.io/npm/v/incitaciones)](https://www.npmjs.com/package/incitaciones)
+[![Publish to npm](https://github.com/charly-vibes/incitaciones/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/charly-vibes/incitaciones/actions/workflows/npm-publish.yml)
+
 A collection of reusable prompts and best practices for CLI LLM tools.
 
 ## Quick Install
@@ -87,6 +90,18 @@ The repository includes checked-in pi package resources under `pi-package/`, and
 
 After changing distilled content or manifest entries, run `just generate-pi-resources` and commit the updated `pi-package/` files.
 
+### Publishing a new version
+
+```bash
+npm version patch   # bumps to 0.2.1, creates a git tag
+npm version minor   # bumps to 0.3.0
+npm version major   # bumps to 1.0.0
+
+git push --tags     # triggers CI → auto-publishes to npm
+```
+
+CI workflow: `.github/workflows/npm-publish.yml` — runs on `v*` tags, generates pi resources, then publishes.
+
 ## Quick Start
 
 ```bash
@@ -112,6 +127,15 @@ Everything lives in `content/` with descriptive filenames:
 - `research-*.md` - Experiments and findings
 - `example-*.md` - Real-world examples
 - `template-*.md` - Templates for new content
+
+Key infrastructure files:
+
+- `package.json` — npm package with `pi` manifest and `bin` entry for npx CLI
+- `scripts/cli.mjs` — npx CLI entry point (`npx incitaciones install` / `list` / `info`)
+- `scripts/generate-pi-resources.mjs` — generates `pi-package/` from manifest
+- `pi-package/` — generated pi-compatible skills and prompt templates (gitignored)
+- `.github/workflows/npm-publish.yml` — CI: auto-publishes to npm on `v*` tags
+- `.github/workflows/pages.yml` — CI: deploys GitHub Pages site
 
 See [AGENTS.md](AGENTS.md) for detailed structure and [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 

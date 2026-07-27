@@ -2,6 +2,30 @@
 
 ## Installing Skills
 
+### Via npm / npx (recommended)
+
+```bash
+# Install as a pi package (native skills, best UX):
+pi install npm:incitaciones
+
+# Or install across all tools (pi, Claude Code, Amp, Gemini CLI, etc.):
+npx incitaciones install
+
+# Install only the essentials bundle:
+npx incitaciones install --bundle essentials
+
+# List available skills:
+npx incitaciones list
+
+# Show skill details:
+npx incitaciones info commit
+```
+
+Pubished as [`incitaciones` on npm](https://www.npmjs.com/package/incitaciones).
+The CLI is at `scripts/cli.mjs` (entry point specified in `package.json`'s `bin` field).
+
+### From git (install.sh)
+
 To install prompts as skills for Claude Code, Amp, Gemini CLI, and other tools:
 
 ```bash
@@ -11,7 +35,16 @@ To install prompts as skills for Claude Code, Amp, Gemini CLI, and other tools:
 ./install.sh --help                # All options
 ```
 
-Do NOT manually extract prompts or write custom install scripts. Always use `install.sh`.
+Do NOT manually extract prompts or write custom install scripts. Always use `install.sh` or the npx CLI.
+
+### CI/CD Publishing
+
+On push of a `v*` tag, GitHub Actions automatically publishes to npm:
+
+- Workflow: `.github/workflows/npm-publish.yml`
+- Secret: `NPM_TOKEN` (granular access token with publish bypass)
+- Trigger: `git push --tags` after `npm version patch|minor|major`
+- Also updates the pi-package resources via `scripts/generate-pi-resources.mjs`
 
 ## Purpose
 
