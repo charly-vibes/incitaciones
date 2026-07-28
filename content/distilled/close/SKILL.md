@@ -8,18 +8,19 @@ tools: Read, Write, Edit, Glob, Bash
 
 End the current session: log what was done, update tasks, route durable knowledge to `~/.whisper/`, commit and push, clear context.
 
-Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log, and `~/.whisper/` for accumulated operational knowledge.
+Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
 
 ## Steps
 
 1. Pull the journal repo:
    ```bash
    JOURNAL="${JOURNAL_PATH:-$HOME/dev/status}"
+   LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
    cd "$JOURNAL" && git pull
    ```
 
 2. Get today's date and time (`date +%Y-%m-%d`, `date +%H:%M`).
-   Derive the log path: `$JOURNAL/log/YYYY/YYYY-MM/YYYY-MM-DD.md`
+   Derive the log path: `$JOURNAL/$LOG_SUBDIR/YYYY/YYYY-MM/YYYY-MM-DD.md`
 
 3. If the log file does not exist, create it with the daily log template.
 

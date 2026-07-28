@@ -8,13 +8,14 @@ tools: Read, Write, Edit, Glob, Bash, Grep
 
 Load focused context for a specific project or area to continue work.
 
-Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log, and `~/.whisper/` for accumulated operational knowledge.
+Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
 
 ## Steps
 
 1. Pull the journal repo:
    ```bash
    JOURNAL="${JOURNAL_PATH:-$HOME/dev/status}"
+   LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
    cd "$JOURNAL" && git pull
    ```
 
@@ -37,13 +38,13 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log, and `~/.whi
 
 3. Read the matched project or area file.
 
-4. Read today's log (`$JOURNAL/log/YYYY/YYYY-MM/YYYY-MM-DD.md`).
+4. Read today's log (`$JOURNAL/$LOG_SUBDIR/YYYY/YYYY-MM/YYYY-MM-DD.md`).
    If it doesn't exist, create it with the daily log template.
    Scan for any earlier session entries related to this project/area today.
 
 5. Search recent logs for context (last 3 days):
    ```bash
-   grep -rl "<slug>" "$JOURNAL"/log/YYYY/YYYY-MM/ 2>/dev/null | tail -3
+   grep -rl "<slug>" "$JOURNAL"/"$LOG_SUBDIR"/YYYY/YYYY-MM/ 2>/dev/null | tail -3
    ```
    Read any matches to understand recent session history.
 
