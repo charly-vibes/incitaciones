@@ -27,6 +27,7 @@
     "content/manifest.json",
     "pi-package/",
     "scripts/cli.mjs",
+    "scripts/generate-pi-resources.mjs",
     "LICENSE",
     "README.md"
   ],
