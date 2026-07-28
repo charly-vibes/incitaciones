@@ -1,5 +1,5 @@
 {
-  "version": "2026-05-22",
+  "version": "2026-07-27",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -3022,6 +3022,93 @@
       }
     },
     {
+      "name": "whisper",
+      "type": "workflow",
+      "title": "Whisper — Accumulated Operational Knowledge",
+      "description": "Manage the ~/.whisper/ knowledge workspace: init, check, status, link plan, decommission, and knowledge routing",
+      "source": "content/prompt-workflow-whisper.md",
+      "distilled": "content/distilled/whisper/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "workflow",
+        "knowledge",
+        "planning",
+        "beads"
+      ],
+      "bundles": [
+        "essentials",
+        "workflow"
+      ]
+    },
+    {
+      "name": "close",
+      "type": "workflow",
+      "title": "Close Session",
+      "description": "End-of-session wrap-up. Summarizes, logs to daily journal, routes knowledge to ~/.whisper/, commits, and clears context",
+      "source": "content/prompt-workflow-close.md",
+      "distilled": "content/distilled/close/SKILL.md",
+      "skill_format": "single-file",
+      "tags": [
+        "workflow",
+        "session",
+        "journal"
+      ],
+      "bundles": [
+        "workflow"
+      ]
+    },
+    {
+      "name": "park",
+      "type": "workflow",
+      "title": "Park Session",
+      "description": "Snapshot current work before switching context. Logs to daily journal, releases ticket claims, records to ~/.whisper/",
+      "source": "content/prompt-workflow-park.md",
+      "distilled": "content/distilled/park/SKILL.md",
+      "skill_format": "single-file",
+      "tags": [
+        "workflow",
+        "session",
+        "context-switch"
+      ],
+      "bundles": [
+        "workflow"
+      ]
+    },
+    {
+      "name": "renew",
+      "type": "workflow",
+      "title": "Renew Session",
+      "description": "Resume work on a project or area. Loads context from journal, ~/.whisper/, and beads. Supports claiming work with file conflict detection",
+      "source": "content/prompt-workflow-renew.md",
+      "distilled": "content/distilled/renew/SKILL.md",
+      "skill_format": "single-file",
+      "tags": [
+        "workflow",
+        "session",
+        "context"
+      ],
+      "bundles": [
+        "workflow"
+      ]
+    },
+    {
+      "name": "next",
+      "type": "workflow",
+      "title": "Next — Rapid Session Snapshot",
+      "description": "Rapid session snapshot to ~/.whisper/ — no full close ceremony. Fast stash for later resumption via /renew",
+      "source": "content/prompt-workflow-next.md",
+      "distilled": "content/distilled/next/SKILL.md",
+      "skill_format": "single-file",
+      "tags": [
+        "workflow",
+        "session",
+        "snapshot"
+      ],
+      "bundles": [
+        "workflow"
+      ]
+    },
+    {
       "name": "project-status-report",
       "type": "task",
       "title": "Evidence-Backed Project Status Report",
@@ -3127,7 +3214,8 @@
         "code-review",
         "research-codebase",
         "create-handoff",
-        "resume-handoff"
+        "resume-handoff",
+        "whisper"
       ]
     },
     "planning": {
@@ -3208,6 +3296,16 @@
         "review-documentation",
         "narrative-article",
         "doc-link-verifier"
+      ]
+    },
+    "workflow": {
+      "description": "Session lifecycle and workspace knowledge management",
+      "prompts": [
+        "whisper",
+        "close",
+        "park",
+        "renew",
+        "next"
       ]
     },
     "all": {

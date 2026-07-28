@@ -54,6 +54,16 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
    - Apply tracker labels such as `needs-triage` when the project uses them.
    - Wire dependencies using actual captured identifiers or explicit body references.
    - Verify each creation step succeeded before continuing.
+   - **After each successful creation**, extract the `**Files / Systems:**` bullet list from
+     the issue description and store it as structured metadata:
+     ```bash
+     bd update <id> --metadata '{"files": ["path/to/file1.py", "path/to/file2.py"]}'
+     ```
+     This enables automated file-conflict detection by concurrent agents (see `renew` skill
+     **Claiming work** section). If the Files/Systems section is empty or contains only
+     subsystem names without concrete paths, **stop and ask the user for specific file paths
+     before publishing the ticket** — a ticket without concrete paths cannot participate in
+     conflict detection and is incomplete.
 
 7. **Final report:**
    - Summarize the approved slice set, created issues, labels, and dependency links.

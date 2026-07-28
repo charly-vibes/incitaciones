@@ -119,6 +119,20 @@ Based on analysis of 621 pi sessions across 43 repositories:
 | **doc-link-verifier** | 27 | 9 | Audit documentation for broken links |
 | **review-documentation** | 27 | 9 | Review docs for cognitive scannability and AI-readiness |
 
+## Session Lifecycle & Knowledge Management
+
+Workflow skills that form a complete session lifecycle with persistent operational knowledge:
+
+| Skill | When | What it does |
+|-------|------|-------------|
+| **whisper** | Start of project/branch | Manage `~/.whisper/` — global, tiered knowledge directory (init, check, status, link, decommission) |
+| **next** | Quick context switch | Rapid snapshot to `~/.whisper/` — no git, no tickets, just stash |
+| **park** | Thorough context switch | Log to journal, release ticket claims, record to beads epic |
+| **close** | End of day | Log to journal, route knowledge to `~/.whisper/`, commit, clear |
+| **renew** | Start of session | Load journal + whisper + beads context, claim tickets with file conflict detection |
+
+Uses `$JOURNAL_PATH` (default `~/dev/status`) for the daily log. See [`content/references-whisper-workflow.md`](content/references-whisper-workflow.md) for the full reference.
+
 Full analysis: [`content/research-finding-skill-usage-analysis.md`](content/research-finding-skill-usage-analysis.md)
 
 ## Quick Start
