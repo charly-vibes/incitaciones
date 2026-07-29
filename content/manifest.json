@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-27",
+  "version": "2026-07-29",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2223,17 +2223,137 @@
       "title": "Research and Audit Documentation Architecture",
       "description": "Audit existing documentation or plan a new suite using advanced frameworks",
       "source": "content/prompt-task-research-documentation.md",
-      "distilled": "content/distilled/research-documentation.md",
+      "distilled": "content/distilled/research-documentation/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "research",
         "documentation",
         "audit",
-        "information-architecture"
+        "information-architecture",
+        "diataxis",
+        "eppo",
+        "llm-readiness"
       ],
       "bundles": [
         "documentation",
         "research"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "research",
+          "documentation",
+          "audit"
+        ],
+        "success_signals": [
+          "core_assertion_stated",
+          "every_doc_classified_to_one_quadrant",
+          "frankenbooks_flagged",
+          "eppo_compliance_checked",
+          "ai_readiness_assessed",
+          "measurement_signals_recommended",
+          "report_produced"
+        ],
+        "failure_signals": [
+          "content_drafted",
+          "stylistic_changes_suggested",
+          "quadrant_overlap_unflagged",
+          "missing_report"
+        ],
+        "stages": [
+          {
+            "name": "define-scope",
+            "hints": [
+              "primary audience",
+              "core assertion",
+              "value proposition"
+            ]
+          },
+          {
+            "name": "audit-content",
+            "hints": [
+              "references/checklist.md",
+              "diataxis quadrant",
+              "eppo status",
+              "cognitive load"
+            ]
+          },
+          {
+            "name": "map-snowflake",
+            "hints": [
+              "macro-expansion",
+              "component list",
+              "topic matrix"
+            ]
+          },
+          {
+            "name": "identify-gaps",
+            "hints": [
+              "references/llm-readiness.md",
+              "references/metrics.md",
+              "quadrant imbalance",
+              "llms.txt",
+              "rag chunking"
+            ]
+          },
+          {
+            "name": "produce-report",
+            "hints": [
+              "references/report-template.md",
+              "final report"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "id": "checklist",
+            "path": "content/distilled/research-documentation/references/checklist.md",
+            "purpose": "audit-checklist",
+            "stage": "audit-content",
+            "optional": false,
+            "aliases": [
+              "references/checklist.md",
+              "checklist.md",
+              "checklist"
+            ]
+          },
+          {
+            "id": "llm-readiness",
+            "path": "content/distilled/research-documentation/references/llm-readiness.md",
+            "purpose": "gap-assessment",
+            "stage": "identify-gaps",
+            "optional": false,
+            "aliases": [
+              "references/llm-readiness.md",
+              "llm-readiness.md",
+              "llm readiness"
+            ]
+          },
+          {
+            "id": "metrics",
+            "path": "content/distilled/research-documentation/references/metrics.md",
+            "purpose": "measurement-signals",
+            "stage": "identify-gaps",
+            "optional": false,
+            "aliases": [
+              "references/metrics.md",
+              "metrics.md",
+              "metrics"
+            ]
+          },
+          {
+            "id": "report-template",
+            "path": "content/distilled/research-documentation/references/report-template.md",
+            "purpose": "output-template",
+            "stage": "produce-report",
+            "optional": false,
+            "aliases": [
+              "references/report-template.md",
+              "report-template.md",
+              "report template"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "implement-documentation",
@@ -2241,15 +2361,152 @@
       "title": "Implement High-Signal Documentation Topics",
       "description": "Write documentation using Diátaxis, Info Mapping, and EPPO principles",
       "source": "content/prompt-task-implement-documentation.md",
-      "distilled": "content/distilled/implement-documentation.md",
+      "distilled": "content/distilled/implement-documentation/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "implementation",
         "documentation",
-        "technical-writing"
+        "technical-writing",
+        "diataxis",
+        "info-mapping",
+        "eppo",
+        "versioning"
       ],
       "bundles": [
         "documentation"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "implementation",
+          "documentation",
+          "writing"
+        ],
+        "success_signals": [
+          "quadrant_identified",
+          "matching_template_used",
+          "context_block_present",
+          "content_chunked_and_labeled",
+          "tldr_present",
+          "anti_patterns_avoided"
+        ],
+        "failure_signals": [
+          "mixed_intent",
+          "missing_context_block",
+          "generic_headers",
+          "missing_tldr",
+          "faq_antipattern_used"
+        ],
+        "stages": [
+          {
+            "name": "quadrant-check",
+            "hints": [
+              "references/templates.md",
+              "references/anti-patterns.md",
+              "tutorial",
+              "how-to",
+              "reference",
+              "explanation"
+            ]
+          },
+          {
+            "name": "eppo-init",
+            "hints": [
+              "title",
+              "context block",
+              "prerequisites"
+            ]
+          },
+          {
+            "name": "info-mapping",
+            "hints": [
+              "chunking",
+              "labeling",
+              "tables",
+              "lists"
+            ]
+          },
+          {
+            "name": "ai-polish",
+            "hints": [
+              "semantic headers",
+              "tldr",
+              "rag indexing"
+            ]
+          },
+          {
+            "name": "setup-tooling",
+            "hints": [
+              "references/tooling-comparison.md",
+              "references/versioning.md",
+              "references/diataxis-implementation.md",
+              "platform selection",
+              "versioning strategy"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "id": "templates",
+            "path": "content/distilled/implement-documentation/references/templates.md",
+            "purpose": "output-template",
+            "stage": "quadrant-check",
+            "optional": false,
+            "aliases": [
+              "references/templates.md",
+              "templates.md",
+              "templates"
+            ]
+          },
+          {
+            "id": "anti-patterns",
+            "path": "content/distilled/implement-documentation/references/anti-patterns.md",
+            "purpose": "pitfall-catalog",
+            "stage": "quadrant-check",
+            "optional": false,
+            "aliases": [
+              "references/anti-patterns.md",
+              "anti-patterns.md",
+              "anti patterns"
+            ]
+          },
+          {
+            "id": "tooling-comparison",
+            "path": "content/distilled/implement-documentation/references/tooling-comparison.md",
+            "purpose": "platform-selection",
+            "stage": "setup-tooling",
+            "optional": true,
+            "aliases": [
+              "references/tooling-comparison.md",
+              "tooling-comparison.md",
+              "tooling comparison"
+            ]
+          },
+          {
+            "id": "versioning",
+            "path": "content/distilled/implement-documentation/references/versioning.md",
+            "purpose": "versioning-strategy",
+            "stage": "setup-tooling",
+            "optional": true,
+            "aliases": [
+              "references/versioning.md",
+              "versioning.md",
+              "versioning"
+            ]
+          },
+          {
+            "id": "diataxis-implementation",
+            "path": "content/distilled/implement-documentation/references/diataxis-implementation.md",
+            "purpose": "rollout-guide",
+            "stage": "setup-tooling",
+            "optional": true,
+            "aliases": [
+              "references/diataxis-implementation.md",
+              "diataxis-implementation.md",
+              "diataxis implementation"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "review-documentation",
@@ -2257,17 +2514,109 @@
       "title": "Review Documentation Quality (Rule of 5)",
       "description": "Iterative review of documentation for cognitive scannability and AI-readiness",
       "source": "content/prompt-task-review-documentation.md",
-      "distilled": "content/distilled/review-documentation.md",
+      "distilled": "content/distilled/review-documentation/SKILL.md",
+      "skill_format": "progressive-disclosure",
       "tags": [
         "review",
         "documentation",
         "technical-writing",
-        "parallel-review"
+        "parallel-review",
+        "diataxis",
+        "eppo",
+        "info-mapping",
+        "ai-readiness"
       ],
       "bundles": [
         "documentation",
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "documentation",
+          "quality-assurance"
+        ],
+        "success_signals": [
+          "five_passes_completed_or_converged",
+          "issues_cited_with_locations",
+          "ai_readiness_deep_checked",
+          "final_verdict_present"
+        ],
+        "failure_signals": [
+          "stage_skipping_without_convergence",
+          "vague_findings_without_locations",
+          "shallow_ai_pass_only",
+          "missing_verdict"
+        ],
+        "stages": [
+          {
+            "name": "pass-1-intent",
+            "hints": [
+              "pass 1",
+              "diataxis intent",
+              "leaked intents"
+            ]
+          },
+          {
+            "name": "pass-2-eppo",
+            "hints": [
+              "pass 2",
+              "standalone utility",
+              "context"
+            ]
+          },
+          {
+            "name": "pass-3-scan",
+            "hints": [
+              "pass 3",
+              "scannability",
+              "labels",
+              "chunking"
+            ]
+          },
+          {
+            "name": "pass-4-accuracy",
+            "hints": [
+              "pass 4",
+              "whole game",
+              "fail-states",
+              "martini glass"
+            ]
+          },
+          {
+            "name": "pass-5-ai-readiness",
+            "hints": [
+              "pass 5",
+              "references/ai-readiness-criteria.md",
+              "llms.txt",
+              "rag chunking",
+              "dual-audience"
+            ]
+          },
+          {
+            "name": "final-report",
+            "hints": [
+              "severity totals",
+              "top findings",
+              "verdict"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "id": "ai-readiness-criteria",
+            "path": "content/distilled/review-documentation/references/ai-readiness-criteria.md",
+            "purpose": "deep-ai-readiness-checks",
+            "stage": "pass-5-ai-readiness",
+            "optional": false,
+            "aliases": [
+              "references/ai-readiness-criteria.md",
+              "ai-readiness-criteria.md",
+              "ai readiness criteria"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "red-team-review",

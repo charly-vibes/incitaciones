@@ -1,5 +1,18 @@
 ## [Unreleased]
 
+### 2026-07-29
+
+#### Changed - Documentation Skills to Progressive Disclosure
+
+Refactored the three core documentation skills from single-file distilled prompts into progressive-disclosure skill directories, surfacing operational depth from the library-docs-best-practices research as on-demand references that link back to `research-documentation-frameworks.md` as the canonical theory. Measurement was folded into `research-documentation` rather than spun out as a separate skill to avoid a duplicate source of truth.
+
+- **content/distilled/research-documentation/** — Converted to progressive disclosure. Lean `SKILL.md` audit procedure plus `references/checklist.md` (completeness + WCAG accessibility), `references/llm-readiness.md` (`llms.txt`, MCP, RAG chunking, dual-audience), `references/metrics.md` (TTFS, search analytics, coverage, freshness, quality culture), and `references/report-template.md`.
+- **content/distilled/implement-documentation/** — Converted to progressive disclosure. Lean `SKILL.md` writing workflow plus `references/templates.md` (one template per Diátaxis quadrant), `references/anti-patterns.md` (FAQ-as-anti-pattern, curse of knowledge, Frankenbooks, stale docs, partial coverage), `references/tooling-comparison.md` (platform selection + docs-as-code), `references/versioning.md`, and `references/diataxis-implementation.md` (six-step rollout).
+- **content/distilled/review-documentation/** — Converted to progressive disclosure. Lean `SKILL.md` five-pass review plus `references/ai-readiness-criteria.md` for the deep Pass 5 checks, applying a consistent AI-readiness standard across all three sibling skills.
+- **content/prompt-task-research-documentation.md** + **content/prompt-task-implement-documentation.md** + **content/prompt-task-review-documentation.md** — Updated frontmatter (status → tested, version → 1.1.0) and added a Distilled Structure section listing the new reference files; cited `research-finding-skill-progressive-disclosure.md`.
+- **content/manifest.json** — Updated the three entries with `skill_format: progressive-disclosure`, `eval.stages`, and `references[]` arrays; bumped version to 2026-07-29.
+- Removed the old single-file `content/distilled/{research,implement,review}-documentation.md`.
+
 ### 2026-05-15
 
 #### Added - Systematic Housekeeping Skill

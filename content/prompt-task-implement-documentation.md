@@ -4,11 +4,11 @@ type: prompt
 subtype: task
 tags: [implementation, documentation, technical-writing, diataxis, info-mapping, eppo]
 tools: [claude-code, gemini, any-llm]
-status: draft
+status: tested
 created: 2026-03-11
-updated: 2026-03-11
-version: 1.0.0
-related: [research-documentation-frameworks.md, prompt-workflow-implement-plan.md]
+updated: 2026-07-29
+version: 1.1.0
+related: [research-documentation-frameworks.md, prompt-workflow-implement-plan.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
 
@@ -104,8 +104,22 @@ This guide explains how to [Goal]. Before starting, ensure you have:
 - Modular pages that function independently of a central hierarchy.
 - Reduced cognitive load through visual chunking and explicit labeling.
 
+## Distilled Structure (Progressive Disclosure)
+
+The runtime skill is split into a lean core and on-demand references (`content/distilled/implement-documentation/`):
+
+- `SKILL.md` — core writing workflow.
+- `references/templates.md` — one template per Diátaxis quadrant (Tutorial, How-to, Reference, Explanation).
+- `references/anti-patterns.md` — FAQ-as-anti-pattern, curse of knowledge, Frankenbooks, stale docs, knowledge silos, partial coverage.
+- `references/tooling-comparison.md` — platform selection (Docusaurus, MkDocs, Sphinx, Mintlify, etc.) and docs-as-code.
+- `references/versioning.md` — versioned docs, deprecation notices, changelog strategy.
+- `references/diataxis-implementation.md` — six-step Diátaxis rollout guide.
+
+The canonical theory remains `research-documentation-frameworks.md`; the references are operational excerpts that link back to it.
+
 ## References
 
 - `research-documentation-frameworks.md` (Theory).
+- `research-finding-skill-progressive-disclosure.md` (Progressive disclosure pattern).
 - The Pyramid Principle (Barbara Minto).
 - Minimalism in Technical Communication (John Carroll).

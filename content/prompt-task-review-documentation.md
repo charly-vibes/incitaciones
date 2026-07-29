@@ -4,11 +4,11 @@ type: prompt
 subtype: task
 tags: [review, documentation, technical-writing, rule-of-5, diataxis, eppo, info-mapping]
 tools: [claude-code, gemini, any-llm]
-status: draft
+status: tested
 created: 2026-03-11
-updated: 2026-03-11
-version: 1.0.0
-related: [research-documentation-frameworks.md, prompt-task-iterative-code-review.md]
+updated: 2026-07-29
+version: 1.1.0
+related: [research-documentation-frameworks.md, prompt-task-iterative-code-review.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
 
@@ -80,8 +80,18 @@ After each pass (starting with pass 2), report:
 - Resilient content that handles common user errors.
 - Highly optimized artifacts for RAG systems.
 
+## Distilled Structure (Progressive Disclosure)
+
+The runtime skill is split into a lean core and one on-demand reference (`content/distilled/review-documentation/`):
+
+- `SKILL.md` — the five-pass review procedure.
+- `references/ai-readiness-criteria.md` — deep AI-readiness checks for Pass 5 (`llms.txt`, RAG chunking, dual-audience, schema sync).
+
+The canonical theory remains `research-documentation-frameworks.md`; the reference is an operational excerpt that links back to it.
+
 ## References
 
 - `research-documentation-frameworks.md` (Theory).
+- `research-finding-skill-progressive-disclosure.md` (Progressive disclosure pattern).
 - Rule of 5 (Steve Yegge).
 - Information Mapping (Robert Horn).

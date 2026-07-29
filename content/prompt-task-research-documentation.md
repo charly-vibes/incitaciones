@@ -4,11 +4,11 @@ type: prompt
 subtype: task
 tags: [research, documentation, audit, information-architecture, diataxis, eppo]
 tools: [claude-code, gemini, any-llm]
-status: draft
+status: tested
 created: 2026-03-11
-updated: 2026-03-11
-version: 1.0.0
-related: [research-documentation-frameworks.md, prompt-task-research-codebase.md]
+updated: 2026-07-29
+version: 1.1.0
+related: [research-documentation-frameworks.md, prompt-task-research-codebase.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
 
@@ -115,8 +115,21 @@ Output the audit/plan using the following template:
 - A prioritized list of topics to create or refactor.
 - A foundation for implementation that follows the Snowflake method.
 
+## Distilled Structure (Progressive Disclosure)
+
+The runtime skill is split into a lean core and on-demand references (`content/distilled/research-documentation/`):
+
+- `SKILL.md` — core audit procedure.
+- `references/checklist.md` — completeness and accessibility audit items.
+- `references/llm-readiness.md` — `llms.txt`, MCP, RAG chunking, dual-audience design.
+- `references/metrics.md` — TTFS, search analytics, coverage, freshness, quality culture.
+- `references/report-template.md` — output structure for the final report.
+
+The canonical theory remains `research-documentation-frameworks.md`; the references are operational excerpts that link back to it.
+
 ## References
 
 - `research-documentation-frameworks.md` (The underlying theory).
+- `research-finding-skill-progressive-disclosure.md` (Progressive disclosure pattern).
 - Diátaxis (Daniele Procida).
 - Every Page is Page One (Mark Baker).
