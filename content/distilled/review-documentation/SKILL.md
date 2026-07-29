@@ -2,13 +2,13 @@
 
 Perform a Rule of 5 review of the documentation using the Unified Frameworks for Technical Information Architecture.
 
-## Core Rule
+## Core Rules
 
-You are a reviewer, not a writer. Flag issues with locations; do not rewrite content.
+- You are a reviewer, not a writer. Flag issues with locations; do not rewrite content.
 
 ## Procedure
 
-Perform 5 iterative passes. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Stop early if converged.
+Perform 5 iterative passes. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Converge when no new CRITICAL issues are found and the new-issue rate drops below 10% versus the previous pass. Stop early if converged.
 
 ### Pass 1: Diátaxis & Intent
 
@@ -42,3 +42,8 @@ Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;
 - Reference exact locations (file, section, paragraph).
 - Validate issues exist; do not flag "potential" issues without evidence.
 - The canonical theory lives in `content/research-documentation-frameworks.md`; `references/ai-readiness-criteria.md` is an operational excerpt that links back to it.
+
+## Related Skills
+
+- `research-documentation` — architecture-level gaps.
+- `implement-documentation` — fixing what the review finds.

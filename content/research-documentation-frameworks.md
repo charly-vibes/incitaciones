@@ -8,7 +8,7 @@ status: draft
 created: 2026-03-11
 updated: 2026-03-11
 version: 1.0.0
-related: [research-paper-cognitive-architectures-for-prompts.md, research-narrative-driven-writing.md]
+related: [research-paper-cognitive-architectures-for-prompts.md, research-narrative-driven-writing.md, research-finding-library-docs-best-practices.md]
 source: [research-based]
 ---
 

@@ -1,6 +1,6 @@
 # Diátaxis Implementation Guide
 
-Six-step rollout for adopting Diátaxis on an existing or new documentation set. Use in Step 5 when the task is a full architecture rollout rather than a single topic. The canonical theory is `content/research-documentation-frameworks.md`.
+Six-step rollout for adopting Diátaxis on an existing or new documentation set. Use in Step 5 when the task is a full architecture rollout rather than a single topic. The Diátaxis framework theory is canonical in `content/research-documentation-frameworks.md`; these implementation steps are sourced from `content/research-finding-library-docs-best-practices.md` (Section 3, How to Implement Diátaxis in Practice).
 
 ## Step 1: Audit existing documentation
 
@@ -24,7 +24,7 @@ Add architecture specs to Reference alongside code changes. Add technical decisi
 
 ## Step 6: Use Diátaxis as an AI prompt template
 
-The clear information patterns make effective AI prompt templates: ask a model to sort unstructured content into the four patterns to accelerate a first draft, then review and refine. (See `references/templates.md` for the per-quadrant output shapes.)
+The clear information patterns make effective AI prompt templates: ask a model to sort unstructured content into the four patterns to accelerate a first draft, then review and refine. (See `templates.md` for the per-quadrant output shapes.)
 
 ## Critiques to keep in mind
 

@@ -1,6 +1,6 @@
 # Documentation Anti-Patterns
 
-Avoid these during Step 1 (quadrant check) and throughout writing. The canonical theory is `content/research-documentation-frameworks.md`.
+Avoid these during Step 1 (quadrant check) and throughout writing. Source: `content/research-finding-library-docs-best-practices.md` (Section 1, Common Mistakes and Anti-Patterns).
 
 ## Leading with explanation instead of action
 
@@ -28,7 +28,7 @@ Scattered docs across wikis, READMEs, Confluence, Notion create a fragmented exp
 
 ## Partial coverage
 
-Documenting some but not all of a feature or API creates a false sense of completeness — users assume the undocumented part does not exist or work. Fix: cover a concept fully or not at all; use the completeness checklist (`../research-documentation/references/checklist.md`).
+Documenting some but not all of a feature or API creates a false sense of completeness — users assume the undocumented part does not exist or work. Fix: cover a concept fully or not at all; use the completeness checklist (in the `research-documentation` skill's `references/checklist.md`).
 
 ## Mixed-intent "Frankenbooks"
 

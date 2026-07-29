@@ -1,6 +1,20 @@
 ## [Unreleased]
 
-### 2026-07-29
+### 2026-07-29 (2)
+
+#### Fixed - Documentation Skill Review Findings
+
+Applied the Rule of 5 review findings on the new progressive-disclosure files.
+
+- **content/research-finding-library-docs-best-practices.md** — Added the library-docs-best-practices research as a versioned, citable source in the repo, closing the knowledge-silo created by references that claimed `research-documentation-frameworks.md` as canonical for content it does not contain (metrics, tooling, versioning, anti-patterns, accessibility).
+- **content/distilled/research-documentation/references/{checklist,metrics}.md** + **content/distilled/implement-documentation/references/{anti-patterns,tooling-comparison,versioning,diataxis-implementation}.md** — Corrected provenance lines: operational depth now cites `research-finding-library-docs-best-practices.md` (with section pointers); only Diátaxis/EPPO/LLM-RAG theory claims `research-documentation-frameworks.md` as canonical, where the claim is accurate.
+- **content/distilled/implement-documentation/references/anti-patterns.md** — Replaced the fragile cross-skill relative path `../research-documentation/references/checklist.md` with a skill-name pointer so it resolves unambiguously and survives isolated install.
+- **content/distilled/research-documentation/SKILL.md** — Dropped the Step 3 `report-template.md` reference (it is loaded at Step 5 / `produce-report` per the manifest); standardized the header to `## Core Rules`; added sibling-skill cross-links.
+- **content/distilled/implement-documentation/SKILL.md** + **content/distilled/review-documentation/SKILL.md** — Standardized `## Core Rules` header; added sibling-skill cross-links. review-documentation also gained an explicit convergence bar in its procedure.
+- **content/distilled/implement-documentation/references/diataxis-implementation.md** — Fixed the `references/templates.md` self-reference to `templates.md`.
+- **content/prompt-task-{research,implement,review}-documentation.md** + **content/research-documentation-frameworks.md** — Added `research-finding-library-docs-best-practices.md` to `related` and noted it as the operational source in each Distilled Structure section.
+
+### 2026-07-29 (1)
 
 #### Changed - Documentation Skills to Progressive Disclosure
 

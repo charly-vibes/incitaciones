@@ -8,7 +8,7 @@ status: tested
 created: 2026-03-11
 updated: 2026-07-29
 version: 1.1.0
-related: [research-documentation-frameworks.md, prompt-task-research-codebase.md, research-finding-skill-progressive-disclosure.md]
+related: [research-documentation-frameworks.md, research-finding-library-docs-best-practices.md, prompt-task-research-codebase.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
 
@@ -125,7 +125,7 @@ The runtime skill is split into a lean core and on-demand references (`content/d
 - `references/metrics.md` — TTFS, search analytics, coverage, freshness, quality culture.
 - `references/report-template.md` — output structure for the final report.
 
-The canonical theory remains `research-documentation-frameworks.md`; the references are operational excerpts that link back to it.
+The canonical theory remains `research-documentation-frameworks.md`; the references are operational excerpts that link back to it. The operational depth (metrics, accessibility, AI-readiness checks) is sourced from `research-finding-library-docs-best-practices.md`.
 
 ## References
 

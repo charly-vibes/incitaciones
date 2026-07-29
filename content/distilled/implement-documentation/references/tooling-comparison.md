@@ -1,6 +1,6 @@
 # Tooling Comparison & Docs-as-Code
 
-Use in Step 5 when choosing a platform or setting up docs infrastructure. Platform selection is an implementation decision, not an audit finding. The canonical theory is `content/research-documentation-frameworks.md`.
+Use in Step 5 when choosing a platform or setting up docs infrastructure. Platform selection is an implementation decision, not an audit finding. Source: `content/research-finding-library-docs-best-practices.md` (Section 6, Modern Tooling and Infrastructure).
 
 ## Platform comparison
 

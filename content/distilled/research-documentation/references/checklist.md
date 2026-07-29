@@ -1,6 +1,6 @@
 # Documentation Completeness Checklist
 
-Use during the audit (Step 2) to check existing or planned coverage. Synthesized from the library-docs-best-practices research; accessibility items folded in here. The canonical theory is `content/research-documentation-frameworks.md`.
+Use during the audit (Step 2) to check existing or planned coverage. Source: `content/research-finding-library-docs-best-practices.md` (Section 1, the best-practices checklist, and Section 5, accessibility).
 
 ## Completeness and accuracy
 

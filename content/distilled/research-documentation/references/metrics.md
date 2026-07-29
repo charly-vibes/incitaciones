@@ -1,6 +1,6 @@
 # Documentation Quality Metrics
 
-Use in Step 4 to recommend measurement signals. The single most important metric is time-to-first-success; the rest build the feedback loops that keep docs honest. The canonical theory is `content/research-documentation-frameworks.md`.
+Use in Step 4 to recommend measurement signals. The single most important metric is time-to-first-success; the rest build the feedback loops that keep docs honest. Source: `content/research-finding-library-docs-best-practices.md` (Section 7, Measuring Documentation Quality).
 
 ## Key metrics
 

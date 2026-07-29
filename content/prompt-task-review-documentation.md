@@ -8,7 +8,7 @@ status: tested
 created: 2026-03-11
 updated: 2026-07-29
 version: 1.1.0
-related: [research-documentation-frameworks.md, prompt-task-iterative-code-review.md, research-finding-skill-progressive-disclosure.md]
+related: [research-documentation-frameworks.md, research-finding-library-docs-best-practices.md, prompt-task-iterative-code-review.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
 
@@ -87,7 +87,7 @@ The runtime skill is split into a lean core and one on-demand reference (`conten
 - `SKILL.md` — the five-pass review procedure.
 - `references/ai-readiness-criteria.md` — deep AI-readiness checks for Pass 5 (`llms.txt`, RAG chunking, dual-audience, schema sync).
 
-The canonical theory remains `research-documentation-frameworks.md`; the reference is an operational excerpt that links back to it.
+The canonical theory remains `research-documentation-frameworks.md`; the reference is an operational excerpt that links back to it. The deep AI-readiness checks draw from `research-finding-library-docs-best-practices.md` (Section 4).
 
 ## References
 

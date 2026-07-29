@@ -22,3 +22,8 @@ Write a high-signal documentation topic using the Unified Frameworks for Technic
 ## Rules
 
 - The canonical theory lives in `content/research-documentation-frameworks.md`; the references here are operational excerpts that link back to it.
+
+## Related Skills
+
+- `research-documentation` — audit before writing.
+- `review-documentation` — review after writing.

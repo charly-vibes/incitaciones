@@ -1,6 +1,6 @@
 # Versioning & Changelog Strategy
 
-Use in Step 5 when setting up versioned documentation. The canonical theory is `content/research-documentation-frameworks.md`.
+Use in Step 5 when setting up versioned documentation. Source: `content/research-finding-library-docs-best-practices.md` (Section 2, Versioned Documentation Strategies).
 
 ## Version-tagged documentation
 
