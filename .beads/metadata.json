@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "incitaciones",
+  "project_id": "bfe50464-0be7-40e0-bff3-551d0e861da1"
+}
