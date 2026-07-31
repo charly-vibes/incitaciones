@@ -1,6 +1,6 @@
 {
   "name": "incitaciones",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Reusable prompts and skills for CLI LLM tools, with native pi package support.",
   "repository": {
     "type": "git",
