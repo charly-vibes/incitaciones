@@ -1,7 +1,212 @@
 {
-  "version": "2026-07-29",
+  "version": "2026-07-31",
   "schema_version": "1.1",
   "prompts": [
+    {
+      "name": "agent-value-alignment",
+      "type": "task",
+      "title": "Agent Value Alignment",
+      "description": "Audit or establish the closed loop that anchors an AI agent's behavior to its intended value across four layers — Value, Governance, Runtime Prompt, Infrastructure — bound by a shared vocabulary and traceability matrix; detects goal drift and value drift before lagging metrics confirm them",
+      "source": "content/prompt-task-agent-value-alignment.md",
+      "distilled": "content/distilled/agent-value-alignment/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "agents",
+        "alignment",
+        "value-delivery",
+        "prompt-engineering",
+        "governance",
+        "goal-drift",
+        "diagnostician",
+        "review"
+      ],
+      "bundles": [
+        "reviews"
+      ],
+      "eval": {
+        "task_types": [
+          "review",
+          "alignment",
+          "agents",
+          "governance"
+        ],
+        "success_signals": [
+          "falsifiable_value_proposition_present",
+          "kill_criteria_signed_with_owner",
+          "goal_sandwich_pattern_verified",
+          "value_focused_eval_suite_present",
+          "traceability_matrix_complete",
+          "integration_invariant_checked",
+          "layer_specific_gaps_cited_with_locations",
+          "final_verdict_present"
+        ],
+        "failure_signals": [
+          "unfalsifiable_value_proposition_accepted",
+          "output_correctness_eval_mistaken_for_value_eval",
+          "unsigned_kill_criteria_accepted",
+          "governance_decision_without_prompt_clause_not_flagged",
+          "prompt_clause_without_eval_test_not_flagged",
+          "drift_assumed_absent_without_evidence",
+          "findings_without_specific_locations",
+          "fixes_implemented_during_audit_session"
+        ],
+        "stages": [
+          {
+            "name": "setup",
+            "hints": [
+              "target",
+              "mode",
+              "audit",
+              "establish",
+              "collect artifacts"
+            ]
+          },
+          {
+            "name": "layer-1-value",
+            "hints": [
+              "references/layer-1-value.md",
+              "falsifiable",
+              "kill criteria",
+              "leading indicator"
+            ]
+          },
+          {
+            "name": "layer-2-governance",
+            "hints": [
+              "references/layer-2-governance.md",
+              "BSD",
+              "agent charter",
+              "scope gate",
+              "BADR"
+            ]
+          },
+          {
+            "name": "layer-3-runtime-prompt",
+            "hints": [
+              "references/layer-3-runtime-prompt.md",
+              "goal sandwich",
+              "scope fence",
+              "eval",
+              "llm-as-judge"
+            ]
+          },
+          {
+            "name": "layer-4-infrastructure",
+            "hints": [
+              "references/layer-4-infrastructure.md",
+              "checkpointing",
+              "memory",
+              "HITL",
+              "decay dashboard"
+            ]
+          },
+          {
+            "name": "integration",
+            "hints": [
+              "references/integration.md",
+              "vocabulary",
+              "traceability",
+              "verbatim propagation",
+              "invariant"
+            ]
+          },
+          {
+            "name": "report",
+            "hints": [
+              "references/report-template.md",
+              "final report",
+              "verdict"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "id": "layer-1-value",
+            "path": "content/distilled/agent-value-alignment/references/layer-1-value.md",
+            "purpose": "layer-rubric",
+            "stage": "layer-1-value",
+            "optional": true,
+            "aliases": [
+              "references/layer-1-value.md",
+              "layer-1-value.md",
+              "layer 1"
+            ]
+          },
+          {
+            "id": "layer-2-governance",
+            "path": "content/distilled/agent-value-alignment/references/layer-2-governance.md",
+            "purpose": "layer-rubric",
+            "stage": "layer-2-governance",
+            "optional": true,
+            "aliases": [
+              "references/layer-2-governance.md",
+              "layer-2-governance.md",
+              "layer 2"
+            ]
+          },
+          {
+            "id": "layer-3-runtime-prompt",
+            "path": "content/distilled/agent-value-alignment/references/layer-3-runtime-prompt.md",
+            "purpose": "layer-rubric",
+            "stage": "layer-3-runtime-prompt",
+            "optional": true,
+            "aliases": [
+              "references/layer-3-runtime-prompt.md",
+              "layer-3-runtime-prompt.md",
+              "layer 3"
+            ]
+          },
+          {
+            "id": "layer-4-infrastructure",
+            "path": "content/distilled/agent-value-alignment/references/layer-4-infrastructure.md",
+            "purpose": "layer-rubric",
+            "stage": "layer-4-infrastructure",
+            "optional": true,
+            "aliases": [
+              "references/layer-4-infrastructure.md",
+              "layer-4-infrastructure.md",
+              "layer 4"
+            ]
+          },
+          {
+            "id": "integration",
+            "path": "content/distilled/agent-value-alignment/references/integration.md",
+            "purpose": "integration-check",
+            "stage": "integration",
+            "optional": true,
+            "aliases": [
+              "references/integration.md",
+              "integration.md",
+              "integration"
+            ]
+          },
+          {
+            "id": "report-template",
+            "path": "content/distilled/agent-value-alignment/references/report-template.md",
+            "purpose": "output-template",
+            "stage": "report",
+            "optional": false,
+            "aliases": [
+              "references/report-template.md",
+              "report-template.md",
+              "report template"
+            ]
+          },
+          {
+            "id": "examples",
+            "path": "content/distilled/agent-value-alignment/references/examples.md",
+            "purpose": "examples",
+            "stage": "report",
+            "optional": true,
+            "aliases": [
+              "references/examples.md",
+              "examples.md",
+              "examples"
+            ]
+          }
+        ]
+      }
+    },
     {
       "name": "specification-review",
       "type": "task",
@@ -3584,6 +3789,7 @@
     "reviews": {
       "description": "Code, design, and research review processes",
       "prompts": [
+        "agent-value-alignment",
         "code-review",
         "parallel-review",
         "optionality-review",

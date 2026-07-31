@@ -1,5 +1,28 @@
 ## [Unreleased]
 
+### 2026-07-31
+
+#### Added - Agent Value Alignment skill + research synthesis
+
+A new progressive-disclosure skill and its underlying research, covering the closed loop that anchors an AI agent's behavior to its intended value across four layers (Value, Governance, Runtime Prompt, Infrastructure).
+
+- **content/research-synthesis-agent-value-alignment.md** — Unified synthesis of three source reports (value delivery verification, agentic alignment/checkpointing, prompt engineering frameworks) into a single layered framework. The governing invariant: every governance decision → prompt clause → eval test → governance review.
+- **content/research-{value-delivery-verification,agentic-alignment,prompt-frameworks}.md** — Moved the three source research reports in from the repo root, gave them proper `research-*` slugs, and added required frontmatter envelopes (without altering research content).
+- **content/prompt-task-agent-value-alignment.md** — Source prompt with When-to-use / Do-NOT-use / Core Idea / Modes / Procedure / Rules.
+- **content/distilled/agent-value-alignment/** — Progressive-disclosure skill: `SKILL.md` (AUDIT/ESTABLISH modes, 6-step procedure) plus 7 references (`layer-1-value`, `layer-2-governance`, `layer-3-runtime-prompt`, `layer-4-infrastructure`, `integration`, `report-template`, optional `examples`). Includes a severity rubric, multi-agent checks, and a worked example.
+- **content/manifest.json** — Registered the new skill (`skill_format: progressive-disclosure`) with full eval block (success/failure signals, 7 stages, 7 references), added to the `reviews` bundle.
+
+Tool: claude-code (pi)
+Model: claude-sonnet-4.5
+Status: draft
+Context: Synthesized three external research reports into a unified framework, then distilled into a progressive-disclosure skill reviewed twice with the rule-of-5-universal skill.
+
+### 2026-07-29 (3)
+
+#### Fixed - Flat-Skill Re-sync on Version Bump
+
+- **scripts/generate-pi-resources.mjs** — Added `reSyncFlatInstallSkills()` that detects existing incitaciones flat-install directories (`~/.agents/skills/`, `~/.config/agents/skills/`, `.agents/skills/`) and re-syncs them with the latest distilled content and `installed-version: npm:X.Y.Z` stamp. Previously only the pi-package was regenerated (read by pi in-place); flat-install locations used by install.sh/npx CLI went stale on version bumps.
+
 ### 2026-07-29 (2)
 
 #### Fixed - Documentation Skill Review Findings
