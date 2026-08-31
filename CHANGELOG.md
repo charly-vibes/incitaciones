@@ -1,5 +1,20 @@
 ## [Unreleased]
 
+### 2026-08-28
+
+#### Added - Codebase Cartography skill + architecture visualization research
+
+A new progressive-disclosure skill for navigating and understanding codebases, operationalizing the hierarchical visual framework (semantic zooming + anti-pattern signatures) as text-based maps agents can produce.
+
+- **content/research-paper-codebase-architecture-visualization.md** — Synthesis of software visualization literature into a multi-scale framework: paradigm-scale fit matrix (node-link/DSM/spatial/treemap/flow), semantic zooming with transition contracts, an OOP+FP anti-pattern signature catalog, and a five-stage extraction pipeline. Reviewed via rule-of-5-universal (v1.0.1); unverifiable rendering thresholds from corrupted source formula images explicitly hedged.
+- **content/prompt-task-codebase-cartography.md** — Source prompt: three zoom levels (macro/meso/micro), zoom discipline rules, optional health check, text renderings (tables, DSM matrices, Mermaid, call chains).
+- **content/distilled/codebase-cartography/** — Progressive-disclosure skill: `SKILL.md` (cartographer-not-critic role, entry-level selection, reference loading protocol) plus 3 references (`zoom-levels.md` — per-level evidence collection and rendering formats; `smell-signatures.md` — anti-pattern proxies with agent-computable grep/count checks and severity ratings; `report-template.md` — per-mode output structure). Distinct from `research-codebase` (documentarian): cartography maps structure and topology, it does not write prose documentation.
+- **content/manifest.json** — Registered the skill (`skill_format: progressive-disclosure`) with full eval block (6 success / 5 failure signals, 5 stages, 3 references), added to the `essentials` bundle; version bumped to 2026-08-28.
+
+Tool: pi
+Status: draft
+Context: Derived from a downloaded research document on visualizing codebase architecture; skill validated with `just validate-distilled` and `just sync-manifest`.
+
 ### 2026-07-31
 
 #### Added - Agent Value Alignment skill + research synthesis

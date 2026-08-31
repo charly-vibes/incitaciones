@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-31",
+  "version": "2026-08-29",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -3752,6 +3752,137 @@
               "forecast",
               "next commitments",
               "agentic AI evidence"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "codebase-cartography",
+      "type": "task",
+      "title": "Codebase Cartography",
+      "description": "Navigate and understand a codebase by mapping its structure as text-based architecture diagrams at three zoom levels (macro/meso/micro), with optional structural-health triage using anti-pattern signatures",
+      "source": "content/prompt-task-codebase-cartography.md",
+      "distilled": "content/distilled/codebase-cartography/SKILL.md",
+      "skill_format": "progressive-disclosure",
+      "tags": [
+        "architecture",
+        "navigation",
+        "visualization",
+        "codebase",
+        "dependency-analysis",
+        "diagnostician"
+      ],
+      "bundles": [
+        "essentials"
+      ],
+      "eval": {
+        "task_types": [
+          "research",
+          "architecture",
+          "navigation"
+        ],
+        "success_signals": [
+          "entry_zoom_level_stated_explicitly",
+          "file_references_present_for_claims",
+          "dependency_directions_stated",
+          "maps_rendered_as_tables_or_mermaid",
+          "inference_labeled_as_inference",
+          "structural_observations_separated_from_advice"
+        ],
+        "failure_signals": [
+          "all_three_levels_dumped_without_request",
+          "refactor_advice_without_diagnostic_request",
+          "dependency_relations_without_direction",
+          "structure_assumed_without_search_evidence",
+          "findings_without_file_references"
+        ],
+        "stages": [
+          {
+            "name": "scope",
+            "hints": [
+              "target",
+              "zoom level",
+              "clarify",
+              "entry level"
+            ]
+          },
+          {
+            "name": "collect",
+            "hints": [
+              "references/zoom-levels.md",
+              "imports",
+              "entry points",
+              "search evidence"
+            ]
+          },
+          {
+            "name": "render",
+            "hints": [
+              "references/zoom-levels.md",
+              "matrix",
+              "mermaid",
+              "call chain",
+              "tables"
+            ]
+          },
+          {
+            "name": "health-check",
+            "hints": [
+              "references/smell-signatures.md",
+              "cycles",
+              "god object",
+              "fan-out",
+              "severity"
+            ]
+          },
+          {
+            "name": "report",
+            "hints": [
+              "references/report-template.md",
+              "key relationships",
+              "observations",
+              "open questions"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "id": "zoom-levels",
+            "path": "content/distilled/codebase-cartography/references/zoom-levels.md",
+            "purpose": "collection-and-rendering-guide",
+            "stage": "collect",
+            "optional": false,
+            "aliases": [
+              "references/zoom-levels.md",
+              "zoom-levels.md",
+              "zoom levels",
+              "levels"
+            ]
+          },
+          {
+            "id": "smell-signatures",
+            "path": "content/distilled/codebase-cartography/references/smell-signatures.md",
+            "purpose": "diagnostic-rubric",
+            "stage": "health-check",
+            "optional": true,
+            "aliases": [
+              "references/smell-signatures.md",
+              "smell-signatures.md",
+              "smells",
+              "health check"
+            ]
+          },
+          {
+            "id": "report-template",
+            "path": "content/distilled/codebase-cartography/references/report-template.md",
+            "purpose": "output-template",
+            "stage": "report",
+            "optional": false,
+            "aliases": [
+              "references/report-template.md",
+              "report-template.md",
+              "report template"
             ]
           }
         ]
