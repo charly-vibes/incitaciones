@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+#### Updated - Codebase Cartography: batch export + guidance fixes from session evidence
+
+Rule-of-5 review of proposals derived from a real batch session (wai: 12 reports, pandoc script drift, orphaned pages, stale counts):
+
+- **content/distilled/codebase-cartography/references/report-template.md** — New **Batch export** section: enumerate-and-confirm (>3 targets or ambiguous), one markdown per target as artifact of record, health check only when requested, oversize targets skipped and marked "offered" in the index, superseded-artifact cleanup. New **Handoff** section: point the user at `docs/cartography/index.html` via `file://`, never start a server unasked. New invariant: **write HTML directly** — no render scripts/build pipelines/dependencies; regeneration is re-running the skill (rationale in the decision record).
+- **content/distilled/codebase-cartography/SKILL.md** — Zoom Discipline: batch-request carve-out for the offer-don't-dump rule; re-verify counts/fan-in numbers against a fresh command run before writing each report.
+- **content/prompt-task-codebase-cartography.md** (v1.3.0) — Version history entry.
+
 #### Updated - Codebase Cartography: HTML export usability rework
 
 Rule-of-5 review of the HTML export spec; all findings applied:
