@@ -2,15 +2,26 @@
 
 ## Installing Skills
 
-To install incitaciones prompts as Claude Code skills, run `./install.sh` from the repo root.
+### Via npm / npx (recommended)
+
+```bash
+# Install as a pi package (native skills, best UX):
+pi install npm:incitaciones
+
+# Or install across all tools (pi, Claude Code, Amp, Gemini CLI, etc.):
+npx incitaciones install
+
+# Install only the essentials bundle:
+npx incitaciones install --bundle essentials
+```
+
+### From git (install.sh)
 
 ```bash
 ./install.sh --global              # Install all skills globally
 ./install.sh --global --bundle essentials  # Just the core set
 ./install.sh --help                # All options
 ```
-
-Do NOT manually extract prompts or write custom install scripts. Always use `install.sh`.
 
 ## Essential Reading
 
