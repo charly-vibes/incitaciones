@@ -35,7 +35,8 @@ Pick the entry level from the request:
 
 ## Zoom Discipline
 
-- Offer adjacent levels as follow-ups; never dump all three maps unrequested.
+- Offer adjacent levels as follow-ups; never dump all three maps unrequested. An explicit batch request ("all reports", "map every module") is a user request — the offer-don't-dump rule applies to unprompted follow-ups only (batch procedure in `references/report-template.md`, "Batch export" section).
+- Re-verify every embedded count and fan-in/fan-out number against a fresh command run immediately before writing each report (one consolidated pass per batch is fine) — counts gathered early in a long session drift.
 - Every claim carries a file reference (`path`, or `path:line` for specific symbols).
 - State dependency direction explicitly (A → B); never "related to".
 - Distinguish observed evidence from inference; label inference explicitly.
