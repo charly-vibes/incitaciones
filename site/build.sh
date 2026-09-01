@@ -117,7 +117,8 @@ cat > "$LLMS" <<'HEADER'
 
 > A curated library of reusable prompts and skills for CLI LLM tools
 > (Claude Code, Amp, Gemini CLI, Cursor, Windsurf, Zed). Install all
-> skills with `./install.sh --global` or browse individual prompts below.
+> skills with `pi install npm:incitaciones` (pi), `npx incitaciones install`
+> (all tools), or `./install.sh --global` (from a git clone).
 > Each prompt has a full version (documented, with examples) and a
 > distilled version (token-optimized, for direct use).
 
@@ -331,8 +332,11 @@ cat > "$INDEX" <<'HTML_HEAD'
 <body>
 <h1>Incitaciones</h1>
 <p class="subtitle">Reusable prompts and skills for CLI LLM tools</p>
-<p>Install all skills: <code>./install.sh --global</code>
-&nbsp;|&nbsp; <a href="llms.txt">llms.txt</a>
+<p><strong>Install:</strong> <code>pi install npm:incitaciones</code> (pi)
+&nbsp;|&nbsp; <code>npx incitaciones install</code> (all tools)
+&nbsp;|&nbsp; <code>./install.sh --global</code> (from git)
+</p>
+<p><a href="llms.txt">llms.txt</a>
 &nbsp;|&nbsp; <a href="llms-full.txt">llms-full.txt</a>
 &nbsp;|&nbsp; <a href="manifest.json">manifest.json</a></p>
 HTML_HEAD
