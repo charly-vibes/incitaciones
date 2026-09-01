@@ -5,8 +5,8 @@ tags: [architecture, visualization, navigation, dependency-analysis, code-smells
 tools: [claude-code, pi, cursor, aider, gemini]
 status: draft
 created: 2026-08-28
-updated: 2026-09-01
-version: 1.1.0
+updated: 2026-09-02
+version: 1.2.0
 related: [prompt-task-research-codebase.md, research-paper-codebase-architecture-visualization.md]
 source: research-based
 ---
@@ -119,7 +119,7 @@ Macro + meso maps of [domain], rendered as Mermaid, saved as docs/architecture.m
 
 **For a shareable snapshot:**
 ```
-Meso map of [module], plus a single self-contained HTML export for sharing. The markdown report stays the source of truth.
+Meso map of [module], plus an HTML export to docs/cartography/ (index page, cross-navigation, vendored Mermaid rendering). The markdown report stays the source of truth.
 ```
 
 ## References
@@ -135,5 +135,6 @@ Meso map of [module], plus a single self-contained HTML export for sharing. The 
 
 ## Version History
 
+- 1.2.0 (2026-09-02): Reworked HTML export — standard output directory `docs/cartography/`, generated index.html listing HTML + markdown reports, per-page cross-navigation, Mermaid rendered via vendored local v9.4.3 IIFE asset with `<pre>` source fallback (replaces single-file/JS-free export)
 - 1.1.0 (2026-09-01): Added optional single-file HTML export (static, self-contained, JS-free; markdown remains the source of truth)
 - 1.0.0 (2026-08-28): Initial version, derived from research-paper-codebase-architecture-visualization.md
