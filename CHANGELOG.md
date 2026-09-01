@@ -1,5 +1,33 @@
 ## [Unreleased]
 
+### 2026-09-01
+
+#### Added - Agentic Ticket Requirements Engineering research
+
+Research synthesis on structuring software tickets as executable, machine-verifiable specifications for autonomous coding agents (Verifiable Value Claims: Planguage quantification, Design by Contract invariants, anti-goals, dual-test verification harnesses).
+
+- **content/research-paper-agentic-ticket-requirements-engineering.md** — Reviewed via rule-of-5-universal; reference-target validity verified against the filesystem, `source: synthesis` per template convention.
+
+#### Updated - Verifiable Value Claims in issue skills
+
+Operationalized the research into the issue-creation and issue-review skills:
+
+- **content/prompt-task-create-issues.md** (+ distilled `create-issues` v1.3.0) — Issue template gains a **Verifiable Value Claim** block (quantified Must gate, runnable Meter command, measured Baseline, named regression suite) and **Anti-goals** (prohibit test edits, dependency additions, API breaks). Rules: quantify the gate, name the cheats, anchor staleness.
+- **content/distilled/issue-review/** — Pass 0 gains **PRE-003/PRE-004 staleness checks**: tickets carry `base_commit` (HEAD SHA at creation) in beads metadata; reviewers diff `base_commit..HEAD` against `metadata.files` (touched files ⇒ HIGH, untouched ⇒ re-anchor). Pass 5 gains verifiability watch-fors (missing Meter, unquantified Must, missing anti-goals, unnamed regression suite).
+- **content/manifest.json** — Version date synced to 2026-09-01.
+- **content/prompt-task-issue-tracker-review.md** — Sync of the 804-line source prompt tracked as [incitaciones-0tf], filed with the new `base_commit` metadata convention (dog-fooded).
+
+#### Fixed - Housekeeping
+
+- **justfile `check-links`** — Rewrote the broken-link checker: the old bash `sed`-range parser mis-handled flow-style `related: [a.md, b.md]` fields and swallowed file bodies as link targets, producing 88 false positives. New frontmatter-aware parser supports both flow and block styles, resolves repo-root docs (e.g. AGENTS.md), and reports only genuine breakage (3 found and fixed: redundant `content/` prefix, stale `prompt-task-data-analysis.md` reference).
+
+- Added missing `related` fields to 6 files flagged by `just validate` (session-workflow prompts + whisper reference); validation now runs with zero warnings.
+- `.gitignore` — build artifacts (`content/compiled/`) and local working files are now untracked by design.
+
+Tool: pi
+Status: tested
+Context: Derived from a downloaded research document; metadata merge semantics verified empirically on beads; all gates green (`just validate`, `just validate-distilled`, `just sync-manifest`).
+
 ### 2026-08-28
 
 #### Added - Codebase Cartography skill + architecture visualization research
