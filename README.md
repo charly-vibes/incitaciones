@@ -39,13 +39,10 @@ cd incitaciones
 **Install options:**
 
 ```bash
-./install.sh --bundle essentials    # Core prompts only
-./install.sh --bundle planning      # Planning workflows
-./install.sh --bundle reviews       # Review prompts
-./install.sh --bundle documentation # Documentation tools
+./install.sh --bundle essentials    # Core prompts only (see all 8 bundles: --list)
+./install.sh --list                 # Show available prompts and bundles
 ./install.sh --format commands      # Legacy flat-file format for other tools
 ./install.sh --disable-model-invocation # Require explicit /skill:name usage
-./install.sh --list                 # Show available prompts
 ./install.sh --help                 # Show all options
 ```
 
@@ -83,12 +80,12 @@ pi install git:github.com/charly-vibes/incitaciones
 pi install .
 ```
 
-The repository includes checked-in pi package resources under `pi-package/`, and the generation step can refresh them when content changes:
+The npm package ships generated pi package resources under `pi-package/`. The directory is **gitignored, not checked in** — CI regenerates it during npm publish (`npm-publish.yml` runs `scripts/generate-pi-resources.mjs` before `npm publish`), so there is nothing to commit. Locally, the pre-push hook runs `just validate-pi-package`, which regenerates and verifies the resources match the manifest:
 
 - `pi-package/skills/` — Agent Skills with pi-compatible frontmatter
 - `pi-package/prompts/` — prompt templates for slash-command shortcuts
 
-After changing distilled content or manifest entries, run `just generate-pi-resources` and commit the updated `pi-package/` files.
+After changing distilled content or manifest entries, you don't need to touch `pi-package/` — it is regenerated and validated automatically (CI on publish, pre-push hook locally). To preview the generated resources manually, run `just generate-pi-resources`.
 
 ### Publishing a new version
 
