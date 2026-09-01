@@ -93,8 +93,8 @@ After changing distilled content or manifest entries, run `just generate-pi-reso
 ### Publishing a new version
 
 ```bash
-npm version patch   # bumps to 0.2.1, creates a git tag
-npm version minor   # bumps to 0.3.0
+npm version patch   # bumps to 0.5.1, creates a git tag
+npm version minor   # bumps to 0.6.0
 npm version major   # bumps to 1.0.0
 
 git push --tags     # triggers CI → auto-publishes to npm
