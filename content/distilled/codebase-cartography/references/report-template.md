@@ -62,14 +62,48 @@ One finding block per pattern (format in `smell-signatures.md`), ordered by seve
 
 ## Optional HTML Export
 
-Produce only on request ("export as HTML", "shareable report"). The markdown report is the source of truth; the HTML file is a derived, regenerable view — never hand-edit it, regenerate it from the markdown.
+Produce only on request ("export as HTML", "shareable report"). The markdown report is the source of truth; the HTML files are a derived, regenerable view — never hand-edit them, regenerate them from the markdown.
 
-Produce ONE self-contained file, `cartography-<level>-<target>.html` (e.g. `cartography-meso-payments-billing.html`; slugify the target with hyphens), next to the markdown report — or, if no report file was written this session, ask the user where to save it (default `docs/`). The zoom level in the name prevents exports of different levels overwriting each other.
+The export is a **self-contained directory**: all pages plus shared assets under one folder, opening correctly via `file://`, offline, with no server, CDN at view time, or build step. JavaScript is permitted only as a local vendored asset (see Diagrams).
 
-- **Self-contained:** one inline `<style>` block. No CDN, no external CSS/JS/fonts, no build step, no server. Must open correctly offline.
-- **No JavaScript:** diagrams render as styled `<pre>` blocks (text diagrams) or inline SVG producible without new dependencies. Keep the Mermaid source in the file (e.g. `<pre class="mermaid-source">`) so the diagram stays manipulable.
+### Output directory
+
+- All exports live in `docs/cartography/` (create directories as needed). If `docs/` does not already exist in the repo, confirm once with the user before creating it.
+- Pages reference assets with relative paths (`assets/...`), never absolute or remote URLs.
+
+### Files
+
+- One page per report: `cartography-<level>-<target>.html` (e.g. `cartography-meso-payments-billing.html`; slugify the target with hyphens, no dots or spaces). The zoom level in the name prevents exports of different levels overwriting each other. Re-exporting the same level+target overwrites the previous file — intended; there is no history.
+- `index.html` — regenerated on every export; never hand-maintained.
+- `assets/mermaid.min.js` — vendored Mermaid v9.4.3 IIFE build, shared by all pages.
+
+### Index
+
+Regenerate `index.html` on every export from what is on disk plus what is known this session:
+
+- Scan `docs/cartography/*.html` (excluding `index.html`), group entries by zoom level (macro / meso / micro / health), sorted alphabetically.
+- Each entry links to the page and shows its target plus a one-line scope taken from the report header.
+- Also list markdown reports known to this session (the artifact of record), linked with a repo-relative path from the HTML location. Do not invent paths for reports you cannot locate.
+- The template must handle N=1 (a single entry) without looking broken.
+- Deterministic: sorted, no timestamps, no generator metadata.
+
+### Navigation
+
+- Every page (including `index.html`) has a plain nav header: `← Index` plus links to parent-context and adjacent-level pages when they exist (meso → its macro page; micro → its macro/meso parent). Relative links only.
+- Static links only — no interactivity. Do not evolve the export into an application — no servers, frameworks, or interactive controls. If live interaction is requested, note it is out of scope for this skill.
+
+### Diagrams
+
+- Render Mermaid client-side with the vendored local asset: `<script src="assets/mermaid.min.js"></script>` plus `<pre class="mermaid">` blocks. Use only the v9.x IIFE build (global `mermaid`); v10+ is ESM-only and is blocked by CORS under `file://`.
+- Asset acquisition: on the first export, download `mermaid.min.js` v9.4.3 into `assets/` if absent (e.g. from jsDelivr); reuse thereafter. If the download fails (offline machine), still emit all pages — diagrams degrade to their source in a styled `<pre>` and the report footer notes "diagrams show source; rerun the export with network access to enable rendering". Never fail the whole export because of assets.
+- Every diagram keeps its Mermaid source in `<details><pre class="mermaid-source">` as the no-JS fallback, so nothing is ever blank.
+- Prose stays pre-rendered HTML — do not client-render markdown. The markdown report remains the artifact of record.
+
+### Invariants
+
 - **Mirror, don't redesign:** same sections, same order, same content as the markdown report. The HTML adds presentation only (readable typography; `prefers-color-scheme` support optional).
 - **Deterministic:** stable section order, no timestamps, no generator metadata.
 - **Size guard:** render large reports as-is; never paginate, collapse, or add interactivity.
+- **Commit-able:** reports and `assets/` are self-contained and offline-safe; suggest committing them, never silently gitignore.
 
-Do not evolve the export into an application — no servers, frameworks, or interactive controls. If live interaction is requested, note it is out of scope for this skill.
+Decision record: diagrams use a vendored local Mermaid v9.4.3 IIFE; prose is pre-rendered. Rationale: offline rendering, `file://` compatibility, no ESM/CORS issues.
