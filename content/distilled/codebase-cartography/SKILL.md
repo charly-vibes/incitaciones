@@ -48,4 +48,4 @@ Pick the entry level from the request:
 - Prefer structural facts over narrative: dependency direction, counts, boundaries.
 - Health-check findings follow the evidence format in `references/smell-signatures.md` (pattern, evidence, quantity, severity) — never unanchored opinions.
 - Maps are diff-able artifacts: tables and Mermaid, not prose walls.
-- HTML export is derived output, produced only on request; the markdown report remains the artifact of record.
+- HTML export is derived output, produced only on request; the markdown report remains the artifact of record. Exports live in `docs/cartography/` as a self-contained directory (index + shared assets); see the "Optional HTML Export" section of `references/report-template.md`.
