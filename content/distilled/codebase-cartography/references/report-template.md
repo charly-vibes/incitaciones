@@ -64,7 +64,7 @@ One finding block per pattern (format in `smell-signatures.md`), ordered by seve
 
 Produce only on request ("export as HTML", "shareable report"). The markdown report is the source of truth; the HTML file is a derived, regenerable view — never hand-edit it, regenerate it from the markdown.
 
-Produce ONE self-contained file, `cartography-<target>.html`, next to the markdown report:
+Produce ONE self-contained file, `cartography-<level>-<target>.html` (e.g. `cartography-meso-payments-billing.html`; slugify the target with hyphens), next to the markdown report — or, if no report file was written this session, ask the user where to save it (default `docs/`). The zoom level in the name prevents exports of different levels overwriting each other.
 
 - **Self-contained:** one inline `<style>` block. No CDN, no external CSS/JS/fonts, no build step, no server. Must open correctly offline.
 - **No JavaScript:** diagrams render as styled `<pre>` blocks (text diagrams) or inline SVG producible without new dependencies. Keep the Mermaid source in the file (e.g. `<pre class="mermaid-source">`) so the diagram stays manipulable.
