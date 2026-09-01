@@ -8,7 +8,7 @@ status: draft
 created: 2026-05-07
 updated: 2026-05-07
 version: 1.0.0
-related: [content/research-llm-slop.md]
+related: [research-llm-slop.md]
 source: content/research-llm-slop.md
 ---
 

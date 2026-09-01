@@ -7,6 +7,7 @@ status: draft
 created: 2026-07-27
 updated: 2026-07-27
 version: 1.0.0
+related: [prompt-workflow-park.md, prompt-workflow-next.md]
 ---
 
 # Renew Session

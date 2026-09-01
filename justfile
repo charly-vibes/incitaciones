@@ -345,38 +345,52 @@ mark-verified FILE:
 
 # Check for broken links in related fields
 check-links:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "Checking for broken links..."
-    echo ""
+    #!/usr/bin/env python3
+    import os, re, sys
 
-    BROKEN=0
+    print("Checking for broken links...")
+    print("")
 
-    for file in content/*.md; do
-        # Skip templates
-        if [[ "$file" == *"template-"* ]]; then
+    broken = 0
+
+    for name in sorted(os.listdir("content")):
+        path = os.path.join("content", name)
+        if not name.endswith(".md") or not os.path.isfile(path):
             continue
-        fi
+        if "template-" in name:
+            continue
+        text = open(path, encoding="utf-8").read()
+        m = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+        if not m:
+            continue
+        fm = m.group(1)
+        fm_rel = re.search(r"^related:\s*(.+)$", fm, re.MULTILINE)
+        if not fm_rel:
+            continue
+        value = fm_rel.group(1).strip()
+        if value.startswith("["):  # flow style: [a.md, b.md]
+            entries = [e.strip() for e in value.strip("[]").split(",")]
+        else:  # block style: subsequent "- item" lines
+            block = fm[fm_rel.end():]
+            entries = []
+            for line in block.split("\n"):
+                bm = re.match(r"^\s*-\s+(.+)$", line)
+                if not bm:
+                    break
+                entries.append(bm.group(1).strip())
+        for entry in entries:
+            entry = entry.strip("\"'")
+            if entry and not os.path.isfile(os.path.join("content", entry)) \
+                    and not os.path.isfile(entry):  # repo-root docs (e.g. AGENTS.md)
+                print(f"❌ {name} → {entry} (not found)")
+                broken += 1
 
-        BASENAME=$(basename "$file")
-
-        # Extract and check related files
-        RELATED=$(sed -n '/^related:/,/^[a-z]/p' "$file" | grep -E '^\s*-' | sed 's/^\s*-\s*//' || true)
-        while IFS= read -r related_file; do
-            if [ -n "$related_file" ] && [ ! -f "content/$related_file" ]; then
-                echo "❌ $BASENAME → $related_file (not found)"
-                BROKEN=$((BROKEN + 1))
-            fi
-        done <<< "$RELATED"
-    done
-
-    if [ $BROKEN -eq 0 ]; then
-        echo "✅ No broken links!"
-    else
-        echo ""
-        echo "Found $BROKEN broken link(s)"
-        exit 1
-    fi
+    print("")
+    if broken == 0:
+        print("✅ No broken links!")
+    else:
+        print(f"Found {broken} broken link(s)")
+        sys.exit(1)
 
 # Clean up: remove files marked for deletion
 clean:

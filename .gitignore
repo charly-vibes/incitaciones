@@ -1,5 +1,15 @@
 _site/
 
+# Build artifacts
+content/compiled/
+
+# Local working files (untracked by design)
+Codebase Housekeeping and Cross-Disciplinary Insights.md
+anti-slop.skill
+housekeeping-local.md
+other-skills/
+reviews/
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db

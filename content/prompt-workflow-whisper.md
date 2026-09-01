@@ -7,6 +7,7 @@ status: draft
 created: 2026-07-27
 updated: 2026-07-27
 version: 1.0.0
+related: [references-whisper-workflow.md]
 ---
 
 # Whisper — Accumulated Operational Knowledge

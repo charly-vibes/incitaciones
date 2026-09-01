@@ -8,7 +8,7 @@ status: verified
 created: 2026-07-27
 updated: 2026-07-27
 version: 1.0.0
-related: [prompt-task-data-analysis.md]
+related: [research-finding-skill-progressive-disclosure.md]
 source: pi-session-traces
 ---
 

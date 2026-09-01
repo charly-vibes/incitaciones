@@ -7,6 +7,7 @@ status: draft
 created: 2026-07-27
 updated: 2026-07-27
 version: 1.0.0
+related: [prompt-workflow-next.md, prompt-workflow-park.md, references-whisper-workflow.md]
 ---
 
 # Close Session
