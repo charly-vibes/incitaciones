@@ -1,3 +1,14 @@
+## [Unreleased]
+
+#### Updated - Whisper: canonical repo keys + consolidate mode
+
+`~/.whisper/repos/` had accumulated duplicate trees per repo (bare name `genesis/`, owner dir `charly-vibes/`, alias host `cv:charly-vibes/`, full URL) because the skill never defined how the repo key is derived. Fixed at the root:
+
+- **content/distilled/whisper/SKILL.md** — New **canonical repo key rule**: `host/owner/repo` derived from `git remote get-url origin` (strip scheme/`git@`, colons → slashes, `.git` stripped); `local/<repo-name>` fallback. New **one repo, one key** routing rule. New `/w consolidate` mode.
+- **content/distilled/whisper/references/*.md** — All five modes (init, check, status, link, decommission) now use the canonical derivation; the old sed chain left ssh-alias colons and flat paths in place, which seeded the duplication.
+- **content/distilled/whisper/references/consolidate.md** (new) — Migration procedure: scan non-canonical keys, derive targets from real remotes (never guess), produce an approval-gated migration table, append-merge with provenance headings, never overwrite or delete.
+- **content/prompt-workflow-whisper.md** (v1.1.0) — Synced with consolidate mode + canonical key summary.
+
 ## [0.6.0] - 2026-09-01
 
 #### Updated - Codebase Cartography: optional static HTML export

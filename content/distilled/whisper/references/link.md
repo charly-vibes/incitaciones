@@ -10,7 +10,8 @@ This mode is self-contained — it does NOT require `create-plan` to have been u
 
 2. Get repo URL and branch slug:
    ```bash
-   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
+   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|http://||;s|ssh://||;s|git@||;s|:|/|g;s|\.git$||')
+   [ -z "$repo_url" ] && repo_url="local/$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
    branch=$(git rev-parse --abbrev-ref HEAD)
    branch_slug=$(echo "$branch" | sed 's|/|--|g')
    branch_dir=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"

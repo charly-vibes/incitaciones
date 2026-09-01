@@ -20,7 +20,8 @@ Create `~/.whisper/` and the current workspace slot.
 
 3. Compute the repo path and branch slug:
    ```bash
-   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
+   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|http://||;s|ssh://||;s|git@||;s|:|/|g;s|\.git$||')
+   [ -z "$repo_url" ] && repo_url="local/$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
    branch=$(git rev-parse --abbrev-ref HEAD)
    branch_slug=$(echo "$branch" | sed 's|/|--|g')
    ```

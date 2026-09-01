@@ -32,6 +32,17 @@ Manage `~/.whisper/` — a global, tiered knowledge directory that accumulates o
 
 **Worktree slot rule:** `basename $(git rev-parse --git-common-dir 2>/dev/null)` (the `.git` worktree dir name), or `basename $(pwd)` when not in a worktree.
 
+**Canonical repo key rule — derive it, never invent it:**
+
+```bash
+repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|http://||;s|ssh://||;s|git@||;s|:|/|g;s|\.git$||')
+[ -z "$repo_url" ] && repo_url="local/$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
+```
+
+`git@cv:org/repo.git` → `cv/org/repo`; `https://github.com/u/r` → `github.com/u/r`; no remote → `local/<repo-name>`. Colons always become slashes (keeps keys path-safe). The same key must come out of the same repo on every machine.
+
+If a directory keyed some other way already exists for this repo (bare name like `genesis/`, owner-only like `charly-vibes/`, alias host with a colon like `cv:charly-vibes/`), do **not** add a fourth variant — route new knowledge into the canonical key and offer `/w consolidate` to migrate the legacy one.
+
 ## Knowledge Routing
 
 When a session learns something worth keeping, route it by scope:
@@ -47,6 +58,7 @@ When a session learns something worth keeping, route it by scope:
 **Rules:**
 - **No secrets anywhere.** Never write tokens, keys, passwords, or PII into `~/.whisper/`.
 - **Extend, don't duplicate.** Append to or correct an existing note rather than creating a new one that says the same thing.
+- **One repo, one key.** If more than one `repos/` directory belongs to the same repo, write into the canonical key and propose `/w consolidate` — never create a new variant.
 - **Search first.** Before creating a new entry, check if one already exists for the same topic.
 - If `bd` is not available, everything falls back to `~/.whisper/` files — there's no beads-backed alternative.
 
@@ -61,6 +73,7 @@ Determine mode from how the skill is triggered:
 | `/w check` or called by `renew` | **check** |
 | `/w link [<path>]` or "link plan" | **link** |
 | `/w decommission` | **decommission** |
+| `/w consolidate` or "dedupe whisper repos" | **consolidate** |
 
 See each reference file for the full procedure:
 
@@ -69,6 +82,7 @@ See each reference file for the full procedure:
 - `references/status.md`
 - `references/link.md`
 - `references/decommission.md`
+- `references/consolidate.md`
 
 ## Rules
 

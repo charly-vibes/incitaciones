@@ -6,7 +6,8 @@ Show the state of the current workspace.
 
 1. Get repo URL and branch slug:
    ```bash
-   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
+   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|http://||;s|ssh://||;s|git@||;s|:|/|g;s|\.git$||')
+   [ -z "$repo_url" ] && repo_url="local/$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
    branch=$(git rev-parse --abbrev-ref HEAD)
    branch_slug=$(echo "$branch" | sed 's|/|--|g')
    context_path=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"/context.md
