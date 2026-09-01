@@ -60,6 +60,17 @@ One finding block per pattern (format in `smell-signatures.md`), ordered by seve
 
 **Adjacent levels offered** — one line each, e.g. "meso map of ledger available on request".
 
+## Batch export
+
+An explicit batch request ("generate all the reports", "map every module") is a user request — Zoom Discipline's offer-don't-dump rule applies to unprompted follow-ups only.
+
+- Enumerate targets from the module inventory. Confirm the list once when it exceeds 3 targets or the scope is ambiguous; proceed unless corrected.
+- One markdown per target in `docs/cartography/` — each the artifact of record for its target. For each, re-verify counts immediately before writing (Zoom Discipline).
+- Include a health report only if the batch request names health/smells.
+- A target too large for one pass: skip it, list it in `index.html` as "offered — too large for one pass", and mention it in the final summary. Do not stop the batch to ask.
+- Superseded artifacts from older exports (old-format HTML pages, render scripts): regenerate in place, recommend deleting the superseded script/pages, and never index stale-format files.
+- HTML pages and `index.html` follow the Optional HTML Export section (regenerate the index once at the end, covering all reports).
+
 ## Optional HTML Export
 
 Produce only on request ("export as HTML", "shareable report"). The markdown report is the source of truth; the HTML files are a derived, regenerable view — never hand-edit them, regenerate them from the markdown.
@@ -99,11 +110,17 @@ Regenerate `index.html` on every export from what is on disk plus what is known 
 - Every diagram keeps its Mermaid source in `<details><pre class="mermaid-source">` as the no-JS fallback, so nothing is ever blank.
 - Prose stays pre-rendered HTML — do not client-render markdown. The markdown report remains the artifact of record.
 
+### Handoff
+
+- Final step of any export (including the first): tell the user to open `docs/cartography/index.html` directly in a browser — `file://` works with no server; diagram rendering is guaranteed by the Diagrams section.
+- Never start a server for static reports unless the user explicitly asks.
+
 ### Invariants
 
+- **Write HTML directly:** no render scripts, build pipelines, or new dependencies (pandoc etc.) — even in batch mode. The regeneration path is re-running this skill, not a committed pipeline; exception only on explicit user request (note the dependency caveat in the reply).
 - **Mirror, don't redesign:** same sections, same order, same content as the markdown report. The HTML adds presentation only (readable typography; `prefers-color-scheme` support optional).
 - **Deterministic:** stable section order, no timestamps, no generator metadata.
 - **Size guard:** render large reports as-is; never paginate, collapse, or add interactivity.
 - **Commit-able:** reports and `assets/` are self-contained and offline-safe; suggest committing them, never silently gitignore.
 
-Decision record: diagrams use a vendored local Mermaid v9.4.3 IIFE; prose is pre-rendered. Rationale: offline rendering, `file://` compatibility, no ESM/CORS issues.
+Decision record: diagrams use a vendored local Mermaid v9.4.3 IIFE; prose is pre-rendered. Rationale: offline rendering, `file://` compatibility, no ESM/CORS issues. Render scripts and build pipelines are banned because agent-regeneration keeps the navigation/diagram/index guarantees that build scripts historically dropped (wai cartography batch, 2026-09-01: a pandoc pipeline produced 12 pages with zero cross-links and unrendered diagrams).
