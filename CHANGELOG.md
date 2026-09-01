@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+#### Updated - Codebase Cartography: HTML export usability rework
+
+Rule-of-5 review of the HTML export spec; all findings applied:
+
+- **content/distilled/codebase-cartography/references/report-template.md** — "Optional HTML Export" rewritten: standard output directory `docs/cartography/` (self-contained *directory*, not single file); generated `index.html` regenerated each export, grouping HTML pages by zoom level and also listing markdown reports known to the session; per-page nav header with `← Index` + parent/adjacent-level links; Mermaid rendered via a vendored local **Mermaid v9.4.3 IIFE** asset (`assets/mermaid.min.js`, v10+ is ESM-only and breaks under `file://` CORS) with `<details><pre>` source fallback; graceful no-network degradation (export never fails on asset download); prose stays pre-rendered; commit-able-by-default invariant.
+- **content/distilled/codebase-cartography/SKILL.md** — Rules bullet updated to name `docs/cartography/` and the directory layout.
+- **content/prompt-task-codebase-cartography.md** (v1.2.0) — Shareable-snapshot variation synced; version history entry.
+
 #### Updated - Whisper: canonical repo keys + consolidate mode
 
 `~/.whisper/repos/` had accumulated duplicate trees per repo (bare name `genesis/`, owner dir `charly-vibes/`, alias host `cv:charly-vibes/`, full URL) because the skill never defined how the repo key is derived. Fixed at the root:
