@@ -1,10 +1,10 @@
-## [Unreleased]
+## [0.6.0] - 2026-09-01
 
 #### Updated - Codebase Cartography: optional static HTML export
 
 Added the revised "option 1" from the visual-companion Rule-of-5 review: a single-file HTML export generated **from** the markdown report — no server, no JS, no CDN — so reports stay shareable without adding runtime complexity.
 
-- **content/distilled/codebase-cartography/references/report-template.md** — New **Optional HTML Export** section: one self-contained file (`cartography-<target>.html`, inline `<style>`, Mermaid source preserved as text, deterministic output). Markdown stays the artifact of record; export offered only on request; explicit refusal rule against evolving it into an app (no servers/frameworks/interactivity).
+- **content/distilled/codebase-cartography/references/report-template.md** — New **Optional HTML Export** section: one self-contained file (`cartography-<level>-<target>.html`, inline `<style>`, Mermaid source preserved as text, deterministic output; level-scoped names prevent cross-level overwrites, default save location `docs/` when no report file exists). Markdown stays the artifact of record; export offered only on request; explicit refusal rule against evolving it into an app (no servers/frameworks/interactivity).
 - **content/distilled/codebase-cartography/SKILL.md** — Reference-loading bullet for the export section; rule that HTML export is derived output, never the artifact of record.
 - **content/prompt-task-codebase-cartography.md** (v1.1.0) — New "shareable snapshot" variation; version history entry.
 - **content/manifest.json** — `html export` alias + report-stage hint; version date synced to 2026-09-01.
