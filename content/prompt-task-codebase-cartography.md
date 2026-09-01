@@ -5,8 +5,8 @@ tags: [architecture, visualization, navigation, dependency-analysis, code-smells
 tools: [claude-code, pi, cursor, aider, gemini]
 status: draft
 created: 2026-08-28
-updated: 2026-08-28
-version: 1.0.0
+updated: 2026-09-01
+version: 1.1.0
 related: [prompt-task-research-codebase.md, research-paper-codebase-architecture-visualization.md]
 source: research-based
 ---
@@ -117,6 +117,11 @@ Meso map of [module], plus health check. After the observations, list which stru
 Macro + meso maps of [domain], rendered as Mermaid, saved as docs/architecture.md.
 ```
 
+**For a shareable snapshot:**
+```
+Meso map of [module], plus a single self-contained HTML export for sharing. The markdown report stays the source of truth.
+```
+
 ## References
 
 - [research-paper-codebase-architecture-visualization.md](research-paper-codebase-architecture-visualization.md) — the visual framework this skill operationalizes (paradigm-scale fit, semantic zooming, anti-pattern signatures)
@@ -130,4 +135,5 @@ Macro + meso maps of [domain], rendered as Mermaid, saved as docs/architecture.m
 
 ## Version History
 
+- 1.1.0 (2026-09-01): Added optional single-file HTML export (static, self-contained, JS-free; markdown remains the source of truth)
 - 1.0.0 (2026-08-28): Initial version, derived from research-paper-codebase-architecture-visualization.md

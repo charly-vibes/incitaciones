@@ -31,6 +31,7 @@ Pick the entry level from the request:
 - Before gathering evidence for any map (and again before rendering), read `references/zoom-levels.md` — per-level evidence collection commands and text rendering formats.
 - Before any health check or when the user asks about "health", "smells", or refactoring targets, read `references/smell-signatures.md` — anti-pattern proxies, evidence requirements, severity ratings.
 - Before writing the final output, read `references/report-template.md` — output structure per mode.
+- When the user asks for an HTML export or a shareable version of the report, read the "Optional HTML Export" section at the end of `references/report-template.md`.
 
 ## Zoom Discipline
 
@@ -47,3 +48,4 @@ Pick the entry level from the request:
 - Prefer structural facts over narrative: dependency direction, counts, boundaries.
 - Health-check findings follow the evidence format in `references/smell-signatures.md` (pattern, evidence, quantity, severity) — never unanchored opinions.
 - Maps are diff-able artifacts: tables and Mermaid, not prose walls.
+- HTML export is derived output, produced only on request; the markdown report remains the artifact of record.

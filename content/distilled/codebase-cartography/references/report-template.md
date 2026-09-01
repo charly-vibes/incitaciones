@@ -59,3 +59,17 @@ One finding block per pattern (format in `smell-signatures.md`), ordered by seve
 ```
 
 **Adjacent levels offered** — one line each, e.g. "meso map of ledger available on request".
+
+## Optional HTML Export
+
+Produce only on request ("export as HTML", "shareable report"). The markdown report is the source of truth; the HTML file is a derived, regenerable view — never hand-edit it, regenerate it from the markdown.
+
+Produce ONE self-contained file, `cartography-<target>.html`, next to the markdown report:
+
+- **Self-contained:** one inline `<style>` block. No CDN, no external CSS/JS/fonts, no build step, no server. Must open correctly offline.
+- **No JavaScript:** diagrams render as styled `<pre>` blocks (text diagrams) or inline SVG producible without new dependencies. Keep the Mermaid source in the file (e.g. `<pre class="mermaid-source">`) so the diagram stays manipulable.
+- **Mirror, don't redesign:** same sections, same order, same content as the markdown report. The HTML adds presentation only (readable typography; `prefers-color-scheme` support optional).
+- **Deterministic:** stable section order, no timestamps, no generator metadata.
+- **Size guard:** render large reports as-is; never paginate, collapse, or add interactivity.
+
+Do not evolve the export into an application — no servers, frameworks, or interactive controls. If live interaction is requested, note it is out of scope for this skill.

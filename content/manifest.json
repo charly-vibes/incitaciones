@@ -3842,7 +3842,8 @@
               "references/report-template.md",
               "key relationships",
               "observations",
-              "open questions"
+              "open questions",
+              "html export"
             ]
           }
         ],
@@ -3882,7 +3883,8 @@
             "aliases": [
               "references/report-template.md",
               "report-template.md",
-              "report template"
+              "report template",
+              "html export"
             ]
           }
         ]
