@@ -6,9 +6,9 @@ tags: [creation, issue-tracking, project-management, planning, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-20
-updated: 2026-04-28
-version: 1.1.0
-related: [prompt-workflow-create-plan.md, prompt-task-issue-tracker-review.md]
+updated: 2026-09-01
+version: 1.2.0
+related: [prompt-workflow-create-plan.md, prompt-task-issue-tracker-review.md, research-paper-agentic-ticket-requirements-engineering.md]
 source: derived-from-prompt-task-issue-tracker-review
 ---
 
@@ -98,6 +98,13 @@ Ref: [Link to plan document and section]
 - [List of files to be modified]
 - [Or affected subsystems if exact files are not yet known]
 
+## Verifiable Value Claim
+
+**Must (hard gate):** [Quantified threshold with unit and number — never "fast" or "robust"]
+**Meter:** [Exact runnable command whose exit code decides the gate]
+**Baseline:** [Measured value before work starts; omit if not measurable]
+**Regression suite:** [Existing tests that must keep passing]
+
 ## Acceptance Criteria
 - [ ] A binary, observable checklist of what "done" means for this issue.
 - [ ] Automated tests cover the slice end-to-end.
@@ -111,6 +118,11 @@ Or: `None - can start immediately`
 **CRITICAL: Follow Test Driven Development and Tidy First workflows.**
 - Write tests *before* writing implementation code.
 - Clean up related code *before* adding new functionality.
+
+**Anti-goals (do NOT):**
+- [Prohibited behavior with reward-hacking payoff — e.g., "modify or delete tests in tests/core/"]
+- [e.g., "add new dependencies or modify lockfiles"]
+- [e.g., "break public API / exported interfaces"]
 ```
 
 ### Creating Issues and Dependencies
@@ -223,3 +235,11 @@ After generating all commands, provide a final summary report in the following f
 5.  **Generate Runnable Commands:** The output must be the exact, complete, and runnable shell commands required to perform the actions.
 6.  **Assume Clean State:** This prompt assumes no issues exist for the plan. If issues already exist, ask the user for guidance on how to proceed.
 7.  **Label execution mode:** Mark each slice as AFK or HITL before publishing.
+8.  **Quantify the gate:** every measurable acceptance criterion is a number with a unit, backed by a runnable Meter command (see research-paper-agentic-ticket-requirements-engineering.md). Agents optimize against whatever is verifiable — an unquantified ticket is a suggestion, not a contract.
+9.  **Name the cheats:** add anti-goals wherever the gate could be gamed (test edits, dependency additions, API breaks).
+10. **Anchor staleness:** capture the HEAD SHA as `base_commit` metadata at creation time:
+    ```bash
+    sha=$(git rev-parse HEAD)
+    bd update <id> --metadata "{\"files\": [\"path/to/file.py\"], \"base_commit\": \"$sha\"}"
+    ```
+    Reviewers diff `base_commit..HEAD` against the ticket's files to detect out-of-date tickets. On trackers without metadata (e.g. GitHub Issues), embed the SHA in the issue body instead.

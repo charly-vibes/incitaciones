@@ -1,4 +1,4 @@
-<!-- skill: create-issues, version: 1.2.0, status: verified -->
+<!-- skill: create-issues, version: 1.3.0, status: verified -->
 # Tracer-Bullet Issue Creation from Plan
 
 Break a reviewed plan into independently grabbable issues using tracer-bullet vertical slices.
@@ -45,6 +45,8 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
      - end-to-end behavior description
      - concrete file paths or subsystems when knowable
      - binary acceptance criteria
+     - a **Verifiable Value Claim** where measurable: quantified **Must** gate (unit + number, no adjectives), a runnable **Meter** command, the measured **Baseline**, and the **regression suite** that must keep passing
+     - **anti-goals** whenever the ticket touches tests, lockfiles, or public interfaces (prohibit test-assertion edits, dependency additions, API breaks)
      - explicit blocked-by field
      - TDD and Tidy First mandate
 
@@ -55,15 +57,20 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
    - Wire dependencies using actual captured identifiers or explicit body references.
    - Verify each creation step succeeded before continuing.
    - **After each successful creation**, extract the `**Files / Systems:**` bullet list from
-     the issue description and store it as structured metadata:
+     the issue description and store it as structured metadata together with a **base
+     commit anchor** for staleness detection:
      ```bash
-     bd update <id> --metadata '{"files": ["path/to/file1.py", "path/to/file2.py"]}'
+     base_sha=$(git rev-parse HEAD)
+     bd update <id> --metadata "{\"files\": [\"path/to/file1.py\", \"path/to/file2.py\"], \"base_commit\": \"$base_sha\"}"
      ```
-     This enables automated file-conflict detection by concurrent agents (see `renew` skill
-     **Claiming work** section). If the Files/Systems section is empty or contains only
-     subsystem names without concrete paths, **stop and ask the user for specific file paths
-     before publishing the ticket** — a ticket without concrete paths cannot participate in
-     conflict detection and is incomplete.
+     `base_commit` is HEAD at ticket-creation time. Reviewers and claiming agents diff
+     `base_commit..HEAD` against the ticket's `files` to detect out-of-date tickets (see
+     `issue-review` skill, Pass 0 PRE-003, and `renew` skill **Claiming work** section).
+     This enables automated file-conflict detection by concurrent agents. If the
+     Files/Systems section is empty or contains only subsystem names without concrete
+     paths, **stop and ask the user for specific file paths before publishing the ticket**
+     — a ticket without concrete paths cannot participate in conflict detection and is
+     incomplete.
 
 7. **Final report:**
    - Summarize the approved slice set, created issues, labels, and dependency links.
@@ -75,6 +82,9 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
 - **Traceable:** reference the exact plan/spec section or story.
 - **Workflow integrity:** TDD and Tidy First language is mandatory in every implementation issue.
 - **No guessed IDs:** capture identifiers from actual command output.
+- **Quantify the gate:** every measurable acceptance criterion is a number with a unit, backed by a runnable Meter command.
+- **Name the cheats:** add anti-goals wherever the gate could be gamed (test edits, new deps, API breaks).
+- **Anchor staleness:** always record `base_commit` metadata at creation; never publish a ticket anchored to nothing.
 - **Stop and ask:** if the plan only supports horizontal decomposition, propose a vertical rewrite before publishing.
 
 ## References
