@@ -67,9 +67,9 @@ An explicit batch request ("generate all the reports", "map every module") is a 
 - Enumerate targets from the module inventory. Confirm the list once when it exceeds 3 targets or the scope is ambiguous; proceed unless corrected.
 - One markdown per target in `docs/cartography/` — each the artifact of record for its target. For each, re-verify counts immediately before writing (Zoom Discipline).
 - Include a health report only if the batch request names health/smells.
-- A target too large for one pass: skip it, list it in `index.html` as "offered — too large for one pass", and mention it in the final summary. Do not stop the batch to ask.
+- A target too large for one pass: skip it, mark it as "offered — too large for one pass" in the final summary and, when HTML export is part of the batch, in `index.html`. Do not stop the batch to ask.
 - Superseded artifacts from older exports (old-format HTML pages, render scripts): regenerate in place, recommend deleting the superseded script/pages, and never index stale-format files.
-- HTML pages and `index.html` follow the Optional HTML Export section (regenerate the index once at the end, covering all reports).
+- When HTML export is part of the batch request or separately requested, HTML pages and `index.html` follow the Optional HTML Export section (regenerate the index once at the end, covering all reports).
 
 ## Optional HTML Export
 
