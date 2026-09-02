@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.8.0] - 2026-09-02
 
 #### Updated - Codebase Cartography: batch export + guidance fixes from session evidence
 
