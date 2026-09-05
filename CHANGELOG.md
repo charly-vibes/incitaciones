@@ -1,3 +1,14 @@
+## [Unreleased]
+
+#### Updated - Codebase Cartography: proportional scale encoding in macro maps
+
+Rule-of-5-reviewed proposal applying the treemap area-encoding idea (phronemophobic "Treemaps are awesome!") to the skill's text-first, diff-able contract — literal treemap graphics rejected (no Mermaid treemap in the vendored v9.4.3 IIFE; v11.5+ is ESM-only, CORS-blocked under `file://`); decision recorded in the reference:
+
+- **content/distilled/codebase-cartography/references/zoom-levels.md** — Macro collect step 5: module sizing by LOC (default) or file count (mixed-language repos), `tokei`/`cloc` with `rg --files | xargs wc -l` fallback, degrade-to-file-count note. Two distinct metrics: **Weight** (inventory column, analysis code, exclusions applied) and **Composition** (disk reality by file kind, excluded code included; works without modules). Macro render: weight bar spec (10-cell `▓/░`, nearest-cell rounding, 1-cell minimum, integer %); weight flags candidate targets, size ≠ complexity. Bulk distribution added to facts. Decision record.
+- **content/distilled/codebase-cartography/references/report-template.md** — Macro mode gains the Composition block (position 4) and weight bar in the module inventory line; batch re-verify bullet extended to weight/composition shares with consolidated-pass allowance.
+- **content/prompt-task-codebase-cartography.md** (v1.4.0) — Version history entry.
+- **content/manifest.json** — Version date bump.
+
 ## [0.8.0] - 2026-09-02
 
 #### Updated - Codebase Cartography: batch export + guidance fixes from session evidence

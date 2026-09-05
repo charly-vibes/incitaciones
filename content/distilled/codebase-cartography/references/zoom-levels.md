@@ -13,13 +13,19 @@ Adapt import syntax to the language (see language rule below).
 2. Inter-module imports: scan import statements crossing module boundaries. Quoting-safe scan (works in POSIX shells), e.g. JS/TS: `rg 'from ["'"'"']' --type js --type ts` or simply `rg 'import|require'`; then filter by path.
 3. Count edges per pair of modules to get a weighted dependency list.
 4. Determine layering for violation flags: use the repo's declared layering (README/ARCHITECTURE/docs) if present; otherwise infer it from the majority dependency direction and label that inference in the report.
+5. **Weight & composition:** size each module by LOC (default) or file count (mixed-language repos, where LOC is not comparable across languages). Tool: `tokei` (or `cloc`); fallback: `rg --files <exclusion globs> | xargs wc -l`, summed per module. Two distinct metrics:
+   - **Weight** (inventory column) — analysis code only, same exclusions as all counts (step 1).
+   - **Composition** (report block) — disk reality: all code grouped by kind (source / test / generated / vendored / config), excluded code included. Works without modules too (flat/script repos): group by top-level directory or language.
+   If neither tool nor fallback works, degrade to file-count-only weight and note it in the report.
 
 **Render:**
 
 Module inventory table:
 
-| Module | Path | Responsibility (one line, from evidence) | Deps out → | Fan-in |
-| :---- | :---- | :---- | :---- | :---- |
+| Module | Path | Responsibility (one line, from evidence) | Weight | Deps out → | Fan-in |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+
+Weight bar: 10-cell `▓/░` bar proportional to the module's share of total weight, rounded to nearest cell, minimum 1 filled cell when weight > 0, followed by an integer percentage — e.g. `▓▓▓▓▓▓▓░░░ 67%`. Weight flags candidate targets for deeper levels; size ≠ complexity (a big cohesive module can be cheaper to map than a small hotspot).
 
 Text dependency matrix (DSM-style). Rows depend on columns; mark `↑` for a dependency that skips a layer or points "backward" against the declared — or inferred (see collect step 4) — layering:
 
@@ -39,7 +45,7 @@ graph TD
   jobs --> core
 ```
 
-**Facts to surface:** layering violations (↑ marks), cycles, hub modules (highest fan-in/out), orphan modules (zero fan-in).
+**Facts to surface:** layering violations (↑ marks), cycles, hub modules (highest fan-in/out), orphan modules (zero fan-in), bulk distribution (largest modules by weight; share of total).
 
 ## Meso — Module / Feature Wiring
 
@@ -97,3 +103,5 @@ RefundRequest{invoiceId, amount} → validated Amount → gateway response → L
 ```
 
 **Facts to surface:** where purity ends (first I/O hop), total hops, state mutated, error paths encountered (report; do not evaluate their quality).
+
+Decision record: macro maps encode scale as a proportional weight bar in the inventory table (treemap area-encoding, phronemophobic "Treemaps are awesome!") plus a Composition block, not as literal treemap graphics — the vendored Mermaid v9.4.3 has no treemap diagram (v11.5+ is ESM-only, CORS-blocked under `file://`) and an ASCII treemap is less diff-able than the bar column. (treemap evaluation, 2026-09-05)

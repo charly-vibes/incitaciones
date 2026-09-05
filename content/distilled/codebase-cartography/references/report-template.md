@@ -65,7 +65,7 @@ One finding block per pattern (format in `smell-signatures.md`), ordered by seve
 An explicit batch request ("generate all the reports", "map every module") is a user request — Zoom Discipline's offer-don't-dump rule applies to unprompted follow-ups only.
 
 - Enumerate targets from the module inventory. Confirm the list once when it exceeds 3 targets or the scope is ambiguous; proceed unless corrected.
-- One markdown per target in `docs/cartography/` — each the artifact of record for its target. For each, re-verify counts immediately before writing (Zoom Discipline).
+- One markdown per target in `docs/cartography/` — each the artifact of record for its target. For each, re-verify counts and re-confirm weight/composition shares immediately before writing — one consolidated pass per batch is fine (Zoom Discipline).
 - Include a health report only if the batch request names health/smells.
 - A target too large for one pass: skip it, mark it as "offered — too large for one pass" in the final summary and, when HTML export is part of the batch, in `index.html`. Do not stop the batch to ask.
 - Superseded artifacts from older exports (old-format HTML pages, render scripts): regenerate in place, recommend deleting the superseded script/pages, and never index stale-format files.

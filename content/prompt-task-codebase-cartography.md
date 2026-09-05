@@ -5,8 +5,8 @@ tags: [architecture, visualization, navigation, dependency-analysis, code-smells
 tools: [claude-code, pi, cursor, aider, gemini]
 status: draft
 created: 2026-08-28
-updated: 2026-09-02
-version: 1.3.0
+updated: 2026-09-05
+version: 1.4.0
 related: [prompt-task-research-codebase.md, research-paper-codebase-architecture-visualization.md]
 source: research-based
 ---
@@ -135,6 +135,7 @@ Meso map of [module], plus an HTML export to docs/cartography/ (index page, cros
 
 ## Version History
 
+- 1.4.0 (2026-09-05): Proportional scale encoding in macro maps — inventory weight bar (10-cell, LOC default / file-count for mixed-language repos, tokei + fallback, analysis-code exclusions), disk-reality Composition report block (all code by kind, exclusions included), consolidated per-batch re-verification — from Rule-of-5-reviewed treemap proposal (phronemophobic "Treemaps are awesome!"); literal treemap graphics rejected in a decision record
 - 1.3.0 (2026-09-02): Added batch export procedure (enumeration, health gating, oversize skip, superseded-artifact cleanup), no-render-script regeneration contract, viewing handoff step, count re-verification rule — from Rule-of-5 review of a real batch session (wai)
 - 1.2.0 (2026-09-02): Reworked HTML export — standard output directory `docs/cartography/`, generated index.html listing HTML + markdown reports, per-page cross-navigation, Mermaid rendered via vendored local v9.4.3 IIFE asset with `<pre>` source fallback (replaces single-file/JS-free export)
 - 1.1.0 (2026-09-01): Added optional single-file HTML export (static, self-contained, JS-free; markdown remains the source of truth)
