@@ -8,14 +8,22 @@ tools: Read, Write, Edit, Glob, Bash
 
 End the current session: log what was done, update tasks, route durable knowledge to `~/.whisper/`, commit and push, clear context.
 
-Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
+Uses `$JOURNAL_PATH` for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. Agent shells run non-interactive and never source `.bashrc`, so the environment may be missing these exports — resolve both values per step 1 (env → shell config → convention → legacy fallback).
 
 ## Steps
 
 1. Pull the journal repo:
    ```bash
-   JOURNAL="${JOURNAL_PATH:-$HOME/dev/status}"
-   LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
+   # Non-interactive shells never source .bashrc, so $JOURNAL_PATH etc. are
+   # usually unset here. Source the config in a throwaway shell — bash itself
+   # handles comments, quotes, and nested vars ($JORNAL) — then fall back.
+   shellval() { bash -c "source ~/.bashrc >/dev/null 2>&1; echo "\${$1:-}"" 2>/dev/null; }
+   JOURNAL="${JOURNAL_PATH:-$(shellval JOURNAL_PATH)}"
+   [ -n "$JOURNAL" ] || JOURNAL="$(shellval JORNAL)"
+   [ -n "$JOURNAL" ] || JOURNAL="$HOME/para/areas/jornal"   # JORNAL convention
+   [ -d "$JOURNAL/.git" ] || JOURNAL="$HOME/dev/status"     # legacy clone; flag this fallback in the reply
+   LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-$(shellval JOURNAL_LOG_SUBDIR)}"
+   [ -n "$LOG_SUBDIR" ] || LOG_SUBDIR="areas/log"
    cd "$JOURNAL" && git pull
    ```
 
