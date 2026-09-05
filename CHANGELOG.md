@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+#### Fixed - close skill: journal root resolution for non-interactive shells
+
+The skill's `~/dev/status` + `log/` defaults fired silently whenever `.bashrc` exports weren't visible — i.e. every agent `/close` run (non-interactive shells never source it). Three days of session notes (09-03..05) landed in the stale `~/dev/status` clone under the legacy layout (migrated to `areas/log/` in journal commit `e4f144e`).
+
+- **content/distilled/close/SKILL.md** — Step 1 rewritten: resolve via a sourcing subshell (`shellval()`), so bash itself handles comments, quotes, and `$JORNAL` indirection; order env → config → `~/para/areas/jornal` convention → legacy clone (last resort, must be flagged in the reply); default log layout `areas/log`. Acceptance-tested verbatim from the skill file in `env -i`: canonical resolution ✓, env overrides ✓.
+- Closes incitaciones-kmj.
+
 #### Updated - Codebase Cartography: proportional scale encoding in macro maps
 
 Rule-of-5-reviewed proposal applying the treemap area-encoding idea (phronemophobic "Treemaps are awesome!") to the skill's text-first, diff-able contract — literal treemap graphics rejected (no Mermaid treemap in the vendored v9.4.3 IIFE; v11.5+ is ESM-only, CORS-blocked under `file://`); decision recorded in the reference:

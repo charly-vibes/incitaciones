@@ -17,7 +17,7 @@ Uses `$JOURNAL_PATH` for the daily log journal, and `~/.whisper/` for accumulate
    # Non-interactive shells never source .bashrc, so $JOURNAL_PATH etc. are
    # usually unset here. Source the config in a throwaway shell — bash itself
    # handles comments, quotes, and nested vars ($JORNAL) — then fall back.
-   shellval() { bash -c "source ~/.bashrc >/dev/null 2>&1; echo "\${$1:-}"" 2>/dev/null; }
+   shellval() { bash -c 'source ~/.bashrc >/dev/null 2>&1; printf "%s\n" "${'"'$1'"'}"' 2>/dev/null; }
    JOURNAL="${JOURNAL_PATH:-$(shellval JOURNAL_PATH)}"
    [ -n "$JOURNAL" ] || JOURNAL="$(shellval JORNAL)"
    [ -n "$JOURNAL" ] || JOURNAL="$HOME/para/areas/jornal"   # JORNAL convention
