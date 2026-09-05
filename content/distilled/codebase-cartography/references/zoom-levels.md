@@ -13,9 +13,9 @@ Adapt import syntax to the language (see language rule below).
 2. Inter-module imports: scan import statements crossing module boundaries. Quoting-safe scan (works in POSIX shells), e.g. JS/TS: `rg 'from ["'"'"']' --type js --type ts` or simply `rg 'import|require'`; then filter by path.
 3. Count edges per pair of modules to get a weighted dependency list.
 4. Determine layering for violation flags: use the repo's declared layering (README/ARCHITECTURE/docs) if present; otherwise infer it from the majority dependency direction and label that inference in the report.
-5. **Weight & composition:** size each module by LOC (default) or file count (mixed-language repos, where LOC is not comparable across languages). Tool: `tokei` (or `cloc`); fallback: `rg --files <exclusion globs> | xargs wc -l`, summed per module. Two distinct metrics:
+5. **Weight & composition:** size each module by LOC (default) or file count (mixed-language repos, where LOC is not comparable across languages). Tool: `tokei` (apply the step-1 globs via `tokei -e ...`, or `cloc`); fallback: `rg --files -0 <exclusion globs> | xargs -0 wc -l`, summed per module. Two distinct metrics:
    - **Weight** (inventory column) — analysis code only, same exclusions as all counts (step 1).
-   - **Composition** (report block) — disk reality: all code grouped by kind (source / test / generated / vendored / config), excluded code included. Works without modules too (flat/script repos): group by top-level directory or language.
+   - **Composition** (report block) — disk reality: all code grouped by kind (source / test / generated / vendored / config), excluded code included. Classify by path/name conventions (`tests/`, `test_*.py`, `*_test.go`, `*.spec.ts` → test; step-1 exclusion-glob hits → generated/vendored; lockfiles, manifests, dotfiles → config). Works without modules too (flat/script repos): group by top-level directory or language.
    If neither tool nor fallback works, degrade to file-count-only weight and note it in the report.
 
 **Render:**

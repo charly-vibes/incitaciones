@@ -12,10 +12,11 @@ Structure the final output by mode. All modes share the closing sections. Keep m
 
 ## Mode: macro
 
-1. **Module inventory** — table (module, path, responsibility, deps out, fan-in)
+1. **Module inventory** — table (module, path, responsibility, weight bar, deps out, fan-in)
 2. **Dependency matrix** — text DSM with ↑ marks for layer violations
 3. **Module graph** — Mermaid, edges labeled with counts
-4. Structural observations
+4. **Composition** — disk-reality breakdown by file kind (source / test / generated / vendored / config), excluded code included; distinct from the inventory weight column (analysis code, exclusions applied)
+5. Structural observations
 
 ## Mode: meso
 
