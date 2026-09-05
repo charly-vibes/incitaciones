@@ -3579,7 +3579,7 @@
       "name": "whisper",
       "type": "workflow",
       "title": "Whisper — Accumulated Operational Knowledge",
-      "description": "Manage the ~/.whisper/ knowledge workspace: init, check, status, link plan, decommission, and knowledge routing",
+      "description": "Deterministic knowledge workspace management: init, check, status, link plan, decommission, and knowledge routing. Thin pointer — delegates to the turu CLI (whisper-vibes) when installed, manual fallbacks otherwise",
       "source": "content/prompt-workflow-whisper.md",
       "distilled": "content/distilled/whisper/SKILL.md",
       "skill_format": "progressive-disclosure",

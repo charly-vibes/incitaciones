@@ -1,97 +1,61 @@
 ---
 name: whisper
-description: "Manage the ~/.whisper/ knowledge workspace: init, check, status, link plan to beads, decommission, and knowledge routing. Trigger when the user says '/whisper', '/w', 'init workspace', 'check workspace', 'workspace status', 'link plan', or 'decommission worktree'."
+description: "Deterministic knowledge workspace management: init, check, status, link plan, decommission, and knowledge routing. Delegates the mechanical steps to the turu CLI (whisper-vibes) when installed; manual fallbacks otherwise. Trigger when the user says '/whisper', '/w', 'init workspace', 'check workspace', 'workspace status', 'link plan', or 'decommission'."
 tools: Read, Write, Edit, Bash
 ---
 
-# Whisper — Accumulated Operational Knowledge
+# Whisper — Deterministic Operational Knowledge
 
-Manage `~/.whisper/` — a global, tiered knowledge directory that accumulates operational knowledge and planning context across all your work. Works with or without beads issue tracking.
+> **This skill is a thin pointer.** The canonical, versioned copy ships with
+> the `turu` CLI ([charly-vibes/whisper](https://github.com/charly-vibes/whisper),
+> `cargo install whisper-vibes`) — install it with `turu skill install`.
+> This file stays so agents without the binary have fallbacks.
 
-## Directory Layout
+The `turu` CLI owns every mechanical step: canonical repo keys, branch slugs,
+worktree slots, and scope routing. Same inputs, same outputs — no more
+hand-rolled shell pipelines.
 
-```
-~/.whisper/
-  rules.md                          ← Global agent behavior rules (bd remember equiv)
+## Decision procedure
 
-  repos/
-    github.com/user/repo/
-      env.md                        ← Repo-wide: deploy commands, infra facts, auth quirks
-      branches/
-        branch-slug/                ← One slot per branch (/ in name → -- in slug)
-          context.md                ← Branch anchor: repo, branch, beads epic ID, status
-          plan.md                   ← Narrative implementation plan
-          notes.md                  ← Free-form scratch and findings
-          agents/                   ← Optional sub-agent files when work is split across agents
-      worktrees/
-        worktree-name/              ← One slot per worktree (basename of worktree path)
-          env.md                    ← Worktree-specific: ports, venvs, credentials, local-only setup
-```
+1. **Is `turu` available?** Run `turu key --json`.
+2. **If yes** — everything mechanical is a turu command:
 
-**Branch slug rule:** `git rev-parse --abbrev-ref HEAD | sed 's|/|--|g'`
+| Intent | Command |
+|---|---|
+| Derive repo key / branch slug / worktree slot | `turu key --json` |
+| Find the write destination for a scope | `turu resolve <scope> --json` |
+| Record knowledge (extend, don't duplicate) | `turu append <scope> --text "..."` |
+| Create the workspace layout | `turu init --json` |
+| Inspect paths and existence | `turu status --json` |
+| Validate / detect legacy keys | `turu check --json` · `turu doctor --json` |
+| Refresh the AGENTS.md routing block | `turu sync --json` |
 
-**Worktree slot rule:** `basename $(git rev-parse --git-common-dir 2>/dev/null)` (the `.git` worktree dir name), or `basename $(pwd)` when not in a worktree.
+   Scopes: `global` (rules.md), `repo` (env.md), `branch` (notes.md),
+   `worktree` (env.md), `group` (shared workspace for a set of repos).
+   If a `<!-- TURU:START -->` block exists in `AGENTS.md`, read the routing
+   map from there instead of re-deriving paths.
 
-**Canonical repo key rule — derive it, never invent it:**
+3. **If no** — use the manual fallbacks in `references/` (they remain the
+   source of truth for the shell-snippet procedures) and suggest
+   `cargo install whisper-vibes`.
 
-```bash
-repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|http://||;s|ssh://||;s|git@||;s|:|/|g;s|\.git$||')
-[ -z "$repo_url" ] && repo_url="local/$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")"
-```
+## Invariants (with or without the binary)
 
-`git@cv:org/repo.git` → `cv/org/repo`; `https://github.com/u/r` → `github.com/u/r`; no remote → `local/<repo-name>`. Colons always become slashes (keeps keys path-safe). The same key must come out of the same repo on every machine.
-
-If a directory keyed some other way already exists for this repo (bare name like `genesis/`, owner-only like `charly-vibes/`, alias host with a colon like `cv:charly-vibes/`), do **not** add a fourth variant — route new knowledge into the canonical key and offer `/w consolidate` to migrate the legacy one.
-
-## Knowledge Routing
-
-When a session learns something worth keeping, route it by scope:
-
-| Scope | Test | Destination |
-|---|---|---|
-| **Global** | True for every repo and every project | `~/.whisper/rules.md` — append, don't overwrite |
-| **Repo-wide infra** | True regardless of which branch or feature you're on (deploy behavior, gateway/timeout limits, log retention, auth quirks) | `~/.whisper/repos/<host>/<repo>/env.md` — create or extend |
-| **Branch-specific** | Only matters for the work on *this* epic/branch | `~/.whisper/repos/<host>/<repo>/branches/<slug>/notes.md`, or `bd note <epic-id>` if beads is available |
-| **Worktree setup** | Credentials, service IDs, ports, venv/docker specifics for *this checkout* | `~/.whisper/repos/<host>/<repo>/worktrees/<name>/env.md` |
-| **Universal agent rule** | A standing instruction for how the agent should behave, independent of any branch or repo | `bd remember` if available, else `~/.whisper/rules.md` |
-
-**Rules:**
-- **No secrets anywhere.** Never write tokens, keys, passwords, or PII into `~/.whisper/`.
-- **Extend, don't duplicate.** Append to or correct an existing note rather than creating a new one that says the same thing.
-- **One repo, one key.** If more than one `repos/` directory belongs to the same repo, write into the canonical key and propose `/w consolidate` — never create a new variant.
-- **Search first.** Before creating a new entry, check if one already exists for the same topic.
-- If `bd` is not available, everything falls back to `~/.whisper/` files — there's no beads-backed alternative.
+- **No secrets anywhere.** Never write tokens, keys, passwords, or PII into
+  the workspace.
+- **Extend, don't duplicate.** Append to or correct an existing note rather
+  than creating a new one that says the same thing.
+- **One repo, one key.** The canonical key is a pure function of the remote
+  URL; never invent a variant.
+- **Search first.** Before creating a new entry, check if one exists.
 
 ## Modes
 
-Determine mode from how the skill is triggered:
+`/w init` → `turu init` · `/w` or `/w status` → `turu status` ·
+`/w check` → `turu check` · `/w link` → `subs/link-manual` (no CLI verb yet)
+· `/w decommission` → `subs/decommission-manual` · `/w consolidate` →
+`subs/consolidate-manual` (detection ships via `turu doctor`).
 
-| Trigger | Mode |
-|---|---|
-| `/w init` or `~/.whisper/` does not exist | **init** |
-| `/w` or `/w status` | **status** |
-| `/w check` or called by `renew` | **check** |
-| `/w link [<path>]` or "link plan" | **link** |
-| `/w decommission` | **decommission** |
-| `/w consolidate` or "dedupe whisper repos" | **consolidate** |
-
-See each reference file for the full procedure:
-
-- `references/init.md`
-- `references/check.md`
-- `references/status.md`
-- `references/link.md`
-- `references/decommission.md`
-- `references/consolidate.md`
-
-## Rules
-
-- Never run `git worktree remove` automatically — always print the command for the user to execute.
-- Never close beads issues during decommission — only defer. Closing is intentional.
-- **One epic per branch, children via `--parent`, not flat siblings.**
-- **`env.md` is shared and immutable across branch switches.** Never overwrite it during init or check — only create if absent.
-- **Branch slug sanitization is mandatory.** Always run `sed 's|/|--|g'` on the branch name before using it as a directory path.
-- **Worktree reuse across branches is normal, not an edge case.** Expect multiple slots to accumulate in `branches/` over time.
-- **Legacy layout is still the common case.** Most worktrees never needed multiple branch slots — only migrate when a mismatch is detected.
-- This skill is self-contained. Do not rely on `create-plan`, `park`, or `create-handoff` having `~/.whisper/` awareness.
-- If `bd` is not initialized in the repo, skip beads steps gracefully and note what was skipped.
+Manual procedures for each mode: `references/init.md`, `references/check.md`,
+`references/status.md`, `references/link.md`, `references/decommission.md`,
+`references/consolidate.md`.
