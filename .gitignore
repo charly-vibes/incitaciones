@@ -14,3 +14,7 @@ reviews/
 .dolt/
 *.db
 .beads-credential-key
+
+# Local agent-session artifacts (pi sessions; project-level Claude Code install)
+.pi/
+.claude/skills/
