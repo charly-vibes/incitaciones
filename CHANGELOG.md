@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+#### Added - active skill-eval harness (model-change gate)
+
+- **`just skill-eval <name>`** — executes a skill against its manifest eval rubric instead of only grading past traces: 2 runs × (actor + judge) pi sessions; the judge scores success/failure signals without seeing the skill (anti reward-hacking); a run passes at ≥50% success signals and zero failure signals; overall pass requires both runs to agree. Slice 1 ships the `commit` fixture and is green end-to-end (5/5 success signals, 2/2 runs); more skills covered as fixtures land in `scripts/skill-eval-fixtures/`. Rerun ritual documented in README's release section and CONTRIBUTING. (beads: incitaciones-env, evidence: B171 "skills without evals are wishful thinking")
+
 #### Added - security-audit gate (supply-chain vetting)
 
 - **`just security-audit`** — scans the corpus (245 files: all distilled skills + source prompts) for hardcoded credentials, known API-key formats, `curl | bash`, destructive `rm`, permission escalation, and safety-bypass instructions; wired into `just sync-manifest` so no version bump or release proceeds with a failing scan. Advisory mentions (red-team content teaching reviewers to *flag* patterns) are excluded via a corpus-evidenced filter. Documented in CONTRIBUTING.md. (beads: incitaciones-8am, evidence: B166/Nubank 2,000-skill vetting)

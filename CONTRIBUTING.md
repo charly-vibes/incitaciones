@@ -45,6 +45,15 @@ content, refusal-protocol examples) are excluded via an advisory filter — see
 `scripts/security-audit.sh`. Every surviving hit fails the gate; fix the hit or
 justify a pattern change in the script itself.
 
+## Skill Evals (Model-Change Gate)
+
+Skills are **contracts versioned against a model** — a model upgrade can
+silently break an unchanged skill. `just skill-eval <name>` actively executes a
+skill against its manifest eval rubric: 2 runs × (actor + judge) pi sessions,
+where the judge scores the actor's output against success/failure signals
+without ever seeing the skill (anti reward-hacking). Rerun before releases and
+on every model/provider change; fixtures live in `scripts/skill-eval-fixtures/`.
+
 ## File Naming Conventions
 
 All files use slugified names with type prefixes:

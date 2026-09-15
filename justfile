@@ -281,6 +281,10 @@ header-audit:
 security-audit:
     ./scripts/security-audit.sh
 
+# Execute a skill against its manifest eval rubric via an LLM judge (incitaciones-env)
+skill-eval NAME *PI_ARGS:
+    ./scripts/skill-eval.sh {{NAME}} {{PI_ARGS}}
+
 # Show repository statistics
 stats:
     #!/usr/bin/env bash

@@ -104,6 +104,13 @@ After changing distilled content or manifest entries, you don't need to touch `p
 
 ### Publishing a new version
 
+Before publishing — and on every **model or provider change** — rerun the skill
+evals; a model upgrade can silently break an unchanged skill:
+
+```bash
+just skill-eval commit   # add more skills as fixtures land (scripts/skill-eval-fixtures/)
+```
+
 ```bash
 npm version patch   # bumps to 0.5.1, creates a git tag
 npm version minor   # bumps to 0.6.0
