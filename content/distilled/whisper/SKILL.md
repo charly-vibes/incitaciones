@@ -1,6 +1,6 @@
 ---
 name: whisper
-description: "Deterministic knowledge workspace management: init, check, status, link plan, decommission, and knowledge routing. Delegates the mechanical steps to the turu CLI (whisper-vibes) when installed; manual fallbacks otherwise. Trigger when the user says '/whisper', '/w', 'init workspace', 'check workspace', 'workspace status', 'link plan', or 'decommission'."
+description: "Knowledge workspace management: init, check, status, link plan, decommission, routing. Delegates to the turu CLI when installed."
 tools: Read, Write, Edit, Bash
 ---
 
