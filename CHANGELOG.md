@@ -2,7 +2,7 @@
 
 #### Added - active skill-eval harness (model-change gate)
 
-- **`just skill-eval <name>`** — executes a skill against its manifest eval rubric instead of only grading past traces: 2 runs × (actor + judge) pi sessions; the judge scores success/failure signals without seeing the skill (anti reward-hacking); a run passes at ≥50% success signals and zero failure signals; overall pass requires both runs to agree. Slice 1 ships the `commit` fixture and is green end-to-end (5/5 success signals, 2/2 runs); more skills covered as fixtures land in `scripts/skill-eval-fixtures/`. Rerun ritual documented in README's release section and CONTRIBUTING. (beads: incitaciones-env, evidence: B171 "skills without evals are wishful thinking")
+- **`just skill-eval <name>`** — executes a skill against its manifest eval rubric instead of only grading past traces: 2 runs × (actor + judge) pi sessions; the judge scores success/failure signals without seeing the skill (anti reward-hacking); a run passes at ≥50% success signals and zero failure signals; overall pass requires both runs to agree. All 7 named essentials now carry rubrics + fixtures (commit, review, tdd, issues, debug, session, grill-me); review/session/commit pass 2/2, while the harness's first runs caught two genuine skill deficiencies (beads: e5v horizontal slicing in issues, grill-me question bundling). Rerun ritual documented in README's release section and CONTRIBUTING. (beads: incitaciones-env, evidence: B171 "skills without evals are wishful thinking")
 
 #### Added - security-audit gate (supply-chain vetting)
 

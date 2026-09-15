@@ -1351,7 +1351,51 @@
       "bundles": [
         "planning",
         "reviews"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "clarification",
+          "design-review"
+        ],
+        "success_signals": [
+          "single_focused_question_asked",
+          "recommended_answer_provided",
+          "rationale_for_question_given",
+          "design_branches_addressed_systematically",
+          "inspection_preferred_over_asking_when_possible"
+        ],
+        "failure_signals": [
+          "multiple_questions_bundled_in_one_turn",
+          "question_without_recommendation",
+          "implementation_started_instead_of_interviewing",
+          "context_inspectable_question_was_asked"
+        ],
+        "stages": [
+          {
+            "name": "design-tree-walk",
+            "hints": [
+              "walk each branch",
+              "resolve dependencies one by one"
+            ]
+          },
+          {
+            "name": "per-turn-output",
+            "hints": [
+              "Question",
+              "Recommended answer",
+              "Why this matters"
+            ]
+          },
+          {
+            "name": "wrap-up",
+            "hints": [
+              "Resolved decisions",
+              "Open questions",
+              "Next decision to make"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "anti-slop-prose",
@@ -1688,7 +1732,39 @@
         "content/prompt-workflow-renew.md",
         "content/prompt-workflow-resume-handoff.md",
         "content/prompt-workflow-create-handoff.md"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "session-lifecycle"
+        ],
+        "success_signals": [
+          "close_mode_selected",
+          "close_mode_reference_file_named",
+          "follows_mode_table_over_improvisation",
+          "commit_and_push_steps_present"
+        ],
+        "failure_signals": [
+          "wrong_mode_selected",
+          "improvised_lifecycle_ritual",
+          "claims_unverifiable_completion"
+        ],
+        "stages": [
+          {
+            "name": "mode-selection",
+            "hints": [
+              "mode table",
+              "close vs park vs next"
+            ]
+          },
+          {
+            "name": "mode-procedure",
+            "hints": [
+              "read references/close/SKILL.md",
+              "follow it exactly"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "review",
@@ -1713,7 +1789,40 @@
         "content/prompt-workflow-multi-agent-parallel-review.md",
         "content/prompt-task-guided-review.md",
         "content/prompt-task-red-team-review.md"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "review"
+        ],
+        "success_signals": [
+          "review_mode_selected_and_named",
+          "mode_reference_file_identified",
+          "multiple_passes_or_stages_visible",
+          "findings_cite_specific_locations",
+          "findings_carry_actionable_recommendations"
+        ],
+        "failure_signals": [
+          "vague_praise_without_findings",
+          "improvised_ritual_instead_of_router_procedure",
+          "finding_without_location_reference"
+        ],
+        "stages": [
+          {
+            "name": "mode-selection",
+            "hints": [
+              "mode table",
+              "selection rules"
+            ]
+          },
+          {
+            "name": "mode-execution",
+            "hints": [
+              "read mode SKILL.md",
+              "follow its output format"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "planning",
@@ -1758,7 +1867,51 @@
       "sources": [
         "content/prompt-task-create-issues.md",
         "content/prompt-task-issue-tracker-review.md"
-      ]
+      ],
+      "eval": {
+        "task_types": [
+          "issue-tracking",
+          "planning"
+        ],
+        "success_signals": [
+          "tracer_bullet_vertical_slices",
+          "quantified_must_gates_present",
+          "runnable_meter_per_issue",
+          "explicit_dependencies_between_issues",
+          "anti_goals_or_hitl_points_marked",
+          "tracker_commands_proposed"
+        ],
+        "failure_signals": [
+          "horizontal_layer_tickets",
+          "vague_acceptance_criteria_without_threshold",
+          "issue_without_verifiable_value"
+        ],
+        "stages": [
+          {
+            "name": "plan-analysis",
+            "hints": [
+              "identify outcomes",
+              "slice by value not by layer"
+            ]
+          },
+          {
+            "name": "issue-drafting",
+            "hints": [
+              "MUST gates",
+              "Meter",
+              "dependencies",
+              "anti-goals"
+            ]
+          },
+          {
+            "name": "creation-commands",
+            "hints": [
+              "bd create",
+              "metadata files"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "diagnostician",
