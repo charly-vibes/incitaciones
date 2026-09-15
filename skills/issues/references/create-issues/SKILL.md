@@ -1,4 +1,4 @@
-<!-- skill: create-issues, version: 1.4.0, status: verified -->
+<!-- skill: create-issues, version: 1.4.1, status: verified -->
 # Tracer-Bullet Issue Creation from Plan
 
 Break a reviewed plan into independently grabbable issues using tracer-bullet vertical slices.
@@ -26,8 +26,10 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
      - **AFK** — can be implemented and merged without human intervention.
      - **HITL** — requires a human decision, approval, design review, copy review, policy signoff, etc.
    - Avoid tickets like “build backend”, “add UI”, or “refactor models first” unless the work is genuinely standalone.
+   - **Title lint (hard rule — run on every drafted title before presenting):** a title must name a user-visible outcome (“CSV export works end-to-end”), not a layer. If a title names a layer or artifact — backend, frontend, API, route, button, serializer, schema, tests-only, docs-only, refactor-only — merge it into the outcome slice it serves. Layers differing is never sufficient reason to split: split by capability, never by layer.
 
 4. **Review the proposed breakdown with the user:**
+   - Re-run the title lint on every drafted title; merge any layer-named ticket into its outcome slice before presenting.
    - Present a numbered list before creating anything.
    - For each slice include:
      - **Title**
