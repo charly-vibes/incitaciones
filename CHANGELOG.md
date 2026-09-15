@@ -1,4 +1,8 @@
-## [Unreleased]
+## [0.10.0] - 2026-09-15
+
+#### Changed - trigger clauses on all 38 live descriptions (rbn)
+
+- Every live prompt description now carries a routing-contract trigger clause ("Use when…", ≤10 words; total +242 words vs a ≤320 budget, measured against the 577-word pre-change baseline in `.cache/rbn-baseline.json`). The 5 review-family members that genuinely need exclusive boundaries got "use only when" clauses. `just sync-manifest` now fails on clause-less descriptions and on trigger pairs sharing ≥2 distinctive tokens without an exclusivity boundary (`scripts/trigger-overlap.py`, negative-tested). Installed skills refresh on next release (beads: 8pv).
 
 #### Fixed - create-issues 1.4.1: title lint against horizontal layer tickets
 
