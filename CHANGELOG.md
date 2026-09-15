@@ -1,7 +1,14 @@
 ## [Unreleased]
 
-#### Added - active skill-eval harness (model-change gate)
+#### Fixed - create-issues 1.4.1: title lint against horizontal layer tickets
 
+- The skill said "prefer vertical slices" but actors still sliced a feature plan into backend/route/button/tests/docs tickets (first catch by the skill-eval harness, beads: e5v). The vertical-slice rule is now an operational **title lint** run on every drafted title before presenting: if a title names a layer (backend, frontend, API, route, button, serializer, schema, tests-only, docs-only), merge it into the outcome slice it serves — split by capability, never by layer. Source + distilled updated in lockstep (v1.4.1); `just skill-eval issues` now passes 2/2 (6/6 success signals).
+
+#### Fixed - skill-eval flatten drops multi-file router members
+
+- `scripts/skill-eval.sh` inlined only `references/*.md` at maxdepth 1, silently omitting multi-file members (`references/<member>/SKILL.md` + their references) — router skills were evaluated on their thin mode table alone. Flatten is now recursive over the full references tree.
+
+#### Added - active skill-eval harness (model-change gate)
 - **`just skill-eval <name>`** — executes a skill against its manifest eval rubric instead of only grading past traces: 2 runs × (actor + judge) pi sessions; the judge scores success/failure signals without seeing the skill (anti reward-hacking); a run passes at ≥50% success signals and zero failure signals; overall pass requires both runs to agree. All 7 named essentials now carry rubrics + fixtures (commit, review, tdd, issues, debug, session, grill-me); review/session/commit pass 2/2, while the harness's first runs caught two genuine skill deficiencies (beads: e5v horizontal slicing in issues, grill-me question bundling). Rerun ritual documented in README's release section and CONTRIBUTING. (beads: incitaciones-env, evidence: B171 "skills without evals are wishful thinking")
 
 #### Added - security-audit gate (supply-chain vetting)

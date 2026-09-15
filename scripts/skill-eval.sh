@@ -54,7 +54,10 @@ fi
 FIXTURE="$FIXTURE_DIR/$NAME.md"
 [ -f "$FIXTURE" ] || { echo "UNCOVERED: no fixture at scripts/skill-eval-fixtures/$NAME.md — create one (a realistic task for the skill)." >&2; exit 2; }
 
-# --- flatten skill (SKILL.md + references), same convention as nucleus-roundtrip ---
+# --- flatten skill (SKILL.md + full references tree) ---
+# Recursive: routers keep multi-file members under references/<member>/SKILL.md
+# (maxdepth-1 flatten silently dropped them — caught by skill-eval run where
+# the create-issues title lint never reached the actor).
 flatten_distilled() {
   cat "$1"
   if [[ "$1" == */SKILL.md ]]; then
@@ -62,9 +65,10 @@ flatten_distilled() {
     ref_dir="$(dirname "$1")/references"
     if [ -d "$ref_dir" ]; then
       while IFS= read -r ref; do
-        printf '\n\n---\n\n## Reference: %s\n\n' "$(basename "$ref")"
+        local rel="${ref#$ref_dir/}"
+        printf '\n\n---\n\n## Reference: %s\n\n' "$rel"
         cat "$ref"
-      done < <(find "$ref_dir" -maxdepth 1 -name '*.md' -type f | sort)
+      done < <(find "$ref_dir" -name '*.md' -type f | sort)
     fi
   fi
 }
