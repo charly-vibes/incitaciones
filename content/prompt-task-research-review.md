@@ -6,8 +6,8 @@ tags: [review, research, rule-of-5, quality-assurance, validation, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-13
-version: 1.1.0
+updated: 2026-09-15
+version: 1.2.0
 related: [prompt-task-research-codebase.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
 source: adapted-from-fabbro-with-rule-of-5-principle
 ---
@@ -604,5 +604,6 @@ Don't expect perfection on first draft.
 
 ## Version History
 
+- 1.2.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1)
 - 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with research-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro research_review command

@@ -5,8 +5,8 @@ tags: [prompts, token-optimization, distillation]
 tools: [gemini]
 status: draft
 created: 2026-01-20
-updated: 2026-01-20
-version: 1.0.0
+updated: 2026-09-15
+version: 1.1.0
 related: [research-prompt-token-optimization-strategies.md]
 source: research-based
 ---
@@ -102,3 +102,7 @@ Review the artifact below using the 5-stage process.
 
 -   This meta-prompt is critical for operationalizing the token optimization strategy of distillation.
 -   The quality of the distillation depends heavily on the LLM's ability to differentiate between instructional content and explanatory content. The explicit removal rules help guide it.
+
+## Version History
+
+- 1.1.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1); distilled runtime form carried 1.1.0 since its creation

@@ -5,8 +5,8 @@ tags: [git, commits, code-review, workflow, safety]
 tools: [claude-code, aider, cursor]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
+updated: 2026-09-15
+version: 1.1.0
 related: [prompt-workflow-create-handoff.md, prompt-task-describe-pr.md]
 source: adapted-from-fabbro-and-ace
 ---
@@ -352,4 +352,5 @@ Modify the commit message format to match your team's conventions:
 
 ## Version History
 
+- 1.1.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1)
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro and ACE principles

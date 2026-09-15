@@ -6,8 +6,8 @@ tags: [prompts, verification, distillation, quality-assurance]
 tools: [gemini]
 status: draft
 created: 2026-01-20
-updated: 2026-01-20
-version: 1.0.0
+updated: 2026-09-15
+version: 1.1.0
 related: [prompt-task-distill-prompt.md, meta-prompt-install-commands.md]
 source: original
 ---
@@ -112,3 +112,7 @@ Missing Core Instruction:
 
 ## Notes
 - This prompt acts as a safeguard to ensure that automated prompt optimization does not compromise the integrity of the core instructions.
+
+## Version History
+
+- 1.1.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1); distilled runtime form carried 1.1.0 since its creation

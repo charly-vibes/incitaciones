@@ -6,8 +6,8 @@ tags: [debugging, root-cause-analysis, medical-diagnosis, cognitive-architecture
 tools: [claude-code, aider, cursor, gemini]
 status: verified
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
+updated: 2026-09-15
+version: 1.1.0
 related: [research-paper-cognitive-architectures-for-prompts.md]
 source: research-based
 ---
@@ -136,4 +136,5 @@ The power of this method comes from its systematic process of elimination. The p
 
 ## Version History
 
+- 1.1.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1)
 - 1.0.0 (2026-01-12): Initial version based on the cognitive architectures research paper.

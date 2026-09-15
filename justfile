@@ -848,6 +848,24 @@ sync-manifest:
 
     echo ""
 
+    # Version consistency (incitaciones-wp1): when a distilled file carries a
+    # `<!-- skill: NAME, version: X -->` marker, it must match the source
+    # frontmatter version. Distilled files without a version marker are skipped.
+    echo "Version consistency (source frontmatter ↔ distilled marker):"
+    while IFS=$'\t' read -r name source distilled; do
+        [ -f "$source" ] && [ -f "$distilled" ] || continue
+        SRC_VERSION=$(grep -m1 '^version:' "$source" | sed 's/^version:[[:space:]]*//;s/[[:space:]]*$//' || true)
+        DIST_VERSION=$(head -3 "$distilled" | grep -m1 -oE 'skill: .*version: [0-9.]+' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || true)
+        if [ -n "$DIST_VERSION" ] && [ "$SRC_VERSION" != "$DIST_VERSION" ]; then
+            echo "  ❌ $name: source version $SRC_VERSION != distilled marker $DIST_VERSION ($distilled)"
+            ERRORS=$((ERRORS + 1))
+        elif [ -n "$DIST_VERSION" ]; then
+            echo "  ✓ $name ($SRC_VERSION)"
+        fi
+    done < <(jq -r '.prompts[] | [.name, .source, .distilled] | @tsv' "$MANIFEST")
+
+    echo ""
+
     # Fail if prompt files on disk are not registered in the manifest.
     ORPHANS=0
     for file in content/prompt-*.md; do
@@ -866,7 +884,7 @@ sync-manifest:
 
     if [ $ERRORS -gt 0 ] || [ $ORPHANS -gt 0 ]; then
         echo ""
-        [ $ERRORS -gt 0 ] && echo "$ERRORS missing file(s) — fix before updating version."
+        [ $ERRORS -gt 0 ] && echo "$ERRORS error(s) (missing files or version mismatches) — fix before updating version."
         [ $ORPHANS -gt 0 ] && echo "$ORPHANS unregistered prompt file(s) — add them to the manifest before updating version."
         exit 1
     fi

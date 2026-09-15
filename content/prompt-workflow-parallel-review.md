@@ -6,8 +6,8 @@ tags: [code-review, multi-agent, parallel-review, quality-assurance, testing, pa
 tools: [claude-code, cursor, gemini]
 status: verified
 created: 2026-01-12
-updated: 2026-01-13
-version: 1.1.0
+updated: 2026-09-15
+version: 1.2.0
 related: [research-paper-rule-of-5-multi-agent-review.md, prompt-task-iterative-code-review.md, prompt-workflow-multi-agent-parallel-review.md]
 source: extended-from-steve-yegge-gastown
 ---
@@ -212,5 +212,6 @@ Steve's original linear approach is sufficient for 80% of code reviews. This var
 
 ## Version History
 
+- 1.2.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1)
 - 1.1.0 (2026-01-13): Updated to clarify this is extended variant, not Steve's original; added comparison table and gastown reference
 - 1.0.0 (2026-01-12): Initial version based on the Rule of 5 multi-agent research paper

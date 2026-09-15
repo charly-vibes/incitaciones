@@ -1,5 +1,20 @@
 ## [Unreleased]
 
+#### Added - sync-manifest version-consistency check (incitaciones-wp1) + repo-wide drift reconciliation
+
+Closing the loop on the drift mechanism the Rule-of-5 review identified: `just sync-manifest` now verifies that every distilled file carrying a `<!-- skill: NAME, version: X -->` marker matches its source prompt's frontmatter `version:` — mismatch fails the recipe. Distilled files without a version marker are skipped. The error summary message no longer conflates version mismatches with missing files.
+
+The new check immediately caught **eight** pre-existing drifts across the repo, all reconciled (source bumped to the distilled marker's version, `updated: 2026-09-15`, reconciliation entry in version history):
+
+- specification-review, commit, debug, distill-prompt, verify-prompt (1.0.0 → 1.1.0)
+- parallel-review, plan-review, research-review (1.1.0 → 1.2.0)
+
+One mis-bump during reconciliation (multi-agent-review's source, which has no marker to reconcile against) caught and reverted before commit.
+
+- **justfile** — new `Version consistency` section in sync-manifest; summary message wording fix.
+- Eight source prompts reconciled as listed above.
+- Validated: `just sync-manifest` ✓ (11/11 markers consistent), `just validate` ✓.
+
 #### Fixed - Rule-of-5 review of the file-headers implementation (Phases 0–3)
 
 Post-implementation review of all four commits found one HIGH and three LOW defects, all fixed:

@@ -6,8 +6,8 @@ tags: [review, planning, rule-of-5, quality-assurance, validation, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-13
-version: 1.1.0
+updated: 2026-09-15
+version: 1.2.0
 related: [prompt-workflow-create-plan.md, prompt-workflow-iterate-plan.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
 source: adapted-from-fabbro-with-rule-of-5-principle
 ---
@@ -565,5 +565,6 @@ A thorough 10-minute review is better than a superficial 2-minute scan.
 
 ## Version History
 
+- 1.2.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1)
 - 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with plan-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro plan_review command

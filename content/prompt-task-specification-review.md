@@ -6,8 +6,8 @@ tags: [review, specification, rule-of-5, quality-assurance, ieee-29148, openspec
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-03-16
-updated: 2026-03-16
-version: 1.0.0
+updated: 2026-09-15
+version: 1.1.0
 related: [research-standalone-specification-standards.md, prompt-task-plan-review.md, prompt-task-design-review.md]
 source: research-based
 ---
@@ -204,3 +204,7 @@ Total Issues by Severity:
    - LOW: Minor formatting or metadata
 5. **If converged before pass 5** - Stop and report, don't continue needlessly
 ````
+
+## Version History
+
+- 1.1.0 (2026-09-15): Version reconciled with distilled marker via sync-manifest version-consistency check (incitaciones-wp1); distilled runtime form carried 1.1.0 since its creation
