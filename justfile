@@ -277,6 +277,10 @@ header-audit:
         exit 1
     fi
 
+# Scan skill corpus for supply-chain risk patterns (incitaciones-8am)
+security-audit:
+    ./scripts/security-audit.sh
+
 # Show repository statistics
 stats:
     #!/usr/bin/env bash
@@ -905,9 +909,20 @@ sync-manifest:
         fi
     done
 
+    # Security audit gate (incitaciones-8am): skills are supply chain — scan
+    # for credentials and dangerous execution patterns before any manifest
+    # operation or version bump.
+    echo ""
+    echo "Security audit:"
+    if ! ./scripts/security-audit.sh; then
+        ERRORS=$((ERRORS + 1))
+    fi
+
+    echo ""
+
     if [ $ERRORS -gt 0 ] || [ $ORPHANS -gt 0 ]; then
         echo ""
-        [ $ERRORS -gt 0 ] && echo "$ERRORS error(s) (missing files or version mismatches) — fix before updating version."
+        [ $ERRORS -gt 0 ] && echo "$ERRORS error(s) (missing files, version mismatches, or security hits) — fix before updating version."
         [ $ORPHANS -gt 0 ] && echo "$ORPHANS unregistered prompt file(s) — add them to the manifest before updating version."
         exit 1
     fi

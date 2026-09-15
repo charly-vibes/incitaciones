@@ -13,6 +13,9 @@ just new example "Your Example Description"
 # Validate before committing
 just validate
 
+# Security gate (runs automatically as part of sync-manifest)
+just security-audit
+
 # Update changelog
 just changelog "Added prompt for X"
 
@@ -23,6 +26,24 @@ git add content/manifest.json
 git add CHANGELOG.md
 git commit -m "Add prompt for X"
 ```
+
+## Security Gate (Supply Chain)
+
+Published skills are **supply chain, not configuration**: they steer code that
+other people's agents generate. Before anything reaches a release,
+`just security-audit` (invoked automatically by `just sync-manifest`) scans the
+corpus for:
+
+- hardcoded credentials and known API-key formats (`sk-…`, `ghp_…`, `AKIA…`)
+- `curl | bash` / `wget | sh` execution patterns
+- destructive `rm -rf` on variables, globs, or system paths
+- permission escalation (`chmod 777`, setuid bits)
+- safety/validation bypass instructions
+
+Lines that *mention* a pattern in order to flag or refuse it (red-team review
+content, refusal-protocol examples) are excluded via an advisory filter — see
+`scripts/security-audit.sh`. Every surviving hit fails the gate; fix the hit or
+justify a pattern change in the script itself.
 
 ## File Naming Conventions
 

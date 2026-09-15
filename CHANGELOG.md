@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+#### Added - security-audit gate (supply-chain vetting)
+
+- **`just security-audit`** — scans the corpus (245 files: all distilled skills + source prompts) for hardcoded credentials, known API-key formats, `curl | bash`, destructive `rm`, permission escalation, and safety-bypass instructions; wired into `just sync-manifest` so no version bump or release proceeds with a failing scan. Advisory mentions (red-team content teaching reviewers to *flag* patterns) are excluded via a corpus-evidenced filter. Documented in CONTRIBUTING.md. (beads: incitaciones-8am, evidence: B166/Nubank 2,000-skill vetting)
+
 #### Added - skills.sh distribution (`npx skills add incitaciones`)
 
 - **`skills/` catalog committed** — generated `skills/<name>/SKILL.md` (+ `references/` trees) for all 47 manifest entries, conforming to the [Agent Skills](https://agentskills.io) format and the skills.sh discovery contract (`skills/` container directory).
