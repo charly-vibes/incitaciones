@@ -7,7 +7,7 @@ tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-20
 updated: 2026-09-15
-version: 1.4.0
+version: 1.4.1
 related: [prompt-workflow-create-plan.md, prompt-task-issue-tracker-review.md, research-paper-agentic-ticket-requirements-engineering.md, prompt-system-file-headers.md]
 source: derived-from-prompt-task-issue-tracker-review
 ---
@@ -74,7 +74,11 @@ The plan to be implemented will be provided here. Your task is to parse it and c
 
 ## Process
 
-Draft the issue set as **tracer-bullet vertical slices**. Prefer thin, end-to-end slices that cut across the required layers for one narrow capability. Avoid horizontal tickets like "build backend", "add UI", or "create schema" unless they are independently valuable. Before creating anything in the tracker, present the proposed slices to the user for approval. After approval, create the issues and define their dependencies.
+Draft the issue set as **tracer-bullet vertical slices**. Prefer thin, end-to-end slices that cut across the required layers for one narrow capability. Avoid horizontal tickets like "build backend", "add UI", or "create schema" unless they are independently valuable.
+
+**Title lint (hard rule — run on every drafted title before presenting):** a title must name a user-visible outcome ("CSV export works end-to-end"), not a layer. If a title names a layer or artifact — backend, frontend, API, route, button, serializer, schema, tests-only, docs-only, refactor-only — merge it into the outcome slice it serves. Layers differing is never sufficient reason to split: split by capability, never by layer.
+
+Before creating anything in the tracker, present the proposed slices to the user for approval. After approval, create the issues and define their dependencies.
 
 ### Issue Template
 
