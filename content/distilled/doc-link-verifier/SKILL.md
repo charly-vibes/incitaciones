@@ -93,90 +93,19 @@ Group results by source file so the user can see which docs are worst-hit.
 
 ### Step 4 — Contextual correctness (the hard part)
 
-A link can pass Step 3 (it resolves, the anchor exists) and still be wrong — pointing at an outdated version of a page, at the wrong section, at a page whose title/subject no longer matches what the surrounding prose promises. This is what the user means by "correct in context."
+A link can resolve cleanly and still be wrong: pointing at an outdated page, the wrong section, or a page whose subject no longer matches the surrounding prose.
 
-**Shallow check (default).** For each `ok` link, compare the link text (and a sentence of surrounding context) to the target's identifying label:
-- External link, deep mode was run: compare to `<title>` and H1.
-- Relative link to another repo file: compare to the file's first H1, or to the heading just under the fragment if one is present. You can read the file directly — this is cheap.
-- Anchor-only link: compare the link text to the heading itself.
+- **Shallow check (default):** compare link text plus surrounding context to the target's identifying label (title, H1, or heading at the anchor). Flag specific mismatches; don't flag generic link text — note it instead.
+- **Deep check (on request, or for suspicious cases):** fetch/read the target's actual content and ask whether the context's claim holds up.
+- Escalate shallow→deep when the shallow check flagged a specific mismatch, the context makes a specific technical claim, or the user asked for a thorough audit. Don't escalate for generic link text or huge link counts.
 
-Shallow check mismatches worth flagging:
-- Link text says "the API reference" but the target's title is "Installation Guide."
-- Link text says "see the v2 migration notes" but the target page is titled "v3 migration notes."
-- Link text references a specific concept ("rate limiting") and the target page is about something unrelated ("authentication").
-
-Shallow misses are usually false alarms when the link text is generic ("see here", "this page", "click here"). Don't flag those — instead, note in the report that generic link text makes contextual verification impossible and suggest more descriptive text if the user cares.
-
-**Deep check (on request, or for suspicious cases).** Fetch the target page's content and read it. For external links, this means re-running `check_links.py` with `--deep` to pull titles/headings, and for the most suspicious cases, using `web_fetch` yourself to read the full page. For relative links, just read the target file.
-
-Then ask: does the surrounding context's claim hold up when you look at what the target actually says?
-
-**Example — shallow pass, deep fail:**
-
-> "For rate limiting details, see the [API guide](https://example.com/api)."
-
-Shallow: link text "API guide", target title "API Guide" → match, passes.
-Deep: page is about endpoints and auth; there's no rate limiting section anywhere → contextual mismatch.
-
-**Example — deep pass:**
-
-> "See [issue #42](https://github.com/org/repo/issues/42) for the discussion of the memory leak."
-
-Deep: fetch the issue, confirm the title/body talk about a memory leak → context is correct.
-
-When to escalate from shallow to deep automatically:
-- The shallow check flagged a mismatch, but the link text is specific enough that it's worth verifying before reporting.
-- The surrounding context makes a specific technical claim ("as shown in X"), and the user has asked for a thorough audit.
-- The user explicitly asked for a deep check.
-
-When NOT to escalate:
-- The link text is generic ("here", "this", "docs").
-- The repo has thousands of external links (the network cost is too high; ask the user if they want to narrow the scope).
+Full criteria, examples (shallow-pass/deep-fail and deep-pass), and escalation rules: read `references/contextual-correctness.md`.
 
 ### Step 5 — Produce the report
 
-The report has a consistent structure so users can skim or drill in:
-
-```markdown
-# Link audit: <repo>
-
-## Summary
-- Scanned N files, found M links
-- ✅ ok: X · ⚠️ redirected: Y · ❌ broken: Z · ❓ anchor-missing: W · ⏭ skipped: V
-- Contextual mismatches flagged: K
-
-## Broken links (❌)
-Grouped by source file. For each:
-- File + line number
-- Link text and URL
-- What went wrong (HTTP status / "file not found" / etc.)
-- Suggested fix if one is obvious
-
-## Missing anchors (❓)
-For each:
-- File + line, link text, URL
-- Available headings in the target (from the check result)
-- Best-guess replacement
-
-## Redirects worth updating (⚠️)
-Only include notable ones — permanent URL changes, org renames, etc.
-Don't flood the report with trivial http→https redirects unless the user asked.
-
-## Contextual mismatches
-The judgment calls from Step 4. Each one shows:
-- The source line with context
-- The link
-- What the target actually contains
-- Why it's a mismatch
-- Suggested fix or "needs human review"
-
-## Generic link text
-Links whose text is too generic to verify contextually ("here", "this", "click here").
-Not a bug; a quality suggestion.
-```
+Use the fixed report structure (summary with ok/redirected/broken/anchor-missing/skipped counts, then Broken links, Missing anchors, Redirects worth updating, Contextual mismatches, Generic link text) so users can skim or drill in. The exact template: read `references/report-template.md`.
 
 Keep the report in a file (`link-audit.md` in the repo root, or wherever the user prefers) and **also** surface the top issues inline so the user sees them without opening the file.
-
 ### Step 6 — Fixes (opt-in, confirmation required)
 
 After presenting the report, offer to fix things. Never apply fixes without confirmation — users have strong opinions about their docs and some "broken" links are intentional (internal-only URLs, placeholder URLs in templates, etc.).
