@@ -1,6 +1,6 @@
 # incitaciones
 
-> A curated library of reusable prompts and skills for CLI LLM tools (Claude Code, Amp, Gemini CLI, Cursor, Windsurf, Zed). Install all skills with `./install.sh --global` or browse individual prompts below.
+> A curated library of reusable prompts and skills for CLI LLM tools (Claude Code, Amp, Gemini CLI, Cursor, Windsurf, Zed). Install all skills with `npx skills add incitaciones` (skills.sh — works with any agent), `pi install npm:incitaciones` (pi), `npx incitaciones install` (all tools), or `./install.sh --global` (from a git clone). Per skill: `npx skills add incitaciones --skill <name>`.
 
 ## Getting Started
 
