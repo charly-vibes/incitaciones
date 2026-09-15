@@ -521,705 +521,6 @@
       }
     },
     {
-      "name": "code-review",
-      "type": "task",
-      "title": "Iterative Code Review",
-      "description": "Multi-pass code review using Rule of 5 principle",
-      "source": "content/prompt-task-iterative-code-review.md",
-      "distilled": "content/distilled/code-review/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "code-quality",
-        "parallel-review",
-        "iteration",
-        "qa"
-      ],
-      "bundles": [
-        "essentials",
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "quality-assurance"
-        ],
-        "success_signals": [
-          "logical_correctness_verified",
-          "security_vulnerabilities_checked",
-          "edge_cases_identified",
-          "convergence_reached",
-          "actionable_fix_provided"
-        ],
-        "failure_signals": [
-          "unverified_bugs",
-          "missing_context_not_flagged",
-          "incomplete_iteration_before_convergence"
-        ],
-        "stages": [
-          {
-            "name": "context-identification",
-            "hints": [
-              "identifying code",
-              "reading tests",
-              "reading code"
-            ]
-          },
-          {
-            "name": "iterative-analysis",
-            "hints": [
-              "stage 1",
-              "stage 2",
-              "stage 3",
-              "stage 4",
-              "stage 5",
-              "pass 1",
-              "pass 2",
-              "pass 3",
-              "pass 4",
-              "pass 5",
-              "convergence check"
-            ]
-          },
-          {
-            "name": "verification",
-            "hints": [
-              "verifying suggested library",
-              "checking package.json",
-              "checking requirements.txt",
-              "grep_search",
-              "checking patterns"
-            ]
-          },
-          {
-            "name": "final-synthesis",
-            "hints": [
-              "final report",
-              "verdict"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "create-plan",
-      "type": "workflow",
-      "title": "Create Implementation Plan",
-      "description": "Design phased implementation plans with TDD approach",
-      "source": "content/prompt-workflow-create-plan.md",
-      "distilled": "content/distilled/create-plan/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "planning",
-        "implementation"
-      ],
-      "bundles": [
-        "planning"
-      ],
-      "eval": {
-        "task_types": [
-          "planning",
-          "implementation"
-        ],
-        "success_signals": [
-          "phased_plan_present",
-          "tests_planned",
-          "file_paths_present",
-          "verification_steps_present"
-        ],
-        "failure_signals": [
-          "single_phase_plan",
-          "missing_test_strategy",
-          "missing_file_targets",
-          "unresolved_core_ambiguity"
-        ],
-        "stages": [
-          {
-            "name": "read-task",
-            "hints": [
-              "read any provided spec",
-              "task description",
-              "requirements"
-            ]
-          },
-          {
-            "name": "research-codebase",
-            "hints": [
-              "research the codebase",
-              "existing patterns",
-              "current architecture"
-            ]
-          },
-          {
-            "name": "align-options",
-            "hints": [
-              "multiple approaches",
-              "present options",
-              "get alignment"
-            ]
-          },
-          {
-            "name": "write-plan",
-            "hints": [
-              "implementation plan",
-              "references/plan-template.md",
-              "phase"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "plan-template",
-            "path": "content/distilled/create-plan/references/plan-template.md",
-            "purpose": "output-template",
-            "stage": "write-plan",
-            "optional": false,
-            "aliases": [
-              "references/plan-template.md",
-              "plan-template.md",
-              "plan template"
-            ]
-          },
-          {
-            "id": "scenarios",
-            "path": "content/distilled/create-plan/references/scenarios.md",
-            "purpose": "examples",
-            "stage": "align-options",
-            "optional": true,
-            "aliases": [
-              "references/scenarios.md",
-              "scenarios.md",
-              "scenario"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "implement-plan",
-      "type": "workflow",
-      "title": "Implement Plan",
-      "description": "Execute implementation plans phase by phase",
-      "source": "content/prompt-workflow-implement-plan.md",
-      "distilled": "content/distilled/implement-plan/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "planning",
-        "implementation"
-      ],
-      "bundles": [
-        "planning"
-      ],
-      "eval": {
-        "task_types": [
-          "implementation",
-          "testing"
-        ],
-        "success_signals": [
-          "red_green_refactor_evidence",
-          "phase_completion_reported",
-          "verification_present",
-          "plan_progress_updated"
-        ],
-        "failure_signals": [
-          "red_phase_skipped",
-          "multiple_phases_parallelized",
-          "no_verification_step",
-          "plan_not_updated"
-        ],
-        "stages": [
-          {
-            "name": "read-plan",
-            "hints": [
-              "read the plan completely",
-              "first incomplete phase",
-              "approved plan"
-            ]
-          },
-          {
-            "name": "red",
-            "hints": [
-              "failing tests",
-              "write failing tests first",
-              "red"
-            ]
-          },
-          {
-            "name": "green",
-            "hints": [
-              "minimum code",
-              "pass",
-              "green"
-            ]
-          },
-          {
-            "name": "refactor",
-            "hints": [
-              "refactor",
-              "keeping tests green"
-            ]
-          },
-          {
-            "name": "verify-report",
-            "hints": [
-              "success criteria",
-              "verification",
-              "references/verification-template.md"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "verification-template",
-            "path": "content/distilled/implement-plan/references/verification-template.md",
-            "purpose": "verification-template",
-            "stage": "verify-report",
-            "optional": false,
-            "aliases": [
-              "references/verification-template.md",
-              "verification-template.md",
-              "verification template"
-            ]
-          },
-          {
-            "id": "common-situations",
-            "path": "content/distilled/implement-plan/references/common-situations.md",
-            "purpose": "exception-handling",
-            "stage": "read-plan",
-            "optional": true,
-            "aliases": [
-              "references/common-situations.md",
-              "common-situations.md",
-              "common situations"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "iterate-plan",
-      "type": "workflow",
-      "title": "Iterate on Plan",
-      "description": "Refine and improve existing plans based on feedback",
-      "source": "content/prompt-workflow-iterate-plan.md",
-      "distilled": "content/distilled/iterate-plan/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "planning",
-        "iteration"
-      ],
-      "bundles": [
-        "planning"
-      ],
-      "eval": {
-        "task_types": [
-          "planning",
-          "iteration"
-        ],
-        "success_signals": [
-          "focused_plan_delta_present",
-          "completed_work_preserved",
-          "requested_changes_reflected",
-          "change_summary_present"
-        ],
-        "failure_signals": [
-          "wholesale_rewrite_without_need",
-          "completed_work_removed",
-          "requested_changes_not_applied",
-          "missing_change_summary"
-        ],
-        "stages": [
-          {
-            "name": "read-current-plan",
-            "hints": [
-              "read the current plan completely",
-              "current plan",
-              "existing plan"
-            ]
-          },
-          {
-            "name": "understand-change",
-            "hints": [
-              "requested changes",
-              "feedback",
-              "change request"
-            ]
-          },
-          {
-            "name": "research-if-needed",
-            "hints": [
-              "research only if",
-              "new technical context",
-              "current codebase reality"
-            ]
-          },
-          {
-            "name": "edit-plan",
-            "hints": [
-              "focused updates",
-              "surgical edits",
-              "edit the plan"
-            ]
-          },
-          {
-            "name": "summarize-delta",
-            "hints": [
-              "references/change-template.md",
-              "summarizing planned edits",
-              "present the changes"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "change-template",
-            "path": "content/distilled/iterate-plan/references/change-template.md",
-            "purpose": "change-summary-template",
-            "stage": "summarize-delta",
-            "optional": false,
-            "aliases": [
-              "references/change-template.md",
-              "change-template.md",
-              "change template"
-            ]
-          },
-          {
-            "id": "common-scenarios",
-            "path": "content/distilled/iterate-plan/references/common-scenarios.md",
-            "purpose": "examples",
-            "stage": "understand-change",
-            "optional": true,
-            "aliases": [
-              "references/common-scenarios.md",
-              "common-scenarios.md",
-              "common scenarios"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "parallel-review",
-      "type": "workflow",
-      "title": "Parallel Review (Multi-Agent Code Review)",
-      "description": "High-stakes code review with parallel agent waves",
-      "source": "content/prompt-workflow-parallel-review.md",
-      "distilled": "content/distilled/parallel-review/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "multi-agent",
-        "parallel-review",
-        "qa",
-        "high-stakes"
-      ],
-      "bundles": [
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "quality-assurance"
-        ],
-        "success_signals": [
-          "multi_perspective_analysis_complete",
-          "conflict_resolution_performed",
-          "cross_validation_performed",
-          "verified_critical_findings_reported",
-          "convergence_reached"
-        ],
-        "failure_signals": [
-          "unverified_simulated_findings",
-          "missing_specialist_perspectives",
-          "incomplete_orchestration"
-        ],
-        "stages": [
-          {
-            "name": "context-building",
-            "hints": [
-              "identifying requirements",
-              "reading code",
-              "reading tests"
-            ]
-          },
-          {
-            "name": "parallel-analysis",
-            "hints": [
-              "wave 1",
-              "security reviewer",
-              "performance reviewer",
-              "maintainer reviewer",
-              "requirements validator",
-              "operations reviewer"
-            ]
-          },
-          {
-            "name": "synthesis-resolution",
-            "hints": [
-              "gate 1",
-              "consolidating findings",
-              "resolving conflicts"
-            ]
-          },
-          {
-            "name": "cross-validation",
-            "hints": [
-              "wave 2",
-              "false positive checker",
-              "integration validator"
-            ]
-          },
-          {
-            "name": "final-synthesis",
-            "hints": [
-              "gate 2",
-              "final report",
-              "verified findings"
-            ]
-          },
-          {
-            "name": "convergence-check",
-            "hints": [
-              "wave 3",
-              "convergence reached"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "create-issues",
-      "type": "task",
-      "title": "Create Issues from Plan",
-      "description": "Generate trackable issues from implementation plans",
-      "source": "content/prompt-task-create-issues.md",
-      "distilled": "content/distilled/create-issues/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "planning",
-        "issues",
-        "project-management",
-        "automation"
-      ],
-      "bundles": [
-        "planning"
-      ],
-      "eval": {
-        "task_types": [
-          "project-management",
-          "planning"
-        ],
-        "success_signals": [
-          "logical_units_identified",
-          "acceptance_criteria_binary",
-          "workflow_mandate_included",
-          "ids_captured_via_variables",
-          "dependencies_correctly_wired"
-        ],
-        "failure_signals": [
-          "guess_issue_ids",
-          "missing_workflow_mandate",
-          "broad_non_atomic_issues",
-          "broken_dependency_commands"
-        ],
-        "stages": [
-          {
-            "name": "plan-identification",
-            "hints": [
-              "identifying plan",
-              "reading plan",
-              "parsing phases"
-            ]
-          },
-          {
-            "name": "issue-tracker-identification",
-            "hints": [
-              "target system",
-              "cli tools",
-              "gh issue",
-              "bd create"
-            ]
-          },
-          {
-            "name": "issue-drafting",
-            "hints": [
-              "drafting issue",
-              "acceptance criteria",
-              "workflow mandate",
-              "tdd",
-              "tidy first"
-            ]
-          },
-          {
-            "name": "execution",
-            "hints": [
-              "generating commands",
-              "runnable shell commands",
-              "capturing ids",
-              "linking dependencies"
-            ]
-          },
-          {
-            "name": "final-report",
-            "hints": [
-              "summary of created issues",
-              "creation summary"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "distill-prompt",
-      "type": "task",
-      "title": "Distill Prompt",
-      "description": "Create lean, token-efficient versions of prompts",
-      "source": "content/prompt-task-distill-prompt.md",
-      "distilled": "content/distilled/distill-prompt/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "prompts",
-        "optimization",
-        "distillation"
-      ],
-      "bundles": [
-        "meta"
-      ],
-      "eval": {
-        "task_types": [
-          "prompt-engineering",
-          "optimization"
-        ],
-        "success_signals": [
-          "metadata_removed",
-          "human_context_filtered",
-          "essential_rules_preserved",
-          "imperative_commands_used",
-          "structured_output_maintained",
-          "compression_ratio_provided"
-        ],
-        "failure_signals": [
-          "rule_loss_detected",
-          "template_discarded",
-          "commentary_included",
-          "vague_distillation"
-        ],
-        "stages": [
-          {
-            "name": "input-identification",
-            "hints": [
-              "identifying verbose prompt",
-              "reading source"
-            ]
-          },
-          {
-            "name": "amnesia-filter",
-            "hints": [
-              "removing metadata",
-              "removing front-matter",
-              "filtering human context",
-              "removing fluff"
-            ]
-          },
-          {
-            "name": "instruction-compression",
-            "hints": [
-              "converting to imperative",
-              "consolidating rules",
-              "maximizing density"
-            ]
-          },
-          {
-            "name": "verification",
-            "hints": [
-              "checking rule retention",
-              "validating negative constraints",
-              "preserving formats"
-            ]
-          },
-          {
-            "name": "final-output",
-            "hints": [
-              "distilled prompt",
-              "token compression ratio",
-              "no commentary"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "verify-prompt",
-      "type": "task",
-      "title": "Verify Distilled Prompt",
-      "description": "Validate distilled prompts preserve essential instructions",
-      "source": "content/prompt-task-verify-distilled-prompt.md",
-      "distilled": "content/distilled/verify-prompt/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "prompts",
-        "validation",
-        "qa"
-      ],
-      "bundles": [
-        "meta"
-      ],
-      "eval": {
-        "task_types": [
-          "prompt-engineering",
-          "quality-assurance"
-        ],
-        "success_signals": [
-          "parity_audit_performed",
-          "negative_constraints_verified",
-          "output_schemas_verified",
-          "human_context_removal_confirmed",
-          "correct_verdict_provided"
-        ],
-        "failure_signals": [
-          "missing_essential_rule",
-          "altered_instruction_meaning",
-          "incorrect_ok_verdict",
-          "commentary_included"
-        ],
-        "stages": [
-          {
-            "name": "input-identification",
-            "hints": [
-              "original prompt",
-              "distilled prompt",
-              "comparing versions"
-            ]
-          },
-          {
-            "name": "parity-audit",
-            "hints": [
-              "lossless check",
-              "rule mapping",
-              "negative constraint check",
-              "format check"
-            ]
-          },
-          {
-            "name": "efficiency-audit",
-            "hints": [
-              "fluff check",
-              "removing metadata",
-              "removing human context"
-            ]
-          },
-          {
-            "name": "verification",
-            "hints": [
-              "verdict",
-              "responding with OK",
-              "discrepancy report"
-            ]
-          }
-        ]
-      }
-    },
-    {
       "name": "research-codebase",
       "type": "task",
       "title": "Research Codebase",
@@ -1314,196 +615,6 @@
       }
     },
     {
-      "name": "create-handoff",
-      "type": "workflow",
-      "title": "Create Handoff Document",
-      "description": "Generate context documents for session continuity",
-      "source": "content/prompt-workflow-create-handoff.md",
-      "distilled": "content/distilled/create-handoff/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "handoff",
-        "documentation",
-        "context"
-      ],
-      "bundles": [
-        "essentials"
-      ],
-      "eval": {
-        "task_types": [
-          "handoff",
-          "documentation"
-        ],
-        "success_signals": [
-          "handoff_document_created",
-          "resume_instructions_present",
-          "decisions_and_next_steps_present",
-          "artifact_references_present"
-        ],
-        "failure_signals": [
-          "task_list_only",
-          "missing_resume_instructions",
-          "missing_next_steps",
-          "large_code_blocks_copied"
-        ],
-        "stages": [
-          {
-            "name": "gather-context",
-            "hints": [
-              "repository metadata",
-              "current repository",
-              "gather current"
-            ]
-          },
-          {
-            "name": "name-handoff",
-            "hints": [
-              "references/naming.md",
-              "handoff filename",
-              "naming"
-            ]
-          },
-          {
-            "name": "write-handoff",
-            "hints": [
-              "references/handoff-template.md",
-              "handoff document",
-              "write the document"
-            ]
-          },
-          {
-            "name": "publish-location",
-            "hints": [
-              "where the handoff was written",
-              "how to resume",
-              "resume from it"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "naming",
-            "path": "content/distilled/create-handoff/references/naming.md",
-            "purpose": "naming-convention",
-            "stage": "name-handoff",
-            "optional": false,
-            "aliases": [
-              "references/naming.md",
-              "naming.md",
-              "naming"
-            ]
-          },
-          {
-            "id": "handoff-template",
-            "path": "content/distilled/create-handoff/references/handoff-template.md",
-            "purpose": "output-template",
-            "stage": "write-handoff",
-            "optional": false,
-            "aliases": [
-              "references/handoff-template.md",
-              "handoff-template.md",
-              "handoff template"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "resume-handoff",
-      "type": "workflow",
-      "title": "Resume from Handoff",
-      "description": "Continue work from a previous session's handoff document",
-      "source": "content/prompt-workflow-resume-handoff.md",
-      "distilled": "content/distilled/resume-handoff/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "handoff",
-        "context",
-        "continuity"
-      ],
-      "bundles": [
-        "essentials"
-      ],
-      "eval": {
-        "task_types": [
-          "handoff",
-          "analysis"
-        ],
-        "success_signals": [
-          "handoff_located",
-          "repository_changes_verified",
-          "critical_files_rechecked",
-          "current_state_summary_present"
-        ],
-        "failure_signals": [
-          "handoff_used_without_verification",
-          "stale_priorities_preserved_despite_conflict",
-          "critical_files_not_read",
-          "new_work_started_before_confirmation"
-        ],
-        "stages": [
-          {
-            "name": "locate-handoff",
-            "hints": [
-              "locate the handoff file",
-              "handoff file",
-              "references/locating.md"
-            ]
-          },
-          {
-            "name": "extract-status",
-            "hints": [
-              "extract current status",
-              "open questions",
-              "next steps"
-            ]
-          },
-          {
-            "name": "verify-repository",
-            "hints": [
-              "verify how the repository changed",
-              "current codebase",
-              "stale handoffs"
-            ]
-          },
-          {
-            "name": "summarize-current-state",
-            "hints": [
-              "references/analysis-template.md",
-              "current situation",
-              "analysis template"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "locating",
-            "path": "content/distilled/resume-handoff/references/locating.md",
-            "purpose": "discovery-guide",
-            "stage": "locate-handoff",
-            "optional": true,
-            "aliases": [
-              "references/locating.md",
-              "locating.md",
-              "locating"
-            ]
-          },
-          {
-            "id": "analysis-template",
-            "path": "content/distilled/resume-handoff/references/analysis-template.md",
-            "purpose": "output-template",
-            "stage": "summarize-current-state",
-            "optional": false,
-            "aliases": [
-              "references/analysis-template.md",
-              "analysis-template.md",
-              "analysis template"
-            ]
-          }
-        ]
-      }
-    },
-    {
       "name": "design-practice",
       "type": "workflow",
       "title": "Design in Practice",
@@ -1518,19 +629,6 @@
       "bundles": [
         "planning"
       ]
-    },
-    {
-      "name": "extract-prompt",
-      "type": "workflow",
-      "title": "Extract Prompt from Conversation",
-      "description": "Turn successful interactions into reusable prompts",
-      "source": "content/prompt-workflow-extract-prompt-from-conversation.md",
-      "distilled": "content/distilled/extract-prompt.md",
-      "tags": [
-        "prompts",
-        "extraction"
-      ],
-      "bundles": []
     },
     {
       "name": "pre-mortem",
@@ -1660,95 +758,6 @@
       "bundles": [
         "reviews"
       ]
-    },
-    {
-      "name": "multi-agent-review",
-      "type": "workflow",
-      "title": "Multi-Agent Parallel Review",
-      "description": "Coordinate multiple agents for comprehensive review",
-      "source": "content/prompt-workflow-multi-agent-parallel-review.md",
-      "distilled": "content/distilled/multi-agent-review.md",
-      "tags": [
-        "review",
-        "multi-agent",
-        "parallel"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
-      "name": "plan-review",
-      "type": "task",
-      "title": "Iterative Plan Review (Rule of 5)",
-      "description": "Iterative review of implementation plans",
-      "source": "content/prompt-task-plan-review.md",
-      "distilled": "content/distilled/plan-review/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "planning",
-        "parallel-review",
-        "quality-assurance",
-        "validation"
-      ],
-      "bundles": [
-        "planning",
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "planning"
-        ],
-        "success_signals": [
-          "feasibility_verified",
-          "tdd_alignment_confirmed",
-          "convergence_reached",
-          "verifiable_phases_defined"
-        ],
-        "failure_signals": [
-          "missing_verification_steps",
-          "impossible_ordering_missed",
-          "hidden_complexity_not_flagged"
-        ],
-        "stages": [
-          {
-            "name": "plan-identification",
-            "hints": [
-              "identifying plan",
-              "reading plan"
-            ]
-          },
-          {
-            "name": "iterative-analysis",
-            "hints": [
-              "pass 1",
-              "pass 2",
-              "pass 3",
-              "pass 4",
-              "pass 5",
-              "convergence check"
-            ]
-          },
-          {
-            "name": "verification",
-            "hints": [
-              "verifying technical claims",
-              "checking file existence",
-              "read_file",
-              "grep_search"
-            ]
-          },
-          {
-            "name": "final-synthesis",
-            "hints": [
-              "final report",
-              "verdict"
-            ]
-          }
-        ]
-      }
     },
     {
       "name": "design-review",
@@ -1949,205 +958,6 @@
       }
     },
     {
-      "name": "issue-review",
-      "type": "task",
-      "title": "Issue Tracker Review",
-      "description": "Review issues for completeness and dependencies",
-      "source": "content/prompt-task-issue-tracker-review.md",
-      "distilled": "content/distilled/issue-review/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "issues",
-        "project-management"
-      ],
-      "bundles": [
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "issues"
-        ],
-        "success_signals": [
-          "issue_set_gathered",
-          "multi_pass_review_completed_or_converged",
-          "issue_ids_cited",
-          "final_report_present"
-        ],
-        "failure_signals": [
-          "setup_skipped",
-          "issue_ids_missing",
-          "convergence_not_checked",
-          "final_report_missing"
-        ],
-        "stages": [
-          {
-            "name": "setup-collection",
-            "hints": [
-              "references/setup.md",
-              "collection commands",
-              "gather the issue set"
-            ]
-          },
-          {
-            "name": "pass-1-clarity",
-            "hints": [
-              "references/pass-1-clarity.md",
-              "pass 1",
-              "clarity"
-            ]
-          },
-          {
-            "name": "pass-2-scope",
-            "hints": [
-              "references/pass-2-scope.md",
-              "pass 2",
-              "scope"
-            ]
-          },
-          {
-            "name": "pass-3-dependencies",
-            "hints": [
-              "references/pass-3-dependencies.md",
-              "pass 3",
-              "dependencies"
-            ]
-          },
-          {
-            "name": "pass-4-alignment",
-            "hints": [
-              "references/pass-4-alignment.md",
-              "pass 4",
-              "alignment"
-            ]
-          },
-          {
-            "name": "pass-5-executability",
-            "hints": [
-              "references/pass-5-executability.md",
-              "pass 5",
-              "executability"
-            ]
-          },
-          {
-            "name": "convergence-check",
-            "hints": [
-              "references/convergence.md",
-              "convergence",
-              "stop early"
-            ]
-          },
-          {
-            "name": "final-report",
-            "hints": [
-              "references/final-report.md",
-              "final report",
-              "produce the final report"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "setup",
-            "path": "content/distilled/issue-review/references/setup.md",
-            "purpose": "setup-guide",
-            "stage": "setup-collection",
-            "optional": false,
-            "aliases": [
-              "references/setup.md",
-              "setup.md",
-              "setup"
-            ]
-          },
-          {
-            "id": "pass-1-clarity",
-            "path": "content/distilled/issue-review/references/pass-1-clarity.md",
-            "purpose": "review-pass",
-            "stage": "pass-1-clarity",
-            "optional": false,
-            "aliases": [
-              "references/pass-1-clarity.md",
-              "pass-1-clarity.md",
-              "pass 1"
-            ]
-          },
-          {
-            "id": "pass-2-scope",
-            "path": "content/distilled/issue-review/references/pass-2-scope.md",
-            "purpose": "review-pass",
-            "stage": "pass-2-scope",
-            "optional": false,
-            "aliases": [
-              "references/pass-2-scope.md",
-              "pass-2-scope.md",
-              "pass 2"
-            ]
-          },
-          {
-            "id": "pass-3-dependencies",
-            "path": "content/distilled/issue-review/references/pass-3-dependencies.md",
-            "purpose": "review-pass",
-            "stage": "pass-3-dependencies",
-            "optional": false,
-            "aliases": [
-              "references/pass-3-dependencies.md",
-              "pass-3-dependencies.md",
-              "pass 3"
-            ]
-          },
-          {
-            "id": "pass-4-alignment",
-            "path": "content/distilled/issue-review/references/pass-4-alignment.md",
-            "purpose": "review-pass",
-            "stage": "pass-4-alignment",
-            "optional": false,
-            "aliases": [
-              "references/pass-4-alignment.md",
-              "pass-4-alignment.md",
-              "pass 4"
-            ]
-          },
-          {
-            "id": "pass-5-executability",
-            "path": "content/distilled/issue-review/references/pass-5-executability.md",
-            "purpose": "review-pass",
-            "stage": "pass-5-executability",
-            "optional": false,
-            "aliases": [
-              "references/pass-5-executability.md",
-              "pass-5-executability.md",
-              "pass 5"
-            ]
-          },
-          {
-            "id": "convergence",
-            "path": "content/distilled/issue-review/references/convergence.md",
-            "purpose": "stopping-criteria",
-            "stage": "convergence-check",
-            "optional": false,
-            "aliases": [
-              "references/convergence.md",
-              "convergence.md",
-              "convergence"
-            ]
-          },
-          {
-            "id": "final-report",
-            "path": "content/distilled/issue-review/references/final-report.md",
-            "purpose": "output-template",
-            "stage": "final-report",
-            "optional": false,
-            "aliases": [
-              "references/final-report.md",
-              "final-report.md",
-              "final report"
-            ]
-          }
-        ]
-      }
-    },
-    {
       "name": "ui-align",
       "type": "task",
       "title": "UI Align (Vibe-to-Spec)",
@@ -2164,129 +974,6 @@
       "bundles": [
         "planning"
       ]
-    },
-    {
-      "name": "rule-of-5-universal",
-      "type": "task",
-      "title": "Universal Rule of 5 Review",
-      "description": "Steve Yegge's original 5-stage review for any artifact",
-      "source": "content/prompt-task-rule-of-5-universal.md",
-      "distilled": "content/distilled/rule-of-5-universal/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "universal",
-        "parallel-review"
-      ],
-      "bundles": [
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "universal"
-        ],
-        "success_signals": [
-          "five_stage_progression_or_early_convergence_present",
-          "artifact_specific_findings_present",
-          "exact_locations_cited",
-          "final_verdict_present"
-        ],
-        "failure_signals": [
-          "stage_skipping_without_convergence",
-          "vague_findings_without_locations",
-          "potential_issues_without_evidence",
-          "final_verdict_missing"
-        ],
-        "stages": [
-          {
-            "name": "draft",
-            "hints": [
-              "stage 1",
-              "draft",
-              "overall shape"
-            ]
-          },
-          {
-            "name": "correctness",
-            "hints": [
-              "stage 2",
-              "correctness",
-              "errors"
-            ]
-          },
-          {
-            "name": "clarity",
-            "hints": [
-              "stage 3",
-              "clarity",
-              "comprehensibility"
-            ]
-          },
-          {
-            "name": "edge-cases",
-            "hints": [
-              "stage 4",
-              "edge cases",
-              "boundary conditions"
-            ]
-          },
-          {
-            "name": "excellence",
-            "hints": [
-              "stage 5",
-              "excellence",
-              "final polish"
-            ]
-          },
-          {
-            "name": "final-report",
-            "hints": [
-              "final report",
-              "final verdict",
-              "synthesize findings"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "templates",
-            "path": "content/distilled/rule-of-5-universal/references/templates.md",
-            "purpose": "output-template",
-            "stage": "final-report",
-            "optional": false,
-            "aliases": [
-              "references/templates.md",
-              "templates.md",
-              "templates"
-            ]
-          },
-          {
-            "id": "criteria",
-            "path": "content/distilled/rule-of-5-universal/references/criteria.md",
-            "purpose": "stopping-criteria",
-            "stage": "correctness",
-            "optional": false,
-            "aliases": [
-              "references/criteria.md",
-              "criteria.md",
-              "criteria"
-            ]
-          },
-          {
-            "id": "examples",
-            "path": "content/distilled/rule-of-5-universal/references/examples.md",
-            "purpose": "examples",
-            "stage": "draft",
-            "optional": true,
-            "aliases": [
-              "references/examples.md",
-              "examples.md",
-              "examples"
-            ]
-          }
-        ]
-      }
     },
     {
       "name": "bias-audit",
@@ -2423,597 +1110,6 @@
       ]
     },
     {
-      "name": "research-documentation",
-      "type": "task",
-      "title": "Research and Audit Documentation Architecture",
-      "description": "Audit existing documentation or plan a new suite using advanced frameworks",
-      "source": "content/prompt-task-research-documentation.md",
-      "distilled": "content/distilled/research-documentation/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "research",
-        "documentation",
-        "audit",
-        "information-architecture",
-        "diataxis",
-        "eppo",
-        "llm-readiness"
-      ],
-      "bundles": [
-        "documentation",
-        "research"
-      ],
-      "eval": {
-        "task_types": [
-          "research",
-          "documentation",
-          "audit"
-        ],
-        "success_signals": [
-          "core_assertion_stated",
-          "every_doc_classified_to_one_quadrant",
-          "frankenbooks_flagged",
-          "eppo_compliance_checked",
-          "ai_readiness_assessed",
-          "measurement_signals_recommended",
-          "report_produced"
-        ],
-        "failure_signals": [
-          "content_drafted",
-          "stylistic_changes_suggested",
-          "quadrant_overlap_unflagged",
-          "missing_report"
-        ],
-        "stages": [
-          {
-            "name": "define-scope",
-            "hints": [
-              "primary audience",
-              "core assertion",
-              "value proposition"
-            ]
-          },
-          {
-            "name": "audit-content",
-            "hints": [
-              "references/checklist.md",
-              "diataxis quadrant",
-              "eppo status",
-              "cognitive load"
-            ]
-          },
-          {
-            "name": "map-snowflake",
-            "hints": [
-              "macro-expansion",
-              "component list",
-              "topic matrix"
-            ]
-          },
-          {
-            "name": "identify-gaps",
-            "hints": [
-              "references/llm-readiness.md",
-              "references/metrics.md",
-              "quadrant imbalance",
-              "llms.txt",
-              "rag chunking"
-            ]
-          },
-          {
-            "name": "produce-report",
-            "hints": [
-              "references/report-template.md",
-              "final report"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "checklist",
-            "path": "content/distilled/research-documentation/references/checklist.md",
-            "purpose": "audit-checklist",
-            "stage": "audit-content",
-            "optional": false,
-            "aliases": [
-              "references/checklist.md",
-              "checklist.md",
-              "checklist"
-            ]
-          },
-          {
-            "id": "llm-readiness",
-            "path": "content/distilled/research-documentation/references/llm-readiness.md",
-            "purpose": "gap-assessment",
-            "stage": "identify-gaps",
-            "optional": false,
-            "aliases": [
-              "references/llm-readiness.md",
-              "llm-readiness.md",
-              "llm readiness"
-            ]
-          },
-          {
-            "id": "metrics",
-            "path": "content/distilled/research-documentation/references/metrics.md",
-            "purpose": "measurement-signals",
-            "stage": "identify-gaps",
-            "optional": false,
-            "aliases": [
-              "references/metrics.md",
-              "metrics.md",
-              "metrics"
-            ]
-          },
-          {
-            "id": "report-template",
-            "path": "content/distilled/research-documentation/references/report-template.md",
-            "purpose": "output-template",
-            "stage": "produce-report",
-            "optional": false,
-            "aliases": [
-              "references/report-template.md",
-              "report-template.md",
-              "report template"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "implement-documentation",
-      "type": "task",
-      "title": "Implement High-Signal Documentation Topics",
-      "description": "Write documentation using Diátaxis, Info Mapping, and EPPO principles",
-      "source": "content/prompt-task-implement-documentation.md",
-      "distilled": "content/distilled/implement-documentation/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "implementation",
-        "documentation",
-        "technical-writing",
-        "diataxis",
-        "info-mapping",
-        "eppo",
-        "versioning"
-      ],
-      "bundles": [
-        "documentation"
-      ],
-      "eval": {
-        "task_types": [
-          "implementation",
-          "documentation",
-          "writing"
-        ],
-        "success_signals": [
-          "quadrant_identified",
-          "matching_template_used",
-          "context_block_present",
-          "content_chunked_and_labeled",
-          "tldr_present",
-          "anti_patterns_avoided"
-        ],
-        "failure_signals": [
-          "mixed_intent",
-          "missing_context_block",
-          "generic_headers",
-          "missing_tldr",
-          "faq_antipattern_used"
-        ],
-        "stages": [
-          {
-            "name": "quadrant-check",
-            "hints": [
-              "references/templates.md",
-              "references/anti-patterns.md",
-              "tutorial",
-              "how-to",
-              "reference",
-              "explanation"
-            ]
-          },
-          {
-            "name": "eppo-init",
-            "hints": [
-              "title",
-              "context block",
-              "prerequisites"
-            ]
-          },
-          {
-            "name": "info-mapping",
-            "hints": [
-              "chunking",
-              "labeling",
-              "tables",
-              "lists"
-            ]
-          },
-          {
-            "name": "ai-polish",
-            "hints": [
-              "semantic headers",
-              "tldr",
-              "rag indexing"
-            ]
-          },
-          {
-            "name": "setup-tooling",
-            "hints": [
-              "references/tooling-comparison.md",
-              "references/versioning.md",
-              "references/diataxis-implementation.md",
-              "platform selection",
-              "versioning strategy"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "templates",
-            "path": "content/distilled/implement-documentation/references/templates.md",
-            "purpose": "output-template",
-            "stage": "quadrant-check",
-            "optional": false,
-            "aliases": [
-              "references/templates.md",
-              "templates.md",
-              "templates"
-            ]
-          },
-          {
-            "id": "anti-patterns",
-            "path": "content/distilled/implement-documentation/references/anti-patterns.md",
-            "purpose": "pitfall-catalog",
-            "stage": "quadrant-check",
-            "optional": false,
-            "aliases": [
-              "references/anti-patterns.md",
-              "anti-patterns.md",
-              "anti patterns"
-            ]
-          },
-          {
-            "id": "tooling-comparison",
-            "path": "content/distilled/implement-documentation/references/tooling-comparison.md",
-            "purpose": "platform-selection",
-            "stage": "setup-tooling",
-            "optional": true,
-            "aliases": [
-              "references/tooling-comparison.md",
-              "tooling-comparison.md",
-              "tooling comparison"
-            ]
-          },
-          {
-            "id": "versioning",
-            "path": "content/distilled/implement-documentation/references/versioning.md",
-            "purpose": "versioning-strategy",
-            "stage": "setup-tooling",
-            "optional": true,
-            "aliases": [
-              "references/versioning.md",
-              "versioning.md",
-              "versioning"
-            ]
-          },
-          {
-            "id": "diataxis-implementation",
-            "path": "content/distilled/implement-documentation/references/diataxis-implementation.md",
-            "purpose": "rollout-guide",
-            "stage": "setup-tooling",
-            "optional": true,
-            "aliases": [
-              "references/diataxis-implementation.md",
-              "diataxis-implementation.md",
-              "diataxis implementation"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "review-documentation",
-      "type": "task",
-      "title": "Review Documentation Quality (Rule of 5)",
-      "description": "Iterative review of documentation for cognitive scannability and AI-readiness",
-      "source": "content/prompt-task-review-documentation.md",
-      "distilled": "content/distilled/review-documentation/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "review",
-        "documentation",
-        "technical-writing",
-        "parallel-review",
-        "diataxis",
-        "eppo",
-        "info-mapping",
-        "ai-readiness"
-      ],
-      "bundles": [
-        "documentation",
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "documentation",
-          "quality-assurance"
-        ],
-        "success_signals": [
-          "five_passes_completed_or_converged",
-          "issues_cited_with_locations",
-          "ai_readiness_deep_checked",
-          "final_verdict_present"
-        ],
-        "failure_signals": [
-          "stage_skipping_without_convergence",
-          "vague_findings_without_locations",
-          "shallow_ai_pass_only",
-          "missing_verdict"
-        ],
-        "stages": [
-          {
-            "name": "pass-1-intent",
-            "hints": [
-              "pass 1",
-              "diataxis intent",
-              "leaked intents"
-            ]
-          },
-          {
-            "name": "pass-2-eppo",
-            "hints": [
-              "pass 2",
-              "standalone utility",
-              "context"
-            ]
-          },
-          {
-            "name": "pass-3-scan",
-            "hints": [
-              "pass 3",
-              "scannability",
-              "labels",
-              "chunking"
-            ]
-          },
-          {
-            "name": "pass-4-accuracy",
-            "hints": [
-              "pass 4",
-              "whole game",
-              "fail-states",
-              "martini glass"
-            ]
-          },
-          {
-            "name": "pass-5-ai-readiness",
-            "hints": [
-              "pass 5",
-              "references/ai-readiness-criteria.md",
-              "llms.txt",
-              "rag chunking",
-              "dual-audience"
-            ]
-          },
-          {
-            "name": "final-report",
-            "hints": [
-              "severity totals",
-              "top findings",
-              "verdict"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "ai-readiness-criteria",
-            "path": "content/distilled/review-documentation/references/ai-readiness-criteria.md",
-            "purpose": "deep-ai-readiness-checks",
-            "stage": "pass-5-ai-readiness",
-            "optional": false,
-            "aliases": [
-              "references/ai-readiness-criteria.md",
-              "ai-readiness-criteria.md",
-              "ai readiness criteria"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "name": "red-team-review",
-      "type": "task",
-      "title": "Adversarial Bug Detection Review",
-      "description": "Red-team-style adversarial review finding logic bugs, failure modes, security vulnerabilities, and deployment risks",
-      "source": "content/prompt-task-red-team-review.md",
-      "distilled": "content/distilled/red-team-review.md",
-      "tags": [
-        "red-teaming",
-        "bug-detection",
-        "review",
-        "reliability",
-        "security",
-        "ci-cd",
-        "edge-cases",
-        "failure-modes"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
-      "name": "mutability-diagnostician",
-      "type": "task",
-      "title": "Mutability Diagnostician",
-      "description": "Diagnose pathological mutable state, side effect entanglement, and temporal coupling — map findings to immutability refactoring patterns",
-      "source": "content/prompt-task-mutability-diagnostician.md",
-      "distilled": "content/distilled/mutability-diagnostician.md",
-      "tags": [
-        "refactoring",
-        "immutability",
-        "functional-programming",
-        "code-smells",
-        "side-effects",
-        "concurrency",
-        "value-objects"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "composability-diagnostician",
-      "type": "task",
-      "title": "Composability Diagnostician",
-      "description": "Diagnose composition friction — type mismatches, missed endomorphisms, ad-hoc patterns without algebraic guarantees — and map findings to category-theoretic refactoring patterns",
-      "source": "content/prompt-task-composability-diagnostician.md",
-      "distilled": "content/distilled/composability-diagnostician.md",
-      "tags": [
-        "refactoring",
-        "composability",
-        "category-theory",
-        "type-systems",
-        "endomorphisms",
-        "property-based-testing",
-        "architecture"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "invalid-states-diagnostician",
-      "type": "task",
-      "title": "Invalid States Diagnostician",
-      "description": "Diagnose representable invalid states — primitive obsession, boolean blindness, implicit coupling, shotgun parsing, ad-hoc state machines, exhaustiveness gaps — and map findings to type-tightening refactoring patterns",
-      "source": "content/prompt-task-invalid-states-diagnostician.md",
-      "distilled": "content/distilled/invalid-states-diagnostician.md",
-      "tags": [
-        "refactoring",
-        "type-systems",
-        "domain-modeling",
-        "algebraic-data-types",
-        "code-review",
-        "state-machines",
-        "parse-dont-validate",
-        "typestate",
-        "value-objects"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "julia-performance-diagnostician",
-      "type": "task",
-      "title": "Julia Performance Diagnostician",
-      "description": "Diagnose Julia performance pathologies — type instabilities, heap allocation floods, cache-hostile access, dynamic dispatch — and map findings to optimization patterns grounded in the compilation pipeline",
-      "source": "content/prompt-task-julia-performance-diagnostician.md",
-      "distilled": "content/distilled/julia-performance-diagnostician.md",
-      "tags": [
-        "julia",
-        "performance",
-        "type-stability",
-        "profiling",
-        "anti-patterns",
-        "refactoring",
-        "benchmarking",
-        "memory-allocation",
-        "simd",
-        "multiple-dispatch"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "modularity-diagnostician",
-      "type": "task",
-      "title": "Modularity Diagnostician",
-      "description": "Diagnose modularity violations — high coupling, low cohesion, cyclic dependencies, God Objects, boundary erosion, temporal coupling — and map findings to decomposition patterns grounded in the Unix philosophy",
-      "source": "content/prompt-task-modularity-diagnostician.md",
-      "distilled": "content/distilled/modularity-diagnostician.md",
-      "tags": [
-        "refactoring",
-        "modularity",
-        "unix-philosophy",
-        "coupling",
-        "cohesion",
-        "architectural-metrics",
-        "dependency-graphs",
-        "decomposition",
-        "anti-patterns",
-        "code-smells"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "rca-diagnostician",
-      "type": "task",
-      "title": "RCA Diagnostician",
-      "description": "Conduct or evaluate root cause analysis using cross-disciplinary principles — structured investigation from symptom to systemic cause with method selection, cognitive bias countermeasures, and corrective actions ranked by strength",
-      "source": "content/prompt-task-rca-diagnostician.md",
-      "distilled": "content/distilled/rca-diagnostician/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "root-cause-analysis",
-        "causal-inference",
-        "incident-analysis",
-        "systems-thinking",
-        "safety-engineering",
-        "diagnostician",
-        "review"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
-      "name": "verification-diagnostician",
-      "type": "task",
-      "title": "Verification Diagnostician",
-      "description": "Diagnose factual errors, unsupported claims, logical inconsistencies, misattributed sources, and integrity concerns in documents — four-layer verification protocol (source authority, factual accuracy, logical consistency, provenance)",
-      "source": "content/prompt-task-verification-diagnostician.md",
-      "distilled": "content/distilled/verification-diagnostician.md",
-      "tags": [
-        "fact-checking",
-        "verification",
-        "hallucination-detection",
-        "knowledge-graphs",
-        "source-authority",
-        "logical-consistency",
-        "provenance",
-        "review"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
-      "name": "specification-evaluation-diagnostician",
-      "type": "task",
-      "title": "Specification Evaluation Diagnostician",
-      "description": "Evaluate specifications across Completeness, Correctness, and Coherence dimensions mapped to ISO 29148 — cross-domain quality gate for software, hardware, business process, and research specifications",
-      "source": "content/prompt-task-specification-evaluation-diagnostician.md",
-      "distilled": "content/distilled/specification-evaluation-diagnostician.md",
-      "tags": [
-        "specification-evaluation",
-        "completeness",
-        "correctness",
-        "coherence",
-        "iso-29148",
-        "review"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
       "name": "file-headers",
       "type": "system",
       "title": "File Headers (Self-Describing Source Files)",
@@ -3077,195 +1173,6 @@
       ]
     },
     {
-      "name": "ux-dx-evaluation-diagnostician",
-      "type": "task",
-      "title": "UX/DX Evaluation Diagnostician",
-      "description": "Five-layer diagnostic evaluation of products, APIs, CLIs, libraries, and documentation against HEART, SPACE/DX Core 4, CLI/API heuristics, CHAOSS, and Diataxis frameworks",
-      "source": "content/prompt-task-ux-dx-evaluation-diagnostician.md",
-      "distilled": "content/distilled/ux-dx-evaluation-diagnostician/SKILL.md",
-      "skill_format": "progressive-disclosure",
-      "tags": [
-        "ux",
-        "dx",
-        "developer-experience",
-        "heart-framework",
-        "space-framework",
-        "dx-core-4",
-        "diataxis",
-        "chaoss",
-        "api-design",
-        "cli-usability",
-        "evaluation",
-        "review"
-      ],
-      "bundles": [
-        "reviews"
-      ],
-      "eval": {
-        "task_types": [
-          "review",
-          "evaluation",
-          "ux",
-          "dx"
-        ],
-        "success_signals": [
-          "target_and_context_identified",
-          "applicable_layers_selected",
-          "layer_specific_evidence_present",
-          "measurement_gaps_called_out",
-          "diagnostic_report_present"
-        ],
-        "failure_signals": [
-          "layers_applied_without_relevance_check",
-          "claims_without_observable_evidence",
-          "measurement_gaps_omitted",
-          "fixes_offered_instead_of_report"
-        ],
-        "stages": [
-          {
-            "name": "analyze-input",
-            "hints": [
-              "analyze input",
-              "target",
-              "layer focus",
-              "audience",
-              "context"
-            ]
-          },
-          {
-            "name": "select-layers",
-            "hints": [
-              "select layers",
-              "which of the five layers apply",
-              "applicable layer"
-            ]
-          },
-          {
-            "name": "layer-1-product",
-            "hints": [
-              "references/layer-1-product.md",
-              "layer 1",
-              "product"
-            ]
-          },
-          {
-            "name": "layer-2-engineering",
-            "hints": [
-              "references/layer-2-engineering.md",
-              "layer 2",
-              "engineering"
-            ]
-          },
-          {
-            "name": "layer-3-interface",
-            "hints": [
-              "references/layer-3-interface.md",
-              "layer 3",
-              "interface"
-            ]
-          },
-          {
-            "name": "layer-4-ecosystem",
-            "hints": [
-              "references/layer-4-ecosystem.md",
-              "layer 4",
-              "ecosystem"
-            ]
-          },
-          {
-            "name": "layer-5-documentation",
-            "hints": [
-              "references/layer-5-documentation.md",
-              "layer 5",
-              "documentation"
-            ]
-          },
-          {
-            "name": "synthesize-report",
-            "hints": [
-              "references/report-template.md",
-              "synthesize",
-              "diagnostic report"
-            ]
-          }
-        ],
-        "references": [
-          {
-            "id": "layer-1-product",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/layer-1-product.md",
-            "purpose": "layer-rubric",
-            "stage": "layer-1-product",
-            "optional": true,
-            "aliases": [
-              "references/layer-1-product.md",
-              "layer-1-product.md",
-              "layer 1"
-            ]
-          },
-          {
-            "id": "layer-2-engineering",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/layer-2-engineering.md",
-            "purpose": "layer-rubric",
-            "stage": "layer-2-engineering",
-            "optional": true,
-            "aliases": [
-              "references/layer-2-engineering.md",
-              "layer-2-engineering.md",
-              "layer 2"
-            ]
-          },
-          {
-            "id": "layer-3-interface",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/layer-3-interface.md",
-            "purpose": "layer-rubric",
-            "stage": "layer-3-interface",
-            "optional": true,
-            "aliases": [
-              "references/layer-3-interface.md",
-              "layer-3-interface.md",
-              "layer 3"
-            ]
-          },
-          {
-            "id": "layer-4-ecosystem",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/layer-4-ecosystem.md",
-            "purpose": "layer-rubric",
-            "stage": "layer-4-ecosystem",
-            "optional": true,
-            "aliases": [
-              "references/layer-4-ecosystem.md",
-              "layer-4-ecosystem.md",
-              "layer 4"
-            ]
-          },
-          {
-            "id": "layer-5-documentation",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/layer-5-documentation.md",
-            "purpose": "layer-rubric",
-            "stage": "layer-5-documentation",
-            "optional": true,
-            "aliases": [
-              "references/layer-5-documentation.md",
-              "layer-5-documentation.md",
-              "layer 5"
-            ]
-          },
-          {
-            "id": "report-template",
-            "path": "content/distilled/ux-dx-evaluation-diagnostician/references/report-template.md",
-            "purpose": "output-template",
-            "stage": "synthesize-report",
-            "optional": false,
-            "aliases": [
-              "references/report-template.md",
-              "report-template.md",
-              "report template"
-            ]
-          }
-        ]
-      }
-    },
-    {
       "name": "formal-verification-evaluator",
       "type": "task",
       "title": "Formal Verification Readiness Evaluator",
@@ -3281,30 +1188,6 @@
         "property-extraction",
         "auto-formalization",
         "review"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
-      "name": "testability-implementability-evaluator",
-      "type": "task",
-      "title": "Testability and Implementability Evaluator",
-      "description": "Evaluate software specifications for whether they can be built and verified before implementation begins",
-      "source": "content/prompt-task-testability-implementability-evaluator.md",
-      "distilled": "content/distilled/testability-implementability-evaluator.md",
-      "tags": [
-        "specification-evaluation",
-        "testability",
-        "implementability",
-        "iso-29148",
-        "pieces",
-        "glia",
-        "ears",
-        "bach-testability",
-        "definition-of-ready",
-        "feasibility-analysis",
-        "shift-left"
       ],
       "bundles": [
         "reviews"
@@ -3452,48 +1335,6 @@
       }
     },
     {
-      "name": "rigidity-diagnostician",
-      "type": "task",
-      "title": "Rigidity Diagnostician",
-      "description": "Diagnose structural rigidity from excessive coupling, inheritance, and OCP violations, then map findings to composition-based remediation patterns",
-      "source": "content/prompt-task-rigidity-diagnostician.md",
-      "distilled": "content/distilled/rigidity-diagnostician.md",
-      "tags": [
-        "refactoring",
-        "rigidity",
-        "open-closed-principle",
-        "solid",
-        "composition-over-inheritance",
-        "design-patterns",
-        "coupling",
-        "code-smells",
-        "architecture"
-      ],
-      "bundles": [
-        "refactoring"
-      ]
-    },
-    {
-      "name": "error-handling-diagnostician",
-      "type": "task",
-      "title": "Error Handling Diagnostician",
-      "description": "Diagnose failure handling across detection, classification, communication, recovery, and learning — map findings to resilient boundary, contract, and observability improvements",
-      "source": "content/prompt-task-error-handling-diagnostician.md",
-      "distilled": "content/distilled/error-handling-diagnostician.md",
-      "tags": [
-        "error-handling",
-        "resilience",
-        "reliability",
-        "incident-response",
-        "software-architecture",
-        "observability",
-        "review"
-      ],
-      "bundles": [
-        "reviews"
-      ]
-    },
-    {
       "name": "grill-me",
       "type": "task",
       "title": "Grill Me",
@@ -3509,25 +1350,6 @@
       ],
       "bundles": [
         "planning",
-        "reviews"
-      ]
-    },
-    {
-      "name": "guided-review",
-      "type": "task",
-      "title": "Guided Review",
-      "description": "Guide an interactive code review that teaches the human the change and the surrounding codebase",
-      "source": "content/prompt-task-guided-review.md",
-      "distilled": "content/distilled/guided-review.md",
-      "tags": [
-        "code-review",
-        "learning",
-        "mentoring",
-        "guided",
-        "onboarding",
-        "codebase-understanding"
-      ],
-      "bundles": [
         "reviews"
       ]
     },
@@ -3612,75 +1434,8 @@
       "bundles": [
         "essentials",
         "workflow"
-      ]
-    },
-    {
-      "name": "close",
-      "type": "workflow",
-      "title": "Close Session",
-      "description": "End-of-session wrap-up. Summarizes, logs to daily journal, routes knowledge to ~/.whisper/, commits, and clears context",
-      "source": "content/prompt-workflow-close.md",
-      "distilled": "content/distilled/close/SKILL.md",
-      "skill_format": "single-file",
-      "tags": [
-        "workflow",
-        "session",
-        "journal"
       ],
-      "bundles": [
-        "workflow"
-      ]
-    },
-    {
-      "name": "park",
-      "type": "workflow",
-      "title": "Park Session",
-      "description": "Snapshot current work before switching context. Logs to daily journal, releases ticket claims, records to ~/.whisper/",
-      "source": "content/prompt-workflow-park.md",
-      "distilled": "content/distilled/park/SKILL.md",
-      "skill_format": "single-file",
-      "tags": [
-        "workflow",
-        "session",
-        "context-switch"
-      ],
-      "bundles": [
-        "workflow"
-      ]
-    },
-    {
-      "name": "renew",
-      "type": "workflow",
-      "title": "Renew Session",
-      "description": "Resume work on a project or area. Loads context from journal, ~/.whisper/, and beads. Supports claiming work with file conflict detection",
-      "source": "content/prompt-workflow-renew.md",
-      "distilled": "content/distilled/renew/SKILL.md",
-      "skill_format": "single-file",
-      "tags": [
-        "workflow",
-        "session",
-        "context"
-      ],
-      "bundles": [
-        "workflow"
-      ]
-    },
-    {
-      "name": "next",
-      "type": "workflow",
-      "title": "Next — Rapid Session Snapshot",
-      "description": "Rapid session snapshot to ~/.whisper/ — no full close ceremony. Fast stash for later resumption via /renew",
-      "source": "content/prompt-workflow-next.md",
-      "distilled": "content/distilled/next/SKILL.md",
-      "skill_format": "single-file",
-      "tags": [
-        "workflow",
-        "session",
-        "snapshot"
-      ],
-      "bundles": [
-        "workflow"
-      ]
+      "disable_model_invocation": true
     },
     {
       "name": "project-status-report",
@@ -3909,33 +1664,318 @@
           }
         ]
       }
+    },
+    {
+      "name": "session",
+      "type": "workflow",
+      "title": "Session Lifecycle",
+      "description": "Session lifecycle: end-of-session wrap-up and commit (close), quick stash (next), park before context switch, renew to resume prior work, create or resume handoff documents. Trigger for closing, wrapping up, parking, resuming, or handoffs.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/session/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "workflow",
+        "session",
+        "router"
+      ],
+      "bundles": [
+        "workflow"
+      ],
+      "sources": [
+        "content/prompt-workflow-close.md",
+        "content/prompt-workflow-park.md",
+        "content/prompt-workflow-next.md",
+        "content/prompt-workflow-renew.md",
+        "content/prompt-workflow-resume-handoff.md",
+        "content/prompt-workflow-create-handoff.md"
+      ]
+    },
+    {
+      "name": "review",
+      "type": "task",
+      "title": "Review Router",
+      "description": "Multi-pass reviews of code, plans, specs, or docs: general code review, Rule-of-5 iterative refinement, parallel agent review waves, multi-agent coordination, adversarial red-team pass, guided teaching review. Trigger on review requests.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/review/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "review",
+        "router"
+      ],
+      "bundles": [
+        "reviews",
+        "essentials"
+      ],
+      "sources": [
+        "content/prompt-task-iterative-code-review.md",
+        "content/prompt-task-rule-of-5-universal.md",
+        "content/prompt-workflow-parallel-review.md",
+        "content/prompt-workflow-multi-agent-parallel-review.md",
+        "content/prompt-task-guided-review.md",
+        "content/prompt-task-red-team-review.md"
+      ]
+    },
+    {
+      "name": "planning",
+      "type": "task",
+      "title": "Planning Router",
+      "description": "Implementation planning: create a phased TDD-oriented plan, implement it phase by phase, review a plan for gaps and risks, or iterate it from feedback. Trigger for planning or executing multi-phase work.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/planning/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "planning",
+        "tdd",
+        "router"
+      ],
+      "bundles": [
+        "planning"
+      ],
+      "sources": [
+        "content/prompt-workflow-create-plan.md",
+        "content/prompt-workflow-implement-plan.md",
+        "content/prompt-task-plan-review.md",
+        "content/prompt-workflow-iterate-plan.md"
+      ]
+    },
+    {
+      "name": "issues",
+      "type": "task",
+      "title": "Issues Router",
+      "description": "Issue tracking: create trackable issues from an implementation plan, or review existing issues for completeness, dependencies, and executability. Trigger for breaking work into issues or checking issue quality.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/issues/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "issues",
+        "beads",
+        "router"
+      ],
+      "bundles": [
+        "essentials",
+        "planning"
+      ],
+      "sources": [
+        "content/prompt-task-create-issues.md",
+        "content/prompt-task-issue-tracker-review.md"
+      ]
+    },
+    {
+      "name": "diagnostician",
+      "type": "task",
+      "title": "Diagnostician Router",
+      "description": "Advisory-only diagnostics, no code changes: modularity, rigidity, mutability, invalid states, composability, error handling, Julia performance, UX/DX evaluation, spec evaluation, testability, verification, root-cause analysis.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/diagnostician/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "diagnostics",
+        "advisory",
+        "router"
+      ],
+      "bundles": [
+        "reviews",
+        "refactoring"
+      ],
+      "sources": [
+        "content/prompt-task-mutability-diagnostician.md",
+        "content/prompt-task-composability-diagnostician.md",
+        "content/prompt-task-rigidity-diagnostician.md",
+        "content/prompt-task-invalid-states-diagnostician.md",
+        "content/prompt-task-julia-performance-diagnostician.md",
+        "content/prompt-task-modularity-diagnostician.md",
+        "content/prompt-task-rca-diagnostician.md",
+        "content/prompt-task-verification-diagnostician.md",
+        "content/prompt-task-specification-evaluation-diagnostician.md",
+        "content/prompt-task-error-handling-diagnostician.md",
+        "content/prompt-task-ux-dx-evaluation-diagnostician.md",
+        "content/prompt-task-testability-implementability-evaluator.md"
+      ]
+    },
+    {
+      "name": "prompt-meta",
+      "type": "workflow",
+      "title": "Prompt-Meta Router",
+      "description": "Prompt engineering on this repo: extract a reusable prompt from a successful interaction, distill it to token-efficient form, verify the distilled version preserved essential instructions. Trigger for capture/distill/verify prompt work.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/prompt-meta/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "prompts",
+        "meta",
+        "router"
+      ],
+      "bundles": [],
+      "sources": [
+        "content/prompt-workflow-extract-prompt-from-conversation.md",
+        "content/prompt-task-distill-prompt.md",
+        "content/prompt-task-verify-distilled-prompt.md"
+      ]
+    },
+    {
+      "name": "documentation",
+      "type": "task",
+      "title": "Documentation Router",
+      "description": "Documentation suites: audit or plan docs, write with Diátaxis/Info Mapping/EPPO, review for scannability and AI-readiness. Trigger for doc planning, writing, or review. Broken links are doc-link-verifier, not this.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/documentation/SKILL.md",
+      "skill_format": "multi-file",
+      "tags": [
+        "documentation",
+        "diataxis",
+        "router"
+      ],
+      "bundles": [
+        "documentation"
+      ],
+      "sources": [
+        "content/prompt-task-research-documentation.md",
+        "content/prompt-task-implement-documentation.md",
+        "content/prompt-task-review-documentation.md"
+      ]
+    },
+    {
+      "name": "close",
+      "type": "workflow",
+      "title": "Close (moved)",
+      "description": "Moved into the session skill. Hidden pointer for /skill:close compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/close.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "park",
+      "type": "workflow",
+      "title": "Park (moved)",
+      "description": "Moved into the session skill. Hidden pointer for /skill:park compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/park.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "next",
+      "type": "workflow",
+      "title": "Next (moved)",
+      "description": "Moved into the session skill. Hidden pointer for /skill:next compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/next.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "renew",
+      "type": "workflow",
+      "title": "Renew (moved)",
+      "description": "Moved into the session skill. Hidden pointer for /skill:renew compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/renew.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "create-handoff",
+      "type": "workflow",
+      "title": "Create Handoff (moved)",
+      "description": "Moved into the session skill. Hidden pointer for /skill:create-handoff compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/create-handoff.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "rule-of-5-universal",
+      "type": "workflow",
+      "title": "Rule Of 5 Universal (moved)",
+      "description": "Moved into the review skill. Hidden pointer for /skill:rule-of-5-universal compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/rule-of-5-universal.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "create-issues",
+      "type": "workflow",
+      "title": "Create Issues (moved)",
+      "description": "Moved into the issues skill. Hidden pointer for /skill:create-issues compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/create-issues.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
+    },
+    {
+      "name": "issue-review",
+      "type": "workflow",
+      "title": "Issue Review (moved)",
+      "description": "Moved into the issues skill. Hidden pointer for /skill:issue-review compatibility; will be removed in a future release.",
+      "source": "content/prompt-system-skill-router-architecture.md",
+      "distilled": "content/distilled/pointers/issue-review.md",
+      "skill_format": "single-file",
+      "tags": [
+        "pointer",
+        "deprecated"
+      ],
+      "bundles": [],
+      "disable_model_invocation": true
     }
   ],
   "bundles": {
     "essentials": {
-      "description": "Daily-driver skills, selected by measured usage: the top 8 of the pi session skill-usage analysis (621 sessions, 43 repos, 2026-04..07) — commit, rule-of-5-universal, tdd, issue-review, debug, create-issues, create-handoff, grill-me",
+      "description": "Daily-driver skills, selected by measured usage: the top 8 of the pi session skill-usage analysis (621 sessions, 43 repos, 2026-04..07), mapped to post-consolidation routers — commit, review (was rule-of-5-universal), tdd, issues (was issue-review + create-issues), debug, session (was create-handoff), grill-me",
       "prompts": [
         "commit",
-        "rule-of-5-universal",
+        "review",
         "tdd",
-        "issue-review",
+        "issues",
         "debug",
-        "create-issues",
-        "create-handoff",
+        "session",
         "grill-me"
       ]
     },
     "planning": {
       "description": "Project planning and implementation workflows",
       "prompts": [
-        "create-plan",
-        "implement-plan",
-        "iterate-plan",
-        "create-issues",
+        "planning",
+        "issues",
         "design-practice",
         "pre-mortem",
         "tdd",
-        "plan-review",
         "grill-me"
       ]
     },
@@ -3943,30 +1983,20 @@
       "description": "Code, design, and research review processes",
       "prompts": [
         "agent-value-alignment",
-        "code-review",
-        "parallel-review",
+        "review",
         "optionality-review",
-        "multi-agent-review",
-        "plan-review",
+        "planning",
         "design-review",
         "research-review",
-        "issue-review",
-        "rule-of-5-universal",
+        "issues",
         "bias-audit",
         "pwa-accessibility-review",
-        "review-documentation",
+        "documentation",
         "specification-review",
-        "red-team-review",
-        "rca-diagnostician",
-        "guided-review",
-        "verification-diagnostician",
-        "specification-evaluation-diagnostician",
-        "error-handling-diagnostician",
+        "diagnostician",
         "edge-case-discovery",
         "adversarial-stakeholder-evaluation",
-        "ux-dx-evaluation-diagnostician",
         "formal-verification-evaluator",
-        "testability-implementability-evaluator",
         "doc-link-verifier",
         "grill-me",
         "anti-slop-prose"
@@ -3980,12 +2010,7 @@
         "resonant-refactor",
         "test-friction",
         "test-abstraction-miner",
-        "mutability-diagnostician",
-        "composability-diagnostician",
-        "rigidity-diagnostician",
-        "invalid-states-diagnostician",
-        "julia-performance-diagnostician",
-        "modularity-diagnostician"
+        "diagnostician"
       ]
     },
     "testing": {
@@ -3999,21 +2024,16 @@
     "documentation": {
       "description": "Documentation architecture, implementation, and review tools",
       "prompts": [
-        "research-documentation",
-        "implement-documentation",
-        "review-documentation",
+        "documentation",
         "narrative-article",
         "doc-link-verifier"
       ]
     },
     "workflow": {
-      "description": "Session lifecycle and workspace knowledge management",
+      "description": "Session lifecycle (router) and workspace knowledge management (whisper)",
       "prompts": [
         "whisper",
-        "close",
-        "park",
-        "renew",
-        "next"
+        "session"
       ]
     },
     "all": {

@@ -867,9 +867,10 @@ sync-manifest:
     echo ""
 
     # Fail if prompt files on disk are not registered in the manifest.
+    # Routers register member sources via their plural "sources" array.
     ORPHANS=0
     for file in content/prompt-*.md; do
-        if ! jq -e --arg f "$file" '.prompts[] | select(.source == $f)' "$MANIFEST" > /dev/null 2>&1; then
+        if ! jq -e --arg f "$file" '.prompts[] | select(.source == $f or ([.sources[]?] | index($f)))' "$MANIFEST" > /dev/null 2>&1; then
             echo "  ❌ unregistered source: $file"
             ORPHANS=$((ORPHANS + 1))
         fi

@@ -1,8 +1,4 @@
----
-name: park
-description: "Snapshot current work before switching context. Logs what was done and what's next without ending the day. Trigger when the user says '/park', 'park this', 'switching to', 'pause this', or 'context switch'."
-tools: Read, Write, Edit, Bash
----
+**Tools:** Read, Write, Edit, Bash
 
 # Park
 

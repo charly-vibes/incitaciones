@@ -1,8 +1,4 @@
----
-name: next
-description: "Rapid session snapshot to ~/.whisper/ — no full close ceremony. Trigger when the user says '/next', 'snap', 'quick save', 'stash session', or 'moving on'."
-tools: Read, Write, Edit, Bash
----
+**Tools:** Read, Write, Edit, Bash
 
 # Next
 

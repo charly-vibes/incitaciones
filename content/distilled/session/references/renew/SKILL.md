@@ -1,8 +1,4 @@
----
-name: renew
-description: "Resume work on a specific project or area. Loads focused context for continuing where you left off. When no name is given, infers the project/area from the current repo and git branch. Trigger when the user says '/renew', '/renew <name>', 'pick up <project>', 'continue <project>', or 'back to <project>'."
-tools: Read, Write, Edit, Glob, Bash, Grep
----
+**Tools:** Read, Write, Edit, Glob, Bash, Grep
 
 # Renew
 

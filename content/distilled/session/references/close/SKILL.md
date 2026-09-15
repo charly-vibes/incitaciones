@@ -1,8 +1,4 @@
----
-name: close
-description: "End-of-session wrap-up. Summarizes what was done, logs it to the daily journal, commits, pushes, and clears context. Trigger when the user says '/close', 'close session', or 'wrap up session'."
-tools: Read, Write, Edit, Glob, Bash
----
+**Tools:** Read, Write, Edit, Glob, Bash
 
 # Close Session
 
