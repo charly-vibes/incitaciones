@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-05",
+  "version": "2026-09-15",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -3011,6 +3011,26 @@
       ],
       "bundles": [
         "reviews"
+      ]
+    },
+    {
+      "name": "file-headers",
+      "type": "system",
+      "title": "File Headers (Self-Describing Source Files)",
+      "description": "Convention enforcing a Purpose/Responsibilities/Rationale header on every source file, so agents learn intent without reverse-engineering and undescribable files expose cohesion violations",
+      "source": "content/prompt-system-file-headers.md",
+      "distilled": "content/distilled/file-headers.md",
+      "tags": [
+        "documentation",
+        "architecture",
+        "modularity",
+        "code-quality",
+        "system-prompt",
+        "rationale"
+      ],
+      "bundles": [
+        "refactoring",
+        "documentation"
       ]
     },
     {

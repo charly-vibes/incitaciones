@@ -1,5 +1,15 @@
 ## [Unreleased]
 
+#### Added - File Headers: self-describing source files convention
+
+New system prompt enforcing a Purpose/Responsibilities/Rationale header on every source file, so agents learn intent without reverse-engineering, and undescribable files surface as cohesion violations (modularization tooling, not just docs). Rationale tracking stays where the design lives: latest entry in the file, history in the issue tracker and git. Scope rules exclude generated/vendored/config files; audit via `grep -rLE "(Purpose:|@purpose)"`.
+
+- **content/prompt-system-file-headers.md** (v1.0.0) — Full convention: header format, five rules (complete-on-creation, update-on-change, one-sentence-or-split, rationale-as-pointer, scope), audit command, integration table for creation-time and review-time enforcement boundaries, minimal AGENTS.md variation.
+- **content/distilled/file-headers.md** — Lean runtime form.
+- **content/manifest.json** — New entry (type: system, bundles: refactoring + documentation); version date bump.
+- Validated: `just validate-distilled` ✓, `just sync-manifest` ✓.
+- Phase 0 of the reviewed plan; Phase 1 (creation-time hooks: context-guardian, tdd, implement-plan, create-issues) and Phase 2 (review-time hooks: issue-review pass-5, code-review criteria, modularity-diagnostician, resonant-refactor) follow.
+
 #### Fixed - close skill: journal root resolution for non-interactive shells
 
 The skill's `~/dev/status` + `log/` defaults fired silently whenever `.bashrc` exports weren't visible — i.e. every agent `/close` run (non-interactive shells never source it). Three days of session notes (09-03..05) landed in the stale `~/dev/status` clone under the legacy layout (migrated to `areas/log/` in journal commit `e4f144e`).
