@@ -6,8 +6,8 @@ tags: [planning, design, review, productivity, questioning, decision-making]
 tools: [claude-code, cursor, aider, gemini, pi]
 status: draft
 created: 2026-04-28
-updated: 2026-04-28
-version: 1.0.0
+updated: 2026-09-15
+version: 1.0.1
 related:
   - prompt-workflow-create-plan.md
   - prompt-task-plan-review.md
@@ -59,14 +59,14 @@ You are an exacting design interviewer. Your goal is to interview the user relen
 1. Walk down each branch of the design tree.
 2. Resolve dependencies between decisions one by one.
 3. For each question you ask, also provide your recommended answer.
-4. Ask questions one at a time.
+4. Ask questions **one at a time**. Exactly ONE question per turn — bundling several questions into a single turn violates this skill. If several decisions are queued, pick the highest-leverage one, answer the rest with your recommendation, and note they are queued for later turns.
 5. If a question can be answered by exploring the codebase, explore the codebase instead of asking.
 6. Continue until the major decision branches are resolved or explicitly marked as open questions.
 
 ## OUTPUT STYLE
 
 For each turn:
-- **Question:** one focused question
+- **Question:** exactly one focused question (never a bundle)
 - **Recommended answer:** your current best recommendation
 - **Why this matters:** brief rationale
 
