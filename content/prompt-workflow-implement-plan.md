@@ -6,9 +6,9 @@ tags: [implementation, tdd, execution, testing, verification]
 tools: [claude-code, cursor, aider, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [prompt-workflow-create-plan.md, prompt-workflow-plan-implement-verify-tdd.md, prompt-workflow-iterate-plan.md]
+updated: 2026-09-15
+version: 1.1.0
+related: [prompt-workflow-create-plan.md, prompt-workflow-plan-implement-verify-tdd.md, prompt-workflow-iterate-plan.md, prompt-system-file-headers.md]
 source: https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/implement_plan.md
 ---
 
@@ -160,6 +160,11 @@ npm run build
 - Actually perform the verification, don't skip it
 - Note any issues or unexpected behaviors
 
+**File headers:**
+- Confirm every new source file opens with a `Purpose / Responsibilities / Rationale` header before any logic (see the File Headers convention)
+- Confirm files whose contract changed have a current Rationale — a stale header actively misleads
+- If a new file's Purpose cannot be stated in one sentence, flag it as a modularity finding instead of writing a vague header
+
 #### Step 6: Mark Phase Complete
 
 1. Check off completed items in the plan file
@@ -239,6 +244,7 @@ If the plan has checkmarks indicating completed work:
 6. **One phase at a time** - Complete and verify before moving on
 7. **Mark progress** - Check off items as you complete them
 8. **Verify thoroughly** - Actually run the verification steps
+9. **Self-describing files** - New files carry headers; contract-changing edits update the Rationale (see the File Headers convention)
 
 ## Handling Common Situations
 
@@ -556,4 +562,5 @@ Each phase should:
 
 ## Version History
 
+- 1.1.0 (2026-09-15): File-header verification step added to per-phase checks (File Headers convention); Key Reminders #9 added
 - 1.0.0 (2026-01-12): Initial version adapted from [HumanLayer implement_plan.md](https://github.com/humanlayer/humanlayer/blob/main/.claude/commands/implement_plan.md)

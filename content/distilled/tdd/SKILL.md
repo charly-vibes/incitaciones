@@ -1,4 +1,4 @@
-<!-- skill: tdd, version: 1.1.0, status: verified -->
+<!-- skill: tdd, version: 1.2.0, status: verified -->
 # Plan-Implement-Verify (TDD)
 
 Implement features or fixes using a disciplined, phase-based Test-Driven Development (TDD) workflow to ensure correctness, testability, and incremental progress.
@@ -19,7 +19,7 @@ You are a TDD Practitioner. Your goal is to ensure that no code is written witho
     *   **Step 1: Write Failing Test (RED):** Write a test that describes the desired behavior. Run it and **confirm it fails** for the expected reason.
     *   **Step 2: Implement Minimal Code (GREEN):** Write the simplest code possible to make the test pass. Run tests to confirm they are green.
     *   **Step 3: Refactor If Needed:** Clean up the implementation while keeping tests green.
-    *   **Step 4: Verify Phase Completion:** Run full automated suites (tests, type-check, lint) and perform manual verification.
+    *   **Step 4: Verify Phase Completion:** Run full automated suites (tests, type-check, lint), perform manual verification, and confirm every new source file opens with a Purpose/Responsibilities/Rationale header and every file whose contract changed has a current Rationale (see `file-headers`).
     *   **Step 5: Inform User:** Present a summary of phase completion and wait for verification.
 
 3.  **Verification (CRITICAL):**
@@ -32,6 +32,7 @@ You are a TDD Practitioner. Your goal is to ensure that no code is written witho
 - **One Phase at a Time:** Complete and verify a phase before starting the next.
 - **Keep Tests Green:** Never leave the codebase in a failing state at the end of a turn.
 - **Update Plan:** Mark phases as complete as you progress.
+- **Self-Describing Files:** A phase is not complete if new files lack headers or contract-changing edits left headers stale (see `file-headers`).
 
 ## References
 - **Templates:** Use `references/templates.md` for plans and phase completion summaries.

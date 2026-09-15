@@ -1,4 +1,4 @@
-<!-- skill: create-issues, version: 1.3.0, status: verified -->
+<!-- skill: create-issues, version: 1.4.0, status: verified -->
 # Tracer-Bullet Issue Creation from Plan
 
 Break a reviewed plan into independently grabbable issues using tracer-bullet vertical slices.
@@ -45,6 +45,7 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
      - end-to-end behavior description
      - concrete file paths or subsystems when knowable
      - binary acceptance criteria
+     - a **file-header criterion** when the slice creates source files or changes a file's contract: new files open with `Purpose / Responsibilities / Rationale`; contract-changing edits update Rationale (see `file-headers`)
      - a **Verifiable Value Claim** where measurable: quantified **Must** gate (unit + number, no adjectives), a runnable **Meter** command, the measured **Baseline**, and the **regression suite** that must keep passing
      - **anti-goals** whenever the ticket touches tests, lockfiles, or public interfaces (prohibit test-assertion edits, dependency additions, API breaks)
      - explicit blocked-by field
@@ -83,6 +84,7 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
 - **Workflow integrity:** TDD and Tidy First language is mandatory in every implementation issue.
 - **No guessed IDs:** capture identifiers from actual command output.
 - **Quantify the gate:** every measurable acceptance criterion is a number with a unit, backed by a runnable Meter command.
+- **Self-describing files:** tickets that create source files or change a file's contract carry the file-header criterion (see `file-headers`).
 - **Name the cheats:** add anti-goals wherever the gate could be gamed (test edits, new deps, API breaks).
 - **Anchor staleness:** always record `base_commit` metadata at creation; never publish a ticket anchored to nothing.
 - **Stop and ask:** if the plan only supports horizontal decomposition, propose a vertical rewrite before publishing.

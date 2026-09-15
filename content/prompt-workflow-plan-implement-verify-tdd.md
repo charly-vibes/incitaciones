@@ -5,9 +5,9 @@ tags: [tdd, workflow, testing, implementation, planning]
 tools: [claude-code, aider, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-01-12
-version: 1.0.0
-related: [prompt-workflow-deliberate-commits.md, prompt-workflow-create-handoff.md]
+updated: 2026-09-15
+version: 1.2.0
+related: [prompt-workflow-deliberate-commits.md, prompt-workflow-create-handoff.md, prompt-system-file-headers.md]
 source: adapted-from-fabbro
 ---
 
@@ -196,7 +196,7 @@ Continue with each phase following the same Red-Green-Refactor cycle.
 3. **One phase at a time** - Complete and verify before moving on
 4. **Keep tests green** - Never commit with failing tests
 5. **Refactor with green tests** - Only clean up when tests pass
-6. **Verify at each phase** - Automated and manual checks
+6. **Verify at each phase** - Automated and manual checks, plus file headers: every new source file opens with a Purpose/Responsibilities/Rationale header; files whose contract changed have a current Rationale
 7. **Update plan** - Check off completed items as you go
 
 ## When Things Don't Match
@@ -523,4 +523,6 @@ Each phase should:
 
 ## Version History
 
+- 1.2.0 (2026-09-15): File-header phase completion check (File Headers convention) — Key Guidelines #6 extended, version reconciled with distilled marker
+- 1.1.0 (2026-01-12): Distilled runtime form created
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro TDD workflow

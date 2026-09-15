@@ -16,6 +16,7 @@ Use these criteria to evaluate the quality of a TDD session.
 - [ ] Automated tests (unit, integration) cover new logic.
 - [ ] No regressions introduced in existing functionality.
 - [ ] Type-checking and linting are passing globally.
+- [ ] New source files carry Purpose/Responsibilities/Rationale headers; changed files have current Rationale (see `file-headers`).
 - [ ] Plan is updated to reflect current progress.
 
 ## When to Stop & Ask

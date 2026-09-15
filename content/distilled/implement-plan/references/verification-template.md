@@ -5,6 +5,7 @@ Automated verification:
 - [x] All tests pass
 - [x] Type checking passes
 - [x] Build succeeds
+- [x] File headers current: new files carry Purpose/Responsibilities/Rationale; changed files updated Rationale (see `file-headers`)
 
 Manual verification needed:
 - [ ] [Manual step 1]

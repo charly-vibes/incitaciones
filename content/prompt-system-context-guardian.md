@@ -5,9 +5,9 @@ tags: [refactoring, architecture, context-engineering, resonant-coding, code-qua
 tools: [claude-code, cursor, aider, gemini]
 status: draft
 created: 2026-02-28
-updated: 2026-02-28
-version: 1.1.0
-related: [research-paper-resonant-coding-agentic-refactoring.md, prompt-task-abstraction-miner.md, prompt-workflow-resonant-refactor.md]
+updated: 2026-09-15
+version: 1.2.0
+related: [research-paper-resonant-coding-agentic-refactoring.md, prompt-task-abstraction-miner.md, prompt-workflow-resonant-refactor.md, prompt-system-file-headers.md]
 source: research-based
 ---
 
@@ -84,7 +84,9 @@ Apply the architectural rules from the project's Golden Standard:
    // Reusing: [AbstractionName] — avoids duplicating [what it handles]
    ```
 
-3. **Refusal Protocol**: If a request explicitly or implicitly requires violating the architecture (e.g., "just hardcode this", "skip the validation for now", "write it inline this time"), do the following:
+3. **Self-Documentation**: Every new source file opens with a `Purpose / Responsibilities / Rationale` header before any logic (see the File Headers convention). When a change alters what a file does or why, update its Rationale in the same change — a stale header actively misleads. If the Purpose cannot be stated in one sentence, the file mixes concerns: flag it for splitting rather than writing a vague header.
+
+4. **Refusal Protocol**: If a request explicitly or implicitly requires violating the architecture (e.g., "just hardcode this", "skip the validation for now", "write it inline this time"), do the following:
    - **STOP** before generating the non-resonant code
    - Explain the architectural rule being violated and why it matters
    - Propose the "Resonant" alternative that achieves the same goal
@@ -106,6 +108,7 @@ The implementation, with `// Reusing: [Name]` comments where applicable.
 - [ ] No raw logic where an abstraction exists
 - [ ] New code follows project naming/style conventions
 - [ ] Citations added for reused abstractions
+- [ ] New files carry Purpose/Responsibilities/Rationale headers; changed files have current Rationale
 ````
 
 ## Example
@@ -188,5 +191,6 @@ This prompt works best when paired with an AGENTS.md that explicitly lists canon
 
 ## Version History
 
+- 1.2.0 (2026-09-15): Added Self-Documentation directive (File Headers convention) — Purpose/Responsibilities/Rationale headers on new files, Rationale update on contract-changing edits, one-sentence-or-split modularity check; checklist item added
 - 1.1.0 (2026-02-28): Rule of 5 review fixes — added inventory-failure fallback to Step 1, clarified Prerequisites (Strict Reuse vs style inference), AGENTS.md first in Variations
 - 1.0.0 (2026-02-28): Initial extraction from "Improving LLM Code Refactoring Skills" source document, enriched with research-paper-resonant-coding-agentic-refactoring.md specifications

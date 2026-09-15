@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+#### Updated - Phase 1: file-header creation-time hooks wired into four workflow skills
+
+Every place where code gets written or tickets get defined now enforces the File Headers convention (content/prompt-system-file-headers.md) at creation time, complementing the Phase 2 review-time hooks to follow:
+
+- **context-guardian** (v1.2.0) — new **Self-Documentation** directive: new source files open with Purpose/Responsibilities/Rationale, contract-changing edits update Rationale in the same change, one-sentence-or-split modularity check; verification checklist item added. Source + distilled in sync; Refusal Protocol renumbered 3→4.
+- **tdd** (v1.2.0) — Step 4 phase completion now includes the header check; new **Self-Describing Files** rule; `references/criteria.md` phase-completion checkbox. Source version reconciled with distilled marker (distilled said 1.1.0, source said 1.0.0).
+- **implement-plan** (v1.1.0) — per-phase loop gains the header check; **File headers** block in Step 5 verification with the stale-header warning and one-sentence-or-split finding; Key Reminders #9; verification template checkbox. Also fixed a pre-existing `[missing instruction keywords]` validator warning in the distilled skill.
+- **create-issues** (v1.4.0) — issue bodies and templates gain a **file-header acceptance criterion** whenever a slice creates source files or changes a file's contract; rule 11 in source. Feed-forward half of the loop: tickets carry the criterion by construction instead of issue-review pass-5 flagging its absence.
+- All four sources: `related` frontmatter now links prompt-system-file-headers.md; CHANGELOG version dates 2026-09-15.
+- Validated: `just validate-distilled` ✓, `just sync-manifest` ✓.
+
 #### Added - File Headers: self-describing source files convention
 
 New system prompt enforcing a Purpose/Responsibilities/Rationale header on every source file, so agents learn intent without reverse-engineering, and undescribable files surface as cohesion violations (modularization tooling, not just docs). Rationale tracking stays where the design lives: latest entry in the file, history in the issue tracker and git. Scope rules exclude generated/vendored/config files; audit via `grep -rLE "(Purpose:|@purpose)"`.

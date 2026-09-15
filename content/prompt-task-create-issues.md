@@ -6,9 +6,9 @@ tags: [creation, issue-tracking, project-management, planning, single-agent]
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-20
-updated: 2026-09-01
-version: 1.2.0
-related: [prompt-workflow-create-plan.md, prompt-task-issue-tracker-review.md, research-paper-agentic-ticket-requirements-engineering.md]
+updated: 2026-09-15
+version: 1.4.0
+related: [prompt-workflow-create-plan.md, prompt-task-issue-tracker-review.md, research-paper-agentic-ticket-requirements-engineering.md, prompt-system-file-headers.md]
 source: derived-from-prompt-task-issue-tracker-review
 ---
 
@@ -108,6 +108,7 @@ Ref: [Link to plan document and section]
 ## Acceptance Criteria
 - [ ] A binary, observable checklist of what "done" means for this issue.
 - [ ] Automated tests cover the slice end-to-end.
+- [ ] File-header criterion when the slice creates source files or changes a file's contract: new files carry `Purpose / Responsibilities / Rationale`; contract-changing edits update Rationale (see the File Headers convention).
 
 ## Blocked by
 - [Issue reference]
@@ -243,3 +244,4 @@ After generating all commands, provide a final summary report in the following f
     bd update <id> --metadata "{\"files\": [\"path/to/file.py\"], \"base_commit\": \"$sha\"}"
     ```
     Reviewers diff `base_commit..HEAD` against the ticket's files to detect out-of-date tickets. On trackers without metadata (e.g. GitHub Issues), embed the SHA in the issue body instead.
+11. **Self-describing files:** tickets that create source files or change a file's contract carry the file-header acceptance criterion — new files open with `Purpose / Responsibilities / Rationale`; contract-changing edits update Rationale (see the File Headers convention, prompt-system-file-headers.md).

@@ -43,6 +43,7 @@ Ref: [Link to plan/spec file and section]
 - [ ] [Binary, observable criterion 1]
 - [ ] [Binary, observable criterion 2]
 - [ ] [Automated tests cover the slice end-to-end]
+- [ ] [When the slice creates source files or changes a file's contract: file-header criterion — new files carry Purpose/Responsibilities/Rationale; changed files update Rationale (see `file-headers`)]
 
 ## Blocked by
 
