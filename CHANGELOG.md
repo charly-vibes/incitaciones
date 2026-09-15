@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.9.0] - 2026-09-15
 
 #### Updated - essentials bundle reorganized to the measured top-8 skills
 
