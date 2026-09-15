@@ -79,16 +79,31 @@ function resolveDistilled(prompt) {
 // ── Generate frontmatter ───────────────────────────────
 function generateFrontmatter(prompt) {
   const desc = escapeYaml(prompt.description || `Incitaciones prompt: ${prompt.name}`);
-  return [
+  const lines = [
     "---",
     `name: ${prompt.name}`,
     `description: "${desc}"`,
     'installed-from: incitaciones',
     `installed-version: "${getVersion()}"`,
     `installed-at: "${now()}"`,
-    "---",
-    "",
-  ].join("\n");
+  ];
+  // Per-skill hide flag from manifest, ORed with the global --disable-model-invocation flag
+  if (prompt.disable_model_invocation === true || options?.disableModelInvocation) {
+    lines.push("disable-model-invocation: true");
+  }
+  lines.push("---", "");
+  return lines.join("\n");
+}
+
+// Strip a distilled file's own frontmatter block, if present. The installed
+// SKILL.md must carry exactly one frontmatter block (generated above);
+// concatenating both produced invalid double frontmatter.
+function distilledBody(src) {
+  const raw = fs.readFileSync(src, "utf8");
+  if (!raw.startsWith("---\n")) return raw;
+  const end = raw.indexOf("\n---\n", 3);
+  if (end === -1) return raw;
+  return raw.slice(end + 5).replace(/^\n+/, "");
 }
 
 function getVersion() {
@@ -101,7 +116,7 @@ function getVersion() {
 }
 
 // ── Install a single skill ─────────────────────────────
-function installSkill(prompt, dstRoot) {
+function installSkill(prompt, dstRoot, options) {
   const src = resolveDistilled(prompt);
   if (!src) {
     console.error(`  ⚠  ${prompt.name} (distilled not found)`);
@@ -112,8 +127,8 @@ function installSkill(prompt, dstRoot) {
   fs.rmSync(dstDir, { recursive: true, force: true });
   fs.mkdirSync(dstDir, { recursive: true });
 
-  // Write SKILL.md with frontmatter
-  const content = generateFrontmatter(prompt) + fs.readFileSync(src, "utf8");
+  // Write SKILL.md with frontmatter + distilled body (own frontmatter stripped)
+  const content = generateFrontmatter(prompt, options) + distilledBody(src);
   fs.writeFileSync(path.join(dstDir, "SKILL.md"), content, "utf8");
 
   // Copy references/ directory if it's a multi-file skill
@@ -163,7 +178,7 @@ const TOOL_CONFIGS = [
   {
     id: "pi",
     detect: (base) => fs.existsSync(path.join(base, ".pi")) || fs.existsSync(path.join(home(), ".pi", "agent")),
-    install: (prompts, base) => {
+    install: (prompts, base, options) => {
       const isLocal = fs.existsSync(path.join(base, ".pi"));
       const piDir = isLocal
         ? path.join(base, ".pi")
@@ -177,7 +192,7 @@ const TOOL_CONFIGS = [
     id: "amp",
     dir: () => path.join(home(), ".config", "amp"),
     detect: (base) => fs.existsSync(path.join(home(), ".config", "amp")),
-    install: (prompts, base) => {
+    install: (prompts, base, options) => {
       const ampDir = path.join(home(), ".config", "amp");
       const skillsDir = path.join(ampDir, "skills");
       const link = fs.readlinkSync(skillsDir, { encoding: "utf8" }).trim();
@@ -185,7 +200,7 @@ const TOOL_CONFIGS = [
         console.log(`  + amp (symlinked)`);
         return;
       }
-      installSkillsTo(prompts, skillsDir);
+      installSkillsTo(prompts, skillsDir, options);
       console.log(`  + amp (skills)`);
     },
   },
@@ -193,14 +208,14 @@ const TOOL_CONFIGS = [
     id: "claude",
     dir: (base) => path.join(base, ".claude"),
     detect: (base) => fs.existsSync(path.join(base, ".claude")),
-    install: (prompts, base) => {
+    install: (prompts, base, options) => {
       const skillsDir = path.join(base, ".claude", "skills");
       const isSymlink = fs.existsSync(skillsDir) && fs.lstatSync(skillsDir)?.isSymbolicLink?.();
       if (isSymlink) {
         console.log("  + claude (symlinked)");
         return;
       }
-      installSkillsTo(prompts, skillsDir);
+      installSkillsTo(prompts, skillsDir, options);
       console.log("  + claude (skills)");
     },
   },
@@ -208,7 +223,7 @@ const TOOL_CONFIGS = [
     id: "gemini",
     dir: (base) => path.join(base, ".gemini"),
     detect: (base) => fs.existsSync(path.join(base, ".gemini")),
-    install: (prompts, base) => {
+    install: (prompts, base, options) => {
       const cmdsDir = path.join(base, ".gemini", "commands", "incitaciones");
       fs.mkdirSync(cmdsDir, { recursive: true });
       for (const p of prompts) {
@@ -229,7 +244,7 @@ const TOOL_CONFIGS = [
       const skillsDir = path.join(base, ".gemini", "skills");
       const isSymlink = fs.existsSync(skillsDir) && fs.lstatSync(skillsDir)?.isSymbolicLink?.();
       if (!isSymlink) {
-        installSkillsTo(prompts, skillsDir);
+        installSkillsTo(prompts, skillsDir, options);
         console.log("  + gemini (commands + skills)");
       } else {
         console.log("  + gemini (commands + skills symlinked)");
@@ -243,9 +258,9 @@ function home() {
 }
 
 // ── Install skills to a directory ──────────────────────
-function installSkillsTo(prompts, dir) {
+function installSkillsTo(prompts, dir, options) {
   for (const p of prompts) {
-    installSkill(p, dir);
+    installSkill(p, dir, options);
   }
 }
 
@@ -261,7 +276,7 @@ function doInstall(prompts, options) {
 
   let installed = 0;
   for (const prompt of prompts) {
-    if (installSkill(prompt, dstRoot)) installed++;
+    if (installSkill(prompt, dstRoot, options)) installed++;
   }
   console.log(`\nInstalled: ${installed} skills to ${dstRoot}/\n`);
 
@@ -272,7 +287,7 @@ function doInstall(prompts, options) {
     for (const tool of TOOL_CONFIGS) {
       if (tool.detect(base)) {
         try {
-          tool.install(prompts, base);
+          tool.install(prompts, base, options);
           found++;
         } catch (e) {
           console.error(`  ⚠  ${tool.id}: ${e.message}`);
@@ -296,7 +311,7 @@ function doInstall(prompts, options) {
       console.error(`❌ Tool "${options.tool}" not detected at ${base}`);
       process.exit(1);
     }
-    tool.install(prompts, base);
+    tool.install(prompts, base, options);
   }
 }
 
@@ -423,6 +438,9 @@ function parseArgs(argv) {
       i++;
     } else if (arg === "--local") {
       args.local = true;
+      i++;
+    } else if (arg === "--disable-model-invocation") {
+      args.disableModelInvocation = true;
       i++;
     } else {
       console.error(`Unknown option: ${arg}`);

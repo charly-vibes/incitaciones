@@ -59,11 +59,19 @@ function generateSkill(prompt) {
     `description: \"${escapeYamlDoubleQuoted(prompt.description || `Incitaciones prompt: ${prompt.name}`)}\"`,
     "metadata:",
     '  installed-from: "incitaciones"',
-    "---",
-    "",
-  ].join("\n");
+  ];
+  if (prompt.disable_model_invocation === true) {
+    frontmatter.push("disable-model-invocation: true");
+  }
+  frontmatter.push("---", "");
 
-  fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter + readText(distilledPath), "utf8");
+  // Strip the distilled file's own frontmatter: the installed SKILL.md must
+  // carry exactly one frontmatter block (generated above).
+  const raw = readText(distilledPath);
+  const body = raw.startsWith("---\n")
+    ? raw.slice(raw.indexOf("\n---\n", 3) + 5).replace(/^\n+/, "")
+    : raw;
+  fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter.join("\n") + body, "utf8");
 
   if (distilledPath.endsWith(`${path.sep}SKILL.md`)) {
     const srcDir = path.dirname(distilledPath);

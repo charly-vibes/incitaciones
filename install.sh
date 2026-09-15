@@ -214,7 +214,7 @@ install_canonical_skill() {
 
   {
     generate_frontmatter "$name"
-    cat "$path"
+    print_distilled_body "$path"
   } > "$dst"
 
   if is_multi_file_distilled_path "$path"; then
@@ -288,17 +288,37 @@ generate_frontmatter() {
   local version
   version=$(get_install_version)
 
+  # Per-skill hide flag from manifest (disable_model_invocation: true),
+  # ORed with the global --disable-model-invocation install flag.
+  local per_skill_hidden
+  per_skill_hidden=$(jq -r --arg n "$name" \
+    '.prompts[] | select(.name == $n) | .disable_model_invocation // false' "$MANIFEST_FILE" 2>/dev/null)
+
   echo "---"
   echo "name: $name"
   echo "description: \"$description_escaped\""
   echo "installed-from: incitaciones"
   [ -n "$version" ] && echo "installed-version: \"$version\""
   echo "installed-at: \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\""
-  if [ "$DISABLE_MODEL_INVOCATION" = true ]; then
+  if [ "$DISABLE_MODEL_INVOCATION" = true ] || [ "$per_skill_hidden" = "true" ]; then
     echo "disable-model-invocation: true"
   fi
   echo "---"
   echo ""
+}
+
+# Print a distilled file's body without its own frontmatter block (if any).
+# Installed SKILL.md gets exactly one frontmatter block (generated above);
+# concatenating the distilled frontmatter produced invalid double frontmatter.
+print_distilled_body() {
+  local path="$1"
+  if [ "$(head -1 "$path")" = "---" ]; then
+    # Skip the leading frontmatter block (first --- line through the second),
+    # print everything after it.
+    awk 'NR==1 && $0=="---"{infm=1; next} infm && $0=="---"{infm=0; next} !infm{print}' "$path"
+  else
+    cat "$path"
+  fi
 }
 
 # Generate a TOML command file for Gemini CLI
