@@ -1,5 +1,14 @@
 ## [Unreleased]
 
+#### Updated - essentials bundle reorganized to the measured top-8 skills
+
+The published site's essentials bundle now mirrors actual usage instead of editorial guesswork, selected from research-finding-skill-usage-analysis.md (621 pi sessions, 43 repos, 2026-04..07):
+
+- **In:** commit (513 invocations), rule-of-5-universal (254), tdd (168), issue-review (158), debug (94), create-issues (44), create-handoff (31), grill-me (28) — exactly the top 8; the two remaining top-10 entries (doc-link-verifier, review-documentation) stay out as maintenance/specialized.
+- **Out:** describe-pr, code-review (the review lane is dominated by rule-of-5-universal), research-codebase, resume-handoff, whisper — none in the usage top 10.
+- **content/manifest.json** — essentials prompts + description citing the analysis. Site (`_site/`) regenerates from the manifest in pages CI.
+- Validated: `just sync-manifest` ✓, `just validate` ✓.
+
 #### Updated - file-headers promoted draft → tested (v1.1.0)
 
 Convention applied end-to-end in this repo: headers on all five source scripts (purposes verified against usage text), `just header-audit` gate wired, creation-time and review-time enforcement hooks shipped in eight skills. Verified still requires independent real-world use in an external codebase.

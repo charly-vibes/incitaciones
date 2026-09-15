@@ -3913,16 +3913,16 @@
   ],
   "bundles": {
     "essentials": {
-      "description": "Core prompts for everyday development",
+      "description": "Daily-driver skills, selected by measured usage: the top 8 of the pi session skill-usage analysis (621 sessions, 43 repos, 2026-04..07) — commit, rule-of-5-universal, tdd, issue-review, debug, create-issues, create-handoff, grill-me",
       "prompts": [
         "commit",
+        "rule-of-5-universal",
+        "tdd",
+        "issue-review",
         "debug",
-        "describe-pr",
-        "code-review",
-        "research-codebase",
+        "create-issues",
         "create-handoff",
-        "resume-handoff",
-        "whisper"
+        "grill-me"
       ]
     },
     "planning": {
