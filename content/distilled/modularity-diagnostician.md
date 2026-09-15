@@ -23,6 +23,7 @@ Step 1 — Detect Modularity Signals: Read all files. Identify:
 - High Afferent Coupling (Medium): module depended upon by many consumers — alterations trigger widespread ripple effects
 - Temporal Coupling (Medium): files co-changing in commits despite no static dependency — reveals hidden dependencies (skip if no git/co-change data provided)
 - Missing Boundary (Medium): related functionality spread across modules with no clear owning package
+- Undescribable Module (Medium): a file's purpose cannot be stated in one sentence — the file-header Purpose is missing, stale, or forced to be vague (see `file-headers`). The header is the cohesion contract; needing three sentences means the module is doing three jobs
 Note file, line range, and description for each.
 
 Step 2 — Classify Modularity Scope: For each signal, assess:

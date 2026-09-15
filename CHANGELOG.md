@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+#### Updated - Phase 2: file-header review-time hooks wired into four review skills
+
+The enforcement counterpart to Phase 1 — every place where code or tickets get judged now checks the File Headers convention:
+
+- **issue-review** (v1.3.0) — PASS 5 Executability: self-describing code files added to Focus; missing file-header acceptance criterion added to What to look for ("undocumented files force every implementing agent to re-derive intent"); SKILL.md Review Lens gains the self-describing item. `content/compiled/nucleus/issue-review.*` left intentionally stale — experimental LLM-generated roundtrips, canonical source is the distilled skill (regenerate with `just nucleus-roundtrip issue-review` when next compared).
+- **code-review** (v1.2.0, distilled 1.3.0) — Stage 5 (Original) and Pass 3 (Code Review Variant) check file-header Purpose accuracy and Rationale currency; MEDIUM severity examples extend to missing/stale file-header Purpose. No duplicate criterion added — the existing docstring/documentation anchors were sharpened instead.
+- **modularity-diagnostician** (v1.1.0) — new **Undescribable Module** signal: a file's purpose not statable in one sentence (missing/stale/vague header) is itself a cohesion violation. The header is the cohesion contract; three sentences = three jobs.
+- **resonant-refactor** (v1.2.0) — Phase 5 Quality Gates gains the File Headers gate (Rationale updated with the refactor's reason + issue link); completion report and worked example updated.
+- All four sources: `related` frontmatter links prompt-system-file-headers.md; version history entries added.
+- Validated: `just validate-distilled` ✓, `just sync-manifest` ✓.
+
 #### Updated - Phase 1: file-header creation-time hooks wired into four workflow skills
 
 Every place where code gets written or tickets get defined now enforces the File Headers convention (content/prompt-system-file-headers.md) at creation time, complementing the Phase 2 review-time hooks to follow:

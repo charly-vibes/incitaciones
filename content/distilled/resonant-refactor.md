@@ -41,5 +41,6 @@ Self-correction: on failure, attempt fix up to 3 times. If all 3 fail: run `git 
 - Run linter on modified files
 - Run full test suite
 - Add docstring to new abstraction: what it does, why it exists, parameters
+- File headers: every touched source file has a `Purpose / Responsibilities / Rationale` header (see `file-headers`); contract-changing edits update the Rationale with this refactor's reason and issue link
 
-**Completion Report**: files modified, verification pass/fail, linter pass/fail, tests pass/fail, abstraction documented, recommended next step.
+**Completion Report**: files modified, verification pass/fail, linter pass/fail, tests pass/fail, abstraction documented, file headers updated, recommended next step.

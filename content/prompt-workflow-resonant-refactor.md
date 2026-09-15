@@ -5,9 +5,9 @@ tags: [refactoring, workflow, humanlayer, resonant-coding, tdd, atomic-execution
 tools: [claude-code, cursor, aider, gemini]
 status: draft
 created: 2026-02-28
-updated: 2026-02-28
-version: 1.1.0
-related: [research-paper-resonant-coding-agentic-refactoring.md, prompt-task-abstraction-miner.md, prompt-system-context-guardian.md, prompt-workflow-plan-implement-verify-tdd.md]
+updated: 2026-09-15
+version: 1.2.0
+related: [research-paper-resonant-coding-agentic-refactoring.md, prompt-task-abstraction-miner.md, prompt-system-context-guardian.md, prompt-workflow-plan-implement-verify-tdd.md, prompt-system-file-headers.md]
 source: research-based
 ---
 
@@ -124,6 +124,7 @@ After all files pass:
    - What it does
    - Why it exists (what duplication it eliminates)
    - Parameters and return values
+4. **File headers**: every touched source file has a `Purpose / Responsibilities / Rationale` header (see the File Headers convention, prompt-system-file-headers.md); contract-changing edits update the Rationale with this refactor's reason and issue link
 
 Report pass/fail for each gate.
 
@@ -177,6 +178,7 @@ Quality Gates:
 - Linter: passed
 - Full test suite: 47/47 passed
 - withApiError documented: yes (JSDoc added)
+- File headers: updated on all 3 files (Rationale cites this refactor)
 
 Completion: 3 files modified, all gates passed.
 Recommended next step: Schedule next Abstraction Miner scan within [2-4 weeks] or after the next major feature merge.
@@ -234,5 +236,6 @@ Rollback via `git reset --hard HEAD` reverts both working tree and index to HEAD
 
 ## Version History
 
+- 1.2.0 (2026-09-15): Phase 5 gains File Headers gate — touched files carry Purpose/Responsibilities/Rationale, contract-changing edits update Rationale with the refactor's reason and issue link; completion report field added (File Headers convention)
 - 1.1.0 (2026-02-28): Rule of 5 review fixes — corrected rollback to `git reset --hard HEAD`, added "no commits during execution" directive, baseline test run in Phase 2, flaky test guidance, pre-mortem reference in When to Use, `════` delimiter in Human Latch, calibrated completion cadence
 - 1.0.0 (2026-02-28): Initial extraction from "Improving LLM Code Refactoring Skills" source document, enriched with research-paper-resonant-coding-agentic-refactoring.md specifications

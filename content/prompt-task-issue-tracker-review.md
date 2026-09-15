@@ -6,9 +6,9 @@ tags: [review, issue-tracking, rule-of-5, project-management, quality-assurance,
 tools: [claude-code, cursor, any-cli-llm]
 status: tested
 created: 2026-01-12
-updated: 2026-04-28
-version: 1.2.0
-related: [prompt-workflow-create-plan.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md]
+updated: 2026-09-15
+version: 1.3.0
+related: [prompt-workflow-create-plan.md, prompt-task-plan-review.md, prompt-task-iterative-code-review.md, research-paper-rule-of-5-multi-agent-review.md, prompt-system-file-headers.md]
 source: adapted-from-fabbro-with-rule-of-5-principle
 ---
 
@@ -239,6 +239,7 @@ Related Plan: `plans/2026-01-12-feature.md#phase-2`"
 - Can be picked up by any developer/agent
 - No implicit knowledge required
 - Verification steps clear and specific
+- Touched code files self-describing: Purpose/Responsibilities/Rationale header present and current (see the File Headers convention, prompt-system-file-headers.md)
 - Handoff points defined for multi-issue work
 - Priority and labels appropriate
 - Estimation realistic (if used)
@@ -250,6 +251,7 @@ Related Plan: `plans/2026-01-12-feature.md#phase-2`"
 - Assumes knowledge of previous conversations
 - "Test it" without saying how
 - No verification steps
+- Tickets that create or reshape source files with no file-header acceptance criterion — undocumented files force every implementing agent to re-derive intent
 - Priority/labels missing or incorrect
 
 ## Convergence Check
@@ -800,5 +802,6 @@ Balance structure with flexibility.
 
 ## Version History
 
+- 1.3.0 (2026-09-15): PASS 5 gains file-header executability check (File Headers convention) — self-describing code files in Focus, missing file-header acceptance criterion in What to look for
 - 1.1.0 (2026-01-13): Updated to clarify relationship to Steve Yegge's Rule of 5; added gastown reference; clarified this uses the principle with issue-specific domain passes
 - 1.0.0 (2026-01-12): Initial version adapted from fabbro beads_review command

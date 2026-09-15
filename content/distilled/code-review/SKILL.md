@@ -1,4 +1,4 @@
-<!-- skill: code-review, version: 1.2.0, status: verified -->
+<!-- skill: code-review, version: 1.3.0, status: verified -->
 # Iterative Code Review (Rule of 5)
 
 Perform a multi-pass, iterative code review using Steve Yegge's Rule of 5 to achieve high-quality refinement through breadth-first exploration.

@@ -28,6 +28,7 @@ Treat the best issue sets as:
 - minimal but sufficient dependency graphs
 - explicit about AFK vs HITL work
 - traceable back to stories, plans, or specs
+- self-describing: tickets that create or reshape source files carry the file-header criterion (see `file-headers`) — undocumented files force agents to re-derive intent
 - machine-verifiable value claims: quantified Must gate, runnable Meter, explicit anti-goals, and a `base_commit` anchor that reveals staleness
 
 ## Rules

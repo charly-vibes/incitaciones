@@ -5,9 +5,9 @@ tags: [code-review, rule-of-5, iteration, convergence, quality-assurance, linear
 tools: [claude-code, cursor, aider, gemini, gastown]
 status: tested
 created: 2026-01-12
-updated: 2026-01-13
-version: 1.1.0
-related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-workflow-multi-agent-parallel-review.md]
+updated: 2026-09-15
+version: 1.2.0
+related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-workflow-multi-agent-parallel-review.md, prompt-system-file-headers.md]
 source: steve-yegge-gastown-rule-of-five-formula
 ---
 
@@ -116,6 +116,7 @@ Focus:
 - Production quality check
 - Performance considerations
 - Documentation completeness
+- File headers: every touched source file's Purpose is present, one-sentence-accurate, and not stale; Rationale reflects the current design (see the File Headers convention, prompt-system-file-headers.md)
 - Overall code quality
 
 Output: Final recommendations for production readiness
@@ -177,7 +178,7 @@ Same output format, prefix: PERF-001, etc.
 PASS 3 - Maintainability & Readability
 Focus on:
 - Code clarity and naming
-- Documentation (comments, docstrings)
+- Documentation (comments, docstrings, file-header Purpose/Rationale accuracy)
 - Pattern consistency
 - Technical debt indicators
 - DRY violations
@@ -499,5 +500,6 @@ Don't skip passes to save time. The iterative refinement is what makes this work
 
 ## Version History
 
+- 1.2.0 (2026-09-15): File-header accuracy in Stage 5 (Original) and Pass 3 (Code Review Variant); severity examples extend to missing/stale file-header Purpose (File Headers convention)
 - 1.1.0 (2026-01-13): Added "Original Variant" matching Steve's actual gastown stages (Draft → Correctness → Clarity → Edge Cases → Excellence); kept existing domain-focused version as "Code Review Variant"; added comparison table and gastown reference
 - 1.0.0 (2026-01-12): Initial version based on Steve Yegge's Rule of 5

@@ -8,7 +8,7 @@ Use these criteria to categorize findings and determine when the review process 
 | :--- | :--- | :--- |
 | **CRITICAL** | Blocks merge. Severe security vulnerability, data loss risk, or fundamental logic failure. | SQL Injection, plaintext passwords, unhandled exceptions in core path. |
 | **HIGH** | Should fix before merge. Significant performance issue, major regression risk, or violation of key requirements. | Missing index on hot query, non-singular requirement, missing error states. |
-| **MEDIUM** | Consider addressing. Minor technical debt, sub-optimal pattern, or readability issues. | Magic strings, DRY violations, lack of docstrings, magic numbers. |
+| **MEDIUM** | Consider addressing. Minor technical debt, sub-optimal pattern, or readability issues. | Magic strings, DRY violations, lack of docstrings, missing or stale file-header Purpose (see `file-headers`), magic numbers. |
 | **LOW** | Nice to have. Stylistic improvements, minor metadata gaps, or typos in non-critical comments. | Minor formatting, redundant comments, small consistency improvements. |
 
 ## Convergence Criteria
@@ -47,4 +47,5 @@ Use these criteria to categorize findings and determine when the review process 
 ### Stage 5: EXCELLENCE
 - Performance optimization?
 - Documentation polish?
+- File headers: every touched source file's Purpose is present, one-sentence-accurate, and not stale; Rationale reflects the current design (see `file-headers`)?
 - Style consistency?

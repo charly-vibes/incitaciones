@@ -5,9 +5,9 @@ tags: [refactoring, modularity, unix-philosophy, coupling, cohesion, architectur
 tools: [claude-code, cursor, aider, gemini]
 status: draft
 created: 2026-03-30
-updated: 2026-03-30
-version: 1.0.0
-related: [research-paper-unix-modularity-composability-diagnostics.md, prompt-task-composability-diagnostician.md, prompt-task-rigidity-diagnostician.md, prompt-task-mutability-diagnostician.md]
+updated: 2026-09-15
+version: 1.1.0
+related: [research-paper-unix-modularity-composability-diagnostics.md, prompt-task-composability-diagnostician.md, prompt-task-rigidity-diagnostician.md, prompt-task-mutability-diagnostician.md, prompt-system-file-headers.md]
 source: research-paper-unix-modularity-composability-diagnostics.md
 ---
 
@@ -75,6 +75,7 @@ Read all provided files. Identify modularity violation anti-patterns:
 | High Afferent Coupling (Ca) | Medium | A module is depended upon by many external modules — alterations are dangerous and trigger widespread ripple effects. Look for utility classes, base classes, or shared models imported everywhere |
 | Temporal Coupling | Medium | Files that frequently co-change in commits despite no explicit static dependency — reveals hidden dependencies and illusory modular boundaries. Requires git log analysis (skip if no git/co-change data provided) |
 | Missing Boundary | Medium | Related functionality spread across multiple modules with no clear owning package — no single module you could extract, replace, or test independently for that domain concept |
+| Undescribable Module | Medium | A file's purpose cannot be stated in one sentence — its file-header Purpose is missing, stale, or forced to be vague (see the File Headers convention, prompt-system-file-headers.md). The header is the cohesion contract: needing three sentences means the module is doing three jobs |
 
 For each signal found, note the file, line range, and a brief description.
 
@@ -344,4 +345,5 @@ CBO ≤ 9 and LCOM-HS ≤ 30% are the quantitative guardrails. These thresholds 
 
 ## Version History
 
+- 1.1.0 (2026-09-15): Added Undescribable Module signal — undescribable file purpose (missing/stale/vague file-header) as a cohesion violation, linking the File Headers convention as the module contract
 - 1.0.0 (2026-03-30): Initial extraction from research-paper-unix-modularity-composability-diagnostics.md
