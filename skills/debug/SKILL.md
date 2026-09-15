@@ -1,6 +1,6 @@
 ---
 name: debug
-description: "7-step diagnostic workflow for debugging issues"
+description: "7-step diagnostic workflow for debugging issues. Use when interactively debugging a live failure."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

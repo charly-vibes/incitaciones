@@ -1,6 +1,6 @@
 ---
 name: design-practice
-description: "Rich Hickey-inspired design methodology workflow"
+description: "Rich Hickey-inspired design methodology workflow. Use when a design must precede implementation."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

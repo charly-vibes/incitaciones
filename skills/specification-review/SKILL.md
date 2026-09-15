@@ -1,6 +1,6 @@
 ---
 name: specification-review
-description: "Iterative review of technical specifications for autonomy, precision, and AI-readiness"
+description: "Iterative review of technical specifications for autonomy, precision, and AI-readiness. Use only when reviewing a written spec document for quality."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

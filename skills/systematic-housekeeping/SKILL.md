@@ -1,6 +1,6 @@
 ---
 name: systematic-housekeeping
-description: "Comprehensive repository maintenance across Code/CI, Documentation, Prompts/Skills, and Context/Artifacts using 5S principles"
+description: "Comprehensive repository maintenance across Code/CI, Documentation, Prompts/Skills, and Context/Artifacts using 5S principles. Use for periodic whole-repository maintenance passes."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

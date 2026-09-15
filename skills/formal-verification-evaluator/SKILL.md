@@ -1,6 +1,6 @@
 ---
 name: formal-verification-evaluator
-description: "Evaluate specs for formal-verification readiness: paradigm, safety/liveness properties, invalidity risk, toolchain choice, scoping."
+description: "Evaluate specs for formal-verification readiness: paradigm, safety/liveness properties, invalidity risk, toolchain choice, scoping. Use when deciding whether to formally verify a spec."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

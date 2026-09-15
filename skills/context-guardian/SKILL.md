@@ -1,6 +1,6 @@
 ---
 name: context-guardian
-description: "System prompt that enforces reuse of existing abstractions and prevents architectural drift during development"
+description: "System prompt that enforces reuse of existing abstractions and prevents architectural drift during development. Use when enforcing architecture reuse during development."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

@@ -1,6 +1,6 @@
 ---
 name: commit
-description: "Create well-structured, atomic git commits with clear intent"
+description: "Create well-structured, atomic git commits with clear intent. Use when the user asks to commit changes."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

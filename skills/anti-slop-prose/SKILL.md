@@ -1,6 +1,6 @@
 ---
 name: anti-slop-prose
-description: "Tag AI-generated prose for overused vocabulary, formulaic constructions, and vague claims — advisory-only, no rewrites."
+description: "Tag AI-generated prose for overused vocabulary, formulaic constructions, and vague claims — advisory-only, no rewrites. Use when checking AI-written prose for slop."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

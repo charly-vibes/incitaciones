@@ -1,6 +1,6 @@
 ---
 name: edge-case-discovery
-description: "Discover edge cases, failure modes, and spec gaps before implementation using the six-boundary framework (Human, Business, Mathematical, Architectural, Failure, Formal)."
+description: "Discover edge cases, failure modes, and spec gaps before implementation using the six-boundary framework (Human, Business, Mathematical, Architectural, Failure, Formal). Use before implementation to surface edge cases."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

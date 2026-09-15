@@ -1,6 +1,6 @@
 ---
 name: test-friction
-description: "Diagnose production code design flaws by reading test pain signals — advisory only, no code changes"
+description: "Diagnose production code design flaws by reading test pain signals — advisory only, no code changes. Use when tests are painful to write or maintain."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

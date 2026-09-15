@@ -1,6 +1,6 @@
 ---
 name: research-review
-description: "Iterative review of research documents using Rule of 5"
+description: "Iterative review of research documents using Rule of 5. Use only when iteratively reviewing research documents."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

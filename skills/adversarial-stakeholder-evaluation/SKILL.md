@@ -1,6 +1,6 @@
 ---
 name: adversarial-stakeholder-evaluation
-description: "Three-tier adversarial evaluation of proposals: stakeholder council, anti-persona stress testing, pre-mortem with contradiction analysis."
+description: "Three-tier adversarial evaluation of proposals: stakeholder council, anti-persona stress testing, pre-mortem with contradiction analysis. Use when stress-testing a proposal against hostile stakeholders."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

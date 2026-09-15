@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "Review problem statements and decision matrices"
+description: "Review problem statements and decision matrices. Use only when reviewing problem statements or decision matrices."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

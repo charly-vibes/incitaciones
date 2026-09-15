@@ -1,6 +1,6 @@
 ---
 name: resonant-refactor
-description: "Safe, human-approved refactoring workflow with impact analysis, atomic execution, and automatic rollback"
+description: "Safe, human-approved refactoring workflow with impact analysis, atomic execution, and automatic rollback. Use when refactoring with human approval gates."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

@@ -1,6 +1,6 @@
 ---
 name: doc-link-verifier
-description: "Audit docs for broken links and contextual correctness: HTTP status, relative paths, anchors, and link-text/target mismatches."
+description: "Audit docs for broken links and contextual correctness: HTTP status, relative paths, anchors, and link-text/target mismatches. Use when auditing documentation links and cross-references."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

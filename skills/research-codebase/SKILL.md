@@ -1,6 +1,6 @@
 ---
 name: research-codebase
-description: "Structured investigation of unfamiliar codebases"
+description: "Structured investigation of unfamiliar codebases. Use when onboarding to an unfamiliar codebase."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

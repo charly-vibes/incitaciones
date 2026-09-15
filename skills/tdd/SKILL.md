@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: "Test-driven development workflow"
+description: "Test-driven development workflow. Use when writing tests before implementation."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

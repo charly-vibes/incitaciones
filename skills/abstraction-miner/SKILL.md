@@ -1,6 +1,6 @@
 ---
 name: abstraction-miner
-description: "Scan codebase for semantic duplication and propose reusable abstractions — advisory only, no code changes"
+description: "Scan codebase for semantic duplication and propose reusable abstractions — advisory only, no code changes. Use when hunting duplicated code to extract abstractions."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

@@ -1,6 +1,6 @@
 ---
 name: file-headers
-description: "Enforce a Purpose/Responsibilities/Rationale header on every source file so agents learn intent without reverse-engineering."
+description: "Enforce a Purpose/Responsibilities/Rationale header on every source file so agents learn intent without reverse-engineering. Use when creating or reviewing source files."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

@@ -1,6 +1,6 @@
 ---
 name: test-abstraction-miner
-description: "Detect Lazy Test clusters in test suites and propose parameterized tests and property-based test escalations — advisory only, no code changes"
+description: "Detect Lazy Test clusters in test suites and propose parameterized tests and property-based test escalations — advisory only, no code changes. Use when test suites show copy-paste duplication."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

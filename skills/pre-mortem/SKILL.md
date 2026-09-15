@@ -1,6 +1,6 @@
 ---
 name: pre-mortem
-description: "Anticipate failures before they happen"
+description: "Anticipate failures before they happen. Use before a plan is approved or executed."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

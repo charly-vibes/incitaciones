@@ -1,6 +1,6 @@
 ---
 name: ui-align
-description: "High-alignment UI specification workflow using interactive grilling and methodology verification"
+description: "High-alignment UI specification workflow using interactive grilling and methodology verification. Use when specifying UI through interactive grilling."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"

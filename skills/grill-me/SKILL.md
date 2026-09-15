@@ -1,6 +1,6 @@
 ---
 name: grill-me
-description: "Interview the user relentlessly about a plan or design until shared understanding is reached"
+description: "Interview the user relentlessly about a plan or design until shared understanding is reached. Use when the user asks to be grilled."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.9.0"
