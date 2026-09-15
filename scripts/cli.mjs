@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 /**
- * incitaciones CLI — Install LLM agent skills across tools.
+# Purpose: Install incitaciones skills from the manifest into agent tools (pi, Claude Code, Amp, Gemini CLI, etc.) from the command line.
+# Responsibilities:
+# - Resolve the manifest and bundles (npx incitaciones install [--bundle|--tool])
+# - Copy distilled skills into each tool's expected directory layout
+# - List available skills and show per-skill details (list, info)
+# Rationale: standalone npm CLI (bin: scripts/cli.mjs) so installs don't require cloning the repo; manifest is the single source of truth for what ships (bd: incitaciones packaging).
  *
  * Usage:
  *   npx incitaciones               Install all skills (default)

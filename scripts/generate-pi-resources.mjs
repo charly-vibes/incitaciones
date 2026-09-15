@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+// Purpose: Regenerate the pi-package resources (skills + prompts) from content/manifest.json for npm publishing.
+// Responsibilities:
+// - Reset and populate pi-package/skills and pi-package/prompts from the manifest's distilled entries
+// - Run on v* tag pushes via .github/workflows/npm-publish.yml before publish
+// Rationale: pi packages need a flat resource layout that differs from the repo's source+distilled duality; generating keeps the published form derived, never hand-maintained.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

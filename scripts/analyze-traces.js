@@ -1,5 +1,10 @@
 #!/usr/bin/env node
-
+// Purpose: Analyze agent-trace exports from multiple tools and summarize cross-tool usage patterns (provider, tokens, sessions) for the skill-usage research line.
+// Responsibilities:
+// - Parse trace files (auto-detect provider: claude, gemini, etc.) and normalize per-session records
+// - Emit markdown/JSON rankings (--top N), optional session-records JSONL and label queue for manual labeling
+// - Cache parsed results in .cache/trace-analysis-cache.json
+// Rationale: feeds research-finding-skill-usage-analysis.md; evidence for which distilled prompts agents actually run, so the manifest's bundles stay usage-driven.
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");

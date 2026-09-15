@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+#### Updated - Phase 3: dogfooding — repo scripts carry file headers + `just header-audit`
+
+The convention applied to the repo's own code, making the audit mechanical (EXCL-001 from the Rule-of-5 review):
+
+- **scripts/{cli.mjs, generate-pi-resources.mjs, analyze-traces.js, trace-insights.js, nucleus-roundtrip.sh}** — Purpose/Responsibilities/Rationale headers added or existing JSDoc extended to the convention format; rationale records why each script exists as its own file. Purposes verified against each script's actual usage text before writing.
+- **justfile** — new `header-audit` recipe: every `scripts/*.{js,mjs,sh}` (excluding nucleus system prompts) must carry a `Purpose:` line within the first 15 lines; fails with a pointer to the convention prompt.
+- Syntax verified: `node --check` on all .mjs, `bash -n` on the shell script; `just validate` and `just header-audit` both green.
+
 #### Updated - Phase 2: file-header review-time hooks wired into four review skills
 
 The enforcement counterpart to Phase 1 — every place where code or tickets get judged now checks the File Headers convention:

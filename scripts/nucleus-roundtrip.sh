@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Purpose: Compile a distilled prompt to a Nucleus lambda via pi and decompile it back, for the roundtrip fidelity experiment.
+# Responsibilities:
+# - Validate the manifest entry for NAME and the compiler/decompiler system prompts in scripts/nucleus/
+# - Run the pi-mediated lambda compile + decompile, writing content/compiled/nucleus/NAME.{lambda,roundtrip}.md
+# Rationale: experimental artifact pair used by `just compare-nucleus NAME` to diff the roundtrip against the canonical distilled prompt — not part of packaging; the distilled file remains canonical.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

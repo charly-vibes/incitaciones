@@ -258,6 +258,25 @@ validate:
         exit 1
     fi
 
+# Audit source scripts for the File Headers convention (content/prompt-system-file-headers.md):
+# every source file opens with a Purpose/Responsibilities/Rationale header
+header-audit:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    MISSING=0
+    while IFS= read -r file; do
+        if ! head -15 "$file" | grep -q "Purpose:"; then
+            echo "❌ $file: missing file header (Purpose/Responsibilities/Rationale)"
+            MISSING=$((MISSING + 1))
+        fi
+    done < <(find scripts -type f \( -name '*.js' -o -name '*.mjs' -o -name '*.sh' \) -not -path '*/nucleus/*')
+    if [ "$MISSING" -eq 0 ]; then
+        echo "✅ All source files carry file headers"
+    else
+        echo "Found $MISSING file(s) missing headers — see content/prompt-system-file-headers.md"
+        exit 1
+    fi
+
 # Show repository statistics
 stats:
     #!/usr/bin/env bash

@@ -1,5 +1,9 @@
 #!/usr/bin/env node
-
+// Purpose: Process local agent traces into ready-to-use insight artifacts under .cache/trace-insights/ by delegating to analyze-traces.js.
+// Responsibilities:
+// - Auto-detect trace inputs and spawn scripts/analyze-traces.js with normalized arguments
+// - Write latest-report.json, session-records.jsonl, and label-queue.jsonl artifacts
+// Rationale: keeps the one-command digest workflow (`just trace-insights`) separate from analyze-traces' rich CLI surface; artifacts land in .cache so raw traces stay out of git.
 const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
