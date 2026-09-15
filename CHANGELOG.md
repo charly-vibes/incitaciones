@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+#### Updated - file-headers promoted draft → tested (v1.1.0)
+
+Convention applied end-to-end in this repo: headers on all five source scripts (purposes verified against usage text), `just header-audit` gate wired, creation-time and review-time enforcement hooks shipped in eight skills. Verified still requires independent real-world use in an external codebase.
+
+- **content/prompt-system-file-headers.md** — status + version history entry.
+
 #### Added - sync-manifest version-consistency check (incitaciones-wp1) + repo-wide drift reconciliation
 
 Closing the loop on the drift mechanism the Rule-of-5 review identified: `just sync-manifest` now verifies that every distilled file carrying a `<!-- skill: NAME, version: X -->` marker matches its source prompt's frontmatter `version:` — mismatch fails the recipe. Distilled files without a version marker are skipped. The error summary message no longer conflates version mismatches with missing files.

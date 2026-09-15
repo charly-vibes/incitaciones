@@ -3,10 +3,10 @@ title: File Headers (Self-Describing Source Files)
 type: prompt
 tags: [documentation, architecture, modularity, code-quality, system-prompt, context-engineering]
 tools: [claude-code, cursor, aider, gemini]
-status: draft
+status: tested
 created: 2026-09-15
 updated: 2026-09-15
-version: 1.0.0
+version: 1.1.0
 related: [prompt-system-context-guardian.md, prompt-task-modularity-diagnostician.md, prompt-workflow-resonant-refactor.md, prompt-task-iterative-code-review.md]
 source: original
 ---
@@ -145,4 +145,5 @@ Rule 3 is what elevates this from documentation to modularization tooling: the h
 
 ## Version History
 
+- 1.1.0 (2026-09-15): Promoted draft → tested — convention applied end-to-end in this repo: headers written on all five source scripts (purposes verified against each script's usage text), `just header-audit` gate wired, and creation-time/review-time enforcement hooks shipped in eight skills. Verified requires independent real-world use in an external codebase
 - 1.0.0 (2026-09-15): Initial convention distilled from Rule-of-5-reviewed investigation into agent-facing file documentation, modularization enforcement, and rationale tracking
