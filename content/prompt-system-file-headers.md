@@ -65,8 +65,8 @@ Adapt the comment syntax to the language (`#`, `//`, `--`, `"""docstring"""`, or
 To find files missing headers:
 
 ```bash
-grep -rLE "(Purpose:|@purpose)" --include=<source-extensions> . \
-  # excluding vendored/generated paths
+# Exclude vendored, generated, and config paths from the audit
+grep -rLE "(Purpose:|@purpose)" --include=<source-extensions> .
 ```
 
 Every hit is a gap. Run this in CI or as part of periodic housekeeping.

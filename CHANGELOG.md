@@ -1,5 +1,15 @@
 ## [Unreleased]
 
+#### Fixed - Rule-of-5 review of the file-headers implementation (Phases 0–3)
+
+Post-implementation review of all four commits found one HIGH and three LOW defects, all fixed:
+
+- **code-review version drift reconciled** — source frontmatter was 1.2.0 while the distilled marker said 1.3.0 (a pre-existing offset I bumped-but-kept and even documented in the Phase 2 CHANGELOG as if intentional — the exact source+distilled sync violation the plan review had flagged as CRITICAL). Source now 1.3.0 with a reconciliation history entry; CHANGELOG wording fixed. Filed **incitaciones-wp1** for an automated version-consistency check in `just sync-manifest`, since 3 of 4 touched skills had drifted and manual reconciliation demonstrably doesn't scale.
+- **scripts/cli.mjs** — header restyled from `# Purpose:`-inside-JSDoc to `// Purpose:` lines, matching the other four scripts and the convention's own "adapt comment syntax to the language" rule.
+- **tdd source Step 4** — file-header check added to the verification list, closing the last source/distilled structural divergence for the skill.
+- **file-headers AUDIT snippet** — the `\` line-continuation followed by a `# comment` made the exclusion note an inert trailing comment; restructured as a proper comment above the command.
+- Validated: syntax checks, `just validate-distilled` ✓, `just sync-manifest` ✓, `just header-audit` ✓.
+
 #### Updated - Phase 3: dogfooding — repo scripts carry file headers + `just header-audit`
 
 The convention applied to the repo's own code, making the audit mechanical (EXCL-001 from the Rule-of-5 review):
@@ -13,7 +23,7 @@ The convention applied to the repo's own code, making the audit mechanical (EXCL
 The enforcement counterpart to Phase 1 — every place where code or tickets get judged now checks the File Headers convention:
 
 - **issue-review** (v1.3.0) — PASS 5 Executability: self-describing code files added to Focus; missing file-header acceptance criterion added to What to look for ("undocumented files force every implementing agent to re-derive intent"); SKILL.md Review Lens gains the self-describing item. `content/compiled/nucleus/issue-review.*` left intentionally stale — experimental LLM-generated roundtrips, canonical source is the distilled skill (regenerate with `just nucleus-roundtrip issue-review` when next compared).
-- **code-review** (v1.2.0, distilled 1.3.0) — Stage 5 (Original) and Pass 3 (Code Review Variant) check file-header Purpose accuracy and Rationale currency; MEDIUM severity examples extend to missing/stale file-header Purpose. No duplicate criterion added — the existing docstring/documentation anchors were sharpened instead.
+- **code-review** (v1.3.0, source and distilled reconciled) — Stage 5 (Original) and Pass 3 (Code Review Variant) check file-header Purpose accuracy and Rationale currency; MEDIUM severity examples extend to missing/stale file-header Purpose. No duplicate criterion added — the existing docstring/documentation anchors were sharpened instead.
 - **modularity-diagnostician** (v1.1.0) — new **Undescribable Module** signal: a file's purpose not statable in one sentence (missing/stale/vague header) is itself a cohesion violation. The header is the cohesion contract; three sentences = three jobs.
 - **resonant-refactor** (v1.2.0) — Phase 5 Quality Gates gains the File Headers gate (Rationale updated with the refactor's reason + issue link); completion report and worked example updated.
 - All four sources: `related` frontmatter links prompt-system-file-headers.md; version history entries added.

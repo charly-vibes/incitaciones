@@ -6,7 +6,7 @@ tools: [claude-code, cursor, aider, gemini, gastown]
 status: tested
 created: 2026-01-12
 updated: 2026-09-15
-version: 1.2.0
+version: 1.3.0
 related: [research-paper-rule-of-5-multi-agent-review.md, research-paper-cognitive-architectures-for-prompts.md, prompt-workflow-multi-agent-parallel-review.md, prompt-system-file-headers.md]
 source: steve-yegge-gastown-rule-of-five-formula
 ---
@@ -500,6 +500,6 @@ Don't skip passes to save time. The iterative refinement is what makes this work
 
 ## Version History
 
-- 1.2.0 (2026-09-15): File-header accuracy in Stage 5 (Original) and Pass 3 (Code Review Variant); severity examples extend to missing/stale file-header Purpose (File Headers convention)
+- 1.3.0 (2026-09-15): File-header accuracy in Stage 5 (Original) and Pass 3 (Code Review Variant); severity examples extend to missing/stale file-header Purpose (File Headers convention); version reconciled with distilled marker (distilled was already 1.3.0)
 - 1.1.0 (2026-01-13): Added "Original Variant" matching Steve's actual gastown stages (Draft → Correctness → Clarity → Edge Cases → Excellence); kept existing domain-focused version as "Code Review Variant"; added comparison table and gastown reference
 - 1.0.0 (2026-01-12): Initial version based on Steve Yegge's Rule of 5

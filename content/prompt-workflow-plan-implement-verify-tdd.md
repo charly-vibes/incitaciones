@@ -161,6 +161,7 @@ npm run lint
 
 **Manual verification:**
 - [ ] [Specific manual tests from plan]
+- [ ] File headers: new source files open with Purpose/Responsibilities/Rationale; files whose contract changed have a current Rationale (see the File Headers convention)
 
 #### Step 5: Inform User
 
