@@ -8,9 +8,9 @@ created: 2026-09-15
 updated: 2026-09-15
 version: 1.0.0
 related:
-  - content/manifest.json
   - prompt-workflow-close.md
-  - prompt-task-code-review.md
+  - prompt-task-iterative-code-review.md
+  - research-finding-skill-usage-analysis.md
 source: original
 ---
 

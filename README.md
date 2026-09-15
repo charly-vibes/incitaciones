@@ -153,7 +153,7 @@ just search
 Everything lives in `content/` with descriptive filenames:
 
 - `prompt-*.md` - Reusable prompts (source)
-- `distilled/` - Optimized prompts for agent consumption (single file or multi-file)
+- `distilled/` - Optimized prompts for agent consumption (single file, multi-file, or router + references/ — see AGENTS.md "Distilled Formats")
 - `research-*.md` - Experiments and findings
 - `example-*.md` - Real-world examples
 - `template-*.md` - Templates for new content

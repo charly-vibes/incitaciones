@@ -89,13 +89,19 @@ For complex skills that would exceed 500 lines or 5,000 tokens. Uses a core `SKI
   - `content/distilled/{name}/references/` - On-demand templates, examples, and criteria.
 - **Trigger Protocol:** The `SKILL.md` must explicitly instruct the agent to read specific files in `references/` when needed.
 
+### Router Skills
+For families of overlapping skills that share a task verb but differ by object (review code/plan/spec). A thin router SKILL.md holds a mode table + selection rules; each former skill's content lives verbatim under `references/{member}/` (multi-file members keep their own nested `references/`). Routers register member sources via a plural `sources` array in the manifest. See `content/prompt-system-skill-router-architecture.md` — including when NOT to route. Rationale and measurements: the 2026-09 consolidation cut always-on prompt cost ~47% (beads incitaciones-oyz).
+
+### Compat Pointers
+When a skill is consolidated away, high-traffic old names ship for one release as thin pointer skills with `disable_model_invocation: true` in the manifest (hidden from the system prompt, still invocable via `/skill:name`), living in `content/distilled/pointers/`. Remove them in the next major cleanup.
+
 ## Manifest (`content/manifest.json`)
 
 The manifest is the authoritative registry of all prompts. It is consumed by `install.sh` and the site generator.
 
 - **`version`** — date of the last content change (`YYYY-MM-DD`). Update this whenever a prompt is added, removed, or meaningfully edited.
 - **`schema_version`** — bump only when the manifest format itself changes.
-- **`prompts`** — one entry per prompt with `name`, `type`, `source`, `distilled`, `tags`, and `bundles`.
+- **`prompts`** — one entry per prompt with `name`, `type`, `source`, `distilled`, `tags`, and `bundles`. Routers add a plural `sources` array (all member source files) and may set `disable_model_invocation: true` to hide the installed skill from the system prompt while keeping `/skill:name` working.
 - **`bundles`** — named groups of prompt names; `"all"` uses `["*"]` as a wildcard.
 
 `content/manifest.json` is the authoritative manifest. The site copy (`_site/manifest.json`) is generated during `site/build.sh` and GitHub Pages CI deployment, so contributors should update only `content/manifest.json`. Use `just sync-manifest` to validate all referenced files exist and bump the version date.

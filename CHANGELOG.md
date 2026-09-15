@@ -1,3 +1,18 @@
+## [Unreleased]
+
+#### Added - skill router architecture (consolidation of overlapping skills)
+
+Implements the token-reduction plan filed after the skill-cost investigation (beads: incitaciones-oyz, xj6, ys6, c1p, 07t). Always-on system-prompt cost drops from ~5,900 to ~3,100 tokens (−47%), measured as the rendered `<available_skills>` block pi injects (baseline 23,246 chars across 70 installed skills, now 12,351 chars across 38 visible + 9 hidden).
+
+- **7 routers** replace 36 overlapping skills, each a thin mode-table SKILL.md plus `references/` preserving member content verbatim: `session` (close, park, next, renew, resume-handoff, create-handoff), `review` (code-review, rule-of-5-universal, parallel-review, multi-agent-review, guided-review, red-team-review), `planning` (create-plan, implement-plan, plan-review, iterate-plan), `issues` (create-issues, issue-review), `diagnostician` (the twelve `*-diagnostician` skills), `prompt-meta` (extract-prompt, distill-prompt, verify-prompt), `documentation` (research-/implement-/review-documentation).
+- **Compat pointers** — high-traffic old names (`/skill:close`, `/skill:rule-of-5-universal`, `/skill:create-issues`, `/skill:issue-review`, `/skill:create-handoff`, `/skill:park`, `/skill:next`, `/skill:renew`) still resolve via hidden pointer skills and will be removed in a future release. Update configs to the router names.
+- **Selective description trimming** — the nine remaining over-long descriptions (>150 chars) tightened while keeping near-duplicate pairs differentiated (beads: xj6).
+- **`disable-model-invocation` per skill** — new `disable_model_invocation: true` manifest field, honored by all three installers; `whisper` is now hidden (invoke `/skill:whisper`).
+- **Installer fixes** — installed SKILL.md files previously carried double frontmatter (generated + the distilled file's own); installers now strip the distilled frontmatter, and prune stale incitaciones-installed skill directories on reinstall.
+- **doc-link-verifier split** — contextual-correctness criteria and the report template moved to `references/`, shrinking the on-demand body from ~210 to 141 lines (beads: c1p).
+- **New source doc:** `content/prompt-system-skill-router-architecture.md` (router design rationale and when NOT to route). `just sync-manifest` accepts the plural `sources` array routers use to register member sources.
+- Validated: `just validate-distilled` ✓, `just sync-manifest` ✓, `just validate` ✓; post-install re-measurement ✓ (beads: 07t).
+
 ## [0.9.0] - 2026-09-15
 
 #### Updated - essentials bundle reorganized to the measured top-8 skills
