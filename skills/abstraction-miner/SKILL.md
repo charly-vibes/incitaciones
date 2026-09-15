@@ -3,7 +3,7 @@ name: abstraction-miner
 description: "Scan codebase for semantic duplication and propose reusable abstractions — advisory only, no code changes. Use when hunting duplicated code to extract abstractions."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 <!-- Full version: content/prompt-task-abstraction-miner.md -->
 You are a Pattern Recognition Engine. Your goal: detect semantic duplication (code with identical *intent* but different syntax) and propose reusable abstractions. Do NOT modify any files — this is advisory only.

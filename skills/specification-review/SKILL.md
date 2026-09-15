@@ -3,7 +3,7 @@ name: specification-review
 description: "Iterative review of technical specifications for autonomy, precision, and AI-readiness. Use only when reviewing a written spec document for quality."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 <!-- skill: specification-review, version: 1.1.0, status: verified -->
 # Standalone Specification Review

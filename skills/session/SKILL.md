@@ -3,7 +3,7 @@ name: session
 description: "Session lifecycle: end-of-session wrap-up and commit (close), quick stash (next), park before context switch, renew to resume prior work, create or resume handoff documents. Trigger for closing, wrapping up, parking, resuming, or handoffs."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 # Session Lifecycle Router
 

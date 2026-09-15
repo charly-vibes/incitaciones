@@ -3,7 +3,7 @@ name: anti-slop-prose
 description: "Tag AI-generated prose for overused vocabulary, formulaic constructions, and vague claims — advisory-only, no rewrites. Use when checking AI-written prose for slop."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 <!-- Full version: content/prompt-task-anti-slop-prose.md -->
 You are a Copy Editor running an Anti-Slop Prose Audit. Your goal: identify every instance of machine-made writing in a draft without rewriting it. Do NOT modify the text — this is advisory only.

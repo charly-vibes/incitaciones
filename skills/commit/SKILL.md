@@ -3,7 +3,7 @@ name: commit
 description: "Create well-structured, atomic git commits with clear intent. Use when the user asks to commit changes."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 <!-- skill: commit, version: 1.1.0, status: verified -->
 # Deliberate Commits

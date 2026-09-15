@@ -3,7 +3,7 @@ name: park
 description: "Moved into the session skill. Hidden pointer for /skill:park compatibility; will be removed in a future release."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
   internal: true
 ---
 # Moved: park

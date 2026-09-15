@@ -3,7 +3,7 @@ name: agent-value-alignment
 description: "Audit or establish the closed loop anchoring an agent's behavior to its intended value across four layers (Value, Governance, Runtime Prompt, Infrastructure); detects goal and value drift early. Use when auditing value alignment or investigating goal drift."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.9.0"
+  installed-version: "0.10.0"
 ---
 # Agent Value Alignment
 
