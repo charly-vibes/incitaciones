@@ -11,3 +11,5 @@ pre-push:
       run: just validate-distilled
     pi-package:
       run: just validate-pi-package
+    skills-dir:
+      run: just validate-skills-dir

@@ -104,6 +104,8 @@ The manifest is the authoritative registry of all prompts. It is consumed by `in
 - **`prompts`** — one entry per prompt with `name`, `type`, `source`, `distilled`, `tags`, and `bundles`. Routers add a plural `sources` array (all member source files) and may set `disable_model_invocation: true` to hide the installed skill from the system prompt while keeping `/skill:name` working.
 - **`bundles`** — named groups of prompt names; `"all"` uses `["*"]` as a wildcard.
 
+- **`just sync-manifest`** is the authoritative manifest workflow. The committed `skills/` catalog (skills.sh format) is a **generated artifact** of the manifest — regenerate with `just generate-skills-dir`; pre-push validates freshness via `just validate-skills-dir`. Never hand-edit `skills/`.
+
 `content/manifest.json` is the authoritative manifest. The site copy (`_site/manifest.json`) is generated during `site/build.sh` and GitHub Pages CI deployment, so contributors should update only `content/manifest.json`. Use `just sync-manifest` to validate all referenced files exist and bump the version date.
 
 ## File Naming

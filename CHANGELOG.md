@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+#### Added - skills.sh distribution (`npx skills add incitaciones`)
+
+- **`skills/` catalog committed** — generated `skills/<name>/SKILL.md` (+ `references/` trees) for all 47 manifest entries, conforming to the [Agent Skills](https://agentskills.io) format and the skills.sh discovery contract (`skills/` container directory).
+- **`scripts/generate-skills-dir.mjs`** — generator mirroring the pi-package one; compat pointers emit `metadata.internal: true` so the skills.sh CLI hides them from discovery. Never hand-edit `skills/`: `just generate-skills-dir` regenerates, `just validate-skills-dir` (pre-push) enforces freshness.
+- README Quick Install gains the skills.sh path.
+
 #### Added - skill router architecture (consolidation of overlapping skills)
 
 Implements the token-reduction plan filed after the skill-cost investigation (beads: incitaciones-oyz, xj6, ys6, c1p, 07t). Always-on system-prompt cost drops from ~5,900 to ~3,100 tokens (−47%), measured as the rendered `<available_skills>` block pi injects (baseline 23,246 chars across 70 installed skills, now 12,351 chars across 38 visible + 9 hidden).

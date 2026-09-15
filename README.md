@@ -7,7 +7,22 @@ A collection of reusable prompts and best practices for CLI LLM tools.
 
 ## Quick Install
 
-### Via npm / npx (recommended)
+### Via skills.sh (works with any agent)
+
+```bash
+# Browse & install interactively (pick individual skills):
+npx skills add incitaciones
+
+# Install everything:
+npx skills add incitaciones --skill '*' --all
+
+# Install only a specific skill:
+npx skills add incitaciones --skill commit
+```
+
+The skills.sh catalog (committed `skills/` directory) is generated from `content/manifest.json` — compat pointers are marked `metadata.internal: true` and hidden from discovery there.
+
+### Via npm / npx (pi + multi-tool installers)
 
 ```bash
 # Install as pi package (native skills, best UX):

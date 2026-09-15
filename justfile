@@ -504,6 +504,28 @@ install *ARGS:
 generate-pi-resources:
     node scripts/generate-pi-resources.mjs
 
+# Regenerate the committed skills/ catalog (skills.sh / `npx skills add` format)
+generate-skills-dir:
+    node scripts/generate-skills-dir.mjs
+
+# Validate the committed skills/ catalog is fresh and conformant
+validate-skills-dir:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    node scripts/generate-skills-dir.mjs >/dev/null
+    test -d skills
+    test "$(jq '.prompts | length' content/manifest.json)" -eq "$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)"
+    for f in skills/*/SKILL.md; do
+        head -1 "$f" | grep -q '^---$' || { echo "❌ $f: missing frontmatter"; exit 1; }
+        grep -q '^name: ' "$f" || { echo "❌ $f: missing name"; exit 1; }
+        grep -q '^description: ' "$f" || { echo "❌ $f: missing description"; exit 1; }
+    done
+    if ! git diff --exit-code --quiet -- skills/; then
+        echo "❌ skills/ catalog is stale — run 'just generate-skills-dir' and commit";
+        exit 1;
+    fi
+    echo "skills/ catalog valid ($(find skills -mindepth 1 -maxdepth 1 -type d | wc -l) skills)"
+
 # Validate pi package resources and manifest paths
 validate-pi-package:
     #!/usr/bin/env bash
