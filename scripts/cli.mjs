@@ -77,7 +77,7 @@ function resolveDistilled(prompt) {
 }
 
 // ── Generate frontmatter ───────────────────────────────
-function generateFrontmatter(prompt) {
+function generateFrontmatter(prompt, options) {
   const desc = escapeYaml(prompt.description || `Incitaciones prompt: ${prompt.name}`);
   const lines = [
     "---",
@@ -279,6 +279,22 @@ function doInstall(prompts, options) {
     if (installSkill(prompt, dstRoot, options)) installed++;
   }
   console.log(`\nInstalled: ${installed} skills to ${dstRoot}/\n`);
+
+  // Prune stale incitaciones-installed skills (e.g. after consolidation):
+  // any skill dir whose SKILL.md is marked installed-from: incitaciones but
+  // whose name is not in the just-installed set. Foreign skills are kept.
+  const installedNames = new Set(prompts.map((p) => p.name));
+  let pruned = 0;
+  for (const entry of fs.readdirSync(dstRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    if (installedNames.has(entry.name)) continue;
+    const marker = path.join(dstRoot, entry.name, "SKILL.md");
+    if (!fs.existsSync(marker)) continue;
+    if (!fs.readFileSync(marker, "utf8").includes("installed-from: incitaciones")) continue;
+    fs.rmSync(path.join(dstRoot, entry.name), { recursive: true, force: true });
+    pruned++;
+  }
+  if (pruned) console.log(`Pruned: ${pruned} stale incitaciones skills\n`);
 
   // Tool integrations
   if (!options.tool) {

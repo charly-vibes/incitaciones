@@ -615,6 +615,21 @@ if [ "$FORMAT" = "skills" ]; then
   echo ""
   echo -e "${GREEN}Installed: $INSTALLED skills to $INSTALL_DIR/${NC}"
   [ $SKIPPED -gt 0 ] && echo -e "${YELLOW}Skipped: $SKIPPED (not found)${NC}"
+
+  # Prune stale incitaciones-installed skills (e.g. after consolidation):
+  # any skill dir whose SKILL.md is marked installed-from: incitaciones but
+  # whose name is not in the just-installed set. Foreign skills are kept.
+  PRUNED=0
+  for dir in "$INSTALL_DIR"/*/; do
+    name=$(basename "$dir")
+    case " $PROMPTS " in *" $name "*) continue ;; esac
+    marker="$dir/SKILL.md"
+    [ -f "$marker" ] || continue
+    grep -q "installed-from: incitaciones" "$marker" || continue
+    rm -rf "$dir"
+    PRUNED=$((PRUNED + 1))
+  done
+  [ $PRUNED -gt 0 ] && echo -e "${YELLOW}Pruned: $PRUNED stale incitaciones skills${NC}"
   echo ""
 
 else
