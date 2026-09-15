@@ -922,6 +922,19 @@ sync-manifest:
         ERRORS=$((ERRORS + 1))
     fi
 
+    # Trigger-clause coverage + distinctness (incitaciones-rbn): descriptions
+    # are the routing contract — every live prompt needs a trigger clause, and
+    # clauses sharing >=2 distinctive tokens must carry an "only when" boundary.
+    echo ""
+    echo "Trigger-clause coverage and distinctness:"
+    TRIGGER_PROBLEMS=$(python3 scripts/trigger-overlap.py 2>&1 || true)
+    if [ "$TRIGGER_PROBLEMS" = "OK" ]; then
+        echo "  ✓ all live prompts carry distinct trigger clauses"
+    else
+        echo "$TRIGGER_PROBLEMS" | sed 's/^/  ❌ /'
+        ERRORS=$((ERRORS + 1))
+    fi
+
     echo ""
 
     if [ $ERRORS -gt 0 ] || [ $ORPHANS -gt 0 ]; then
