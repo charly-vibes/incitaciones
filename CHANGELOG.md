@@ -1,3 +1,9 @@
+## [0.10.2] - 2026-09-18
+
+#### Fixed - npm installs of the published package fail (incitaciones-kbk)
+
+- `package.json`'s `files` array omitted `scripts/lib/`, so the published tarball lacked `compile.mjs` — which `scripts/generate-pi-resources.mjs` imports. Every `npm install incitaciones` (and `pi install npm:incitaciones`) failed with `ERR_MODULE_NOT_FOUND` during postinstall. `scripts/lib/` is now shipped; verified by packing the tarball and running the postinstall against it (47 prompts generated cleanly).
+
 ## [0.10.1] - 2026-09-18
 
 #### Fixed - broken site/pointer workflow: router consolidation left no working URL or installed skill (incitaciones-06i)
