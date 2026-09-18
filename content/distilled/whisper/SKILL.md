@@ -1,9 +1,3 @@
----
-name: whisper
-description: "Knowledge workspace management: init, check, status, link plan, decommission, routing. Delegates to the turu CLI when installed."
-tools: Read, Write, Edit, Bash
----
-
 # Whisper — Deterministic Operational Knowledge
 
 > **This skill is a thin pointer.** The canonical, versioned copy ships with

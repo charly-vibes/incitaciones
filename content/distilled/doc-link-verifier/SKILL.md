@@ -1,8 +1,3 @@
----
-name: doc-link-verifier
-description: Audit repository documentation for broken links and contextual correctness — HTTP status, relative paths, anchors, and semantic mismatches between link text and target content.
----
-
 # doc-link-verifier
 
 Audit a repository's documentation for link problems. Two problems, actually:
