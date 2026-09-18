@@ -3,7 +3,7 @@ name: rule-of-5-universal
 description: "Compiled alias of the Rule-of-5 universal review mode of the review skill. Hidden from model invocation; invocable via /skill:rule-of-5-universal; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
   internal: true
 ---
 > **Moved:** this entry is now the **rule-of-5-universal** mode of the **review** skill.

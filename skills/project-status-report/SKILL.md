@@ -3,7 +3,7 @@ name: project-status-report
 description: "Create audience-specific project status reports grounded in evidence, variance, blockers, decisions, and agentic AI provenance when applicable. Use when reporting project status to stakeholders."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 # Evidence-Backed Project Status Report
 

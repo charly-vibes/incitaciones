@@ -3,7 +3,7 @@ name: issues
 description: "Issue tracking: create trackable issues from an implementation plan, or review existing issues for completeness, dependencies, and executability. Trigger for breaking work into issues or checking issue quality."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 # Issues Router
 

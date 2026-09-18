@@ -3,7 +3,7 @@ name: close
 description: "Compiled alias of the end-of-session wrap-up mode of the session skill. Hidden from model invocation; invocable via /skill:close; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
   internal: true
 ---
 > **Moved:** this entry is now the **close** mode of the **session** skill.

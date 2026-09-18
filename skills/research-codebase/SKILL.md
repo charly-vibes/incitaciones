@@ -3,7 +3,7 @@ name: research-codebase
 description: "Structured investigation of unfamiliar codebases. Use when onboarding to an unfamiliar codebase."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 # Research Codebase
 

@@ -3,7 +3,7 @@ name: design-practice
 description: "Rich Hickey-inspired design methodology workflow. Use when a design must precede implementation."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 Apply the 6-phase design framework to understand a problem before implementing a solution.
 

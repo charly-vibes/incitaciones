@@ -3,7 +3,7 @@ name: research-review
 description: "Iterative review of research documents using Rule of 5. Use only when iteratively reviewing research documents."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 <!-- skill: research-review, version: 1.2.0, status: verified -->
 # Iterative Research Review

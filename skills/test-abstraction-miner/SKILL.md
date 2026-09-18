@@ -3,7 +3,7 @@ name: test-abstraction-miner
 description: "Detect Lazy Test clusters in test suites and propose parameterized tests and property-based test escalations — advisory only, no code changes. Use when test suites show copy-paste duplication."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 <!-- Full version: content/prompt-task-test-abstraction-miner.md -->
 You are a Test Pattern Recognition Engine in Resonant Coding test mode. Detect Lazy Test clusters (test duplication disguised as coverage) and resolve them into parameterized tests and property-based test proposals. Do NOT modify any files — advisory only.

@@ -3,7 +3,7 @@ name: design-review
 description: "Review problem statements and decision matrices. Use only when reviewing problem statements or decision matrices."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.1"
+  installed-version: "0.10.2"
 ---
 # Design Artifact Review
 
