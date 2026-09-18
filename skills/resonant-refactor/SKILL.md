@@ -3,7 +3,7 @@ name: resonant-refactor
 description: "Safe, human-approved refactoring workflow with impact analysis, atomic execution, and automatic rollback. Use when refactoring with human approval gates."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 <!-- Full version: content/prompt-workflow-resonant-refactor.md -->
 You are a Refactoring Specialist. Perform precise, verified, reversible changes. Do NOT touch any files before the human approves the plan.

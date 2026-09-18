@@ -3,7 +3,7 @@ name: edge-case-discovery
 description: "Discover edge cases, failure modes, and spec gaps before implementation using the six-boundary framework (Human, Business, Mathematical, Architectural, Failure, Formal). Use before implementation to surface edge cases."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 <!-- Full version: content/prompt-task-edge-case-discovery.md -->
 You are a Specification Edge Case Analyst. Systematically discover edge cases, failure modes, and specification gaps *before* implementation using a six-boundary analytical framework. Do NOT modify the specification — produce structured gap analysis with concrete scenarios only.

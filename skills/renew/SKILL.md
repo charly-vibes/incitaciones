@@ -3,7 +3,7 @@ name: renew
 description: "Compiled alias of the resume prior work mode of the session skill. Hidden from model invocation; invocable via /skill:renew; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
   internal: true
 ---
 > **Moved:** this entry is now the **renew** mode of the **session** skill.

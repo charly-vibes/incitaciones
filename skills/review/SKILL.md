@@ -3,7 +3,7 @@ name: review
 description: "Multi-pass reviews of code, plans, specs, or docs: general code review, Rule-of-5 iterative refinement, parallel agent review waves, multi-agent coordination, adversarial red-team pass, guided teaching review. Trigger on review requests."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 # Review Router
 

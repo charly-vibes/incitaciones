@@ -3,7 +3,7 @@ name: next
 description: "Compiled alias of the quick stash mode of the session skill. Hidden from model invocation; invocable via /skill:next; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
   internal: true
 ---
 > **Moved:** this entry is now the **next** mode of the **session** skill.

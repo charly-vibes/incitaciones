@@ -3,7 +3,7 @@ name: file-headers
 description: "Enforce a Purpose/Responsibilities/Rationale header on every source file so agents learn intent without reverse-engineering. Use when creating or reviewing source files."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 <!-- Full version: content/prompt-system-file-headers.md -->
 You enforce file-header documentation on source code. Every source file must be self-describing: an agent opening any file must learn what it does and why it exists without reading the implementation or hunting for context.

@@ -3,7 +3,7 @@ name: planning
 description: "Implementation planning: create a phased TDD-oriented plan, implement it phase by phase, review a plan for gaps and risks, or iterate it from feedback. Trigger for planning or executing multi-phase work."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 # Planning Router
 

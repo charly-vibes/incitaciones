@@ -3,7 +3,7 @@ name: codebase-cartography
 description: "Map a codebase's structure as text-based architecture diagrams at macro, meso, and micro zoom levels, with optional structural-health triage. Use when mapping codebase architecture as diagrams."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 # Codebase Cartography
 

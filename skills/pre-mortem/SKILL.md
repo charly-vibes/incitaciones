@@ -3,7 +3,7 @@ name: pre-mortem
 description: "Anticipate failures before they happen. Use before a plan is approved or executed."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.0"
+  installed-version: "0.10.1"
 ---
 Imagine it is [FUTURE DATE, e.g., six months from now]. The [PROJECT NAME] project has failed spectacularly. It was a complete disaster, resulting in [SPECIFIC NEGATIVE BUSINESS OUTCOME, e.g., 40% customer churn, a major security breach, a total budget overrun].
 
