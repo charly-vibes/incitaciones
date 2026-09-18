@@ -1,15 +1,65 @@
 ---
 name: next
-description: "Moved into the session skill. Hidden pointer for /skill:next compatibility; will be removed in a future release."
+description: "Compiled alias of the quick stash mode of the session skill. Hidden from model invocation; invocable via /skill:next; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
   installed-version: "0.10.0"
   internal: true
 ---
-# Moved: next
+> **Moved:** this entry is now the **next** mode of the **session** skill.
+> The full method is compiled below from `content/distilled/session/references/next/SKILL.md`.
+> Invoke via `/skill:next`, invoke `/skill:session` for the mode table,
+> or use this URL directly in a chat interface.
 
-This skill was consolidated into the **session** skill (router + references/ layout).
+#### Core Instructions (content/distilled/session/references/next/SKILL.md)
 
-Use `/next` no more: invoke `/skill:session` and follow its mode table — this task is the **next** mode, which reads `references/next/SKILL.md`.
+**Tools:** Read, Write, Edit, Bash
 
-This pointer exists so old invocations keep working; it will be removed in a future release. Update your notes and configs to `/skill:session`.
+# Next
+
+Snapshot the current session to `~/.whisper/` and move on. Fast — no project file updates, no inbox triage, no ticket operations. Pure stash.
+
+## Steps
+
+1. Get timestamp: `date +%Y-%m-%d` and `date +%H:%M`.
+
+2. Detect repo and branch:
+   ```bash
+   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
+   branch=$(git rev-parse --abbrev-ref HEAD)
+   branch_slug=$(echo "$branch" | sed 's|/|--|g')
+   notes_path=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"/notes.md
+   ```
+
+3. If `~/.whisper/` doesn't exist or the branch slot doesn't exist, run `/w check` first (which will offer to init). If the user declines, skip and warn.
+
+4. Scan the last portion of the conversation and write a 2–5 bullet snapshot:
+   - What was worked on (files, topics)
+   - Key decisions or changes made
+   - **Next:** the most logical continuation point
+
+5. Append the snapshot to `notes.md`:
+   ```
+   ### YYYY-MM-DD HH:MM — snap
+   - what was worked on
+   - decisions made
+   - **Next:** continuation point
+   ```
+
+6. No commit, no push, no ticket operations. Just write the file.
+
+## Output
+
+```
+✓ Snapped to ~/.whisper/repos/<repo>/branches/<slug>/notes.md
+
+Use `/renew` later to pick this back up.
+```
+
+## Rules
+
+- Do NOT ask questions — summarize automatically from conversation context.
+- Keep it brief — 2–5 bullets, not paragraphs.
+- Do NOT commit or push anything.
+- Do NOT update project files, inbox, or tickets.
+- Do NOT run `/clear`.
