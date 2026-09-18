@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.10.1] - 2026-09-18
 
 #### Fixed - broken site/pointer workflow: router consolidation left no working URL or installed skill (incitaciones-06i)
 
