@@ -588,75 +588,80 @@ validate-distilled:
     ERRORS=0
     WARNINGS=0
 
+    # Functions set the global ISSUES string (never call them via command
+    # substitution: that runs them in a subshell and the ERRORS/WARNINGS
+    # increments would be silently discarded — the gate became a no-op that
+    # way, printing ❌ while still reporting success. incitaciones-06i follow-up).
+    ISSUES=""
+
     validate_core() {
         local file="$1"
-        local issues=""
-        local lines
+        ISSUES=""
 
         if head -1 "$file" | grep -q "^---$"; then
-            issues="$issues [has frontmatter]"
+            ISSUES="$ISSUES [has frontmatter]"
             ERRORS=$((ERRORS + 1))
         fi
 
         if grep -Eq "^##\s+(When to Use|Example|Notes|Version History)" "$file"; then
-            issues="$issues [has metadata sections]"
+            ISSUES="$ISSUES [has metadata sections]"
             ERRORS=$((ERRORS + 1))
         fi
 
+        local lines
         lines=$(wc -l < "$file")
         if [ "$lines" -lt 5 ]; then
-            issues="$issues [too short: $lines lines]"
+            ISSUES="$ISSUES [too short: $lines lines]"
             ERRORS=$((ERRORS + 1))
         fi
 
         if ! grep -Eiq "(step|task|process|your|analyze|create|review|focus|output)" "$file"; then
-            issues="$issues [missing instruction keywords]"
+            ISSUES="$ISSUES [missing instruction keywords]"
             WARNINGS=$((WARNINGS + 1))
         fi
 
         if grep -q "^\`\`\`\`" "$file"; then
-            issues="$issues [has nested code blocks]"
+            ISSUES="$ISSUES [has nested code blocks]"
             WARNINGS=$((WARNINGS + 1))
         fi
-
-        printf '%s' "$issues"
     }
 
     validate_reference() {
         local file="$1"
-        local issues=""
-        local lines
+        ISSUES=""
 
         if head -1 "$file" | grep -q "^---$"; then
-            issues="$issues [reference has frontmatter]"
+            ISSUES="$ISSUES [reference has frontmatter]"
             ERRORS=$((ERRORS + 1))
         fi
 
+        local lines
         lines=$(wc -l < "$file")
         if [ "$lines" -lt 3 ]; then
-            issues="$issues [reference too short: $lines lines]"
+            ISSUES="$ISSUES [reference too short: $lines lines]"
             ERRORS=$((ERRORS + 1))
         fi
-
-        printf '%s' "$issues"
     }
 
     while IFS=$'\t' read -r name distilled; do
-        issues=""
 
         if [[ "$distilled" == */SKILL.md ]]; then
-            issues="$(validate_core "$distilled")"
+            validate_core "$distilled"
+            issues="$ISSUES"
             ref_dir="$(dirname "$distilled")/references"
             if [ -d "$ref_dir" ]; then
+                # Recursive: multi-file router members keep their own nested
+                # references/ trees — those need the same checks.
                 while IFS= read -r ref; do
-                    ref_issues="$(validate_reference "$ref")"
-                    if [ -n "$ref_issues" ]; then
-                        issues="$issues [$(basename "$ref"):$ref_issues]"
+                    validate_reference "$ref"
+                    if [ -n "$ISSUES" ]; then
+                        issues="$issues [${ref#"$ref_dir"/}:$ISSUES]"
                     fi
-                done < <(find "$ref_dir" -maxdepth 1 -name '*.md' -type f | sort)
+                done < <(find "$ref_dir" -name '*.md' -type f | sort)
             fi
         else
-            issues="$(validate_core "$distilled")"
+            validate_core "$distilled"
+            issues="$ISSUES"
         fi
 
         if [ -n "$issues" ]; then
