@@ -93,7 +93,9 @@ For complex skills that would exceed 500 lines or 5,000 tokens. Uses a core `SKI
 For families of overlapping skills that share a task verb but differ by object (review code/plan/spec). A thin router SKILL.md holds a mode table + selection rules; each former skill's content lives verbatim under `references/{member}/` (multi-file members keep their own nested `references/`). Routers register member sources via a plural `sources` array in the manifest. See `content/prompt-system-skill-router-architecture.md` — including when NOT to route. Rationale and measurements: the 2026-09 consolidation cut always-on prompt cost ~47% (beads incitaciones-oyz).
 
 ### Compat Pointers
-When a skill is consolidated away, high-traffic old names ship for one release as thin pointer skills with `disable_model_invocation: true` in the manifest (hidden from the system prompt, still invocable via `/skill:name`), living in `content/distilled/pointers/`. Remove them in the next major cleanup.
+When a skill is consolidated away, high-traffic old names ship as **compiled pointer** skills with `disable_model_invocation: true` in the manifest (hidden from the system prompt, still invocable via `/skill:name`), living in `content/distilled/pointers/`. Each pointer entry declares `pointer_for: "<router>/<member>"` in the manifest.
+
+Pointers are **permanent build artifacts, never deleted** (incitaciones-06i; supersedes the earlier one-release-then-remove policy): every distribution surface (site, npm/pi package, `skills/` catalog, flat installs) compiles the pointer as a provenance banner + the full member content via `scripts/lib/compile.mjs`, so legacy URLs and old `/skill:name` invocations always resolve to real content. The source-of-truth method content lives in the router member directory only. The single-level `pointer_for` field is validated by `just sync-manifest` (`scripts/compile-pointers.mjs --validate`).
 
 ## Manifest (`content/manifest.json`)
 

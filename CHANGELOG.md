@@ -1,4 +1,10 @@
-## [0.10.0] - 2026-09-15
+## [Unreleased]
+
+#### Fixed - broken site/pointer workflow: router consolidation left no working URL or installed skill (incitaciones-06i)
+
+- The 2026-09 router consolidation (incitaciones-oyz) left the deployed-site URL workflow broken: `rule-of-5-universal` resolved to a contentless "moved" stub on the site (the actual method was never linked), `llms.txt`/`index.html` linked pointer titles to the router-architecture *essay*, and `site/build.sh`'s single-level reference glob silently dropped all nested router members (`rule-of-5-universal`, `code-review`, `parallel-review` and their `references/`) from `review-unified.md` and `llms-full.txt`. Installed skills were equally broken: the pointer SKILL.md instructed reading a relative path that does not exist in a flat install (live-triggered and confirmed).
+- **Compiled-pointers doctrine**: a pointer is a permanent build artifact — provenance banner + full member content — never hand-written prose, never deleted. Manifest pointer entries now declare `pointer_for: "<router>/<member>"`; one shared compiler (`scripts/lib/compile.mjs` + `scripts/compile-pointers.mjs` CLI) feeds every distribution surface: the site (pointer pages compiled with full content; new `{member}-unified.md` URL per router member restores the paste-a-URL workflow), `llms-full.txt` (now complete), the npm/pi package, the `skills/` catalog, and existing flat installs (re-synced — `/skill:rule-of-5-universal` now works again with the full method inline). Pointer titles link to the member's own URL, not the stub or an essay.
+- **Policy amendment** (supersedes incitaciones-mtw): pointers are permanent compiled aliases, regenerated never deleted — `disable_model_invocation` already makes full-content pointers cost zero always-on tokens, so deletion buys nothing and only kills user-facing URLs. `just sync-manifest` now fails if any `pointer_for` target is missing (the silent-breakage guardrail that was missing). Router `review` skill-eval still passes 2/2.
 
 #### Changed - trigger clauses on all 38 live descriptions (rbn)
 

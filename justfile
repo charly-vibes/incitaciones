@@ -922,6 +922,15 @@ sync-manifest:
         ERRORS=$((ERRORS + 1))
     fi
 
+    # Pointer target gate (incitaciones-06i): every pointer_for must resolve
+    # to an existing router member, so legacy URLs and /skill: invocations
+    # can never 404 or ship a contentless stub again.
+    echo ""
+    echo "Pointer targets (compiled-pointers doctrine):"
+    if ! node scripts/compile-pointers.mjs --validate; then
+        ERRORS=$((ERRORS + 1))
+    fi
+
     # Trigger-clause coverage + distinctness (incitaciones-rbn): descriptions
     # are the routing contract — every live prompt needs a trigger clause, and
     # clauses sharing >=2 distinctive tokens must carry an "only when" boundary.
