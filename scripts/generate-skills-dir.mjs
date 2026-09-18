@@ -13,6 +13,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
+import { compilePointerBody } from "./lib/compile.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -81,7 +82,14 @@ function generateSkill(prompt) {
   frontmatter.push("---", "");
 
   const raw = readText(distilledPath);
-  fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter.join("\n") + distilledBody(raw), "utf8");
+  // Compiled pointers (incitaciones-06i): the catalog SKILL.md is
+  // self-contained — banner + full member content — never a prose stub.
+  const body = prompt.pointer_for
+    ? compilePointerBody(repoRoot, prompt.pointer_for) + "\n"
+    : distilledBody(raw);
+  fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter.join("\n") + body, "utf8");
+
+  if (prompt.pointer_for) return;
 
   // Copy references/ trees (multi-file skills keep their nested structure,
   // so member documents' relative references keep resolving)

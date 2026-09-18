@@ -9,6 +9,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
 import process from "node:process";
+import { compilePointerBody } from "./lib/compile.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -64,6 +65,14 @@ function generateSkill(prompt) {
     frontmatter.push("disable-model-invocation: true");
   }
   frontmatter.push("---", "");
+
+  // Compiled pointers (incitaciones-06i): the installed SKILL.md is
+  // self-contained — provenance banner + full member content. It must never
+  // be a prose stub instructing relative paths that do not exist on disk.
+  if (prompt.pointer_for) {
+    fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter.join("\n") + compilePointerBody(repoRoot, prompt.pointer_for) + "\n", "utf8");
+    return;
+  }
 
   // Strip the distilled file's own frontmatter: the installed SKILL.md must
   // carry exactly one frontmatter block (generated above).
@@ -189,7 +198,13 @@ function reSyncFlatInstallSkills(manifest) {
         "",
       ].join("\n");
 
-      fs.writeFileSync(path.join(dstDir, "SKILL.md"), frontmatter + readText(distilledPath), "utf8");
+      // Compiled pointers ship self-contained member content, not the stub.
+      const body = prompt.pointer_for
+        ? compilePointerBody(repoRoot, prompt.pointer_for) + "\n"
+        : readText(distilledPath);
+      fs.writeFileSync(path.join(dstDir, "SKILL.md"), frontmatter + body, "utf8");
+
+      if (prompt.pointer_for) continue;
 
       // Copy references/ from the source skill directory
       if (distilledPath.endsWith(`${path.sep}SKILL.md`)) {
