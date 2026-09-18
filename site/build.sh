@@ -7,6 +7,32 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MANIFEST="$REPO_ROOT/content/manifest.json"
 SITE="$REPO_ROOT/_site"
+COMPILE="$REPO_ROOT/scripts/compile-pointers.mjs"
+
+# Pointer URL helpers (compiled-pointers doctrine, incitaciones-06i):
+# a pointer entry's title link resolves to the member's own unified URL,
+# never to the pointer stub or the router-architecture essay.
+pointer_for_field() {
+  prompt_field "$1" "pointer_for"
+}
+# Primary URL for a manifest entry: member-unified for pointers, source otherwise.
+primary_url() {
+  local name="$1" source="$2" pf
+  pf=$(pointer_for_field "$name")
+  if [ -n "$pf" ]; then
+    echo "content/distilled/${pf##*/}-unified.md"
+  else
+    echo "$source"
+  fi
+}
+# Human-readable annotation for moved entries.
+moved_note() {
+  local pf
+  pf=$(pointer_for_field "$1")
+  if [ -n "$pf" ]; then
+    printf ' — moved into %s' "${pf%%/*}"
+  fi
+}
 
 # ------------------------------------------------------------------
 # Prerequisites
@@ -53,7 +79,10 @@ cp "$MANIFEST" "$SITE/manifest.json"
 # ------------------------------------------------------------------
 # Generate Unified Skills for Web
 # ------------------------------------------------------------------
-# Create unified .md files for multi-file skills so they can be referenced as a single URL
+# Unified .md files for multi-file skills, so they can be referenced as a
+# single URL. Compilation goes through scripts/compile-pointers.mjs, which
+# recurses into nested router-member references (the single-level glob here
+# previously dropped rule-of-5-universal et al. from review-unified.md).
 echo "Generating unified skill documents..."
 jq -r '.prompts[] | select(.distilled != null) | "\(.name)\t\(.distilled)"' "$MANIFEST" | \
 while IFS=$'\t' read -r name distilled_path; do
@@ -61,26 +90,39 @@ while IFS=$'\t' read -r name distilled_path; do
     unified_name="${name}-unified.md"
     unified_path="$SITE/content/distilled/$unified_name"
     skill_dir=$(dirname "$distilled_path")
-    
+
     echo "  + $unified_name"
     {
       printf '# %s (Unified Skill)\n\n' "$name"
       printf '## Core Instructions (SKILL.md)\n\n'
-      cat "$REPO_ROOT/$distilled_path"
-      printf '\n\n---\n\n'
-      
-      if [ -d "$REPO_ROOT/$skill_dir/references" ]; then
-        for ref in "$REPO_ROOT/$skill_dir/references"/*.md; do
-          if [ -f "$ref" ]; then
-            ref_name=$(basename "$ref")
-            printf '## Reference: %s\n\n' "$ref_name"
-            cat "$ref"
-            printf '\n\n---\n\n'
-          fi
-        done
-      fi
+      node "$COMPILE" --skill "$skill_dir"
     } > "$unified_path"
+
+    # One stable URL per router member: {member}-unified.md at the site root.
+    members=$(node "$COMPILE" --members "$skill_dir")
+    IFS=',' read -ra multi_members <<< "${members%%$'\t'*}"
+    for member in "${multi_members[@]}"; do
+      [ -z "$member" ] && continue
+      echo "  + ${member}-unified.md"
+      {
+        printf '# %s (Unified Skill)\n\n' "$member"
+        node "$COMPILE" --skill "$skill_dir/references/$member"
+      } > "$SITE/content/distilled/${member}-unified.md"
+    done
   fi
+done
+
+# ------------------------------------------------------------------
+# Compile pointer pages (incitaciones-06i)
+# ------------------------------------------------------------------
+# A pointer is a permanent compiled alias: provenance banner + full member
+# content, generated from the router member directory. Never a prose stub.
+echo "Compiling pointer pages..."
+jq -r '.prompts[] | select(.pointer_for != null) | "\(.name)\t\(.distilled)"' "$MANIFEST" | \
+while IFS=$'\t' read -r name distilled_path; do
+  target="$SITE/$distilled_path"
+  echo "  + $name -> $distilled_path"
+  node "$COMPILE" --pointer "$name" > "$target"
 done
 
 # Disable Jekyll
@@ -156,7 +198,7 @@ while IFS= read -r bundle; do
     distilled=$(skill_url "$name" "$distilled_raw")
     lambda_path="content/compiled/nucleus/${name}.lambda.md"
     roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
-    printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
+    printf -- '- [%s](%s): %s%s' "$title" "$(primary_url "$name" "$source")" "$desc" "$(moved_note "$name")" >> "$LLMS"
     if [ -n "$distilled" ]; then
       printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
     fi
@@ -187,7 +229,7 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   distilled=$(skill_url "$name" "$distilled_raw")
   lambda_path="content/compiled/nucleus/${name}.lambda.md"
   roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
-  printf -- '- [%s](%s): %s' "$title" "$source" "$desc" >> "$LLMS"
+  printf -- '- [%s](%s): %s%s' "$title" "$(primary_url "$name" "$source")" "$desc" "$(moved_note "$name")" >> "$LLMS"
   if [ -n "$distilled" ]; then
     printf ' — [distilled](%s)' "$distilled" >> "$LLMS"
   fi
@@ -260,26 +302,13 @@ FULL="$SITE/llms-full.txt"
     printf '### %s — %s\n\n' "$title" "$desc"
     printf '> Skill name: `%s`\n\n' "$name"
     
-    # If it's a multi-file skill (ends in SKILL.md), merge references
-    if [[ "$distilled_path" == *"/SKILL.md" ]]; then
-      skill_dir=$(dirname "$distilled_path")
-      printf '#### Core Instructions (%s)\n\n' "SKILL.md"
-      cat "$REPO_ROOT/$distilled_path"
-      printf '\n\n'
-      
-      # Append all reference files
-      if [ -d "$REPO_ROOT/$skill_dir/references" ]; then
-        for ref in "$REPO_ROOT/$skill_dir/references"/*.md; do
-          if [ -f "$ref" ]; then
-            ref_name=$(basename "$ref")
-            printf '#### Reference: %s\n\n' "$ref_name"
-            cat "$ref"
-            printf '\n\n'
-          fi
-        done
-      fi
+    # Compiled pointers ship banner + full member content (incitaciones-06i);
+    # multi-file skills compile recursively (includes nested router members).
+    if [ -n "$(pointer_for_field "$name")" ]; then
+      node "$COMPILE" --pointer "$name"
+    elif [[ "$distilled_path" == *"/SKILL.md" ]]; then
+      node "$COMPILE" --skill "$(dirname "$distilled_path")"
     else
-      # Single-file skill
       cat "$REPO_ROOT/$distilled_path"
     fi
     printf '\n\n---\n\n'
@@ -358,7 +387,7 @@ while IFS= read -r bundle; do
     distilled=$(skill_url "$name" "$distilled_raw")
     lambda_path="content/compiled/nucleus/${name}.lambda.md"
     roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
-    printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
+    printf '<li><a href="%s">%s</a> <span class="desc">— %s%s</span>' "$(primary_url "$name" "$source")" "$title" "$desc" "$(moved_note "$name")" >> "$INDEX"
     printf ' <span class="links">(' >> "$INDEX"
     has_link=false
     if [ -n "$distilled" ]; then
@@ -392,7 +421,7 @@ jq -r '.prompts[].name' "$MANIFEST" | while read -r name; do
   distilled=$(skill_url "$name" "$distilled_raw")
   lambda_path="content/compiled/nucleus/${name}.lambda.md"
   roundtrip_path="content/compiled/nucleus/${name}.roundtrip.md"
-  printf '<li><a href="%s">%s</a> <span class="desc">— %s</span>' "$source" "$title" "$desc" >> "$INDEX"
+  printf '<li><a href="%s">%s</a> <span class="desc">— %s%s</span>' "$(primary_url "$name" "$source")" "$title" "$desc" "$(moved_note "$name")" >> "$INDEX"
   printf ' <span class="links">(' >> "$INDEX"
   has_link=false
   if [ -n "$distilled" ]; then
