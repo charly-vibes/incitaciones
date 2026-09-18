@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-15",
+  "version": "2026-09-18",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -1991,7 +1991,7 @@
       "name": "close",
       "type": "workflow",
       "title": "Close (moved)",
-      "description": "Moved into the session skill. Hidden pointer for /skill:close compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the end-of-session wrap-up mode of the session skill. Hidden from model invocation; invocable via /skill:close; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/close.md",
       "skill_format": "single-file",
@@ -2008,13 +2008,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "session/close"
     },
     {
       "name": "park",
       "type": "workflow",
       "title": "Park (moved)",
-      "description": "Moved into the session skill. Hidden pointer for /skill:park compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the context-switch stash mode of the session skill. Hidden from model invocation; invocable via /skill:park; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/park.md",
       "skill_format": "single-file",
@@ -2031,13 +2032,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "session/park"
     },
     {
       "name": "next",
       "type": "workflow",
       "title": "Next (moved)",
-      "description": "Moved into the session skill. Hidden pointer for /skill:next compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the quick stash mode of the session skill. Hidden from model invocation; invocable via /skill:next; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/next.md",
       "skill_format": "single-file",
@@ -2054,13 +2056,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "session/next"
     },
     {
       "name": "renew",
       "type": "workflow",
       "title": "Renew (moved)",
-      "description": "Moved into the session skill. Hidden pointer for /skill:renew compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the resume prior work mode of the session skill. Hidden from model invocation; invocable via /skill:renew; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/renew.md",
       "skill_format": "single-file",
@@ -2077,13 +2080,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "session/renew"
     },
     {
       "name": "create-handoff",
       "type": "workflow",
       "title": "Create Handoff (moved)",
-      "description": "Moved into the session skill. Hidden pointer for /skill:create-handoff compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the handoff document mode of the session skill. Hidden from model invocation; invocable via /skill:create-handoff; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/create-handoff.md",
       "skill_format": "single-file",
@@ -2100,13 +2104,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "session/create-handoff"
     },
     {
       "name": "rule-of-5-universal",
       "type": "workflow",
       "title": "Rule Of 5 Universal (moved)",
-      "description": "Moved into the review skill. Hidden pointer for /skill:rule-of-5-universal compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the Rule-of-5 universal review mode of the review skill. Hidden from model invocation; invocable via /skill:rule-of-5-universal; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/rule-of-5-universal.md",
       "skill_format": "single-file",
@@ -2123,13 +2128,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "review/rule-of-5-universal"
     },
     {
       "name": "create-issues",
       "type": "workflow",
       "title": "Create Issues (moved)",
-      "description": "Moved into the issues skill. Hidden pointer for /skill:create-issues compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the issue creation mode of the issues skill. Hidden from model invocation; invocable via /skill:create-issues; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/create-issues.md",
       "skill_format": "single-file",
@@ -2146,13 +2152,14 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "issues/create-issues"
     },
     {
       "name": "issue-review",
       "type": "workflow",
       "title": "Issue Review (moved)",
-      "description": "Moved into the issues skill. Hidden pointer for /skill:issue-review compatibility; will be removed in a future release.",
+      "description": "Compiled alias of the issue review mode of the issues skill. Hidden from model invocation; invocable via /skill:issue-review; serves the legacy site URL with full compiled content.",
       "source": "content/prompt-system-skill-router-architecture.md",
       "distilled": "content/distilled/pointers/issue-review.md",
       "skill_format": "single-file",
@@ -2169,7 +2176,8 @@
         "documentation",
         "workflow"
       ],
-      "disable_model_invocation": true
+      "disable_model_invocation": true,
+      "pointer_for": "issues/issue-review"
     }
   ],
   "bundles": {
