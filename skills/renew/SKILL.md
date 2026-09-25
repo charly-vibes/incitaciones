@@ -64,17 +64,33 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
    grep -i "<slug>" "$JOURNAL"/inbox.md
    ```
 
-7. **Check `~/.whisper/` for accumulated knowledge.**
-   If `~/.whisper/` exists, load context:
+7. **Check for accumulated whisper knowledge.**
+
+   **If `turu` is available** (`turu key --json` succeeds), delegate every
+   mechanical step to it — never hand-roll repo-key or path derivation:
+   ```bash
+   turu key --json          # canonical repo key, branch slug, worktree slot
+   turu resolve repo --json # write destination per scope
+   turu recall repo         # repo-scope knowledge (env facts)
+   turu recall branch       # branch-scope knowledge (notes)
+   ```
+   - `turu recall` output already routes to the right store (global, repo,
+     or repo-local `.whisper/`), so never `ls`/`find` `~/.whisper/` to guess
+     paths — canonical keys don't match raw remote URLs.
+   - If a scope returns empty, that's a valid result — move on without
+     improvising alternate lookup paths.
+
+   **Fallback (turu absent):** if `~/.whisper/` exists, load context with:
    ```bash
    repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
    branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
    whisper_dir=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"
    ```
-   - Read `context.md` if it exists (extract beads-epic, status)
-   - Read `plan.md` if it has real content
    - Read `notes.md` if it has real content
    - Read `env.md` at repo level for infra facts
+   - If the repo has a committed repo-local `.whisper/` directory, prefer
+     that over the global path.
+
    - If beads is available, fetch open issues:
      ```bash
      bd list --label branch:<branch> 2>/dev/null
