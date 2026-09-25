@@ -69,16 +69,17 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
    **If `turu` is available** (`turu key --json` succeeds), delegate every
    mechanical step to it — never hand-roll repo-key or path derivation:
    ```bash
-   turu key --json          # canonical repo key, branch slug, worktree slot
-   turu resolve repo --json # write destination per scope
-   turu recall repo         # repo-scope knowledge (env facts)
-   turu recall branch       # branch-scope knowledge (notes)
+   turu key --json        # canonical repo key, branch slug, worktree slot
+   turu recall repo       # repo-scope knowledge (env facts)
+   turu recall branch     # branch-scope knowledge (notes)
+   turu recall worktree   # worktree-slot knowledge (only when step 8 uses one)
    ```
    - `turu recall` output already routes to the right store (global, repo,
      or repo-local `.whisper/`), so never `ls`/`find` `~/.whisper/` to guess
      paths — canonical keys don't match raw remote URLs.
-   - If a scope returns empty, that's a valid result — move on without
-     improvising alternate lookup paths.
+   - `turu recall` exits non-zero with `nothing to recall in this scope`
+     when a scope is empty — treat that as "no knowledge here", not a
+     failure; move on without improvising alternate lookup paths.
 
    **Fallback (turu absent):** if `~/.whisper/` exists, load context with:
    ```bash
@@ -89,7 +90,10 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
    - Read `notes.md` if it has real content
    - Read `env.md` at repo level for infra facts
    - If the repo has a committed repo-local `.whisper/` directory, prefer
-     that over the global path.
+     that over the global path. Its layout mirrors the global one relative
+     to the repo root:
+     `.whisper/repos/<org-path>/<repo>/branches/<branch-slug>/notes.md`
+     (e.g. `.whisper/repos/ak/PhormaSci/talleres/branches/main/notes.md`).
 
    - If beads is available, fetch open issues:
      ```bash
@@ -124,9 +128,9 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
 **Related inbox items** *(if any)*
 - items that mention this project
 
-**Whisper context** *(if ~/.whisper/ exists)*
-- Plan: summary of current plan
-- Notes: key findings
+**Whisper context** *(if turu recall or the fallback found content)*
+- Env: repo-scope infra facts (`turu recall repo` / `env.md`)
+- Notes: branch-scope findings (`turu recall branch` / `notes.md`)
 - Beads issues: <n> open, <n> in_progress
 
 **⚠ Active in flight** *(omit if none)*
