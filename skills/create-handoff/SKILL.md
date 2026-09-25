@@ -3,7 +3,7 @@ name: create-handoff
 description: "Compiled alias of the handoff document mode of the session skill. Hidden from model invocation; invocable via /skill:create-handoff; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
   internal: true
 ---
 > **Moved:** this entry is now the **create-handoff** mode of the **session** skill.

@@ -3,7 +3,7 @@ name: tdd
 description: "Test-driven development workflow. Use when writing tests before implementation."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 <!-- skill: tdd, version: 1.2.0, status: verified -->
 # Plan-Implement-Verify (TDD)

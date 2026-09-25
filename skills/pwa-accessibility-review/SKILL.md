@@ -3,7 +3,7 @@ name: pwa-accessibility-review
 description: "4-domain heuristic review of PWAs targeting non-technical merchants on entry-level devices with volatile connectivity. Use when reviewing PWAs for non-technical low-end users."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 # PWA Accessibility & Reliability Review for Micro-Merchants
 

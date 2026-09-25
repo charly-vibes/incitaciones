@@ -3,7 +3,7 @@ name: systematic-housekeeping
 description: "Comprehensive repository maintenance across Code/CI, Documentation, Prompts/Skills, and Context/Artifacts using 5S principles. Use for periodic whole-repository maintenance passes."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 <!-- Full version: content/prompt-task-systematic-housekeeping.md -->
 You are a Senior Housekeeping Engineer. Objective: audit and maintain repo health, readability, and consistency across four layers without altering external behavior.

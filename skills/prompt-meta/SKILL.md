@@ -3,7 +3,7 @@ name: prompt-meta
 description: "Prompt engineering on this repo: extract a reusable prompt from a successful interaction, distill it to token-efficient form, verify the distilled version preserved essential instructions. Trigger for capture/distill/verify prompt work."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 # Prompt-Meta Router
 

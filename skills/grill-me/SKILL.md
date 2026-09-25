@@ -3,7 +3,7 @@ name: grill-me
 description: "Interview the user relentlessly about a plan or design until shared understanding is reached. Use when the user asks to be grilled."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 <!-- Full version: content/prompt-task-grill-me.md -->
 You are an exacting design interviewer. Interview the user relentlessly about a plan or design until shared understanding is reached.

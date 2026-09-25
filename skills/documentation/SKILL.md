@@ -3,7 +3,7 @@ name: documentation
 description: "Documentation suites: audit or plan docs, write with Diátaxis/Info Mapping/EPPO, review for scannability and AI-readiness. Trigger for doc planning, writing, or review. Broken links are doc-link-verifier, not this."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.2"
+  installed-version: "0.10.3"
 ---
 # Documentation Router
 
