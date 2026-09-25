@@ -1,3 +1,10 @@
+## [0.10.3] - 2026-09-25
+
+#### Fixed - renew skill loads whisper context via turu instead of a broken legacy pipeline (incitaciones-1nb, incitaciones-cap)
+
+- The session skill's `references/renew/SKILL.md` step 7 hand-rolled repo-key derivation (`git remote get-url | sed` → `~/.whisper/repos/<raw-url>/branches/<slug>`) and read legacy filenames (`context.md`, `plan.md`). A session-log audit for 2026-09 (111 `/renew` invocations) showed 106 attempted the legacy pipeline, only 2 ever ran `turu recall`, and just 55/111 outputs carried any whisper context at all. Derived paths never match turu's canonical repo keys (`github.com/...` vs `cv/...`), repo-local `.whisper/` stores were invisible to a global-only lookup, and exploratory `ls`/`find` guessing against legacy keys wasted 5+ commands per resume.
+- Step 7 now delegates every mechanical step to the `turu` CLI when available: `turu key --json`, then `turu recall repo|branch|worktree`. It documents that `turu recall` exits non-zero with `nothing to recall in this scope` on an empty scope (treat as no-knowledge, not failure) and forbids improvising alternate lookup paths. The hand-rolled pipeline survives only as a fallback for turu-less installs, corrected to turu's real layout (`notes.md`/`env.md`) and preferring a committed repo-local `.whisper/` with its literal path pattern. The output-format's stale `Whisper context` block ("if ~/.whisper/ exists", phantom `Plan:` line) was rewritten to mirror the recall scopes. All behaviors verified against live `turu` 0.6.0; `just skill-eval session` passes 2/2.
+
 ## [0.10.2] - 2026-09-18
 
 #### Fixed - npm installs of the published package fail (incitaciones-kbk)
