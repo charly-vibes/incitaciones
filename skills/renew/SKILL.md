@@ -30,7 +30,20 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
    cd "$JOURNAL" && git pull
    ```
 
-2. Identify the target.
+2. **Decide the data source before any journal or whisper lookup.**
+
+   Run `turu key --json` once, right now. Its result governs everything below:
+
+   - **turu available:** `turu recall` is the primary source for recent
+     session history. Run `turu recall repo` and `turu recall branch` now,
+     and treat their output as superseding steps 5-6 — only fall back to
+     those log/inbox greps if recall returned nothing for this slug.
+     Never `ls`/`find` `~/.whisper/` to guess paths: canonical keys don't
+     match raw remote URLs.
+   - **turu absent:** proceed with the journal steps (3-6) and the
+     `~/.whisper/` fallback path lookup in step 8.
+
+3. Identify the target.
 
    **If a `<slug>` is provided:** The user says `/renew <slug>`.
 
@@ -47,41 +60,28 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
    - If multiple matches found, list them and ask the user to pick
    - If no match found, list available projects/areas and ask
 
-3. Read the matched project or area file.
+4. Read the matched project or area file.
 
-4. Read today's log (`$JOURNAL/$LOG_SUBDIR/YYYY/YYYY-MM/YYYY-MM-DD.md`).
+5. Read today's log (`$JOURNAL/$LOG_SUBDIR/YYYY/YYYY-MM/YYYY-MM-DD.md`).
    If it doesn't exist, create it with the daily log template.
    Scan for any earlier session entries related to this project/area today.
 
-5. Search recent logs for context (last 3 days):
+6. Search recent logs for context (last 3 days; skip when step 2's `turu recall branch` already surfaced the recent sessions):
    ```bash
    grep -rl "<slug>" "$JOURNAL"/"$LOG_SUBDIR"/YYYY/YYYY-MM/ 2>/dev/null | tail -3
    ```
    Read any matches to understand recent session history.
 
-6. Search inbox for related items:
+7. Search inbox for related items (skip when `turu recall branch` already surfaced them):
    ```bash
    grep -i "<slug>" "$JOURNAL"/inbox.md
    ```
 
-7. **Check for accumulated whisper knowledge.**
+8. **Load whisper knowledge** — only for the turu-absent branch of step 2
+   (when turu is available, `turu recall` already ran there; do not repeat
+   or hand-roll it):
 
-   **If `turu` is available** (`turu key --json` succeeds), delegate every
-   mechanical step to it — never hand-roll repo-key or path derivation:
-   ```bash
-   turu key --json        # canonical repo key, branch slug, worktree slot
-   turu recall repo       # repo-scope knowledge (env facts)
-   turu recall branch     # branch-scope knowledge (notes)
-   turu recall worktree   # worktree-slot knowledge (only when step 8 uses one)
-   ```
-   - `turu recall` output already routes to the right store (global, repo,
-     or repo-local `.whisper/`), so never `ls`/`find` `~/.whisper/` to guess
-     paths — canonical keys don't match raw remote URLs.
-   - `turu recall` exits non-zero with `nothing to recall in this scope`
-     when a scope is empty — treat that as "no knowledge here", not a
-     failure; move on without improvising alternate lookup paths.
-
-   **Fallback (turu absent):** if `~/.whisper/` exists, load context with:
+   If `~/.whisper/` exists, load context with:
    ```bash
    repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
    branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
@@ -102,7 +102,9 @@ Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and
      ```
      Surface any `in_progress` tickets prominently. The **Suggested next step** must only reference tickets NOT currently `in_progress`.
 
-8. If the project/area has a worktree or repo path noted in its file, gather git context:
+9. If the project/area has a worktree or repo path noted in its file, gather git context:
+   - When turu is available and a worktree is actually used, also run
+     `turu recall worktree` for its slot knowledge.
    - `cd <worktree-path> && git branch --show-current`
    - `git log --oneline -5`
    - `git status --short`

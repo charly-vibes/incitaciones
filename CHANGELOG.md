@@ -1,3 +1,11 @@
+## [0.10.4] - 2026-09-28
+
+#### Fixed - renew mode: turu is now the first data-source decision, not a late step 7 (incitaciones-u6j)
+
+- Occurrence audit of September pi sessions (63 renew-mode sessions): only 13 ever ran `turu`; in 12 of those it ran *after* the journal greps (median ~40s later), and 50 sessions skipped turu entirely in favor of hand-rolled `~/.whisper` ls/find — including 30 sessions run after turu was installed. Only 1 session checked turu first.
+- The renew procedure now gates everything on a data-source decision made immediately after the journal pull (new step 2): `turu key --json` first; when turu is available, `turu recall repo|branch` runs now and supersedes the recent-log/inbox greps (steps 6-7), with an explicit prohibition on `ls`/`find ~/.whisper/` path guessing; the hand-rolled whisper fallback is confined to the turu-absent branch and repeats only when turu is genuinely absent. Worktree recall (`turu recall worktree`) is tied to actual worktree use in step 9.
+- `just skill-eval session` still passes 2/2; its rubric does not yet cover renew/turu ordering (follow-up filed).
+
 ## [0.10.3] - 2026-09-25
 
 #### Fixed - renew skill loads whisper context via turu instead of a broken legacy pipeline (incitaciones-1nb, incitaciones-cap)
