@@ -3,7 +3,7 @@ name: bias-audit
 description: "Detect, prevent, and mitigate systemic, statistical, and cognitive biases using multidisciplinary frameworks. Use when auditing a decision or analysis for bias."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.4"
+  installed-version: "0.10.5"
 ---
 # Systematic Bias Audit & Mitigation (S-BAM)
 
