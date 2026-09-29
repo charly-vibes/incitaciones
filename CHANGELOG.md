@@ -1,3 +1,11 @@
+## [0.10.5] - 2026-09-29
+
+#### Changed - journal path: the removed `~/dev/status` legacy clone replaced by `~/para/areas/jornal` everywhere
+
+- The `~/dev/status` incitaciones journal clone was retired (removed 2026-09-29) — it was a second, stale clone of `ak/akielbowicz/journal`, which also backs the `~/.whisper` knowledge workspace. Before removal, its only unique content (a 2026-09-20 stash holding four talleres session entries lost from the day log) was recovered into the live clone.
+- All skill sources and installed copies (`close`, `park`, `renew`, `session/references/*`, plus `other-skills/` — archive, capture, migrate, morning, standup, weekly, local-plan) now default to `~/para/areas/jornal` (symlink → `ak/journal`); the close skill's last-ditch fallback no longer points at the removed path. `JOURNAL_PATH`/`JOURNAL_LOG_SUBDIR` exports added to nushell `env.nu` via chezmoi (bashrc already had them — nu was the gap that made sessions hit the legacy default).
+- Fallback smoke-verified with an empty environment; zero live references remain (CHANGELOG history, eval cache, and generated `_site/` untouched).
+
 ## [0.10.4] - 2026-09-28
 
 #### Fixed - renew mode: turu is now the first data-source decision, not a late step 7 (incitaciones-u6j)
