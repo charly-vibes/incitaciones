@@ -150,7 +150,7 @@ Workflow skills that form a complete session lifecycle with persistent operation
 | **close** | End of day | Log to journal, route knowledge to `~/.whisper/`, commit, clear |
 | **renew** | Start of session | Load journal + whisper + beads context, claim tickets with file conflict detection |
 
-Uses `$JOURNAL_PATH` (default `~/dev/status`) for the daily log. See [`content/references-whisper-workflow.md`](content/references-whisper-workflow.md) for the full reference.
+Uses `$JOURNAL_PATH` (default `~/para/areas/jornal`) for the daily log. See [`content/references-whisper-workflow.md`](content/references-whisper-workflow.md) for the full reference.
 
 Full analysis: [`content/research-finding-skill-usage-analysis.md`](content/research-finding-skill-usage-analysis.md)
 

@@ -131,13 +131,13 @@ When a session reveals something worth keeping, route it by scope:
 The journal path is configured via environment variables:
 
 ```bash
-export JOURNAL_PATH="$HOME/dev/status"                          # default
+export JOURNAL_PATH="$HOME/para/areas/jornal"                    # default (symlink → ak/journal)
 # For the JORNAL layout:
 export JOURNAL_PATH="$HOME/para/areas/dev/gh/ak/journal"
 export JOURNAL_LOG_SUBDIR="areas/log"
 ```
 
-- `$JOURNAL_PATH` — base directory for the daily log journal (default: `~/dev/status`)
+- `$JOURNAL_PATH` — base directory for the daily log journal (default: `~/para/areas/jornal`)
 - `$JOURNAL_LOG_SUBDIR` — subdirectory within the journal for log files (default: `log`, set to `areas/log` for JORNAL layout)
 
 ## Migration from `.LOCAL_PLANS/`

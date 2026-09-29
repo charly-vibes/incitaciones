@@ -4,13 +4,13 @@
 
 Load focused context for a specific project or area to continue work.
 
-Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
+Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
 
 ## Steps
 
 1. Pull the journal repo:
    ```bash
-   JOURNAL="${JOURNAL_PATH:-$HOME/dev/status}"
+   JOURNAL="${JOURNAL_PATH:-$HOME/para/areas/jornal}"
    LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
    cd "$JOURNAL" && git pull
    ```

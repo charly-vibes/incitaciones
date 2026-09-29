@@ -19,13 +19,13 @@ metadata:
 
 Snapshot the current session's work on a project/area before switching context. This is NOT end-of-day — just a context switch.
 
-Uses `$JOURNAL_PATH` (defaults to `~/dev/status`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
+Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
 
 ## Steps
 
 1. Get today's date and current time (`date +%Y-%m-%d`, `date +%H:%M`).
    ```bash
-   JOURNAL="${JOURNAL_PATH:-$HOME/dev/status}"
+   JOURNAL="${JOURNAL_PATH:-$HOME/para/areas/jornal}"
    LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
    ```
 

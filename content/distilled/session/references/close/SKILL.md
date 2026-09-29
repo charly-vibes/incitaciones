@@ -17,7 +17,7 @@ Uses `$JOURNAL_PATH` for the daily log journal, and `~/.whisper/` for accumulate
    JOURNAL="${JOURNAL_PATH:-$(shellval JOURNAL_PATH)}"
    [ -n "$JOURNAL" ] || JOURNAL="$(shellval JORNAL)"
    [ -n "$JOURNAL" ] || JOURNAL="$HOME/para/areas/jornal"   # JORNAL convention
-   [ -d "$JOURNAL/.git" ] || JOURNAL="$HOME/dev/status"     # legacy clone; flag this fallback in the reply
+   [ -d "$JOURNAL/.git" ] || JOURNAL="$HOME/para/areas/jornal"     # legacy clone; flag this fallback in the reply
    LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-$(shellval JOURNAL_LOG_SUBDIR)}"
    [ -n "$LOG_SUBDIR" ] || LOG_SUBDIR="areas/log"
    cd "$JOURNAL" && git pull
