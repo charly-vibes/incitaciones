@@ -504,7 +504,7 @@ The prompts are tool-agnostic where possible, with tool-specific variations note
 
 ## License
 
-[To be determined]
+The prompts and skills in this repository are licensed under [CC-BY-4.0](LICENSE) (Attribution 4.0 International). You are free to use, share, and adapt them with attribution.
 
 ## Related Projects
 

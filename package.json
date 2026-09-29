@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/charly-vibes/incitaciones/issues"
   },
-  "license": "MIT",
+  "license": "CC-BY-4.0",
   "type": "module",
   "keywords": [
     "pi-package",
