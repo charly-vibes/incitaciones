@@ -6,10 +6,10 @@
 #
 # §4 matrix row (incitaciones): pretender ✅ · wai ✅ · bd ✅ · ddl ✅
 # (skill/pnpm package — no openspec column per docs/standardization.md §4)
-# CI install steps to be wired in the DDL-1a0 install pass.
+# CI installs these pinned (see ci.yml).
 
 [tools]
-wai = "2026.9.28"          # crates.io: wai-cli — planned install
-pretender = "0.6.0"        # crates.io — planned install
-dulce-de-leche = "0.7.0"   # crates.io (bin: ddl) — planned install
-# bd = "1.3.0"             # beads — install mechanism TBD (see DDL-1a0)
+wai = "2026.9.28"          # crates.io: wai-cli
+pretender = "0.6.0"        # crates.io
+dulce-de-leche = "0.7.0"   # crates.io (bin: ddl)
+bd = "1.3.0"               # beads — pinned GitHub release download (no versioned homebrew-core formula)
