@@ -17,7 +17,7 @@ Review any intellectual artifact (code, plans, research, issues, specs, document
 - **Progressive Build:** Each stage must build on previous findings.
 - **Specificity:** Reference exact locations (file:line, section, paragraph).
 - **Actionability:** Suggest specific solutions, don't just identify problems.
-- **Validation:** Confirm issues exist; do not flag "potential" issues without evidence.
+- **Validation:** Confirm issues exist; do not flag "potential" issues without evidence. If the `TYPESAFE_API_KEY` environment variable is set, apply `references/typesafe-verification.md` in place of self-reported validation. If it is not set (or the API fails), mark findings `UNVERIFIED`, print the banner defined there, and proceed with self-reported validation.
 - **Early Stop:** Stop if convergence criteria are met before Stage 5.
 
 ## References
