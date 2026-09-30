@@ -1,0 +1,37 @@
+# CI workflow - runs the same commands as local development
+#
+# incitaciones is a skill/pnpm package (standardization.md §0.3 deviation):
+# no Rust — CI validates content, links, headers, and the generated skill
+# catalogs via `just ci`. The npm publish slot is npm-publish.yml (§1 mapping).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Run CI pipeline
+        run: just ci

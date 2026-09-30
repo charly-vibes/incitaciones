@@ -995,3 +995,13 @@ generate-skill NAME:
     echo "---"
     echo ""
     cat "$DISTILLED"
+
+# ============================================================
+# CI
+# ============================================================
+
+# Full CI pipeline — same commands locally and in CI (standardization §1).
+# Content lint (validate), link-check, file-header audit, distilled-prompt
+# gate, and generated-catalog freshness (skills/ + pi-package).
+ci: validate check-links header-audit validate-distilled validate-skills-dir validate-pi-package
+    @echo "✅ CI pipeline passed"
