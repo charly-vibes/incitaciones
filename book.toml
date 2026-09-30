@@ -1,0 +1,13 @@
+[book]
+title = "incitaciones"
+description = "Curated prompt/skill corpus for AI agents — distilled prompts with manifest-driven routing, bundles, and cross-tool skill exports"
+authors = ["charly vibes"]
+language = "en"
+src = "docs/src"
+
+[output.html]
+default-theme = "coal"
+preferred-dark-theme = "coal"
+additional-css = ["theme/charly.css"]
+git-repository-url = "https://github.com/charly-vibes/incitaciones"
+edit-url-template = "https://github.com/charly-vibes/incitaciones/edit/main/docs/src/{path}"

@@ -1,5 +1,11 @@
 # Incitaciones 🤖
 
+> **Why:** agent prompts rot — they accumulate metadata sections, stale claims,
+> and untraceable provenance. incitaciones keeps every prompt twice: a full
+> source (frontmatter, tags, status, provenance) and a structurally validated
+> distilled runtime file, gated end-to-end by `just ci`.
+> **Status:** [experimental](docs/src/status.md) · corpus + export tooling evolving · [Motivation & design](docs/src/index.md)
+
 [![npm](https://img.shields.io/npm/v/incitaciones)](https://www.npmjs.com/package/incitaciones)
 [![Publish to npm](https://github.com/charly-vibes/incitaciones/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/charly-vibes/incitaciones/actions/workflows/npm-publish.yml)
 
