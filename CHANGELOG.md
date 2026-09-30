@@ -1,3 +1,14 @@
+## [Unreleased]
+
+#### Added - rule-of-5-universal: conditional TypeSafe (Jev) verification pass for review findings (incitaciones-axy)
+
+- New progressive-disclosure tier `content/distilled/review/references/rule-of-5-universal/references/typesafe-verification.md`, loaded only when `TYPESAFE_API_KEY` is set. It makes the skill's Validation rule executable: mechanical pre-gate (location exists, quoted evidence appears verbatim — no API), then one parallel Choice question per finding (`verified/unsupported/contradicted/fabricated`) with a tunable 0.8 confidence gate, capped to CRITICAL/HIGH findings for cost.
+- Tier-0 trigger added to the rule-of-5-universal SKILL.md Validation rule (~40 tokens when the key is absent): apply the verification pass when the key is set; otherwise mark findings `UNVERIFIED`, print a banner, and fall back to self-reported validation (explicit degradation path).
+- Verdicts now feed a **measured** false-positive rate into the convergence arithmetic, replacing the previous self-estimated-only input (self-report retained as one input among several, per Jev re-validation scoring 'self-report is unreliable' at only 0.23).
+- Design validated against docs.typesafe.ai (citation_check, composite-scoring, confidence-routing patterns) and re-validated live with jev-1.13.0: 8/9 design conclusions confirmed (mechanical pre-gate then model: confidence 1.00; stages 1/5 stay generative: 1.00). Live smoke test: real finding verified at 0.89 (stands); planted fabrication returned `fabricated` at 0.43 → correctly routed to human review below the gate instead of auto-drop.
+- Constants (endpoint, `jev-latest`, `CONFIDENCE_GATE`, `VERIFY_SEVERITIES`, batching) live in one reviewable table per TypeSafe's own 'constants in one place' principle; the reference is self-contained so the `typesafe-ai` skill is an optimization, not a dependency.
+- `just validate-distilled` and `just sync-manifest` pass (manifest version 2026-09-28 → 2026-09-30). Installed `.agents/skills/` copies regenerate on next install/publish; the committed installed copy is not hand-edited.
+
 ## [0.10.5] - 2026-09-29
 
 #### Changed - journal path: the removed `~/dev/status` legacy clone replaced by `~/para/areas/jornal` everywhere
