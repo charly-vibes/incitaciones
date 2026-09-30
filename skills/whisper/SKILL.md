@@ -3,7 +3,7 @@ name: whisper
 description: "Knowledge workspace management: init, check, status, link plan, decommission, routing. Delegates to the turu CLI when installed."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.5"
+  installed-version: "0.11.0"
   internal: true
 ---
 # Whisper — Deterministic Operational Knowledge

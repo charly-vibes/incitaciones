@@ -3,7 +3,7 @@ name: debug
 description: "7-step diagnostic workflow for debugging issues. Use when interactively debugging a live failure."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.5"
+  installed-version: "0.11.0"
 ---
 <!-- skill: debug, version: 1.1.0, status: verified -->
 # Systematic Debugging (Differential Diagnosis)

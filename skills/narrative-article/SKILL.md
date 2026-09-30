@@ -3,7 +3,7 @@ name: narrative-article
 description: "Create engaging technical articles with narrative structure. Use when writing a story-driven technical article."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.10.5"
+  installed-version: "0.11.0"
 ---
 # Write a Narrative-Driven Article
 
