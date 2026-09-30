@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.11.0] - 2026-09-30
 
 #### Added - rule-of-5-universal: conditional TypeSafe (Jev) verification pass for review findings (incitaciones-axy)
 
