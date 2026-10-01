@@ -16,3 +16,8 @@ other-skills/
 .pi/
 reviews/
 _site/
+
+# bd gate runtime lock
+.beads.gate.lock
+# mdbook 0.5 fallout (specodelic-j0m latent bug)
+docs/src/https:/
