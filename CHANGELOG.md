@@ -1,3 +1,10 @@
+## [0.11.1] - 2026-10-04
+
+#### Fixed - whisper: skill pointer becomes a pure redirect to the canonical turu pack (whisper-nh1)
+
+- The pointer taught its own decision procedure (`Is turu available? turu key --json`) — the exact key-first orientation gate the turu CLI v0.9.0 removed after the session-usage audit showed 79% of turu-touching sessions burned an orientation call on it. Now the pointer defers entirely to the installed turu skill pack (`whisper.md` router: session loop `turu recall all` → `turu append`, scope routing, lifecycle verbs) and carries only the no-binary fallback routing plus the four stable invariants — one canonical source, nothing left to go stale.
+- Manifest description modernized to session-loop framing; regenerated the committed `skills/` catalog.
+
 ## [0.11.0] - 2026-09-30
 
 #### Added - rule-of-5-universal: conditional TypeSafe (Jev) verification pass for review findings (incitaciones-axy)
