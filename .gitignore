@@ -21,3 +21,4 @@ _site/
 .beads.gate.lock
 # mdbook 0.5 fallout (specodelic-j0m latent bug)
 docs/src/https:/
+.pretender/

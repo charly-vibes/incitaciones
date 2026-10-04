@@ -1465,7 +1465,7 @@
       "name": "whisper",
       "type": "workflow",
       "title": "Whisper — Accumulated Operational Knowledge",
-      "description": "Knowledge workspace management: init, check, status, link plan, decommission, routing. Delegates to the turu CLI when installed.",
+      "description": "Deterministic knowledge workspace: session loop (recall all / append), scope routing, distill, bundle. Delegates to the turu CLI when installed; manual fallbacks otherwise.",
       "source": "content/prompt-workflow-whisper.md",
       "distilled": "content/distilled/whisper/SKILL.md",
       "skill_format": "progressive-disclosure",

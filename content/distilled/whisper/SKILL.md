@@ -1,37 +1,20 @@
-# Whisper — Deterministic Operational Knowledge
+# Whisper — knowledge workspace (pointer)
 
-> **This skill is a thin pointer.** The canonical, versioned copy ships with
-> the `turu` CLI ([charly-vibes/whisper](https://github.com/charly-vibes/whisper),
-> `cargo install whisper-vibes`) — install it with `turu skill install`.
-> This file stays so agents without the binary have fallbacks.
+The canonical, versioned procedure lives in the **turu skill pack** —
+installed with `turu skill install` and shipped with the `turu` CLI
+([charly-vibes/whisper](https://github.com/charly-vibes/whisper),
+`cargo install whisper-vibes`).
 
-The `turu` CLI owns every mechanical step: canonical repo keys, branch slugs,
-worktree slots, and scope routing. Same inputs, same outputs — no more
-hand-rolled shell pipelines.
+## Routing rule
 
-## Decision procedure
-
-1. **Is `turu` available?** Run `turu key --json`.
-2. **If yes** — everything mechanical is a turu command:
-
-| Intent | Command |
-|---|---|
-| Derive repo key / branch slug / worktree slot | `turu key --json` |
-| Find the write destination for a scope | `turu resolve <scope> --json` |
-| Record knowledge (extend, don't duplicate) | `turu append <scope> --text "..."` |
-| Create the workspace layout | `turu init --json` |
-| Inspect paths and existence | `turu status --json` |
-| Validate / detect legacy keys | `turu check --json` · `turu doctor --json` |
-| Refresh the AGENTS.md routing block | `turu sync --json` |
-
-   Scopes: `global` (rules.md), `repo` (env.md), `branch` (notes.md),
-   `worktree` (env.md), `group` (shared workspace for a set of repos).
-   If a `<!-- TURU:START -->` block exists in `AGENTS.md`, read the routing
-   map from there instead of re-deriving paths.
-
-3. **If no** — use the manual fallbacks in `references/` (they remain the
-   source of truth for the shell-snippet procedures) and suggest
-   `cargo install whisper-vibes`.
+- **If `whisper.md` sits next to this file** (the installed pack), read it and follow it as your single source of procedure. It owns everything: the session loop (`turu recall all`
+at start, `turu append <scope> "..."` at capture), scope routing
+  (global → group → repo → branch → worktree), the command table, and all
+  modes. This pointer defers entirely and adds nothing — never reconcile
+  the two by hand.
+- **If the pack is absent**, `turu` is not installed: use the manual
+  fallbacks in `references/` (source of truth for the shell-snippet
+  procedures) and suggest `cargo install whisper-vibes`.
 
 ## Invariants (with or without the binary)
 
@@ -42,14 +25,3 @@ hand-rolled shell pipelines.
 - **One repo, one key.** The canonical key is a pure function of the remote
   URL; never invent a variant.
 - **Search first.** Before creating a new entry, check if one exists.
-
-## Modes
-
-`/w init` → `turu init` · `/w` or `/w status` → `turu status` ·
-`/w check` → `turu check` · `/w link` → `subs/link-manual` (no CLI verb yet)
-· `/w decommission` → `subs/decommission-manual` · `/w consolidate` →
-`subs/consolidate-manual` (detection ships via `turu doctor`).
-
-Manual procedures for each mode: `references/init.md`, `references/check.md`,
-`references/status.md`, `references/link.md`, `references/decommission.md`,
-`references/consolidate.md`.
