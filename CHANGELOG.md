@@ -1,4 +1,9 @@
-## [0.11.1] - 2026-10-04
+## [Unreleased]
+
+### 2026-10-06
+
+- 0.12.0 lane x complexity scheme
+
 
 #### Fixed - whisper: skill pointer becomes a pure redirect to the canonical turu pack (whisper-nh1)
 
