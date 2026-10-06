@@ -6,7 +6,9 @@ Use these templates for proposed slice breakdowns, issue descriptions, and the f
 
 ```markdown
 1. **[Title]**
-   - **Type:** [AFK|HITL]
+   - **Lane:** [AFK|DESIGN|HITL|REVIEW]
+   - **Complexity:** [S|M|L|XL]
+   - **Gate:** [Meter command / CI suite — required for AFK]
    - **Blocked by:** [None | Slice 1, Slice 2]
    - **User stories covered:** [Story A, Story B]
    - **Tracer-bullet rationale:** [Why this is a thin end-to-end slice]
@@ -71,8 +73,8 @@ Or: `None - can start immediately`
 **Plan:** [path/to/plan.md]
 
 ### Approved Slice Set
-1. **[Title]** — [AFK|HITL], blocked by [None|IDs]
-2. **[Title]** — [AFK|HITL], blocked by [None|IDs]
+1. **[Title]** — [AFK|DESIGN|HITL|REVIEW] [S|M|L|XL], blocked by [None|IDs]
+2. **[Title]** — [AFK|DESIGN|HITL|REVIEW] [S|M|L|XL], blocked by [None|IDs]
 
 ### Summary
 - **Total Issues Created:** [count]
