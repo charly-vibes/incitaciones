@@ -1,4 +1,4 @@
-<!-- skill: create-issues, version: 1.4.1, status: verified -->
+<!-- skill: create-issues, version: 1.5.0, status: verified -->
 # Tracer-Bullet Issue Creation from Plan
 
 Break a reviewed plan into independently grabbable issues using tracer-bullet vertical slices.
@@ -24,15 +24,16 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
    - A slice must be independently verifiable or demoable.
    - Mark each slice with a **lane** (execution mode) and a **complexity** grade:
      - **Lane:**
-       - **AFK** — bounded, mechanically verifiable, mergeable without human intervention; requires an objective gate (test suite, CI, or Meter command). Label: `afk`.
+       - **AFK** — bounded, mechanically verifiable, mergeable without human intervention; the `afk` label means "safe to run autonomously", so it may only be applied when an objective gate exists (test suite, CI, or Meter command). Label: `afk`.
        - **DESIGN** — needs an interactive design session before implementation: semantics decisions, API shape, concurrency models, trade-offs. A human works this with a strong-reasoning model, never autonomously. Label: `design`.
        - **HITL** — pure human decision, approval, copy review, or policy signoff with little or no model work. Label: `hitl`.
        - **REVIEW** — second-opinion pass over existing output (code review, spec audit, conformance check). Label: `review`.
-     - **Complexity (effort / model tier):**
-       - **S** — routine, pattern-following; cheapest capable tier suffices. Label: `complexity:s`.
-       - **M** — standard implementation effort; standard tier, escalate only after repeated failure. Label: `complexity:m`.
-       - **L** — hard reasoning (invariants, concurrency, subtle bugs); strong tier with elevated reasoning effort. Label: `complexity:l`.
-       - **XL** — epic-sized or semantics-heavy; do not schedule — decompose into S/M/L slices first. Label: `complexity:xl`.
+     - **Complexity (effort / model tier)** — graded by falsifiable criteria so a reviewer can gate a wrong tag:
+       - **S** — matches an existing pattern in the repo (same change shape already exists in code or a prior ticket); ≤3 files; no new public interface, dependency, or invariant; the Meter is an existing test command. Label: `complexity:s`.
+       - **M** — multi-file change within established patterns; new tests follow existing conventions; no new public API beyond the slice's own; no concurrency or protocol semantics. Label: `complexity:m`.
+       - **L** — introduces or changes an invariant, concurrency semantics, protocol conformance, or a public API; correctness requires reasoning the repo's existing tests do not already encode. Label: `complexity:l`.
+       - **XL** — unresolved semantics or cross-repo scope: two competent agents would disagree on what "done" means; do not schedule — decompose into S/M/L slices first. Label: `complexity:xl`.
+       - **Grade gate:** an S/M ticket that touches a public API, an invariant, or concurrency code is mis-tagged — retag L before publishing; an L ticket fully covered by an existing pattern plus an existing test command is mis-tagged — retag M or S.
      - Classification signals: `decision`-type tickets or titles starting with Decide/Choose/Approve/Scope → DESIGN or HITL, never AFK; bounded bugs with a failing test or concrete repro in a repo with CI → AFK; verification/conformance sweeps → AFK; concurrency/security/semantics work → DESIGN unless a failing repro test exists; epics → XL. If the target repo has no CI or test suite, tag `no-gate` — never schedule AFK work without a gate.
    - Avoid tickets like “build backend”, “add UI”, or “refactor models first” unless the work is genuinely standalone.
    - **Title lint (hard rule — run on every drafted title before presenting):** a title must name a user-visible outcome (“CSV export works end-to-end”), not a layer. If a title names a layer or artifact — backend, frontend, API, route, button, serializer, schema, tests-only, docs-only, refactor-only — merge it into the outcome slice it serves. Layers differing is never sufficient reason to split: split by capability, never by layer.
@@ -102,7 +103,8 @@ You are a Technical Project Manager. Translate a plan, spec, or PRD into thin en
 - **Anchor staleness:** always record `base_commit` metadata at creation; never publish a ticket anchored to nothing.
 - **Stop and ask:** if the plan only supports horizontal decomposition, propose a vertical rewrite before publishing.
 - **Lane and complexity are mandatory metadata:** every published slice carries both (`bd update <id> --label design --label complexity:m`). Route by them, not by preference: S/M AFK work defaults to the cheapest capable model tier; DESIGN and L work gets the strongest reasoning tier with elevated effort.
-- **No AFK without a gate:** an AFK ticket in a repo without CI/tests gets `no-gate` and stays in the day lane until a gate exists.
+- **No gate, no AFK label:** in a repo without CI/tests, tag `no-gate` *instead of* `afk` — the ticket is not scheduled autonomously until a gate exists; when one does, replace `no-gate` with `afk`.
+- **Escalation is a retag:** after two failed implementation attempts, raise complexity one grade (S→M→L); if the failure cause is semantic (unclear spec or design rather than implementation), switch the lane to `design`. Record the failure cause in the ticket either way.
 
 ## References
 - **Templates:** `references/templates.md`

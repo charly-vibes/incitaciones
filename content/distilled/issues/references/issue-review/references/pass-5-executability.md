@@ -25,6 +25,7 @@ Watch for:
 - DESIGN work (semantics decisions, API shape, concurrency models) tagged or scheduled as AFK — semantics need an interactive session, not an overnight run
 - Tickets tagged `complexity:xl` (epic-sized or semantics-heavy) presented as schedulable work instead of decomposition candidates
 - AFK tickets with no objective gate and no `no-gate` tag
+- Complexity grades that fail the falsifiable criteria — an S/M ticket touching a public API, an invariant, or concurrency code is mis-tagged and must be retagged L before scheduling
 - Tickets that cannot be closed without information from another issue not listed as a blocker
 
 Prefix findings with `EXEC-`.
