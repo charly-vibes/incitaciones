@@ -3,7 +3,7 @@ name: diagnostician
 description: "Advisory-only diagnostics, no code changes: modularity, rigidity, mutability, invalid states, composability, error handling, Julia performance, UX/DX evaluation, spec evaluation, testability, verification, root-cause analysis. Use when diagnosing design flaws, advisory-only."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.11.1"
+  installed-version: "0.12.0"
 ---
 # Diagnostician Router
 

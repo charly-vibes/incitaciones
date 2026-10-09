@@ -18,7 +18,8 @@ Use these criteria to evaluate whether a plan has been translated into strong tr
 | **Baseline anchored** | Measurable claims record the pre-work value and the HEAD SHA as `base_commit` metadata for staleness detection. |
 | **Dependency hygiene** | Only real blockers are encoded; parallel work is not serialized without reason. |
 | **Workflow Mandate** | Includes the mandatory TDD and Tidy First block. |
-| **Execution mode** | Slice is explicitly marked AFK or HITL. |
+| **Execution mode** | Slice is explicitly marked with a lane (AFK/DESIGN/HITL/REVIEW) and a complexity grade (S/M/L/XL); AFK slices carry an objective gate or `no-gate` tag. |
+| **Complexity honesty** | Complexity matches the work, not the optimism: XL is used when semantics or scope are unresolved, not as a badge. |
 
 ## Tracer-Bullet Heuristics
 
