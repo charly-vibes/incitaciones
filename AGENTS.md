@@ -44,6 +44,16 @@ On push of a `v*` tag, GitHub Actions automatically publishes to npm:
 - Workflow: `.github/workflows/npm-publish.yml`
 - Secret: `NPM_TOKEN` (granular access token with publish bypass)
 - Trigger: `git push --tags` after `npm version patch|minor|major`
+
+**Release with `just release [patch|minor|major]`** — it runs the CI gate, bumps
+the version, regenerates the skills/ catalog (its stamps come from
+`package.json`), commits, creates the tag, pushes the tag **explicitly**
+(`git push origin vX.Y.Z`), and verifies the tag on the remote plus the new
+version on npm before exiting. Never rely on `git push` alone:
+`push.followTags=true` hides the tag push, and global `fetch.pruneTags=true`
+prunes any local tag not yet on the remote at the next `git pull` — which has
+deleted release tags in the past (incitaciones-rts). This repo sets local
+overrides for both.
 - Also updates the pi-package resources via `scripts/generate-pi-resources.mjs`
 
 ## Purpose

@@ -508,6 +508,51 @@ serve-site: build-site
 install *ARGS:
     ./install.sh {{ARGS}}
 
+# Full release: CI gate, version bump, tag, explicit tag push, remote + npm verification
+# Rationale: global fetch.pruneTags=true prunes unpushed local tags on every pull — a
+# tag created but not yet pushed is silently deleted by the next 'git pull --rebase'
+# (incitaciones-rts: this killed the v0.12.0 tag entirely and briefly v0.13.0). This
+# recipe pushes the tag explicitly and verifies it before declaring the release done.
+release VERSION="patch":
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # Repo-local guard overrides for the global pruneTags/followTags footgun
+    git config fetch.pruneTags false
+    git config push.followTags false
+
+    [ -z "$(git status --porcelain)" ] || { echo "❌ working tree not clean — commit first"; exit 1; }
+    just ci
+
+    git pull --rebase
+    npm version "{{VERSION}}" --no-git-tag-version -m "chore(release): v%s (via just release)"
+    VERSION=$(node -p "require('./package.json').version")
+    TAG="v${VERSION}"
+
+    # the committed skills/ catalog stamps installed-version from package.json —
+    # regenerate AFTER the bump or validate-skills-dir reports it stale
+    just generate-skills-dir >/dev/null
+    git add package.json skills/
+    git diff --cached --quiet -- package.json skills/ || git commit -m "chore(release): ${TAG} (via just release)"
+    git tag -a "${TAG}" -m "${TAG}"
+
+    git push origin HEAD
+    git push origin "${TAG}"   # EXPLICIT tag push — never rely on followTags
+
+    git ls-remote origin "refs/tags/${TAG}" | grep -q "${TAG}" || { echo "❌ tag ${TAG} not on remote after push"; exit 1; }
+    echo "✅ ${TAG} on remote"
+
+    echo "waiting for npm to publish ${VERSION}..."
+    for i in $(seq 1 30); do
+        if npm view "incitaciones@${VERSION}" version --prefer-online >/dev/null 2>&1; then
+            echo "✅ incitaciones@${VERSION} live on npm (after ${i} check(s))"
+            exit 0
+        fi
+        sleep 20
+    done
+    echo "⚠️  npm not showing ${VERSION} after 10 minutes — check the npm-publish workflow run"
+    exit 1
+
 # Generate pi package resources (skills + prompt templates)
 generate-pi-resources:
     node scripts/generate-pi-resources.mjs
