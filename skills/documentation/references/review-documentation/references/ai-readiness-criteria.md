@@ -25,6 +25,7 @@ Deep checks for Pass 5. The basic pass (TL;DR present, headers unique, Answer Fi
 - Is language precise enough for a machine? Natural-language ambiguity a human resolves from context is opaque to an agent.
 - Are error conditions and their meanings explicit?
 - Are capability boundaries stated (what the tool/API can and cannot do)?
+- Are claims marked by status (documented / interpreted / proposed / unknown) rather than stated as fact when unverified?
 
 ## Schema and spec sync (reference pages)
 

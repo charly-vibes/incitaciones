@@ -6,8 +6,8 @@ tags: [review, documentation, technical-writing, rule-of-5, diataxis, eppo, info
 tools: [claude-code, gemini, any-llm]
 status: tested
 created: 2026-03-11
-updated: 2026-07-29
-version: 1.1.0
+updated: 2026-10-09
+version: 1.2.0
 related: [research-documentation-frameworks.md, research-finding-library-docs-best-practices.md, prompt-task-iterative-code-review.md, research-finding-skill-progressive-disclosure.md]
 source: project-internal
 ---
@@ -42,7 +42,7 @@ Perform 5 iterative passes, checking for convergence after each pass (starting w
 
 ### PASS 2: EPPO & Standalone Utility
 - **Goal:** Can a "foraging" reader land here and succeed?
-- **Checks:** Are context and prerequisites established in the first two sentences? Does it rely on "previous chapter" knowledge without links?
+- **Checks:** Are context and prerequisites established in the first two sentences? Does it rely on "previous chapter" knowledge without links? Is domain jargon defined at first use or via a glossary?
 - **Issue Prefix:** [EPPO-001]
 
 ### PASS 3: Cognitive Scannability (Info Mapping)
@@ -52,12 +52,12 @@ Perform 5 iterative passes, checking for convergence after each pass (starting w
 
 ### PASS 4: Accuracy, "Whole Game" & Fail-States
 - **Goal:** Is the content technically sound and resilient?
-- **Checks:** Are the code snippets/math verified? Does it show the "Whole Game" (complete result)? Are common errors (fail-states) documented? In tutorials, is the **Martini Glass** pattern followed (context → exploration)?
+- **Checks:** Are the code snippets/math verified? Does it show the "Whole Game" (complete result)? Are common errors (fail-states) documented? In tutorials, is the **Martini Glass** pattern followed (context → exploration)? If the subject is a runnable tool/API, are documented claims spot-checked against the artifact (the method statement goes in the Final Report provenance)? Do entry-point pages (README / landing / quickstart) include a quickstart reaching first success in minutes (TTFS)?
 - **Issue Prefix:** [ACC-001]
 
 ### PASS 5: Excellence & AI-Readiness
 - **Goal:** Is it production-ready and optimized for AI agents?
-- **Checks:** Is there a TL;DR for LLMs? Are headers semantically unique for RAG? Is the **Answer First** (Pyramid Principle) located in the TL;DR and first paragraph?
+- **Checks:** Is there a TL;DR for LLMs? Are headers semantically unique for RAG? Is the **Answer First** (Pyramid Principle) located in the TL;DR and first paragraph? Are claims marked by status (documented / interpreted / proposed / unknown) instead of stating unverified claims as fact?
 - **Issue Prefix:** [EXCL-001]
 
 ## Convergence Check
@@ -71,6 +71,8 @@ After each pass (starting with pass 2), report:
 - **Top 3 Findings.**
 - **Verdict:** (Ready | Needs Revision | Needs Rework).
 - **Rationale.**
+- **Provenance:** revision/commit reviewed (or UNKNOWN — never guess) and method (runtime-verified vs read-only).
+- **Optional audience-barrier table** (entry-point pages: README / landing / quickstart): reader type × barriers × recommended approach.
 ````
 
 ## Expected Results

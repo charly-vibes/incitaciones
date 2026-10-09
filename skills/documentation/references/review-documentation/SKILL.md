@@ -16,7 +16,7 @@ Goal: does this topic have a single, clear intent? Checks: is it a Tutorial, How
 
 ### Pass 2: EPPO & Standalone Utility
 
-Goal: can a foraging reader land here and succeed? Checks: are context and prerequisites established in the first two sentences? Does it rely on "previous chapter" knowledge without links? Issue prefix: [EPPO-001].
+Goal: can a foraging reader land here and succeed? Checks: are context and prerequisites established in the first two sentences? Does it rely on "previous chapter" knowledge without links? Is domain jargon defined at first use or via a glossary? (Jargon rule: `../research-documentation/references/checklist.md` and `../implement-documentation/references/anti-patterns.md` — cross-reference, do not duplicate here.) Issue prefix: [EPPO-001].
 
 ### Pass 3: Cognitive Scannability (Info Mapping)
 
@@ -24,11 +24,11 @@ Goal: can the reader scan the page in under 10 seconds and find the key answer? 
 
 ### Pass 4: Accuracy, "Whole Game" & Fail-States
 
-Goal: is the content technically sound and resilient? Checks: are code snippets verified? Does it show the complete result? Are common errors documented? In tutorials, is the Martini Glass pattern followed (guided context then open exploration)? Issue prefix: [ACC-001].
+Goal: is the content technically sound and resilient? Checks: are code snippets verified? Does it show the complete result? Are common errors documented? In tutorials, is the Martini Glass pattern followed (guided context then open exploration)? If the subject is a runnable tool/API: spot-check documented claims against the artifact itself (the method statement goes in the Final Report provenance block). For entry-point pages (README / landing / quickstart): is there a quickstart reaching a first verified success in minutes (time-to-first-success; see `../research-documentation/references/metrics.md`)? Issue prefix: [ACC-001].
 
 ### Pass 5: Excellence & AI-Readiness
 
-Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;DR for LLMs? Are headers semantically unique for RAG? Is the Answer First (Pyramid Principle) in the TL;DR and first paragraph? Use `references/ai-readiness-criteria.md` for the deep AI-readiness checks (`llms.txt`, RAG chunking, dual-audience, schema sync). Issue prefix: [EXCL-001].
+Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;DR for LLMs? Are headers semantically unique for RAG? Is the Answer First (Pyramid Principle) in the TL;DR and first paragraph? Use `references/ai-readiness-criteria.md` for the deep AI-readiness checks (`llms.txt`, RAG chunking, dual-audience, schema sync). Are claims marked by status — documented / interpreted / proposed / unknown — with unverified claims not stated as fact? Issue prefix: [EXCL-001].
 
 ## Final Report
 
@@ -36,10 +36,13 @@ Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;
 - Top 3 Findings.
 - Verdict: Ready, Needs Revision, or Needs Rework.
 - Rationale.
+- Provenance: which revision/commit of the subject was reviewed (mark UNKNOWN if unpinned — never guess) and the review method (runtime-verified vs read-only).
+- Optional (entry-point pages: README / landing / quickstart): audience-barrier table (reader type × barriers × recommended approach).
 
 ## Rules
 
 - Reference exact locations (file, section, paragraph).
+- Cross-referenced criteria live in sibling mode references — do not copy them into this file; link instead.
 - Validate issues exist; do not flag "potential" issues without evidence.
 - The canonical theory lives in `content/research-documentation-frameworks.md`; `references/ai-readiness-criteria.md` is an operational excerpt that links back to it.
 

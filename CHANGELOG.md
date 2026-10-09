@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+### 2026-10-09
+
+#### Added - review-documentation: lessons from independent cold-read reviews (specodelic v0.7.0 assessment corpus)
+
+- Lessons mined from three independent cold-read review conversations of specodelic v0.7.0 (Z.ai understandability assessment, Grok design canvas, GPT-6 synthesis report; `~/Downloads/cv`). Proposal itself was Rule-of-5 reviewed with TypeSafe verification before applying: the initial "not covered" framing was corrected (jargon/TTFS/diagrams already live in research/implement modes — cross-referenced, not duplicated) and the docs-vs-artifact check made conditional on runnable subjects.
+- **Pass 2 (EPPO):** jargon defined at first use or glossary — cross-reference to the existing jargon rules in `../research-documentation/references/checklist.md` and `../implement-documentation/references/anti-patterns.md` (no inline duplication, per the suite's own anti-duplication criterion).
+- **Pass 4 (Accuracy):** when the subject is a runnable tool/API, spot-check documented claims against the artifact and state the review's method (runtime-verified vs read-only); for entry-point pages, check a quickstart reaches first verified success in minutes (TTFS cross-ref to `../research-documentation/references/metrics.md`).
+- **Pass 5 (AI-Readiness):** claims marked by status — documented / interpreted / proposed / unknown — with unverified claims not stated as fact (genericized from the corpus's D/I/P/U evidence legend to avoid importing project-specific jargon).
+- **Final Report:** provenance block (revision/commit reviewed, or UNKNOWN — never guess; review method) and an optional audience-barrier table for entry-point pages.
+- Self-reviewed with `rule-of-5-universal` (converged at Stage 4; no CRITICAL findings; cross-ref path resolution mechanically verified in both distilled and installed trees, flat-emit scope confirmed unaffected). Note-level fixes applied from the review: review-method statement consolidated into the Final Report provenance block only, and "entry-point pages" defined as README / landing / quickstart.
+- `references/ai-readiness-criteria.md` dual-audience section extended with the claim-status bullet. Mirrored in source `content/prompt-task-review-documentation.md` (v1.1.0 → 1.2.0, updated 2026-10-09). `just validate-distilled` and `just sync-manifest` pass (manifest version 2026-10-06 → 2026-10-09). Follow-up: re-exercise the new checks against a real doc target before next release (frontmatter `status: tested` retained).
+
 ### 2026-10-06
 
 - 0.12.0 lane x complexity scheme
