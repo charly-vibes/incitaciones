@@ -3,7 +3,7 @@ name: describe-pr
 description: "Generate clear PR descriptions from code changes. Use when opening or updating a pull request."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.12.0"
+  installed-version: "0.13.0"
 ---
 # Generate PR Description
 

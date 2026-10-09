@@ -3,7 +3,7 @@ name: create-issues
 description: "Compiled alias of the issue creation mode of the issues skill. Hidden from model invocation; invocable via /skill:create-issues; serves the legacy site URL with full compiled content."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.12.0"
+  installed-version: "0.13.0"
   internal: true
 ---
 > **Moved:** this entry is now the **create-issues** mode of the **issues** skill.
