@@ -15,3 +15,7 @@ See [Status](status.md) for documented standard deviations (§0.3 of the
 ecosystem standard).
 
 Part of the [charly-vibes](https://github.com/charly-vibes) tool suite.
+
+## Ecosystem
+
+incitaciones is part of the [charly-vibes Tool Ecosystem](https://charly-vibes.github.io/dulce-de-leche/ecosystem-map.html) — the map shows how it relates to its sibling tools.
