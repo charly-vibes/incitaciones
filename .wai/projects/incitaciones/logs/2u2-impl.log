@@ -1,0 +1,65 @@
+# Final report — incitaciones-2u2
+
+## What was done (red → green → refactor)
+
+1. **Red:** `grep -qi 'accuracy gate' content/distilled/documentation/references/review-documentation/SKILL.md` → exit 1 (confirmed before starting).
+2. **Green — one atomic commit (`e663a2a`), 3 files:**
+   - **NEW** `content/distilled/documentation/references/implement-documentation/references/docs-accuracy.md` (~115 lines, matches `worked-examples.md` voice: numbered sections, evidence-mined, instructional prose):
+     - §1 Docs-accuracy gate: CI re-runs documented commands, captures output + exit code, and diffs vs. documented snippets; the **capture-normalize** technique (normalize cargo/gh verbosity, hashes, timestamps, absolute paths with the same rules on both sides — specodelic `a2108b8`; "only normalized output is diffable").
+     - §2 Stamped artifacts: `llms.txt`/`llm.txt`/`release.md`/README version facts generated per release, never hand-edited; **freshness check** = CI lint that regenerates and fails on drift; hand-edit treated as a bug; freshness lint runs on every push, not just release day.
+     - §3 Live-site smoke: CI curls the deployed docs URL post-deploy (ddl precedent), fails on non-2xx, smokes a deep page too.
+   - `content/distilled/documentation/references/implement-documentation/SKILL.md`: ONE new procedure pointer (step 7, mirroring step 5's pattern).
+   - `content/distilled/documentation/references/review-documentation/SKILL.md`: Pass 4 extended with the three-check sentence (accuracy gate / stamped-artifact freshness / live-site smoke), flagged as `[ACC-]` findings, **linked** to the new reference per the file's cross-reference rule — methodology text not duplicated.
+3. **Refactor:** consistency pass found the edits already conformant (step 7 mirrors step 5; Pass 4 link matches Pass 2's `../` style) — no separate commit needed.
+4. Scope held: no router mode-table changes, no ef0 drift-audit content, no generated outputs (`.agents/`, `skills/`, `pi-package/`), no `.wai/`/`.beads` staging. Pre-existing orchestrator-owned working-tree changes (`.genesis/`, `.wai/`, `AGENTS.md`, `CLAUDE.md`) were left untouched. Pre-commit hooks (ah-check, links, validate) ran green on the commit — no `--no-verify`.
+
+## Completion criteria — actual output
+
+```
+$ just validate-distilled
+exit: 0
+
+✅ All distilled prompts valid!
+
+$ just sync-manifest
+exit: 0
+
+✅ Manifest OK
+
+$ test -f content/distilled/documentation/references/implement-documentation/references/docs-accuracy.md
+exit: 0
+
+$ grep -qi 'normalize' .../implement-documentation/references/docs-accuracy.md
+exit: 0
+
+$ grep -qi 'accuracy gate' .../implement-documentation/SKILL.md
+exit: 0
+
+$ grep -qi 'accuracy gate' .../review-documentation/SKILL.md
+exit: 0
+
+$ grep -qi 'stamped' .../review-documentation/SKILL.md
+exit: 0
+
+$ git status --porcelain   # after the commit: only pre-existing orchestrator-owned
+                           # entries remain; none are ticket files, nothing staged
+ M .genesis/tools.toml
+ M .wai/AGENTS.md
+ M .wai/config.toml
+ M AGENTS.md
+ M CLAUDE.md
+?? .wai/pipeline-runs/epic-orchestrator-2026-10-14-docs-skill-methodology-2u2.yml
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-2.md
+?? .wai/projects/incitaciones/logs/2u2-impl.log
+?? .wai/projects/incitaciones/research/2026-10-14-gates-baseline-green-before-implementation-just.md
+?? .wai/projects/incitaciones/research/2026-10-14-orient-selected-incitaciones-2u2-p2-next-per-av.md
+?? .wai/projects/incitaciones/research/2026-10-14-spawn-subagent-incitaciones-2u2-impl-pid-1228148.md
+?? .wai/projects/incitaciones/runs/incitaciones-2u2.state
+?? .wai/resources/pipelines/.last-run
+```
+
+All 8 completion criteria: exit 0. `git status --porcelain` shows no `.agents/`, `skills/`, or `pi-package/` edits and nothing `.beads/` staged — the remaining entries are pre-existing orchestrator pipeline state (out of scope per brief).
+
+## Commits made
+
+- `e663a2a` — `docs(documentation): docs-accuracy gate, stamped artifacts & live-site smoke methodology (incitaciones-2u2)` — exactly 3 paths staged: `content/distilled/documentation/references/implement-documentation/references/docs-accuracy.md`, `content/distilled/documentation/references/implement-documentation/SKILL.md`, `content/distilled/documentation/references/review-documentation/SKILL.md`
