@@ -8,7 +8,7 @@ Perform a Rule of 5 review of the documentation using the Unified Frameworks for
 
 ## Procedure
 
-Perform 5 iterative passes. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Converge when no new CRITICAL issues are found and the new-issue rate drops below 10% versus the previous pass. Stop early if converged.
+Perform 5 iterative passes — 6 when the subject spans multiple surfaces (README, docs index, installation page): Pass 6 is the cross-surface consistency pass. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Converge when no new CRITICAL issues are found and the new-issue rate drops below 10% versus the previous pass. Stop early if converged.
 
 ### Pass 1: Diátaxis & Intent
 
@@ -29,6 +29,10 @@ Goal: is the content technically sound and resilient? Checks: are code snippets 
 ### Pass 5: Excellence & AI-Readiness
 
 Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;DR for LLMs? Are headers semantically unique for RAG? Is the Answer First (Pyramid Principle) in the TL;DR and first paragraph? Use `references/ai-readiness-criteria.md` for the deep AI-readiness checks (`llms.txt`, RAG chunking, dual-audience, schema sync). Are claims marked by status — documented / interpreted / proposed / unknown — with unverified claims not stated as fact? Issue prefix: [EXCL-001].
+
+### Pass 6: Cross-Surface Consistency (multi-surface subjects only)
+
+Goal: do all user-facing surfaces tell one story with one set of facts? Applies when the subject spans multiple surfaces (README, docs index, installation page — any fact published in more than one place). Checks: run the drift audit — enumerate the facts repeated across surfaces (pack/module counts, command names, install steps, links, version claims) and verify every copy agrees; flag copies that should be generated/stamped instead of hand-written. Then check topic alignment: README, docs index, and installation page must tell one consistent story (same audience, same promise, same next step), not drift into different framings. The methodology lives in `references/drift-audit.md`; cross-reference it, do not duplicate it here. Issue prefix: [DRIFT-001].
 
 ## Final Report
 
