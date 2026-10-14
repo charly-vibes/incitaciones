@@ -1,0 +1,73 @@
+##Final report — incitaciones-iio
+
+**Red/green/refactor executed:**
+1. **Red:** `test -f .../visual-cross-repo.md` → exit 1 (file absent, confirmed before starting).
+2. **Green:** created the new reference and the SKILL.md step-8 pointer, then one atomic commit.
+3. **Refactor:** no consistency pass needed — the file was written directly in the `docs-accuracy.md` voice (numbered sections, evidence citation, "Rules:" lists), so no refactor commit.
+
+**Files changed (exact paths, staged explicitly, no `-A`, no `.beads/`, not pushed):**
+- `content/distilled/documentation/references/implement-documentation/references/visual-cross-repo.md` (NEW, 117 lines)
+- `content/distilled/documentation/references/implement-documentation/SKILL.md` (step 8 pointer, mirroring steps 5/7)
+
+**Commits made:**
+- `9a7ae95` `docs(documentation): add visual docs & cross-repo ecosystem methodology` — 2 files changed, 132 insertions. Pre-commit hooks all passed (ah-check, links, validate). **Not pushed**, per brief.
+
+**Content coverage:** §1 static SVG over runtime mermaid (specodelic `graph-views.html` incident, build-step sync, stamped-artifact analogy), §2 cross-repo fleet docs (ddl `cbfa300` responsibility map, shared setup template, one-home hub pages), §3 deployed-vs-source smoke (JS errors, diagram rendering, search index) explicitly built on `docs-accuracy.md` §3 as the reachability layer — linked, not duplicated.
+
+---
+
+### Completion criteria — actual outputs
+
+```
+$ just validate-distilled
+...
+  ✓ documentation
+...
+✅ All distilled prompts valid!
+EXIT=0
+```
+
+```
+$ just sync-manifest
+...
+✓ all pointer_for targets resolve (8 pointers)
+✓ all live prompts carry distinct trigger clauses
+version: 2026-10-14 (already current)
+✅ Manifest OK
+EXIT=0
+```
+
+```
+$ test -f content/distilled/documentation/references/implement-documentation/references/visual-cross-repo.md
+file: EXIT=0
+```
+
+```
+$ grep -qi 'mermaid' .../references/visual-cross-repo.md
+mermaid: EXIT=0
+```
+
+```
+$ grep -qi 'visual-cross-repo' .../implement-documentation/SKILL.md
+skill-ptr: EXIT=0
+```
+
+```
+$ grep -qi 'responsibility map' .../references/visual-cross-repo.md
+resp-map: EXIT=0
+```
+
+```
+$ grep -qi 'docs-accuracy' .../references/visual-cross-repo.md
+xref: EXIT=0
+```
+
+```
+$ git status --porcelain
+ M .genesis/tools.toml                    ← pre-existing, orchestrator-owned (untouched by me)
+ M .wai/AGENTS.md                          ← pipeline state (untouched)
+ M .wai/config.toml                        ← pipeline state (untouched)
+ M AGENTS.md / CLAUDE.md                   ← pre-existing (untouched)
+?? .wai/... (pipeline logs/states)         ← orchestrator-owned
+```
+No `.agents/`, `skills/`, or `pi-package/` edits; no `.beads/` staging; only the two intended files were committed.
