@@ -8,7 +8,7 @@ Perform a Rule of 5 review of the documentation using the Unified Frameworks for
 
 ## Procedure
 
-Perform 5 iterative passes — 6 when the subject spans multiple surfaces (README, docs index, installation page): Pass 6 is the cross-surface consistency pass. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Converge when no new CRITICAL issues are found and the new-issue rate drops below 10% versus the previous pass. Stop early if converged.
+Perform 5 iterative passes — 6 when the subject spans multiple surfaces (README, docs index, installation page): Pass 6 is the cross-surface consistency pass — 7 when the subject is user-facing documentation (for README, quickstart, and tool docs that is effectively always): Pass 7 is the cold-reader & positioning pass. Check for convergence after each pass starting with Pass 2: report new CRITICAL issues, total new issues, the change vs. the previous pass, and status (CONVERGED or CONTINUE). Converge when no new CRITICAL issues are found and the new-issue rate drops below 10% versus the previous pass. Stop early if converged.
 
 ### Pass 1: Diátaxis & Intent
 
@@ -33,6 +33,10 @@ Goal: is it production-ready and optimized for AI agents? Checks: is there a TL;
 ### Pass 6: Cross-Surface Consistency (multi-surface subjects only)
 
 Goal: do all user-facing surfaces tell one story with one set of facts? Applies when the subject spans multiple surfaces (README, docs index, installation page — any fact published in more than one place). Checks: run the drift audit — enumerate the facts repeated across surfaces (pack/module counts, command names, install steps, links, version claims) and verify every copy agrees; flag copies that should be generated/stamped instead of hand-written. Then check topic alignment: README, docs index, and installation page must tell one consistent story (same audience, same promise, same next step), not drift into different framings. The methodology lives in `references/drift-audit.md`; cross-reference it, do not duplicate it here. Issue prefix: [DRIFT-001].
+
+### Pass 7: Cold-Reader & Positioning
+
+Goal: would a confused first-time human succeed — not just an AI agent scoring structure (`references/ai-readiness-criteria.md` scores ingestion; it never asks the human question)? Applies when the subject is user-facing documentation. Checks: (1) cold-reader question mining — collect real user questions from support conversations, session logs, and issue titles, and verify each has a doc answer; unanswered ones become FAQ entries or tickets; (2) first-run funnel — can a cold reader reach first success in under 10 minutes (time-to-first-success; see `../research-documentation/references/metrics.md`)? (3) positioning — does every tool/format doc carry an explicit "when NOT to use this" section, and is there a decision guide where entry points overlap? The methodology lives in `references/cold-reader.md`; cross-reference it, do not duplicate it here. Issue prefix: [COLD-001].
 
 ## Final Report
 
