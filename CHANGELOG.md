@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+### 2026-10-14 — docs-skill-methodology epic (av4, 2u2, ef0, x3n, iio)
+
+#### Added - documentation skill: executable-docs, consistency, cold-reader, and visual/fleet methodologies (orchestrated via 5 epic-orchestrator subagent runs on `docs/av4-worked-examples`)
+
+- **implement-documentation `worked-examples.md` (av4, incitaciones-av4):** worked-example pattern (one evolving example thread, not N disconnected snippets), the quickstart rule (every command shows expected output and exit code; install paths end with a post-install verification block), and the example coverage matrix.
+- **implement-documentation `docs-accuracy.md` (2u2, incitaciones-2u2):** docs-accuracy gate (CI re-runs documented commands and diffs normalized captured output — capture-normalize per specodelic `a2108b8`), stamped artifacts (`llms.txt`/`release.md`/README version facts generated per release, never hand-edited, freshness lint), live-site smoke (CI curls the deployed URL). Implement procedure step 7 pointer; review Pass 4 extended with ACC checks.
+- **review-documentation Pass 6 — Cross-Surface Consistency (ef0, incitaciones-ef0):** drift audit across surfaces (counts, command names, install steps, links, version claims — "grep the fact, not the page") + topic-alignment check (README/docs index/installation tell one story). NEW `references/drift-audit.md`; cross-references 2u2's docs-accuracy.md. [DRIFT-001].
+- **review-documentation Pass 7 — Cold-Reader & Positioning (x3n, incitaciones-x3n):** question mining from support conversations/session logs/issue titles (unanswered → FAQ entries or tickets), first-run funnel (<10 min time-to-first-success, cross-refs metrics.md), positioning review (explicit "when NOT to use this" + decision guide for overlapping entry points). NEW `references/cold-reader.md`. [COLD-001].
+- **implement-documentation `visual-cross-repo.md` (iio, incitaciones-iio):** static pre-rendered SVG over runtime mermaid on static-site books (specodelic graph-views.html incident), fleet docs pattern (one responsibility map per layer, ddl `cbfa300`; shared setup template; fleet-wide pages live in one hub repo), deployed-vs-source smoke verifying rendered behavior (JS errors, diagram rendering, search index) on top of the live-site smoke's reachability check. Implement procedure step 8 pointer.
+- All five tickets executed via the epic-orchestrator pipeline (brief → named subagent spawn → verify → ship → STOP at ticket boundary). Gates: `just validate-distilled`, `just sync-manifest`, `ah check` green throughout. Pre-commit gate block resynced to ddl 0.8.0 canonical content mid-epic (incitaciones-qwj): scoped `pretender check --diff-only --mode gate` + `spk lint openspec/specs || test $? -eq 2`.
+
 ### 2026-10-09
 
 #### Added - review-documentation: lessons from independent cold-read reviews (specodelic v0.7.0 assessment corpus)
