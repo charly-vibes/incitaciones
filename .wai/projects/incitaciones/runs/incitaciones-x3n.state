@@ -1,0 +1,13 @@
+ticket: incitaciones-x3n
+branch: docs/av4-worked-examples
+brief_path: .wai/projects/incitaciones/briefs/docs-skill-methodology-x3n.md
+steps:
+7f16564009dffe46dfa535463356f27b507c604d
+claim: claim @ 7f16564
+gates: gates @ 7f16564
+brief: brief @ 7f16564
+spawned pid=1635131
+spawn: spawn @ 679c97f
+verify: verify @ 94ea183
+ship: ship @ 94ea183; ticket closed
+stop: stop @ 94ea183; run complete
