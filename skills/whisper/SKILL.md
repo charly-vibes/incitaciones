@@ -3,7 +3,7 @@ name: whisper
 description: "Deterministic knowledge workspace: session loop (recall all / append), scope routing, distill, bundle. Delegates to the turu CLI when installed; manual fallbacks otherwise."
 metadata:
   installed-from: "incitaciones"
-  installed-version: "0.13.0"
+  installed-version: "0.14.0"
   internal: true
 ---
 # Whisper — knowledge workspace (pointer)
