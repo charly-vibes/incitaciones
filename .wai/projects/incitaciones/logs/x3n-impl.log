@@ -1,0 +1,53 @@
+## Report — incitaciones-x3n
+
+**Executed:** brief at `.wai/projects/incitaciones/briefs/docs-skill-methodology-x3n.md` on branch `docs/av4-worked-examples`.
+
+**Red/green/refactor:**
+- **Red:** `grep -qi 'cold-reader' .../review-documentation/SKILL.md` → exit 1 (confirmed absent before starting).
+- **Green:** one atomic commit (`94ea183`) adding `references/cold-reader.md` (the methodology: §1 question mining from support conversations/session logs/issue titles; §2 first-run funnel <10-min TTFS walk, cross-referencing `../../research-documentation/references/metrics.md` without duplicating it; §3 positioning — concrete "when NOT to use" sections + decision guides for overlapping entry points) and extending SKILL.md minimally (intro pass-count sentence + Pass 7 block with `[COLD-001]`, mirroring Passes 1–6; passes 1–6, convergence mechanics, Final Report untouched). An intermediate ordering slip (Pass 7 momentarily before Pass 6) was fixed before commit, so no separate refactor commit was needed.
+- **Refactor:** none required.
+- **Scope:** only the two exact files from the brief. No `.agents/`, `skills/`, `pi-package/`, `.beads/` edits. **Not pushed** (per brief — orchestrator owns remote state).
+
+**Commits made:**
+1. `94ea183` — docs(review-documentation): add Pass 7 cold-reader & positioning methodology — `content/distilled/documentation/references/review-documentation/SKILL.md`, `content/distilled/documentation/references/review-documentation/references/cold-reader.md`
+
+---
+
+### Completion-criteria output (fresh, post-commit)
+
+```
+just validate-distilled → exit 0
+  ✅ All distilled prompts valid!
+
+just sync-manifest → exit 0
+  ✅ Manifest OK
+  version: 2026-10-14 (already current)
+
+test -f content/distilled/documentation/references/review-documentation/references/cold-reader.md → exit 0
+grep -qi 'cold-reader' .../SKILL.md → exit 0
+grep -qi 'COLD-001' .../SKILL.md → exit 0
+grep -qi 'NOT to use' .../cold-reader.md → exit 0
+```
+
+`git status --porcelain` shows **no** content changes remaining (only pre-existing orchestrator-owned `.wai/`, `.genesis/tools.toml`, `AGENTS.md`, `CLAUDE.md` modifications that were present at session start and are outside my scope; no `.agents/`, `skills/`, `pi-package/` entries, no `.beads/` staging):
+
+```
+ M .genesis/tools.toml
+ M .wai/AGENTS.md
+ M .wai/config.toml
+ M AGENTS.md
+ M CLAUDE.md
+?? .wai/pipeline-runs/epic-orchestrator-2026-10-14-docs-skill-methodology-ef0.yml
+?? .wai/pipeline-runs/epic-orchestrator-2026-10-14-docs-skill-methodology-x3n.yml
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-2.md
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-3.md
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-4.md
+?? .wai/projects/incitaciones/logs/x3n-impl.log
+?? .wai/projects/incitaciones/research/2026-10-14-gates-baseline-green-just-validate-distilled-e-2.md
+?? .wai/projects/incitaciones/research/2026-10-14-orient-selected-incitaciones-x3n-p2-complexity.md
+?? .wai/projects/incitaciones/research/2026-10-14-spawn-subagent-incitaciones-x3n-impl-timeout-900.md
+?? .wai/projects/incitaciones/runs/incitaciones-x3n.state
+?? .wai/resources/pipelines/.last-run
+```
+
+All completion criteria exit 0 — done. Commit `94ea183` is local only; pre-commit hooks (ah-check, links, validate) all passed during the commit.
