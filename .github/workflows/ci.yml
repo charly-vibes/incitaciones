@@ -52,5 +52,7 @@ jobs:
           bd --version >/dev/null
           ddl status >/dev/null
           pretender check >/dev/null
+      - name: Smoke live Pages URL
+        run: curl -fsS --max-time 10 --retry 2 https://charly-vibes.github.io/incitaciones/ >/dev/null
       - name: Run CI pipeline
         run: just ci
