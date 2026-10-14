@@ -1,0 +1,13 @@
+ticket: incitaciones-iio
+branch: docs/av4-worked-examples
+brief_path: .wai/projects/incitaciones/briefs/docs-skill-methodology-iio.md
+steps:
+e6e0e07edf3af4e332533fffa1679bacf0f0b750
+claim: claim @ e6e0e07
+gates: gates @ e6e0e07
+brief: brief @ e6e0e07
+spawned pid=1749270
+spawn: spawn @ 8a8e7e2
+verify: verify @ 9a7ae95
+ship: ship @ 9a7ae95; ticket closed
+stop: stop @ 9a7ae95; run complete; EPIC COMPLETE
