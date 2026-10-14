@@ -1,0 +1,23 @@
+#+TITLE: Documentation-skill gaps survey — 2026-10
+#+DATE: 2026-10-14
+#+SOURCE: 58 specodelic + 7 dulce-de-leche (ddl) pi sessions since 2026-10-09; 163 + 134 commits
+#+RELATED: incitaciones-av4 incitaciones-2u2 incitaciones-x3n incitaciones-ef0 incitaciones-iio
+
+* Headline
+Every major doc improvement in the last month was reactive and none was
+codified back into the =documentation= skill. The skill's review pass scores
+LLM-readability; it never runs the docs or simulates a confused human.
+
+* Evidence → lessons (what the month forced, where it lives now)
+| Evidence (specodelic unless noted) | Lesson | Ticket |
+|------------------------------------|--------|--------|
+| =ilfx.1–.5=: "Using packs" guide + 4 worked-example pages (data.lineage, numeric.predicates, empirical.registry, bioimage.data pilot), built after "do we have an example page on how i use the microservice pack?" | Examples were the #1 gap; one evolving example thread beats N snippets; every quickstart command needs expected output/exit code + post-install verify block (=lf4b.2/.3=, commit 686fe21) | av4 |
+| =lf4b.10=: docs-accuracy gate re-runs quickstart commands, diffs captured output (normalized, a2108b8); =lf4b.11=: stamped release.md/llms.txt; ddl: CI curl-smoke of live Pages URL | Docs must be executable and machine-checked; stamped artifacts generated, never hand-edited | 2u2 |
+| Two cold-reads of real user conversations (~/Downloads/cv) → FAQ, decision-guide, design-canvas, cold-reader glossary (2e52854), "when NOT to use it" (427bf9a) | Review must simulate a confused first-time human; mine real questions; first-run funnel <10 min | x3n |
+| Pack-count/kind-set drift fixed 3× (lf4b.1, d8f97ce, fd2fbe0) | Facts duplicated across surfaces need a single source or a drift audit | ef0 |
+| ddl ecosystem responsibility-map SVG (cbfa300); live-site mermaid render failure; stale homepage claims | Prefer static SVG over runtime mermaid on static sites; fleet/cross-repo docs pattern; smoke rendered output, not just links | iio |
+
+* Key repo fact discovered by the review
+=.agents/skills/= is a gitignored *install target*. Source of truth for all
+skill content is =content/distilled/=. Tickets pointing at installed copies
+were corrected in the review pass.
