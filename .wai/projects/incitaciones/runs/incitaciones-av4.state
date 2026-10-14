@@ -1,4 +1,4 @@
 ticket: incitaciones-av4
 branch: docs/av4-worked-examples
 brief_path: .wai/projects/incitaciones/briefs/docs-skill-methodology-av4.md
-steps: [claim@cbc34ca96e1906758472cca2b7bd02f3abf2f9b9, gates@cbc34ca96e1906758472cca2b7bd02f3abf2f9b9] , brief@298f8b64730e122405dfb41f48c6cb33e01d8fe9 , spawn@cc33bd2e274a1204b9e726cdfb692c51e925a05e , verify@cc33bd2e274a1204b9e726cdfb692c51e925a05e , verify-done , ship@cc33bd2e274a1204b9e726cdfb692c51e925a05e
+steps: %s
