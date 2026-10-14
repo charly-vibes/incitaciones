@@ -1,0 +1,13 @@
+ticket: incitaciones-ef0
+branch: docs/av4-worked-examples
+brief_path: .wai/projects/incitaciones/briefs/docs-skill-methodology-ef0.md
+steps:
+1f16dd80aad1cce00b4d4801194013bed60b0097
+claim: claim @ 1f16dd8
+gates: gates @ 1f16dd8
+brief: brief @ 1f16dd8
+spawned pid=1597678
+spawn: spawn @ 6639ad9; log=.wai/projects/incitaciones/logs/ef0-impl.log
+verify: verify @ 21d4aa5
+ship: ship @ 21d4aa5; ticket closed
+stop: stop @ 21d4aa5; run complete

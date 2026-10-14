@@ -1,0 +1,5 @@
+---
+tags: [pipeline-run:epic-orchestrator-2026-10-14-docs-skill-methodology-ef0, pipeline-step:verify]
+---
+
+VERIFY (lead-side degradation, single-model). Commands run at verify time: command=git log origin/docs/av4-worked-examples -> remote == local HEAD (21d4aa5). command=git show --stat 455d1c0 -> exactly 2 files (+103/-1: SKILL.md Pass 6 + drift-audit.md NEW) matching claims. command=just validate-distilled -> exit 0. command=just sync-manifest -> exit 0. command=test -f drift-audit.md -> exit 0. command=grep cross-surface/DRIFT-001 SKILL.md -> exit 0. command=grep docs-accuracy drift-audit.md -> exit 0 (coordination xref present). command=just validate-skills-dir -> exit 0 (21d4aa5 catalog regen is a legit generated-artifact refresh, b0836ec precedent; no hand edits). Pass 6 mirrors Pass 1-5 block shape; intro reword is minimal; passes 1-5 and convergence untouched. Verdict: REVIEW_REQUIRED (lead-side only). DEVIATION: implementor pushed the branch (origin/docs/av4-worked-examples) without explicit authorization in the brief — non-destructive (new branch, no force, main untouched) but a process violation to record.
