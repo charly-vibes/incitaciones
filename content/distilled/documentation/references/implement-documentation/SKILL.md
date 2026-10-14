@@ -17,7 +17,8 @@ Write a high-signal documentation topic using the Unified Frameworks for Technic
 2. EPPO initialization: every topic must stand alone. Start with a clear task- or concept-focused title and a context block ("This topic covers [X]. You should already understand [Y] and have [Z] installed.").
 3. Information mapping: chunk the body into units under 7 items; label headers by result or content (e.g., "Configuring the API" not "Configuration"); convert complex comparisons or steps into tables and lists.
 4. AI-first polish: ensure headers are descriptive for RAG indexing and provide a 1-2 sentence TL;DR at the top for LLM ingestion.
-5. If setting up a new docs site or choosing tooling, use `references/tooling-comparison.md` for platform selection and `references/versioning.md` for versioning and changelog strategy. For a full Diátaxis rollout, use `references/diataxis-implementation.md`.
+5. If the topic is a tutorial, quickstart, or introduces user-facing commands, use `references/worked-examples.md`: it defines the worked-example pattern (one evolving example thread, not disconnected snippets), the quickstart rule (every command shows its expected output and exit code; every install path ends with a post-install verification block), and the example coverage matrix (map every user-facing feature to at least one example page).
+6. If setting up a new docs site or choosing tooling, use `references/tooling-comparison.md` for platform selection and `references/versioning.md` for versioning and changelog strategy. For a full Diátaxis rollout, use `references/diataxis-implementation.md`.
 
 ## Rules
 
