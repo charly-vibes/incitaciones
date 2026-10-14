@@ -19,6 +19,7 @@ Write a high-signal documentation topic using the Unified Frameworks for Technic
 4. AI-first polish: ensure headers are descriptive for RAG indexing and provide a 1-2 sentence TL;DR at the top for LLM ingestion.
 5. If the topic is a tutorial, quickstart, or introduces user-facing commands, use `references/worked-examples.md`: it defines the worked-example pattern (one evolving example thread, not disconnected snippets), the quickstart rule (every command shows its expected output and exit code; every install path ends with a post-install verification block), and the example coverage matrix (map every user-facing feature to at least one example page).
 6. If setting up a new docs site or choosing tooling, use `references/tooling-comparison.md` for platform selection and `references/versioning.md` for versioning and changelog strategy. For a full Diátaxis rollout, use `references/diataxis-implementation.md`.
+7. If the topic shows user-facing commands or the docs ship generated artifacts, use `references/docs-accuracy.md`: it defines the docs-accuracy gate (CI re-runs documented commands and diffs normalized captured output against the docs), the stamped-artifact rule (`llms.txt`, `release.md`, README version facts are generated per release, with a freshness check that fails on hand-edits), and the live-site smoke (CI curls the deployed URL so a 404 fails in the pipeline, not at the next human visit).
 
 ## Rules
 
