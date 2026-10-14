@@ -1,0 +1,13 @@
+ticket: incitaciones-2u2
+branch: docs/av4-worked-examples
+brief_path: .wai/projects/incitaciones/briefs/docs-skill-methodology-2u2.md
+steps:
+4a61a7b7a6795a3daf0140a1c65cbe4e52998896
+claim: claim @ 4a61a7b
+gates: gates @ 4a61a7b
+brief: brief @ 4a61a7b
+spawned pid=1228148
+spawn: spawn @ 8b04595; pid=1228148
+ship: ship @ e663a2a; ticket closed
+ship: ship @ e663a2a; ticket closed
+stop: stop @ e663a2a; run complete
