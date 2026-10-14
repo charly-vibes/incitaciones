@@ -6,6 +6,11 @@ One template per quadrant. Match the template to the quadrant identified in Step
 
 Goal: build competency through a guided, safe experience. Show, do not lecture.
 
+Quickstart rule (required for install/getting-started paths): every command shows
+its expected output and exit code, and the install path ends with a post-install
+verification block. If a step can fail realistically, show the failure and its
+recovery inline. See `references/worked-examples.md` for the full pattern.
+
 ```markdown
 # [Getting Started with X]
 
@@ -21,8 +26,32 @@ By the end you will have [concrete result]. No prior knowledge of [X] is assumed
 ## Step 1: [Specific Result]
 [Chunked, do-this-now instructions. Each step yields a visible result.]
 
+```bash
+$ [command]
+[expected output]
+```
+
+Exit code 0. If you instead see `[realistic error message]`, the fix is
+`[recovery command/step]`.
+
 ## Step 2: [Specific Result]
 [Chunked instructions.]
+
+```bash
+$ [command]
+[expected output]
+```
+
+## Verify Your Install
+Never end an install path on "it should work". Close with the tool's own
+self-check so the learner confirms success before moving on.
+
+```bash
+$ [tool] --version
+[expected version string]
+$ [tool] [minimal smoke command]
+[expected output]
+```
 
 ## Recap & Next Steps
 You built [X]. Next, try [lateral link 1] or [lateral link 2].
