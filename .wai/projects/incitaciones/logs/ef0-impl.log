@@ -1,0 +1,67 @@
+## Implementation report — incitaciones-ef0
+
+**Branch:** `docs/av4-worked-examples` · **Base:** `6639ad9` · **Pushed:** ✅ (`origin/docs/av4-worked-examples`, new branch)
+
+### What was done (red → green → refactor)
+
+1. **Red** — confirmed the failure state before touching anything: `grep -qi 'cross-surface' …/review-documentation/SKILL.md` → exit 1; `test -f …/references/drift-audit.md` → exit 1.
+2. **Green** — one atomic content commit (`455d1c0`):
+   - `content/distilled/documentation/references/review-documentation/SKILL.md` — intro reworded minimally to "Perform 5 iterative passes — 6 when the subject spans multiple surfaces…"; added **Pass 6: Cross-Surface Consistency (multi-surface subjects only)** mirroring the Pass 1–5 block shape (Goal line, both checks from the brief, `references/drift-audit.md` pointer, issue prefix `[DRIFT-001]`). Passes 1–5, convergence mechanics, and Final Report untouched.
+   - `content/distilled/documentation/references/review-documentation/references/drift-audit.md` (NEW, 90 lines) — methodology in the `docs-accuracy.md`/`worked-examples.md` voice: §1 drift inventory (counts, command names, install steps, links, version claims; "grep the fact, not the page"), §2 topic-alignment check (audience / promise / next step across README–index–installation), §3 single-source remediation flagging with the reviewer stance. Cross-references `../../implement-documentation/references/docs-accuracy.md` (2u2's) — linked, not duplicated.
+3. **Refactor** — not needed; content survived the consistency read in one pass.
+4. **Push gate** — pre-push `skills-dir` check failed (committed catalog stale, predating even 2u2). Followed the established precedent (b0836ec "chore(skills): regenerate committed catalog"): ran the official `just generate-skills-dir` and committed the generated artifact as a separate `chore(skills)` commit (`21d4aa5`). No hand-edits; `.agents/` (gitignored) and `pi-package/` untouched.
+
+### Commits made
+
+| SHA | Message |
+|---|---|
+| `455d1c0` | docs(documentation): Pass 6 cross-surface consistency + drift audit methodology (incitaciones-ef0) |
+| `21d4aa5` | chore(skills): regenerate committed catalog after ef0/2u2 documentation content |
+
+No `.beads/` staged; exact paths staged only (`git add <file>` ×2, then `git add skills/` for the generated artifact).
+
+### Completion-criteria output (fresh, post-push)
+
+```
+=== 1. just validate-distilled ===
+exit: 0
+  ✓ create-issues
+  ✓ issue-review
+
+✅ All distilled prompts valid!
+=== 2. just sync-manifest ===
+exit: 0
+
+version: 2026-10-14 (already current)
+
+✅ Manifest OK
+=== 3. test -f drift-audit.md ===
+exit: 0
+=== 4. grep cross-surface SKILL.md ===
+exit: 0
+=== 5. grep DRIFT-001 SKILL.md ===
+exit: 0
+=== 6. grep docs-accuracy drift-audit.md ===
+exit: 0
+=== 7. git status --porcelain ===
+ M .genesis/tools.toml
+ M .wai/AGENTS.md
+ M .wai/config.toml
+ M AGENTS.md
+ M CLAUDE.md
+?? .wai/pipeline-runs/epic-orchestrator-2026-10-14-docs-skill-methodology-ef0.yml
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-2.md
+?? .wai/projects/incitaciones/designs/2026-10-14-brief-wai-projects-incitaciones-briefs-docs-skil-3.md
+?? .wai/projects/incitaciones/logs/ef0-impl.log
+?? .wai/projects/incitaciones/research/2026-10-14-gates-baseline-green-just-validate-distilled-e.md
+?? .wai/projects/incitaciones/research/2026-10-14-orient-selected-incitaciones-ef0-p2-complexity.md
+?? .wai/projects/incitaciones/research/2026-10-14-spawn-subagent-incitaciones-ef0-impl-timeout-900.md
+?? .wai/projects/incitaciones/runs/incitaciones-ef0.state
+?? .wai/resources/pipelines/.last-run
+=== git check-ignore .agents ===
+ignored: yes
+```
+
+**Status note on criterion 7:** every remaining entry is orchestrator-owned state that predates this session (`.wai/` pipeline run artifacts, `.genesis/`, and the wai-managed-block projections in `AGENTS.md`/`CLAUDE.md`) — explicitly out of scope per the brief. Nothing from my work remains uncommitted; no `.agents/`, `skills/`, or `pi-package/` edits outstanding; nothing staged.
+
+All six runnable criteria exit 0. Ticket content work is complete and on the remote; closing `incitaciones-ef0` and the `.wai/` run state remain with the orchestrator per the brief's scope boundary.
