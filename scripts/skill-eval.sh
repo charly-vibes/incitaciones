@@ -16,7 +16,7 @@ CACHE="$REPO_ROOT/.cache/skill-eval"
 
 usage() {
   cat <<'EOF'
-Usage: scripts/skill-eval.sh PROMPT_NAME [pi args...]
+Usage: scripts/skill-eval.sh PROMPT_NAME[:VARIANT] [pi args...]
 
 Executes the registered skill PROMPT_NAME against its manifest eval rubric:
 2 runs x (actor + judge) pi sessions. Exits 0 only if both runs pass and agree.
@@ -24,14 +24,21 @@ Executes the registered skill PROMPT_NAME against its manifest eval rubric:
 Fixtures live in scripts/skill-eval-fixtures/<name>.md — a realistic task the
 skill should handle. Skills without a fixture are reported as uncovered.
 
+A variant (PROMPT_NAME:VARIANT) pins a specific mode against its own rubric
+stored at .eval.variants.<variant> in the manifest, with fixture
+scripts/skill-eval-fixtures/<name>-<variant>.md (incitaciones-qba).
+
 Examples:
   scripts/skill-eval.sh commit
   scripts/skill-eval.sh commit --model sonnet:high
+  scripts/skill-eval.sh session:renew
 EOF
 }
 
 [ $# -ge 1 ] || { usage >&2; exit 1; }
 NAME="$1"; shift || true
+VARIANT=""
+if [[ "$NAME" == *:* ]]; then VARIANT="${NAME#*:}"; NAME="${NAME%%:*}"; fi
 PI_ARGS=("$@")
 
 command -v pi >/dev/null 2>&1 || { echo "Error: pi is required" >&2; exit 1; }
@@ -46,13 +53,22 @@ DISTILLED_REL=$(jq -r '.distilled // empty' <<<"$row")
 DISTILLED="$REPO_ROOT/$DISTILLED_REL"
 [ -f "$DISTILLED" ] || { echo "Error: distilled file missing: $DISTILLED_REL" >&2; exit 1; }
 
-if ! jq -e '.eval' <<<"$row" >/dev/null; then
+RUBRIC='.eval'
+if [ -n "$VARIANT" ]; then
+  RUBRIC=".eval.variants.$VARIANT"
+  if ! jq -e "$RUBRIC" <<<"$row" >/dev/null; then
+    echo "UNCOVERED: $NAME has no eval.variants.$VARIANT rubric in the manifest — write one before it can be skill-evaled." >&2
+    exit 2
+  fi
+fi
+
+if ! jq -e "$RUBRIC" <<<"$row" >/dev/null; then
   echo "UNCOVERED: $NAME has no eval rubric in the manifest — write one before it can be skill-evaled." >&2
   exit 2
 fi
 
-FIXTURE="$FIXTURE_DIR/$NAME.md"
-[ -f "$FIXTURE" ] || { echo "UNCOVERED: no fixture at scripts/skill-eval-fixtures/$NAME.md — create one (a realistic task for the skill)." >&2; exit 2; }
+FIXTURE="$FIXTURE_DIR/$NAME${VARIANT:+-$VARIANT}.md"
+[ -f "$FIXTURE" ] || { echo "UNCOVERED: no fixture at scripts/skill-eval-fixtures/$NAME${VARIANT:+-$VARIANT}.md — create one (a realistic task for the skill)." >&2; exit 2; }
 
 # --- flatten skill (SKILL.md + full references tree) ---
 # Recursive: routers keep multi-file members under references/<member>/SKILL.md
@@ -76,10 +92,10 @@ flatten_distilled() {
 SKILL_CONTENT="$(flatten_distilled "$DISTILLED")"
 FIXTURE_CONTENT="$(<"$FIXTURE")"
 
-SUCCESS_SIGNALS=$(jq -r '.eval.success_signals // [] | .[]' <<<"$row")
-FAILURE_SIGNALS=$(jq -r '.eval.failure_signals // [] | .[]' <<<"$row")
+SUCCESS_SIGNALS=$(jq -r "$RUBRIC.success_signals // [] | .[]" <<<"$row")
+FAILURE_SIGNALS=$(jq -r "$RUBRIC.failure_signals // [] | .[]" <<<"$row")
 
-OUT_DIR="$CACHE/$NAME"
+OUT_DIR="$CACHE/$NAME${VARIANT:+-$VARIANT}"
 mkdir -p "$OUT_DIR"
 RUN_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
@@ -95,13 +111,13 @@ $SKILL_CONTENT
 JUDGE_SYSTEM="You are an impartial evaluation judge. You score an agent's response against a rubric. You have NOT seen the agent's instructions and must not guess them — judge only what is visible in the response.
 
 RUBRIC
-Task types: $(jq -r '.eval.task_types // [] | join(", ")' <<<"$row")
+Task types: $(jq -r "$RUBRIC.task_types // [] | join(', ')" <<<"$row")
 Success signals (desired observable behaviors):
-$(jq -r '.eval.success_signals // [] | .[] | "  - " + .' <<<"$row")
+$(jq -r "$RUBRIC.success_signals // [] | .[] | \"  - \" + ." <<<"$row")
 Failure signals (disqualifying behaviors):
-$(jq -r '.eval.failure_signals // [] | .[] | "  - " + .' <<<"$row")
+$(jq -r "$RUBRIC.failure_signals // [] | .[] | \"  - \" + ." <<<"$row")
 Expected procedure stages (context only — judge adherence loosely):
-$(jq -r '.eval.stages // [] | .[] | "  - \(.name): \(.hints | join("; "))"' <<<"$row")
+$(jq -r "$RUBRIC.stages // [] | .[] | \"  - \(.name): \(.hints | join(\"; \"))\"" <<<"$row")
 
 OUTPUT
 Respond with ONLY a JSON object, no code fences, no prose:
@@ -182,7 +198,7 @@ score_run 2; V2="$RUN_VERDICT"
 
 if [ "$V1" = PASS ] && [ "$V2" = PASS ]; then
   echo "✅ skill-eval: $NAME PASS (2/2 runs agree)"
-  echo "   artifacts: ${CACHE#$REPO_ROOT/}/$NAME/"
+  echo "   artifacts: ${CACHE#$REPO_ROOT/}/$NAME${VARIANT:+-$VARIANT}/"
   exit 0
 fi
 

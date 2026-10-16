@@ -1766,7 +1766,46 @@
               "follow it exactly"
             ]
           }
-        ]
+        ],
+        "variants": {
+          "renew": {
+            "task_types": [
+              "session-lifecycle"
+            ],
+            "success_signals": [
+              "turu_key_checked_first",
+              "recall_supersedes_log_greps",
+              "follows_renew_mode_table"
+            ],
+            "failure_signals": [
+              "hand_rolled_whisper_lookup_when_turu_available",
+              "claims_unverifiable_completion"
+            ],
+            "stages": [
+              {
+                "name": "mode-selection",
+                "hints": [
+                  "renew mode",
+                  "resume prior work vs close/park/next"
+                ]
+              },
+              {
+                "name": "turu-key-first",
+                "hints": [
+                  "turu key --json runs before any journal or whisper lookup",
+                  "result governs data source"
+                ]
+              },
+              {
+                "name": "recall-vs-fallback",
+                "hints": [
+                  "turu recall repo/branch when available",
+                  "manual fallback paths only when turu absent"
+                ]
+              }
+            ]
+          }
+        }
       }
     },
     {
