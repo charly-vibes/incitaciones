@@ -5,14 +5,14 @@ source: original
 tags: [workflow, session, context-switch]
 status: draft
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-10-16
 version: 1.0.0
 related: [prompt-workflow-next.md, prompt-workflow-close.md]
 ---
 
 # Park Session
 
-Snapshot current work before switching context. Logs to daily journal, releases ticket claims, records to `~/.whisper/`. This is NOT end-of-day — just a context switch.
+Snapshot current work before switching context. Logs to daily journal, releases ticket claims, records to the turu-routed whisper workspace. This is NOT end-of-day — just a context switch.
 
 ## When to Use
 

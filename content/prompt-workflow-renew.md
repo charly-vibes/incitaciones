@@ -5,14 +5,14 @@ source: original
 tags: [workflow, session, context]
 status: draft
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-10-16
 version: 1.0.0
 related: [prompt-workflow-park.md, prompt-workflow-next.md]
 ---
 
 # Renew Session
 
-Resume work on a project or area. Loads context from journal, `~/.whisper/`, and beads. Supports claiming work with file conflict detection.
+Resume work on a project or area. Loads context from journal, the whisper workspace (turu-routed), and beads. Supports claiming work with file conflict detection.
 
 ## When to Use
 

@@ -5,14 +5,14 @@ source: original
 tags: [workflow, session, journal]
 status: draft
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-10-16
 version: 1.0.0
 related: [prompt-workflow-next.md, prompt-workflow-park.md, references-whisper-workflow.md]
 ---
 
 # Close Session
 
-End-of-session wrap-up. Summarizes what was done, logs it to the daily journal, routes durable knowledge to `~/.whisper/`, commits, and clears context.
+End-of-session wrap-up. Summarizes what was done, logs it to the daily journal, routes durable knowledge to the turu-routed whisper workspace, commits, and clears context.
 
 ## When to Use
 

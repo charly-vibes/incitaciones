@@ -5,14 +5,14 @@ source: original
 tags: [workflow, session, snapshot]
 status: draft
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-10-16
 version: 1.0.0
 related: [prompt-workflow-close.md, prompt-workflow-renew.md, prompt-workflow-park.md]
 ---
 
 # Next
 
-Rapid session snapshot to `~/.whisper/` — no full close ceremony. Fast stash for later resumption via `/renew`.
+Rapid session snapshot to the turu-routed whisper workspace — no full close ceremony. Fast stash for later resumption via `/renew`.
 
 ## When to Use
 

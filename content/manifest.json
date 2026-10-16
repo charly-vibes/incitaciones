@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-14",
+  "version": "2026-10-16",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -1741,12 +1741,15 @@
           "close_mode_selected",
           "close_mode_reference_file_named",
           "follows_mode_table_over_improvisation",
-          "commit_and_push_steps_present"
+          "commit_and_push_steps_present",
+          "whisper_destination_resolved_via_turu_or_agents_md"
         ],
         "failure_signals": [
           "wrong_mode_selected",
           "improvised_lifecycle_ritual",
-          "claims_unverifiable_completion"
+          "claims_unverifiable_completion",
+          "hardcodes_global_whisper_as_default_destination",
+          "colon_in_derived_repo_key"
         ],
         "stages": [
           {
