@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+### 2026-10-16 — session snapshot modes: turu/whisper routing fix (incitaciones-914)
+
+- **Fixed whisper-routing leak in next/park/close/renew:** the snapshot modes hardcoded `~/.whisper/repos/<key>/…` as the default destination, but turu-managed repos route repo/branch notes to the checkout's own repo-local `.whisper/` (gitignored, never pushed); the global store is the `--global` escape hatch only. An agent following the skill verbatim leaked a private-repo session snap into the global workspace (incident 2026-10-16, catitas — caught before sync). All four modes now resolve routing via `turu resolve`/`turu append` (or the repo's `AGENTS.md` turu block, then repo-local `.whisper/`) before any `~/.whisper` fallback, and include a checklist step verifying the destination matches `turu resolve` output.
+- **Repo keys derived with slashes, never colons:** the ad-hoc `git remote get-url origin | sed …` derivation left the colon in scp-style remotes (`ak:akielbowicz/catitas`); replaced in next/park/close/renew turu-absent fallbacks with a canonical slash-key derivation (host preserved). When turu exists, `turu key --json` is authoritative — the skills now say so and forbid hand-derivation.
+- **skill-eval:** session rubric extended with `whisper_destination_resolved_via_turu_or_agents_md` (success) and `hardcodes_global_whisper_as_default_destination` / `colon_in_derived_repo_key` (failure). Red→green: pre-fix run 1 fired the hardcoded-global failure signal (FAIL); post-fix 5/5 success, 0 failures, 2/2 runs agree. `just validate-distilled` + `just sync-manifest` green (manifest version 2026-10-14 → 2026-10-16).
+
 ### 2026-10-14 — docs-skill-methodology epic (av4, 2u2, ef0, x3n, iio)
 
 #### Added - documentation skill: executable-docs, consistency, cold-reader, and visual/fleet methodologies (orchestrated via 5 epic-orchestrator subagent runs on `docs/av4-worked-examples`)
