@@ -17,9 +17,9 @@ metadata:
 
 # Close Session
 
-End the current session: log what was done, update tasks, route durable knowledge to `~/.whisper/`, commit and push, clear context.
+End the current session: log what was done, update tasks, route durable knowledge to the whisper workspace (turu-routed — see step 8), commit and push, clear context.
 
-Uses `$JOURNAL_PATH` for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. Agent shells run non-interactive and never source `.bashrc`, so the environment may be missing these exports — resolve both values per step 1 (env → shell config → convention → legacy fallback).
+Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-routed: repo-local `.whisper/` by default, `~/.whisper/` only as the `--global` escape hatch) for accumulated operational knowledge. Agent shells run non-interactive and never source `.bashrc`, so the environment may be missing these exports — resolve both values per step 1 (env → shell config → convention → legacy fallback).
 
 ## Steps
 
@@ -64,13 +64,18 @@ Uses `$JOURNAL_PATH` for the daily log journal, and `~/.whisper/` for accumulate
 
 7. If any tasks or follow-ups came up that aren't in a project/area, add them to `inbox.md`.
 
-8. **Route durable knowledge to `~/.whisper/`.** Scan the session for anything worth keeping and route by scope (skip this step entirely if nothing durable was learned):
-   - **Branch-specific finding** → `bd note <beads-epic>` or `~/.whisper/repos/<repo>/branches/<slug>/notes.md`
-   - **Repo-wide infra fact** → `~/.whisper/repos/<repo>/env.md`
-   - **Universal agent behavior rule** → `bd remember` or `~/.whisper/rules.md`
-   - **Worktree setup fact** → `~/.whisper/repos/<repo>/worktrees/<name>/env.md`
+8. **Route durable knowledge to the whisper workspace.** Scan the session for anything worth keeping and route by scope (skip this step entirely if nothing durable was learned). Resolve destinations via turu — never hand-derive paths or keys; the default destination is the checkout's repo-local `.whisper/`, and `~/.whisper/repos/<key>/…` is the `--global` escape hatch only:
+   - **Branch-specific finding** → `bd note <beads-epic>` or `turu append branch --text "…"` (fallback: `notes.md` in the branch slot)
+   - **Repo-wide infra fact** → `turu append repo --text "…"` (fallback: repo-slot `env.md`)
+   - **Universal agent behavior rule** → `bd remember` or `turu append global --text "…"` (fallback: `~/.whisper/rules.md`)
+   - **Worktree setup fact** → `turu append worktree --text "…"` (fallback: worktree-slot `env.md`)
    - **No secrets anywhere:** never write tokens, keys, or PII
    - **Extend, don't duplicate:** append to existing notes rather than creating new ones
+   - **turu absent:** read the repo's `AGENTS.md` turu/whisper routing block first; prefer a repo-local `.whisper/` slot. When falling back to the global store, derive the canonical key with **slashes, never colons**:
+     ```bash
+     repo_key=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|^git@|ssh://|' -e 's|^ssh://\([^:]*\):|https://\1/|' -e 's|^https://||' -e 's|^http://||' -e 's|^ssh://||')
+     ```
+   - **Checklist:** the destination must match `turu resolve <scope>` output when turu is available — if it doesn't, stop and warn instead of writing.
 
 9. Commit and push. Stage only the files this session touched, explicitly by name:
    ```bash

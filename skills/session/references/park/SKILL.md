@@ -4,7 +4,7 @@
 
 Snapshot the current session's work on a project/area before switching context. This is NOT end-of-day — just a context switch.
 
-Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
+Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journal, and the whisper workspace (turu-routed: repo-local `.whisper/` by default, `~/.whisper/` only as the `--global` escape hatch) for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
 
 ## Steps
 
@@ -55,16 +55,33 @@ Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journ
      bd update <id> --assignee "" --status open
      ```
 
-8. **Record snapshot to `~/.whisper/`.** If `~/.whisper/` exists and a beads-epic is linked, append a note to the epic:
+8. **Record snapshot to the whisper workspace.** Resolve the branch context
+   path via turu routing — never hand-derive it. The default destination is
+   the checkout's repo-local `.whisper/`; `~/.whisper/repos/<key>/…` is the
+   `--global` escape hatch only (private-repo snaps must not land there).
+   - **turu available:**
+     ```bash
+     context_path=$(turu resolve branch --json | jq -r '.data.path' | sed 's|/notes\.md$|/context.md|')
+     ```
+     (the context file sits next to the resolved notes.md)
+   - **turu absent:** read the repo's `AGENTS.md` turu/whisper routing block;
+     prefer a repo-local `.whisper/branches/<branch-slug>/context.md`. Only
+     when neither exists, fall back to the global store with a **slash-key**
+     derivation (host kept, colon → slash):
+     ```bash
+     repo_key=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|^git@|ssh://|' -e 's|^ssh://\([^:]*\):|https://\1/|' -e 's|^https://||' -e 's|^http://||' -e 's|^ssh://||')
+     branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
+     context_path=~/.whisper/repos/"${repo_key}"/branches/"${branch_slug}"/context.md
+     ```
+   Then, if a beads-epic is linked, append a note to the epic:
    ```bash
-   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
-   branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
-   context_path=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"/context.md
    beads_epic=$(grep '^beads-epic:' "$context_path" 2>/dev/null | sed 's/^beads-epic: *//')
    if [ -n "$beads_epic" ]; then
      bd note "$beads_epic" "Parked $(date +%H:%M). Done: <what was accomplished>. Next: <the logical continuation>."
    fi
    ```
+   - **Checklist:** the path used must match `turu resolve branch` output
+     when turu is available; slash keys only, never colon.
 
 9. Do NOT commit/push the journal repo yet — that happens at `/close`. Just write the files.
 

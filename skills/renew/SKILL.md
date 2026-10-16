@@ -83,17 +83,19 @@ Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journ
 
    If `~/.whisper/` exists, load context with:
    ```bash
-   repo_url=$(git remote get-url origin 2>/dev/null | sed 's|https://||;s|git@||;s|\.git$||')
+   repo_key=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|^git@|ssh://|' -e 's|^ssh://\([^:]*\):|https://\1/|' -e 's|^https://||' -e 's|^http://||' -e 's|^ssh://||')
    branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
-   whisper_dir=~/.whisper/repos/"${repo_url}"/branches/"${branch_slug}"
+   whisper_dir=~/.whisper/repos/"${repo_key}"/branches/"${branch_slug}"
    ```
    - Read `notes.md` if it has real content
    - Read `env.md` at repo level for infra facts
-   - If the repo has a committed repo-local `.whisper/` directory, prefer
-     that over the global path. Its layout mirrors the global one relative
-     to the repo root:
-     `.whisper/repos/<org-path>/<repo>/branches/<branch-slug>/notes.md`
-     (e.g. `.whisper/repos/ak/PhormaSci/talleres/branches/main/notes.md`).
+   - If the repo has a repo-local `.whisper/` workspace (turu-managed repos
+     do), prefer that over the global path — the checkout's own
+     `.whisper/branches/<branch-slug>/notes.md` and `.whisper/env.md`. The
+     repo-local workspace is the default routing; `~/.whisper/` is the
+     `--global` escape hatch. When turu exists, `turu resolve` is
+     authoritative — never hand-derive the repo key (slash keys only,
+     never colon).
 
    - If beads is available, fetch open issues:
      ```bash
