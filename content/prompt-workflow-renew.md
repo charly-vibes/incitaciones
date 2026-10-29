@@ -5,8 +5,8 @@ source: original
 tags: [workflow, session, context]
 status: draft
 created: 2026-07-27
-updated: 2026-10-16
-version: 1.0.0
+updated: 2026-10-29
+version: 1.1.0
 related: [prompt-workflow-park.md, prompt-workflow-next.md]
 ---
 
@@ -20,4 +20,4 @@ Resume work on a project or area. Loads context from journal, the whisper worksp
 - When resuming work after a park or close
 - When picking up a ticket from the issue tracker
 
-See `content/distilled/renew/SKILL.md` for the full procedure.
+See `content/distilled/session/references/renew/SKILL.md` for the procedure and embedded native Whisper handoff contract.

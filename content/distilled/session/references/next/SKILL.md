@@ -1,81 +1,48 @@
-**Tools:** Read, Write, Edit, Bash
+**Tools:** Read, Write, Bash
 
 # Next
 
-Snapshot the current session to the whisper workspace and move on. Fast — no project file updates, no inbox triage, no ticket operations. Pure stash.
+Save minimum sufficient continuation state from the conversation. No research,
+commits, pushes, ticket mutations, journal updates, or context clearing.
 
-**The default destination is NOT `~/.whisper/`.** Turu-managed repos route
-repo/branch notes to the checkout's own repo-local `.whisper/` (gitignored,
-never pushed); the machine-global `~/.whisper/repos/<key>/…` store is the
-explicit `--global` escape hatch only. Writing a private repo's snap to the
-global store is a leak — the global workspace syncs to journal.git. Resolve
-routing before any write (block below).
+1. Keep commands anchored to the original workspace. Resolve routing with
+   `turu resolve branch --json`; honor explicit routing/privacy rules. Default
+   branch writes stay repo-local. Add `--global` or `--private` only when routing
+   requires it; never promote private content into a broader store.
+2. Identify the task topic from the conversation. If needed, discover existing
+   topics with `turu recall branch --digest --budget 4000 --no-usage --json`.
+   Do not load unrelated history. Gather cheap timestamp/repo/branch/HEAD facts.
+3. Compose the version-1 entry below from known conversation state. Save with
+   `turu append branch --topic <topic> --stdin --json`, passing the exact entry
+   through stdin. Use `--supersedes <id>` only under the contract's ownership rule.
+   No manual entry IDs, path derivation, or sidecar mutations.
+4. Check the append result. Report scope, topic and returned entry ID/path when
+   available. Never claim success after a failed write. Say `/renew` can resume it.
 
-## Steps
+Do not ask routine questions. Preserve older notes and unrelated entries.
 
-1. Get timestamp: `date +%Y-%m-%d` and `date +%H:%M`.
+## Shared native Whisper handoff contract (version 1)
 
-2. **Resolve the whisper destination** (never hand-derive paths or keys):
-   - **turu available** (`command -v turu`): get the exact path, or append
-     directly:
-     ```bash
-     turu resolve branch --json        # exact path + exists flag
-     turu append branch --text "..."   # alternative: write via the CLI
-     ```
-     Default scopes write to the checkout's repo-local `.whisper/`. Use
-     `turu resolve <scope> --global` only when the repo's `AGENTS.md` turu
-     block declares global routing. The repo key comes from
-     `turu key --json` — slash-separated, never colon.
-   - **turu absent:** consult the repo's `AGENTS.md` turu/whisper routing
-     block first. If the repo has a repo-local `.whisper/` workspace, write
-     there: `.whisper/branches/<branch-slug>/notes.md`. Only when neither
-     exists, fall back to the global store, deriving the canonical key with
-     **slashes, never colons**:
-     ```bash
-     repo_key=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|^git@|ssh://|' -e 's|^ssh://\([^:]*\):|https://\1/|' -e 's|^https://||' -e 's|^http://||' -e 's|^ssh://||')
-     branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
-     notes_path="${WHISPER_ROOT:-~/.whisper}/repos/${repo_key}/branches/${branch_slug}/notes.md"
-     ```
+Store handoffs as ordinary branch entries, not separate files. Use one stable
+bare-word topic per task: `resume-<ticket-id>` or a short filesystem-safe objective
+slug. Reuse an existing task topic. Include `Format: 1`, UTC timestamp, repo identity
+without credentials, branch, HEAD, session ID, and task in the entry body.
 
-3. If the resolved destination's parent doesn't exist, run `/w check` first
-   (which will offer to init). If the user declines, skip and warn.
+Include: objective; current phase (research/design/red/green/review/commit);
+current state; exact next action; essential decisions/constraints and authorization
+limits; observed ticket ownership; validation command/result (or not run);
+unresolved findings/blockers; conditional path/section references. Mark unknowns.
+Aim for 400 words; do not omit critical constraints to meet the target. No secrets.
 
-4. Scan the last portion of the conversation and write a 2–5 bullet snapshot:
-   - What was worked on (files, topics)
-   - Key decisions or changes made
-   - **Next:** the most logical continuation point
+Use native append publication and native entry IDs. Supersede only a known prior
+entry for the SAME task/session that this snapshot fully replaces; never supersede
+another session's entry blindly. Concurrent entries remain visible for conflict
+resolution. Do not directly rewrite notes or sidecar files. Native entries are
+available to ordinary recall/distill and scope-based bundle workflows; actual sync
+and transport depend on the workspace configuration, not these skills.
 
-5. Append the snapshot to `notes.md` at the resolved path (or via
-   `turu append branch`):
-   ```
-   ### YYYY-MM-DD HH:MM — snap
-   - what was worked on
-   - decisions made
-   - **Next:** continuation point
-   ```
-
-6. No commit, no push, no ticket operations. Just write the file.
-
-## Checklist
-
-- Destination matches `turu resolve branch` output when turu is available —
-  if it doesn't, stop and warn instead of writing (a mistyped key, e.g. a
-  colon instead of a slash, writes into the wrong slot).
-- Never wrote a private repo's snap into the global `~/.whisper/` store
-  without the routing rule saying so.
-
-## Output
-
-```
-✓ Snapped to <resolved notes.md path>
-
-Use `/renew` later to pick this back up.
-```
-
-## Rules
-
-- Do NOT ask questions — summarize automatically from conversation context.
-- Keep it brief — 2–5 bullets, not paragraphs.
-- Do NOT commit or push anything.
-- Do NOT update project files, inbox, or tickets.
-- Do NOT run `/clear`.
+When turu lacks a required flag, inspect command help once and use the supported
+bounded path; do not repeatedly retry unsupported syntax. Without turu, honor
+explicit repo routing or an existing local workspace, append a timestamped
+version-1 section to branch notes, and read only bounded recent sections. Unknown
+routing blocks saving rather than guessing a global destination. No parallel store.
