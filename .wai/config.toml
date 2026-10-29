@@ -4,6 +4,6 @@ plugins = []
 name = "sweep-incitaciones"
 version = "2026.10.10"
 description = ""
-tool_commit = "4f812dd"
+tool_commit = "c0cde52"
 
 [llm]
