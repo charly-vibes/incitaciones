@@ -68,20 +68,23 @@ def main():
                     'Retained obsolete entry lacks expected relation evidence')
         print('PASS: replacement body and relation survive native round trip')
 
-        append('resume-large', 'Format: 1\nNext: stale')
-        large = append('resume-large',
-                       'Format: 1\n' + 'x' * 10000 + '\nConstraint: no push')
-        partial = recall('resume-large', 8000)
-        require(partial['entries'] and partial['entries_skipped'] > 0,
-                'Expected a nonempty recall with a skipped current handoff')
-        require(all(entry['id'] != large['id'] for entry in partial['entries']),
-                'Oversized handoff unexpectedly fit initial budget')
-        recovered = recall('resume-large', 16000)
-        body = next((entry['text'] for entry in recovered['entries']
-                     if entry['id'] == large['id']), None)
-        require(body and 'Constraint: no push' in body,
-                'Bounded retry failed to recover the critical constraint')
-        print('PASS: bounded retry recovers skipped current handoff and constraint')
+        check_budget_recovery(append, recall)
+
+def check_budget_recovery(append, recall):
+    append('resume-large', 'Format: 1\nNext: stale')
+    large = append('resume-large',
+                   'Format: 1\n' + 'x' * 10000 + '\nConstraint: no push')
+    partial = recall('resume-large', 8000)
+    require(partial['entries'] and partial['entries_skipped'] > 0,
+            'Expected a nonempty recall with a skipped current handoff')
+    require(all(entry['id'] != large['id'] for entry in partial['entries']),
+            'Oversized handoff unexpectedly fit initial budget')
+    recovered = recall('resume-large', 16000)
+    body = next((entry['text'] for entry in recovered['entries']
+                 if entry['id'] == large['id']), None)
+    require(body and 'Constraint: no push' in body,
+            'Bounded retry failed to recover the critical constraint')
+    print('PASS: bounded retry recovers skipped current handoff and constraint')
 
 
 if __name__ == '__main__':
