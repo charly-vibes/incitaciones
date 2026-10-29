@@ -1773,34 +1773,44 @@
               "session-lifecycle"
             ],
             "success_signals": [
-              "turu_key_checked_first",
-              "recall_supersedes_log_greps",
+              "workspace_and_routing_established_before_recall",
+              "topic_scoped_bounded_recall",
+              "verified_supersession_precedes_timestamps",
+              "pending_replacement_blocks_stale_continuation",
+              "checks_skipped_entries_even_when_nonempty",
+              "preserves_recovered_critical_constraints",
               "follows_renew_mode_table"
             ],
             "failure_signals": [
               "hand_rolled_whisper_lookup_when_turu_available",
-              "claims_unverifiable_completion"
+              "claims_unverifiable_completion",
+              "selects_obsolete_or_unverified_replacement",
+              "ignores_skipped_current_handoff",
+              "unbounded_recovery_or_retries"
             ],
             "stages": [
               {
-                "name": "mode-selection",
+                "name": "routing",
                 "hints": [
-                  "renew mode",
-                  "resume prior work vs close/park/next"
+                  "anchor intended workspace; resolve branch destination"
                 ]
               },
               {
-                "name": "turu-key-first",
+                "name": "bounded-native-recall",
                 "hints": [
-                  "turu key --json runs before any journal or whisper lookup",
-                  "result governs data source"
+                  "topic filter, byte budget, inspect skipped entries"
                 ]
               },
               {
-                "name": "recall-vs-fallback",
+                "name": "relation-validation",
                 "hints": [
-                  "turu recall repo/branch when available",
-                  "manual fallback paths only when turu absent"
+                  "pending missing IDs; verify task identity; exclude obsolete entries; block cycles and conflicts"
+                ]
+              },
+              {
+                "name": "recovery",
+                "hints": [
+                  "one bounded retry; preserve constraints; report incomplete recall rather than choose stale state"
                 ]
               }
             ]
