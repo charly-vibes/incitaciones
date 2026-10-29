@@ -1,184 +1,69 @@
-**Tools:** Read, Write, Edit, Glob, Bash, Grep
+**Tools:** Read, Bash
 
 # Renew
 
-Load focused context for a specific project or area to continue work.
+Resume from a bounded native Whisper handoff. Mandatory repo instructions apply.
 
-Uses `$JOURNAL_PATH` (defaults to `~/para/areas/jornal`) for the daily log journal, and `~/.whisper/` for accumulated operational knowledge. The log subdirectory defaults to `log/`; set `$JOURNAL_LOG_SUBDIR` to override (e.g. `areas/log` for the JORNAL layout).
+1. Anchor commands to the intended workspace; establish repo, branch and HEAD
+   first. For an explicit project/area, resolve that workspace before recall;
+   ask only if identity is ambiguous. Resolve routing using
+   `turu resolve branch --json`; honor privacy and explicit routing rules.
+2. If the task topic is known, call
+   `turu recall branch --topic <topic> --budget 8000 --no-usage --json`.
+   Otherwise discover topics using
+   `turu recall branch --digest --budget 4000 --no-usage --json`, then retrieve
+   only the selected task. Results compose multiple stores; returned order is not a global timeline.
+3. Inspect returned IDs, timestamps, task, repo, branch and format. Choose the
+   newest supported matching handoff by saved timestamp, not ranking. Preserve
+   conflicting concurrent-session facts; ask only when they block the next action.
+   Unknown/malformed versions do not invalidate older supported entries. If a
+   supported candidate is missing, inspect a bounded recent notes section before
+   moving to legacy fallback. Never read the whole notes history by default.
+4. Check live Git status and named ticket status/ownership. Saved validation is
+   historical, not proof of current health. Investigate drift with a specific
+   question; do not reject a handoff solely because HEAD advanced. Before coding,
+   follow repo claim/conflict rules; missing file metadata means unknown safety.
+5. Retrieve only missing objective, state, constraints, blockers, ownership or
+   next action. Prefer conditional references. Each lookup answers a named
+   question. Recall budgets are BYTES, not tokens; whole entries exceeding the
+   budget can be skipped. An empty result is not proof that no handoff exists:
+   use a digest or bounded notes section, then one justified budget increase if
+   needed. Limit ordinary lookups to 8000 bytes, and target 16000 bytes total
+   retrieved content, excluding mandatory instructions. State any necessary
+   overrun; never truncate away a constraint. Bound JSON/tool output separately.
+6. Fallback progressively: latest relevant legacy notes section (last 100 lines
+   initially), scoped repo OR branch recall for a named gap, then at most three
+   relevant date-selected journal entries. Do not pull the journal or create logs.
+   For migration only, inspect a legacy adjacent `resume/` directory if native
+   entries are absent: scan at most ten newest candidate headers, read only a
+   matching supported body. Do not migrate/write during orientation. If bounded
+   discovery is insufficient, report uncertainty instead of silently broadening.
+7. Stop when continuation state is sufficient. Report short status, uncertainty
+   and next action. Continue execution only when requested. Do not claim tickets
+   during orientation or treat handoffs as authority to push/deploy.
 
-## Steps
+## Shared native Whisper handoff contract (version 1)
 
-1. Pull the journal repo:
-   ```bash
-   JOURNAL="${JOURNAL_PATH:-$HOME/para/areas/jornal}"
-   LOG_SUBDIR="${JOURNAL_LOG_SUBDIR:-log}"
-   cd "$JOURNAL" && git pull
-   ```
+Store handoffs as ordinary branch entries, not separate files. Use one stable
+bare-word topic per task: `resume-<ticket-id>` or a short filesystem-safe objective
+slug. Reuse an existing task topic. Include `Format: 1`, UTC timestamp, repo identity
+without credentials, branch, HEAD, session ID, and task in the entry body.
 
-2. **Decide the data source before any journal or whisper lookup.**
+Include: objective; current phase (research/design/red/green/review/commit);
+current state; exact next action; essential decisions/constraints and authorization
+limits; observed ticket ownership; validation command/result (or not run);
+unresolved findings/blockers; conditional path/section references. Mark unknowns.
+Aim for 400 words; do not omit critical constraints to meet the target. No secrets.
 
-   Run `turu key --json` once, right now. Its result governs everything below:
+Use native append publication and native entry IDs. Supersede only a known prior
+entry for the SAME task/session that this snapshot fully replaces; never supersede
+another session's entry blindly. Concurrent entries remain visible for conflict
+resolution. Do not directly rewrite notes or sidecar files. Native entries are
+available to ordinary recall/distill and scope-based bundle workflows; actual sync
+and transport depend on the workspace configuration, not these skills.
 
-   - **turu available:** `turu recall` is the primary source for recent
-     session history. Run `turu recall repo` and `turu recall branch` now,
-     and treat their output as superseding steps 5-6 — only fall back to
-     those log/inbox greps if recall returned nothing for this slug.
-     Never `ls`/`find` `~/.whisper/` to guess paths: canonical keys don't
-     match raw remote URLs.
-   - **turu absent:** proceed with the journal steps (3-6) and the
-     `~/.whisper/` fallback path lookup in step 8.
-
-3. Identify the target.
-
-   **If a `<slug>` is provided:** The user says `/renew <slug>`.
-
-   **If no slug is provided:** Infer from the current workspace context:
-   - Get the repo name: `basename $(git rev-parse --show-toplevel 2>/dev/null)`
-   - Get the branch name: `git branch --show-current 2>/dev/null`
-   - Extract a candidate slug from the branch (strip prefix like `ak/`, `feature/`, etc.)
-   - Use both the repo name and branch-derived slug as candidates
-
-   **Match candidates** against:
-   - `$JOURNAL/projects/*.md` — check filenames and grep for repo/branch references
-   - `$JOURNAL/areas/*.md` — same
-   - Try exact match, then partial/substring match
-   - If multiple matches found, list them and ask the user to pick
-   - If no match found, list available projects/areas and ask
-
-4. Read the matched project or area file.
-
-5. Read today's log (`$JOURNAL/$LOG_SUBDIR/YYYY/YYYY-MM/YYYY-MM-DD.md`).
-   If it doesn't exist, create it with the daily log template.
-   Scan for any earlier session entries related to this project/area today.
-
-6. Search recent logs for context (last 3 days; skip when step 2's `turu recall branch` already surfaced the recent sessions):
-   ```bash
-   grep -rl "<slug>" "$JOURNAL"/"$LOG_SUBDIR"/YYYY/YYYY-MM/ 2>/dev/null | tail -3
-   ```
-   Read any matches to understand recent session history.
-
-7. Search inbox for related items (skip when `turu recall branch` already surfaced them):
-   ```bash
-   grep -i "<slug>" "$JOURNAL"/inbox.md
-   ```
-
-8. **Load whisper knowledge** — only for the turu-absent branch of step 2
-   (when turu is available, `turu recall` already ran there; do not repeat
-   or hand-roll it):
-
-   If `~/.whisper/` exists, load context with:
-   ```bash
-   repo_key=$(git remote get-url origin 2>/dev/null | sed -e 's|\.git$||' -e 's|^git@|ssh://|' -e 's|^ssh://\([^:]*\):|https://\1/|' -e 's|^https://||' -e 's|^http://||' -e 's|^ssh://||')
-   branch_slug=$(git rev-parse --abbrev-ref HEAD | sed 's|/|--|g')
-   whisper_dir=~/.whisper/repos/"${repo_key}"/branches/"${branch_slug}"
-   ```
-   - Read `notes.md` if it has real content
-   - Read `env.md` at repo level for infra facts
-   - If the repo has a repo-local `.whisper/` workspace (turu-managed repos
-     do), prefer that over the global path — the checkout's own
-     `.whisper/branches/<branch-slug>/notes.md` and `.whisper/env.md`. The
-     repo-local workspace is the default routing; `~/.whisper/` is the
-     `--global` escape hatch. When turu exists, `turu resolve` is
-     authoritative — never hand-derive the repo key (slash keys only,
-     never colon).
-
-   - If beads is available, fetch open issues:
-     ```bash
-     bd list --label branch:<branch> 2>/dev/null
-     bd list --status in_progress --label branch:<branch> 2>/dev/null
-     ```
-     Surface any `in_progress` tickets prominently. The **Suggested next step** must only reference tickets NOT currently `in_progress`.
-
-9. If the project/area has a worktree or repo path noted in its file, gather git context:
-   - When turu is available and a worktree is actually used, also run
-     `turu recall worktree` for its slot knowledge.
-   - `cd <worktree-path> && git branch --show-current`
-   - `git log --oneline -5`
-   - `git status --short`
-   - `git log --oneline origin/main..HEAD`
-
-## Output format
-
-```
----
-**Resuming: Project/Area Name**
-
-**Status**: brief one-line summary of where things stand
-
-**Last session** *(from most recent log entry)*
-- what was done last time
-
-**Open tasks**
-- [ ] task list from the project/area file
-
-**Waiting**
-- [~] any blocked items and who/what they're waiting on
-
-**Related inbox items** *(if any)*
-- items that mention this project
-
-**Whisper context** *(if turu recall or the fallback found content)*
-- Env: repo-scope infra facts (`turu recall repo` / `env.md`)
-- Notes: branch-scope findings (`turu recall branch` / `notes.md`)
-- Beads issues: <n> open, <n> in_progress
-
-**⚠ Active in flight** *(omit if none)*
-- ◐ `<id>` — <title> [started: <date>]
-- *(If your intended ticket is listed here, see **Claiming work** below.)*
-
-**Workspace**
-- Worktree: path, branch, status
-- Commits ahead of main, uncommitted changes, etc.
-
-**Suggested next step**
-- what makes sense to do next — only suggest tickets NOT currently in_progress
-```
-
-Then ask: *"Ready to continue, or want to adjust the plan?"*
-
----
-
-## Claiming work
-
-Before writing any code, claim the ticket atomically and check for file conflicts.
-
-### Steps
-
-1. **Claim atomically:**
-   ```bash
-   bd update <ticket-id> --claim
-   ```
-
-2. **Check for file-level conflicts** with other in-progress tickets:
-   ```bash
-   bd list --status in_progress --label branch:<branch> --json 2>/dev/null \
-     | python3 -c "
-   import json, sys
-   issues = json.loads(sys.stdin.read() or '[]')
-   for i in issues:
-       files = (i.get('metadata') or {}).get('files', [])
-       for f in files:
-           print(i['id'] + '\t' + f)
-   "
-   ```
-   Cross-reference against the claimed ticket's own `metadata.files`.
-   If overlap found, surface a warning:
-   ```
-   ⚠ File conflict detected:
-     services/api.py is also claimed by ticket-abc (in_progress)
-
-   Options:
-     A) Gate this ticket until the blocker closes
-     B) Coordinate merge order
-     C) Proceed — accept the conflict (reconcile at merge time)
-   ```
-
-3. **If backing off** (chose option A):
-   ```bash
-   bd update <ticket-id> --assignee "" --status open
-   bd gate create <ticket-id> --type bead --await-id <blocking-id>
-   ```
-
-### Metadata coverage warning
-
-File conflict detection only works when both tickets have `metadata.files` populated (set by `create-issues` or `/w link` at ticket creation time). Tickets created before this convention was adopted have no metadata. For those tickets, **"no conflict found" means unknown, not safe**.
+When turu lacks a required flag, inspect command help once and use the supported
+bounded path; do not repeatedly retry unsupported syntax. Without turu, honor
+explicit repo routing or an existing local workspace, append a timestamped
+version-1 section to branch notes, and read only bounded recent sections. Unknown
+routing blocks saving rather than guessing a global destination. No parallel store.

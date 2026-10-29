@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+- Pair next/renew through native topic-scoped Whisper entries, bounded recall,
+  live ownership checks and legacy fallback; retain existing notes.
+
 ### 2026-10-16 — session snapshot modes: turu/whisper routing fix (incitaciones-914)
 
 - **Fixed whisper-routing leak in next/park/close/renew:** the snapshot modes hardcoded `~/.whisper/repos/<key>/…` as the default destination, but turu-managed repos route repo/branch notes to the checkout's own repo-local `.whisper/` (gitignored, never pushed); the global store is the `--global` escape hatch only. An agent following the skill verbatim leaked a private-repo session snap into the global workspace (incident 2026-10-16, catitas — caught before sync). All four modes now resolve routing via `turu resolve`/`turu append` (or the repo's `AGENTS.md` turu block, then repo-local `.whisper/`) before any `~/.whisper` fallback, and include a checklist step verifying the destination matches `turu resolve` output.

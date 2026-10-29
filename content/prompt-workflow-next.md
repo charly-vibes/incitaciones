@@ -5,8 +5,8 @@ source: original
 tags: [workflow, session, snapshot]
 status: draft
 created: 2026-07-27
-updated: 2026-10-16
-version: 1.0.0
+updated: 2026-10-29
+version: 1.1.0
 related: [prompt-workflow-close.md, prompt-workflow-renew.md, prompt-workflow-park.md]
 ---
 
@@ -20,4 +20,4 @@ Rapid session snapshot to the turu-routed whisper workspace — no full close ce
 - When you don't want the full /park ceremony
 - Before switching contexts rapidly
 
-See `content/distilled/next/SKILL.md` for the full procedure.
+See `content/distilled/session/references/next/SKILL.md` for the procedure and embedded native Whisper handoff contract.
