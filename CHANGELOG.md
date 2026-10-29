@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+- Clarify pending replacement validation; isolate the native CLI probe and add
+  renewal decision scenarios with an updated evaluation rubric.
+
+- Harden renew against retained superseded entries, timestamp ties, and nonempty
+  recall results that omit oversized current handoffs.
+
 - Pair next/renew through native topic-scoped Whisper entries, bounded recall,
   live ownership checks and legacy fallback; retain existing notes.
 

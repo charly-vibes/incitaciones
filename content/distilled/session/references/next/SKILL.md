@@ -36,7 +36,9 @@ Aim for 400 words; do not omit critical constraints to meet the target. No secre
 
 Use native append publication and native entry IDs. Supersede only a known prior
 entry for the SAME task/session that this snapshot fully replaces; never supersede
-another session's entry blindly. Concurrent entries remain visible for conflict
+another session's entry blindly. Include `Previous entry: <id or none>` in the
+new body when replacing a known entry, so the relation survives multiline parsing.
+Do not assume native recall hides superseded entries. Concurrent entries remain visible for conflict
 resolution. Do not directly rewrite notes or sidecar files. Native entries are
 available to ordinary recall/distill and scope-based bundle workflows; actual sync
 and transport depend on the workspace configuration, not these skills.
