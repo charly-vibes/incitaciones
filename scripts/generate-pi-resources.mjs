@@ -49,6 +49,20 @@ function getPackageVersion() {
   }
 }
 
+// Reusable copy of a skill's non-SKILL.md assets (references, scripts) into a target dir.
+function copySkillAssets(srcDir, dstDir) {
+  for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
+    if (entry.name === "SKILL.md") continue;
+    const src = path.join(srcDir, entry.name);
+    const dst = path.join(dstDir, entry.name);
+    if (entry.isDirectory()) {
+      fs.cpSync(src, dst, { recursive: true });
+    } else {
+      fs.copyFileSync(src, dst);
+    }
+  }
+}
+
 function generateSkill(prompt) {
   const distilledPath = path.join(repoRoot, prompt.distilled);
   const skillDir = path.join(skillsOut, prompt.name);
@@ -83,17 +97,7 @@ function generateSkill(prompt) {
   fs.writeFileSync(path.join(skillDir, "SKILL.md"), frontmatter.join("\n") + body, "utf8");
 
   if (distilledPath.endsWith(`${path.sep}SKILL.md`)) {
-    const srcDir = path.dirname(distilledPath);
-    for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
-      if (entry.name === "SKILL.md") continue;
-      const src = path.join(srcDir, entry.name);
-      const dst = path.join(skillDir, entry.name);
-      if (entry.isDirectory()) {
-        fs.cpSync(src, dst, { recursive: true });
-      } else {
-        fs.copyFileSync(src, dst);
-      }
-    }
+    copySkillAssets(path.dirname(distilledPath), skillDir);
   }
 }
 
@@ -126,11 +130,7 @@ function generatePromptTemplate(prompt) {
  * (which reads directly from pi-package/skills/). Without this re-sync,
  * a version bump leaves those directories stale.
  */
-function reSyncFlatInstallSkills(manifest) {
-  const version = getPackageVersion();
-  const now = new Date().toISOString().replace("Z", "000Z");
-  const home = homedir();
-
+function collectFlatInstallCandidates(home) {
   // Candidate directories to check for incitaciones flat installs
   const candidates = [
     path.join(home, ".agents", "skills"),
@@ -142,86 +142,88 @@ function reSyncFlatInstallSkills(manifest) {
     candidates.push(path.join(process.cwd(), ".agents", "skills"));
   } catch {}
 
-  // Deduplicate
+  return candidates;
+}
+
+function existingUniqueDirs(candidates) {
   const checked = new Set();
-  const dirs = candidates.filter((d) => {
-    if (checked.has(d)) return false;
-    checked.add(d);
-    return fs.existsSync(d);
+  return candidates.filter((dir) => {
+    if (checked.has(dir)) return false;
+    checked.add(dir);
+    return fs.existsSync(dir);
   });
+}
+
+function dirHasIncitacionesSkills(dir) {
+  // Check whether any installed skill in this dir carries incitaciones frontmatter
+  try {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const skillFile = path.join(dir, entry.name, "SKILL.md");
+      if (!fs.existsSync(skillFile)) continue;
+      const content = fs.readFileSync(skillFile, "utf8");
+      if (content.includes("installed-from: incitaciones") || content.includes("installed-from: \"incitaciones\"")) {
+        return true;
+      }
+    }
+  } catch {
+    // Permission issues, etc. — skip
+  }
+  return false;
+}
+
+function syncSkillToFlatDir(prompt, dir, version, now) {
+  const srcDir = path.join(skillsOut, prompt.name);
+  if (!fs.existsSync(srcDir)) return;
+
+  const dstDir = path.join(dir, prompt.name);
+  fs.rmSync(dstDir, { recursive: true, force: true });
+  fs.mkdirSync(dstDir, { recursive: true });
+
+  const distilledPath = path.join(repoRoot, prompt.distilled);
+  if (!fs.existsSync(distilledPath)) return;
+
+  // Generate flat-format frontmatter for SKILL.md
+  const description = escapeYamlDoubleQuoted(prompt.description || `Incitaciones prompt: ${prompt.name}`);
+  const frontmatter = [
+    "---",
+    `name: ${prompt.name}`,
+    `description: "${description}"`,
+    "installed-from: incitaciones",
+    `installed-version: "${version}"`,
+    `installed-at: "${now}"`,
+    "---",
+    "",
+  ].join("\n");
+
+  // Compiled pointers ship self-contained member content, not the stub.
+  const body = prompt.pointer_for
+    ? compilePointerBody(repoRoot, prompt.pointer_for) + "\n"
+    : readText(distilledPath);
+  fs.writeFileSync(path.join(dstDir, "SKILL.md"), frontmatter + body, "utf8");
+
+  if (prompt.pointer_for) return;
+
+  // Copy references/ from the source skill directory
+  if (distilledPath.endsWith(`${path.sep}SKILL.md`)) {
+    copySkillAssets(path.dirname(distilledPath), dstDir);
+  }
+}
+
+function reSyncFlatInstallSkills(manifest) {
+  const version = getPackageVersion();
+  const now = new Date().toISOString().replace("Z", "000Z");
+  const dirs = existingUniqueDirs(collectFlatInstallCandidates(homedir()));
 
   let synced = 0;
   for (const dir of dirs) {
-    // Check if this directory has incitaciones-installed skills
-    // by reading the first SKILL.md we find and checking its frontmatter
-    let hasIncitaciones = false;
-    try {
-      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-        if (!entry.isDirectory()) continue;
-        const skillFile = path.join(dir, entry.name, "SKILL.md");
-        if (!fs.existsSync(skillFile)) continue;
-        const content = fs.readFileSync(skillFile, "utf8");
-        if (content.includes("installed-from: incitaciones") || content.includes("installed-from: \"incitaciones\"")) {
-          hasIncitaciones = true;
-          break;
-        }
-      }
-    } catch {
-      // Permission issues, etc. — skip
-      continue;
-    }
-
-    if (!hasIncitaciones) continue;
+    if (!dirHasIncitacionesSkills(dir)) continue;
 
     // Re-sync: for each prompt in manifest, copy from pi-package/skills/ to flat dir
     for (const prompt of manifest.prompts) {
-      const srcDir = path.join(skillsOut, prompt.name);
-      if (!fs.existsSync(srcDir)) continue;
-
-      const dstDir = path.join(dir, prompt.name);
-      fs.rmSync(dstDir, { recursive: true, force: true });
-      fs.mkdirSync(dstDir, { recursive: true });
-
-      // Generate flat-format frontmatter for SKILL.md
-      const distilledPath = path.join(repoRoot, prompt.distilled);
-      if (!fs.existsSync(distilledPath)) continue;
-
-      const description = escapeYamlDoubleQuoted(prompt.description || `Incitaciones prompt: ${prompt.name}`);
-      const frontmatter = [
-        "---",
-        `name: ${prompt.name}`,
-        `description: "${description}"`,
-        "installed-from: incitaciones",
-        `installed-version: "${version}"`,
-        `installed-at: "${now}"`,
-        "---",
-        "",
-      ].join("\n");
-
-      // Compiled pointers ship self-contained member content, not the stub.
-      const body = prompt.pointer_for
-        ? compilePointerBody(repoRoot, prompt.pointer_for) + "\n"
-        : readText(distilledPath);
-      fs.writeFileSync(path.join(dstDir, "SKILL.md"), frontmatter + body, "utf8");
-
-      if (prompt.pointer_for) continue;
-
-      // Copy references/ from the source skill directory
-      if (distilledPath.endsWith(`${path.sep}SKILL.md`)) {
-        const srcRefDir = path.dirname(distilledPath);
-        for (const entry of fs.readdirSync(srcRefDir, { withFileTypes: true })) {
-          if (entry.name === "SKILL.md") continue;
-          const s = path.join(srcRefDir, entry.name);
-          const d = path.join(dstDir, entry.name);
-          if (entry.isDirectory()) {
-            fs.cpSync(s, d, { recursive: true });
-          } else {
-            fs.copyFileSync(s, d);
-          }
-        }
-      }
+      syncSkillToFlatDir(prompt, dir, version, now);
     }
-    synced++;
+    synced += 1;
   }
 
   if (synced > 0) {
