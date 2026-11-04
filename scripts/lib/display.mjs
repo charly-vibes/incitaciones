@@ -38,20 +38,32 @@ function infoField(label, value) {
   console.log(`  ${label.padEnd(12)} ${value}`);
 }
 
+function displayValue(value, fallback) {
+  return value || fallback;
+}
+
+function joinedTags(prompt) {
+  return (prompt.tags || []).join(", ") || "(none)";
+}
+
+function printLineCount(src) {
+  const lines = fs.readFileSync(src, "utf8").split("\n").length;
+  const isMulti = src.endsWith("SKILL.md");
+  infoField("Lines:", `${lines}${isMulti ? " + references" : ""}`);
+}
+
 function printInfoSummary(prompt) {
   const src = resolveDistilled(prompt);
   console.log(`\n  ${prompt.name}`);
   console.log(`  ${"=".repeat(prompt.name.length)}`);
-  infoField("Description:", prompt.description || "(none)");
-  infoField("Type:", prompt.type || "prompt");
-  infoField("Status:", prompt.status || "unknown");
-  infoField("Tags:", (prompt.tags || []).join(", ") || "(none)");
-  infoField("Source:", prompt.source || "(none)");
+  infoField("Description:", displayValue(prompt.description, "(none)"));
+  infoField("Type:", displayValue(prompt.type, "prompt"));
+  infoField("Status:", displayValue(prompt.status, "unknown"));
+  infoField("Tags:", joinedTags(prompt));
+  infoField("Source:", displayValue(prompt.source, "(none)"));
   infoField("Distilled:", prompt.distilled);
   if (src) {
-    const lines = fs.readFileSync(src, "utf8").split("\n").length;
-    const isMulti = src.endsWith("SKILL.md");
-    infoField("Lines:", `${lines}${isMulti ? " + references" : ""}`);
+    printLineCount(src);
   }
   console.log("");
 }
