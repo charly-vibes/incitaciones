@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+- Retired zero-usage pointer aliases `park` and `create-handoff` to `content/archive/`
+  (incitaciones-alo; HITL decision on the incitaciones-of8 audit). Removed from the
+  manifest, all bundles, and the `skills/` catalog; compiled pointer files preserved in
+  `content/archive/` with a provenance README. Evidence: park 0 typed invocations all-time,
+  create-handoff 3 (none in 90d); the `session` router covers both intents. This is the
+  documented exception to incitaciones-06i pointer permanence (AGENTS.md amended);
+  permanence stays the default for high-traffic pointers.
+
 - Trigger hygiene (incitaciones-of8): `scripts/trigger-overlap.py --collisions` now reports
   opt-in near-name collision candidates — manifest-name pairs sharing >= 5 leading chars or
   within edit distance 2 (issues ~ issue-review, design-*/research-*/test-* families,
