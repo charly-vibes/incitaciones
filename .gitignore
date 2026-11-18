@@ -37,3 +37,4 @@ docs/src/https:/
 
 # tool data dirs (managed by `ddl init --gates`)
 .testaruda/
+node_modules/

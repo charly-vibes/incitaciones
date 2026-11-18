@@ -35,6 +35,11 @@ jobs:
         with:
           node-version: "22"
 
+      # gpt-tokenizer (cl100k_base) for scripts/skill-context.mjs (bvv);
+      # everything else in just ci is stdlib-only
+      - name: Install node dependencies
+        run: npm ci
+
       - name: Install just
         uses: extractions/setup-just@v2
 

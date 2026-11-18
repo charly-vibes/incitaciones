@@ -636,6 +636,15 @@ skill-usage-test:
 craft-patterns-test:
     python3 tests/test_craft_patterns.py -v
 
+# Per-skill cl100k token report: partial (SKILL.md) vs full (+references/),
+# Δ vs BASE for changed skills + omp inline skill-prompt sizes (bvv; report-only)
+skill-context BASE="origin/main":
+    node scripts/skill-context.mjs --base {{BASE}}
+
+# Run skill-context unit tests (node:test, tokenizer injected — no npm install needed)
+skill-context-test:
+    node --test tests/test_skill_context.mjs
+
 # Validate distilled prompts
 validate-distilled:
     #!/usr/bin/env bash
@@ -1061,5 +1070,5 @@ generate-skill NAME:
 # Full CI pipeline — same commands locally and in CI (standardization §1).
 # Content lint (validate), link-check, file-header audit, distilled-prompt
 # gate, and generated-catalog freshness (skills/ + pi-package).
-ci: validate check-links header-audit validate-distilled validate-skills-dir validate-pi-package skill-usage-test craft-patterns-test
+ci: validate check-links header-audit validate-distilled validate-skills-dir validate-pi-package skill-usage-test craft-patterns-test skill-context-test
     @echo "✅ CI pipeline passed"

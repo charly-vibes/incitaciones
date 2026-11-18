@@ -1,0 +1,60 @@
+# Per-skill context-size token report posted as an upserted PR comment
+# (incitaciones-bvv, port of antithesis-skills' compare-skill-context pattern).
+# Report-only: the report never fails the job on token growth — gating on
+# growth is a later explicit decision (bvv v1 anti-goal).
+name: Skill context report
+
+on:
+  pull_request:
+    paths:
+      - "content/distilled/**"
+      - "content/manifest.json"
+      - "scripts/skill-context.mjs"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Diff against the base branch ref needs its objects
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install node dependencies
+        run: npm ci
+
+      - name: Generate report
+        run: |
+          node scripts/skill-context.mjs \
+            --base "origin/${{ github.base_ref }}" \
+            > skill-context-report.md
+
+      - name: Upsert PR comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # The report's first line is the marker, so a single body-file
+          # serves both create and update; one comment per PR, always fresh.
+          MARKER='<!-- skill-context-report -->'
+          existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.user.login == \"github-actions[bot]\") | select(.body | startswith(\"$MARKER\")) | .id" \
+            | head -1)
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" \
+              -F body=@"skill-context-report.md" >/dev/null
+          else
+            gh pr comment "$PR_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --body-file skill-context-report.md >/dev/null
+          fi
