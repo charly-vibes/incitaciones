@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+- Antithesis craft backport (incitaciones-8fv): four patterns applied to the usage-ranked
+  top members only — session family (renew/next/close), rule-of-5-universal, issue-review,
+  commit. Scope-boundary sections (explicit does-NOT), DO-NOT-PROCEED gates with remediation
+  routing (renew supersession stop, next failed-append, close unpushed, commit diff/approval,
+  rule-of-5 unevidenced findings, issue-review PASS 0), tiered findings with good-vs-bad
+  contrast examples (rule-of-5-universal templates, issue-review pass-1), and a mandatory
+  What's Working Well section in advisory outputs (rule-of-5-universal + issue-review final
+  reports). New gate `tests/test_craft_patterns.py` (just craft-patterns-test, wired into ci)
+  asserts pattern markers per member and a +10% per-member token budget vs base 3e8899f;
+  every edited member landed within budget (largest delta ~7%). Routers, pointers, and
+  non-top members untouched (anti-goal: no path renames).
+
 - Retired zero-usage pointer aliases `park` and `create-handoff` to `content/archive/`
   (incitaciones-alo; HITL decision on the incitaciones-of8 audit). Removed from the
   manifest, all bundles, and the `skills/` catalog; compiled pointer files preserved in
