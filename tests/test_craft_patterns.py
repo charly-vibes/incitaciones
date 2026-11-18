@@ -87,14 +87,19 @@ CRAFT_PATTERNS: dict[str, list[tuple[str, str]]] = {
 
 
 def base_size(rel_path: str) -> int:
-    blob = subprocess.run(
+    result = subprocess.run(
         ["git", "show", f"{BASE_COMMIT}:{rel_path}"],
         cwd=REPO,
         capture_output=True,
         text=True,
-        check=True,
     )
-    return len(blob.stdout)
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"git show {BASE_COMMIT}:{rel_path} failed "
+            f"({result.returncode}); shallow checkout? The CI workflow "
+            "needs fetch-depth: 0 on actions/checkout"
+        )
+    return len(result.stdout)
 
 
 def _missing_in(rel_path: str, text: str, markers: list[tuple[str, str]]) -> list[str]:

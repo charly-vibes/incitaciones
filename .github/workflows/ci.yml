@@ -24,6 +24,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history: tests/test_craft_patterns.py budgets diff against
+          # metadata.base_commit blobs (incitaciones-8fv); depth-1 runners
+          # break git show of those objects (CI run 44379588354).
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
