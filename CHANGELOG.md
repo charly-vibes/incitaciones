@@ -1,5 +1,16 @@
 ## [Unreleased]
 
+- Token-diff CI (incitaciones-bvv, port of antithesis-skills' compare-skill-context
+  pattern): `scripts/skill-context.mjs` counts cl100k_base tokens per skill from
+  `content/manifest.json` — partial (distilled SKILL.md) vs full (+references/) — with
+  merge-base Δ columns for skills changed since a base ref and an omp inline
+  skill-prompt size measurement (first read: n=201, avg 1461.2, p95 3214 tokens;
+  rule-of-5-universal the biggest inline at avg 3227). `just skill-context [BASE]` +
+  `just skill-context-test` (node:test, tokenizer injected — suite needs no npm
+  install); PR-comment upsert workflow `.github/workflows/skill-context.yml` and an
+  `npm ci` step in ci.yml. New dependency: `gpt-tokenizer` (pure JS cl100k_base, no
+  WASM). Report-only: growth never fails CI (bvv v1 anti-goal).
+
 - Craft-gate hardening (incitaciones-lfw, rule-of-5 review residuals): marker matching in
   `tests/test_craft_patterns.py` is now cosmetic-reflow tolerant (normalized substrings —
   curly/straight quotes, bold/heading markup, case — so reflow can't flip a present pattern
