@@ -2082,30 +2082,6 @@
       }
     },
     {
-      "name": "park",
-      "type": "workflow",
-      "title": "Park (moved)",
-      "description": "Compiled alias of the context-switch stash mode of the session skill. Hidden from model invocation; invocable via /skill:park; serves the legacy site URL with full compiled content.",
-      "source": "content/prompt-system-skill-router-architecture.md",
-      "distilled": "content/distilled/pointers/park.md",
-      "skill_format": "single-file",
-      "tags": [
-        "pointer",
-        "deprecated"
-      ],
-      "bundles": [
-        "essentials",
-        "planning",
-        "reviews",
-        "refactoring",
-        "testing",
-        "documentation",
-        "workflow"
-      ],
-      "disable_model_invocation": true,
-      "pointer_for": "session/park"
-    },
-    {
       "name": "next",
       "type": "workflow",
       "title": "Next (moved)",
@@ -2212,30 +2188,6 @@
       ],
       "disable_model_invocation": true,
       "pointer_for": "session/renew"
-    },
-    {
-      "name": "create-handoff",
-      "type": "workflow",
-      "title": "Create Handoff (moved)",
-      "description": "Compiled alias of the handoff document mode of the session skill. Hidden from model invocation; invocable via /skill:create-handoff; serves the legacy site URL with full compiled content.",
-      "source": "content/prompt-system-skill-router-architecture.md",
-      "distilled": "content/distilled/pointers/create-handoff.md",
-      "skill_format": "single-file",
-      "tags": [
-        "pointer",
-        "deprecated"
-      ],
-      "bundles": [
-        "essentials",
-        "planning",
-        "reviews",
-        "refactoring",
-        "testing",
-        "documentation",
-        "workflow"
-      ],
-      "disable_model_invocation": true,
-      "pointer_for": "session/create-handoff"
     },
     {
       "name": "rule-of-5-universal",
@@ -2438,10 +2390,8 @@
         "session",
         "grill-me",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2457,10 +2407,8 @@
         "tdd",
         "grill-me",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2488,10 +2436,8 @@
         "grill-me",
         "anti-slop-prose",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2507,10 +2453,8 @@
         "test-abstraction-miner",
         "diagnostician",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2523,10 +2467,8 @@
         "test-friction",
         "test-abstraction-miner",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2539,10 +2481,8 @@
         "narrative-article",
         "doc-link-verifier",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
@@ -2554,10 +2494,8 @@
         "whisper",
         "session",
         "close",
-        "park",
         "next",
         "renew",
-        "create-handoff",
         "rule-of-5-universal",
         "create-issues",
         "issue-review"
