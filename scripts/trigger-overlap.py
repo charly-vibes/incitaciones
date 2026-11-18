@@ -70,6 +70,24 @@ def name_collisions(names: list) -> list:
     return out
 
 
+def _best_ed_match(token: str, names: set) -> tuple | None:
+    """Closest name within EDIT_BAR by edit distance, or None."""
+    best = None
+    for name in sorted(names):
+        d = levenshtein(token, name)
+        if d <= EDIT_BAR and (best is None or d < best[1]):
+            best = (name, d)
+    return best
+
+
+def _prefix_match(token: str, names: set) -> str | None:
+    """First (sorted) name the token properly truncates at >= OBS_PREFIX_MIN chars."""
+    for name in sorted(names):
+        if name.startswith(token) and OBS_PREFIX_MIN <= len(token) < len(name):
+            return name
+    return None
+
+
 def match_observed(observed: dict, names: list) -> list:
     """Match unknown /skill: tokens observed in session stores against manifest
     names. Returns deterministic tuples (token, count, name, reason). Known
@@ -77,22 +95,16 @@ def match_observed(observed: dict, names: list) -> list:
     name_set = set(names)
     out = []
     for token in sorted(observed):
-        count = observed[token]
         if token in name_set or len(token) < TOKEN_MIN:
             continue
-        best = None
-        for name in sorted(name_set):
-            d = levenshtein(token, name)
-            if d <= EDIT_BAR:
-                if best is None or d < best[1]:
-                    best = (name, d)
+        count = observed[token]
+        best = _best_ed_match(token, name_set)
         if best:
             out.append((token, count, best[0], f"edit distance {best[1]}"))
             continue
-        for name in sorted(name_set):
-            if name.startswith(token) and len(token) >= OBS_PREFIX_MIN and len(token) < len(name):
-                out.append((token, count, name, f"prefix of {name}"))
-                break
+        name = _prefix_match(token, name_set)
+        if name:
+            out.append((token, count, name, f"prefix of {name}"))
     return out
 
 
@@ -101,12 +113,8 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
                         help="also report near-name collision candidates (advisory HITL audit; incitaciones-of8) — scans session stores for observed /skill: tokens")
 
 
-def _collision_report(m: dict) -> list:
-    names = [p["name"] for p in m["prompts"]]
-    lines = []
-    for a, b, kind, detail in name_collisions(names):
-        lines.append(f'{kind} "{detail}": {a} ~ {b}' if kind == "prefix" else f"{kind} {detail}: {a} ~ {b}")
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+def _observed_tokens() -> dict:
+    """Merge /skill: invocation counters across all session stores."""
     import skill_usage
     observed: dict = {}
     for _label, root, kind in skill_usage.agent_roots():
@@ -115,21 +123,31 @@ def _collision_report(m: dict) -> list:
         _loads, invocations, _sessions = skill_usage.SCANNERS[kind](root, None)
         for k, v in invocations.items():
             observed[k] = observed.get(k, 0) + v
-    for token, count, name, reason in match_observed(observed, names):
+    return observed
+
+
+def _collision_report(m: dict) -> list:
+    names = [p["name"] for p in m["prompts"]]
+    lines = []
+    for a, b, kind, detail in name_collisions(names):
+        detail_s = f'"{detail}"' if kind == "prefix" else str(detail)
+        lines.append(f"{kind} {detail_s}: {a} ~ {b}")
+    for token, count, name, reason in match_observed(_observed_tokens(), names):
         lines.append(f"observed /skill:{token} x{count} ~ {name} ({reason})")
     return lines
 
 
-def main(argv: list | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    add_arguments(parser)
-    args = parser.parse_args(argv)
-    m = json.load(open(MANIFEST))
-    if args.collisions:
-        lines = _collision_report(m)
-        print("near-name collisions (advisory — HITL audit, not a gate; incitaciones-of8):")
-        print("\n".join(f"  {l}" for l in lines) if lines else "  (none)")
-    live = [p for p in m["prompts"] if not p.get("disable_model_invocation")]
+def _maybe_collisions(args, m: dict) -> None:
+    if not args.collisions:
+        return
+    lines = _collision_report(m)
+    print("near-name collisions (advisory — HITL audit, not a gate; incitaciones-of8):")
+    print("\n".join(f"  {l}" for l in lines) if lines else "  (none)")
+
+
+def _clause_problems(live: list) -> list:
+    """Original rbn gates: missing trigger clauses + >= 2 shared distinctive
+    tokens without an "only when" boundary."""
     problems = []
     no_clause = [p["name"] for p in live if not clauses(p["description"])]
     if no_clause:
@@ -140,6 +158,17 @@ def main(argv: list | None = None) -> int:
         if len(shared) >= 2 and not any("only when" in c.lower() for c in ca) \
                 and not any("only when" in c.lower() for c in cb):
             problems.append(f"trigger overlap {a['name']} <-> {b['name']}: {sorted(shared)}")
+    return problems
+
+
+def main(argv: list | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    add_arguments(parser)
+    args = parser.parse_args(argv)
+    m = json.load(open(MANIFEST))
+    _maybe_collisions(args, m)
+    live = [p for p in m["prompts"] if not p.get("disable_model_invocation")]
+    problems = _clause_problems(live)
     if problems:
         print("\n".join(problems))
         return 1
