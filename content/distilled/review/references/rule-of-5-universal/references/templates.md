@@ -100,6 +100,14 @@ Total Issues by Severity:
 - MEDIUM: [count] - Consider addressing
 - LOW: [count] - Nice to have
 
+## What's Working Well
+
+1. [Strength] - [Location] - why it matters
+
+Finding bar (tiers MUST/SHOULD/CONSIDER), each with contrast:
+BAD: "Tighten the intro."
+GOOD: "[ID] [HIGH] §2 promises three contributions, body delivers two - add it or drop the promise."
+
 ## Top 3 Critical Findings
 
 1. [ID] [Description] - [Location]

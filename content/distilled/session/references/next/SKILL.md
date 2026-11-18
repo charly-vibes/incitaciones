@@ -2,8 +2,9 @@
 
 # Next
 
-Save minimum sufficient continuation state from the conversation. No research,
-commits, pushes, ticket mutations, journal updates, or context clearing.
+Save minimum sufficient continuation state from the conversation.
+**Scope boundary:** handoff entries only — no research, commits, pushes,
+ticket mutations, journal updates, or context clearing.
 
 1. Keep commands anchored to the original workspace. Resolve routing with
    `turu resolve branch --json`; honor explicit routing/privacy rules. Default
@@ -18,6 +19,9 @@ commits, pushes, ticket mutations, journal updates, or context clearing.
    No manual entry IDs, path derivation, or sidecar mutations.
 4. Check the append result. Report scope, topic and returned entry ID/path when
    available. Never claim success after a failed write. Say `/renew` can resume it.
+
+**DO-NOT-PROCEED** — append failed or unverifiable: never claim success.
+Remediation: retry once with identical flags; if it fails again, report and stop.
 
 Do not ask routine questions. Preserve older notes and unrelated entries.
 

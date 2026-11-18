@@ -3,14 +3,14 @@
 Focus on:
 - Clear title
 - Sufficient context
-- Concrete file paths and changes
-- Success criteria or tests
+- Concrete paths/changes
+- Success criteria/tests
 - Unambiguous done criteria
 
 Watch for:
 - Vague titles
 - Minimal descriptions
-- "Implement X" without where or how
+- "Implement X" without where/how
 - Missing verification steps
 
 Output:
@@ -26,3 +26,5 @@ Description: [What's unclear or incomplete]
 Evidence: [Why this is a problem]
 Recommendation: [How to fix]
 ```
+
+BAD: "unclear". GOOD: "[ID] no runnable gate — Meter `just ci`"
