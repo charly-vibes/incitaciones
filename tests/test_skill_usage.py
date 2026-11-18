@@ -14,6 +14,12 @@ Fixture sessions reproduce the three real on-disk formats:
   payloads (custom_tool_call / function_call) whose input references a
   SKILL.md path via shell; the <skills_instructions> listing block MUST NOT
   be counted.
+
+Drift guard (incitaciones-49v): if an agent renames its envelope shapes,
+the extractor would silently yield zeros. scan() raises FormatDriftError
+when a store mentions skill text but parses to zero recognized structural
+markers (pi/omp: message entries; omp also custom_message; codex: payload
+envelopes). Envelope-level markers only — no agent/schema version pinning.
 """
 
 from __future__ import annotations
@@ -122,6 +128,52 @@ class ExtractorTests(unittest.TestCase):
         _, invocations, sessions = skill_usage.scan(d, "pi", cutoff=skill_usage.time.time() - 90 * 24 * 3600)
         self.assertEqual(sessions, 0)
         self.assertEqual(invocations, {})
+
+
+class FormatDriftTests(unittest.TestCase):
+    """incitaciones-49v: skill-mentioning stores that parse to zero known
+    envelope shapes must fail loudly, not silently report zeros."""
+
+    def setUp(self):
+        self.root = Path(self.enterContext(_tmpdir()))
+
+    def test_pi_unknown_envelope_fails_loudly(self):
+        # drift: pi renames its envelope; SKILL.md text still present, so the
+        # old extractor would silently yield zeros.
+        d = self.root / "pi"
+        write_session(d, "s1.jsonl", [
+            {"type": "message_v9", "envelope": {"role": "assistant", "parts": [
+                {"kind": "toolCall", "arguments": {"path": "/x/skills/renew/SKILL.md"}}]}},
+        ])
+        with self.assertRaises(skill_usage.FormatDriftError):
+            skill_usage.scan(d, "pi")
+
+    def test_codex_unknown_envelope_fails_loudly(self):
+        d = self.root / "codex"
+        write_session(d, "s1.jsonl", [
+            {"type": "item_v9", "body": {"kind": "tool",
+             "input": "cat /x/skills/tdd/SKILL.md"}},
+        ])
+        with self.assertRaises(skill_usage.FormatDriftError):
+            skill_usage.scan(d, "codex")
+
+    def test_omp_custom_message_only_store_is_recognized(self):
+        # omp marker includes custom_message: a store with only skill-prompt
+        # entries (no message entries) must NOT trip the guard.
+        d = self.root / "omp"
+        write_session(d, "s1.jsonl", [
+            {"type": "custom_message", "customType": "skill-prompt", "content":
+             '[IMPORTANT: User invoked the "close" skill; follow its instructions.]'},
+        ])
+        _, invocations, sessions = skill_usage.scan(d, "omp")
+        self.assertEqual(sessions, 1)
+        self.assertEqual(invocations, {"close": 1})
+
+    def test_empty_store_does_not_trip_guard(self):
+        d = self.root / "pi"
+        d.mkdir(parents=True)
+        loads, invocations, sessions = skill_usage.scan(d, "pi")
+        self.assertEqual(sessions, 0)
 
 
 def _tmpdir():
