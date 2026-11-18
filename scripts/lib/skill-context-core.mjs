@@ -24,34 +24,30 @@ const REPORT_MARKER = "<!-- skill-context-report -->";
 const SKILL_NAME_RE = /invoked the "([a-zA-Z0-9_-]+)" skill/;
 
 /** All files a skill installs into context: distilled + references tree. */
-export function fullPaths(prompt, root) {
-  const distilled = prompt.distilled;
-  const files = [distilled];
+// references/ lives next to a SKILL.md inside its skill dir; a flat
+// distilled file ({name}.md) may own content/distilled/{name}/references/
+function referencesDirsFor(distilled) {
   const dir = path.posix.dirname(distilled);
   const base = path.posix.basename(distilled);
-  // references/ lives next to a SKILL.md inside its skill dir; a flat
-  // distilled file ({name}.md) may own content/distilled/{name}/references/
-  const refsDirs =
-    base === "SKILL.md"
-      ? [path.posix.join(dir, "references")]
-      : [
-          path.posix.join(
-            dir,
-            path.posix.basename(distilled).replace(/\.md$/, ""),
-            "references",
-          ),
-        ];
-  for (const refs of refsDirs) {
+  return base === "SKILL.md"
+    ? [path.posix.join(dir, "references")]
+    : [path.posix.join(dir, base.replace(/\.md$/, ""), "references")];
+}
+
+function walkFiles(dir, root, files) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.posix.join(dir, e.name);
+    if (e.isDirectory()) walkFiles(p, root, files);
+    else if (e.isFile()) files.push(path.relative(root, p).split(path.sep).join("/"));
+  }
+}
+
+/** All files a skill installs into context: distilled + references tree. */
+export function fullPaths(prompt, root) {
+  const files = [prompt.distilled];
+  for (const refs of referencesDirsFor(prompt.distilled)) {
     const abs = path.join(root, refs);
-    if (!fs.existsSync(abs)) continue;
-    const walk = (d) => {
-      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-        const p = path.posix.join(d, e.name);
-        if (e.isDirectory()) walk(p);
-        else if (e.isFile()) files.push(path.relative(root, p).split(path.sep).join("/"));
-      }
-    };
-    walk(abs);
+    if (fs.existsSync(abs)) walkFiles(abs, root, files);
   }
   return files.sort();
 }
@@ -142,60 +138,70 @@ function percentile(sortedValues, p) {
   return sortedValues[Math.min(rank, sortedValues.length) - 1];
 }
 
+function statSummary(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = values.length;
+  const sum = values.reduce((s, v) => s + v, 0);
+  return { n, avg: n ? sum / n : 0, p95: percentile(sorted, 0.95) };
+}
+
+function pushSample(samples, skill, tokens) {
+  samples.overall.push(tokens);
+  if (!samples.perSkill.has(skill)) samples.perSkill.set(skill, []);
+  samples.perSkill.get(skill).push(tokens);
+}
+
+function skillNameFromLine(line) {
+  if (!line.includes('"skill-prompt"')) return null;
+  let entry;
+  try {
+    entry = JSON.parse(line);
+  } catch {
+    return null;
+  }
+  const isPrompt = entry?.type === "custom_message" && entry?.customType === "skill-prompt";
+  if (!isPrompt || typeof entry.content !== "string") return null;
+  return SKILL_NAME_RE.exec(entry.content);
+}
+
+function scanOmpFile(file, samples, tokenize) {
+  let raw;
+  try {
+    raw = fs.readFileSync(file, "utf8");
+  } catch {
+    return;
+  }
+  for (const line of raw.split("\n")) {
+    const m = skillNameFromLine(line);
+    if (m) pushSample(samples, m[1], tokenize(m.input));
+  }
+}
+
+function collectOmpSamples(storeRoot, tokenize) {
+  const samples = { overall: [], perSkill: new Map() };
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.isFile() && e.name.endsWith(".jsonl")) scanOmpFile(p, samples, tokenize);
+    }
+  };
+  walk(storeRoot);
+  return samples;
+}
+
 /**
  * omp inline skill-prompt sizes from a sessions JSONL store.
  * Returns {overall: {n, avg, p95}, perSkill: {name: {n, avg, p95}}}.
  */
 export function ompInlineStats(storeRoot, tokenize) {
-  const overall = [];
-  const perSkill = new Map();
   if (!fs.existsSync(storeRoot)) {
     return { overall: { n: 0, avg: 0, p95: 0 }, perSkill: {} };
   }
-  const walk = (d) => {
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-      const p = path.join(d, e.name);
-      if (e.isDirectory()) walk(p);
-      else if (e.isFile() && e.name.endsWith(".jsonl")) scanFile(p);
-    }
-  };
-  const scanFile = (file) => {
-    let raw;
-    try {
-      raw = fs.readFileSync(file, "utf8");
-    } catch {
-      return;
-    }
-    for (const line of raw.split("\n")) {
-      if (!line.includes('"skill-prompt"')) continue;
-      let entry;
-      try {
-        entry = JSON.parse(line);
-      } catch {
-        continue;
-      }
-      if (entry?.type !== "custom_message" || entry?.customType !== "skill-prompt")
-        continue;
-      const content = entry.content;
-      if (typeof content !== "string") continue;
-      const m = SKILL_NAME_RE.exec(content);
-      if (!m) continue;
-      const n = tokenize(content);
-      overall.push(n);
-      if (!perSkill.has(m[1])) perSkill.set(m[1], []);
-      perSkill.get(m[1]).push(n);
-    }
-  };
-  walk(storeRoot);
-  const finish = (values) => {
-    const sorted = [...values].sort((a, b) => a - b);
-    const n = values.length;
-    const sum = values.reduce((s, v) => s + v, 0);
-    return { n, avg: n ? sum / n : 0, p95: percentile(sorted, 0.95) };
-  };
+  const { overall, perSkill } = collectOmpSamples(storeRoot, tokenize);
   const perSkillOut = {};
-  for (const [name, values] of perSkill) perSkillOut[name] = finish(values);
-  return { overall: finish(overall), perSkill: perSkillOut };
+  for (const [name, values] of perSkill) perSkillOut[name] = statSummary(values);
+  return { overall: statSummary(overall), perSkill: perSkillOut };
 }
 
 export function ompSection(stats) {
