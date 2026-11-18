@@ -25,6 +25,10 @@ Convergence: Pass [N]
 - Horizontal-ticket leakage: [None|Low|Moderate|High]
 - AFK/HITL clarity: [Excellent|Good|Fair|Poor]
 
+### What's Working Well
+
+1. [ID] [Strength] — why it matters
+
 ### Top 3 Most Critical Findings
 
 1. [ID] [Finding]

@@ -17,6 +17,9 @@ metadata:
 
 Review an issue set in five passes, with special attention to whether tickets are true tracer-bullet vertical slices.
 
+**Scope:** advisory — reports findings; never creates or edits tracker issues.
+**DO-NOT-PROCEED:** PASS 0 failures stop all passes. Remediation: fix collection per setup.md, rerun.
+
 ## Setup
 
 Read `references/setup.md` for tracker-specific collection commands before reviewing.
@@ -108,6 +111,10 @@ Convergence: Pass [N]
 - Slice quality: [Excellent|Good|Fair|Poor]
 - Horizontal-ticket leakage: [None|Low|Moderate|High]
 - AFK/HITL clarity: [Excellent|Good|Fair|Poor]
+
+### What's Working Well
+
+1. [ID] [Strength] — why it matters
 
 ### Top 3 Most Critical Findings
 
@@ -228,14 +235,14 @@ Tickets missing `base_commit` entirely: flag as part of PRE-001 remediation.
 Focus on:
 - Clear title
 - Sufficient context
-- Concrete file paths and changes
-- Success criteria or tests
+- Concrete paths/changes
+- Success criteria/tests
 - Unambiguous done criteria
 
 Watch for:
 - Vague titles
 - Minimal descriptions
-- "Implement X" without where or how
+- "Implement X" without where/how
 - Missing verification steps
 
 Output:
@@ -251,6 +258,8 @@ Description: [What's unclear or incomplete]
 Evidence: [Why this is a problem]
 Recommendation: [How to fix]
 ```
+
+BAD: "unclear". GOOD: "[ID] no runnable gate — Meter `just ci`"
 
 ---
 

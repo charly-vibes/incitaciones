@@ -19,6 +19,14 @@ metadata:
 
 Resume from a bounded native Whisper handoff. Mandatory repo instructions apply.
 
+**Scope boundary:** orientation only — reports state, uncertainty and the next
+action; it does not execute work, claim tickets, push, or deploy (step 7).
+
+**DO-NOT-PROCEED** — unresolved supersession, cycles, or contradictory
+relations: stop, report the unresolved IDs, and route remediation through
+step 5's bounded recovery (4000-byte digest, then one 16000-byte retry);
+never continue from either entry.
+
 1. Anchor commands to the intended workspace; establish repo, branch and HEAD
    first. For an explicit project/area, resolve that workspace before recall;
    ask only if identity is ambiguous. Resolve routing using

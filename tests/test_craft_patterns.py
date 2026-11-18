@@ -97,21 +97,44 @@ def base_size(rel_path: str) -> int:
     return len(blob.stdout)
 
 
+def _missing_in(rel_path: str, text: str, markers: list[tuple[str, str]]) -> list[str]:
+    return [
+        f"{rel_path}: missing {description} ({pattern!r})"
+        for pattern, description in markers
+        if not re.search(pattern, text)
+    ]
+
+
+def missing_markers() -> list[str]:
+    missing: list[str] = []
+    for rel_path, markers in CRAFT_PATTERNS.items():
+        text = (REPO / rel_path).read_text(encoding="utf-8")
+        missing.extend(_missing_in(rel_path, text, markers))
+    return missing
+
+
+def over_budget_members() -> list[str]:
+    over: list[str] = []
+    for rel_path in CRAFT_PATTERNS:
+        budget = base_size(rel_path) * TOKEN_BUDGET_RATIO
+        current = len((REPO / rel_path).read_text(encoding="utf-8"))
+        if current > budget:
+            detail = (
+                f"{rel_path}: {current} chars > budget {budget:.0f} "
+                f"(base {base_size(rel_path)} x {TOKEN_BUDGET_RATIO})"
+            )
+            over.append(detail)
+    return over
+
+
 class CraftPatternPresence(unittest.TestCase):
     """Every top member carries its expected craft-pattern markers."""
 
     def test_patterns_present(self):
-        missing = []
-        for rel_path, markers in CRAFT_PATTERNS.items():
-            text = (REPO / rel_path).read_text(encoding="utf-8")
-            for pattern, description in markers:
-                if not re.search(pattern, text):
-                    missing.append(f"{rel_path}: missing {description} ({pattern!r})")
         self.assertEqual(
-            missing,
+            missing_markers(),
             [],
-            "craft patterns missing from top-used members:\n"
-            + "\n".join(missing),
+            "craft patterns missing from top-used members",
         )
 
 
@@ -119,21 +142,10 @@ class TokenBudget(unittest.TestCase):
     """Edited members stay within +10% of base-commit size."""
 
     def test_within_budget(self):
-        over = []
-        for rel_path in CRAFT_PATTERNS:
-            budget = base_size(rel_path) * TOKEN_BUDGET_RATIO
-            current = len(
-                (REPO / rel_path).read_text(encoding="utf-8")
-            )
-            if current > budget:
-                over.append(
-                    f"{rel_path}: {current} chars > budget {budget:.0f} "
-                    f"(base {base_size(rel_path)} x {TOKEN_BUDGET_RATIO})"
-                )
         self.assertEqual(
-            over,
+            over_budget_members(),
             [],
-            "members exceeding +10% token budget:\n" + "\n".join(over),
+            "members exceeding +10% token budget",
         )
 
 
