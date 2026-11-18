@@ -16,12 +16,12 @@ import path from "node:path";
 
 import {
   fullPaths,
-  ownersOfChangedPaths,
   measureSkills,
+  ownersOfChangedPaths,
   mergeBase,
   reportMarkdown,
   ompInlineStats,
-} from "../scripts/skill-context.mjs";
+} from "../scripts/lib/skill-context-core.mjs";
 
 // Deterministic tokenizer stub: tokens = whitespace-separated words.
 const stubTokenize = (text) => text.split(/\s+/).filter(Boolean).length;
