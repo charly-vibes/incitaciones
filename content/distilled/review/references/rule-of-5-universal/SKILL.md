@@ -1,8 +1,8 @@
 # Universal Rule of 5 Review
 
-Review any intellectual artifact (code, plans, research, issues, specs, documentation) using Steve Yegge's 5-stage iterative editorial refinement process until convergence.
+Review any intellectual artifact (code, plans, research, issues, specs, docs) using Steve Yegge's 5-stage iterative editorial refinement process until convergence.
 
-**Scope:** advisory — never edits the artifact under review.
+**Scope boundary:** advisory — never edits the artifact under review.
 **DO-NOT-PROCEED:** unconfirmable findings become `UNVERIFIED`
 (Validation rule); unevidenced findings are never flagged.
 

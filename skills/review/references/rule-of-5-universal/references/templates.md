@@ -104,7 +104,7 @@ Total Issues by Severity:
 
 1. [Strength] - [Location] - why it matters
 
-Finding bar (tiers MUST/SHOULD/CONSIDER), each with contrast:
+Authoring note: finding bar = tiers MUST/SHOULD/CONSIDER, each with contrast:
 BAD: "Tighten the intro."
 GOOD: "[ID] [HIGH] §2 promises three contributions, body delivers two - add it or drop the promise."
 

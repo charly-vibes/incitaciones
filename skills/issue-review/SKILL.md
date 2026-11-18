@@ -17,8 +17,9 @@ metadata:
 
 Review an issue set in five passes, with special attention to whether tickets are true tracer-bullet vertical slices.
 
-**Scope:** advisory — reports findings; never creates or edits tracker issues.
-**DO-NOT-PROCEED:** PASS 0 failures stop all passes. Remediation: fix collection per setup.md, rerun.
+**Scope boundary:** advisory — reports findings; never creates or edits tracker issues.
+**DO-NOT-PROCEED:** PASS 0 failures stop all passes.
+Remediation: fix per setup.md, rerun.
 
 ## Setup
 
