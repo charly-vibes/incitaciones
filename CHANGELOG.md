@@ -1,5 +1,15 @@
 ## [Unreleased]
 
+- Craft-gate hardening (incitaciones-lfw, rule-of-5 review residuals): marker matching in
+  `tests/test_craft_patterns.py` is now cosmetic-reflow tolerant (normalized substrings —
+  curly/straight quotes, bold/heading markup, case — so reflow can't flip a present pattern
+  to missing); over-budget failures state the trim-or-bump-BASE_COMMIT remedies; one
+  scope-label convention (`Scope boundary`) across families (`**Scope:** advisory` renamed
+  in rule-of-5-universal + issue-review; commit's heading form valid via normalization);
+  DO-NOT-PROCEED gate lines must fit house width 80 (issue-review's 101-char gate wrapped);
+  finding-bar guidance in rule-of-5 templates marked as an authoring note. All edited
+  members within +10% budgets; BASE_COMMIT unchanged.
+
 - Rule-of-5 review fixes on the craft backport: CI checkout now requests `fetch-depth: 0`
   (depth-1 runners broke the +10% budget gate's `git show` of the base-commit blob — main CI
   went red on 530974e, run 44379588354) and `base_size()` fails with a shallow-checkout hint;
