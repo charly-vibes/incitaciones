@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+- Format-drift smoke guard (incitaciones-49v): `scripts/skill_usage.py` now counts
+  recognized structural markers per store while scanning (pi/omp: message entries
+  with a role; omp also custom_message; codex: entries with a payload object) and
+  raises `FormatDriftError` when skill-mentioning files parse to zero known shapes —
+  previously an agent renaming its envelope formats would silently yield zeros.
+  Envelope-level markers only; no agent/schema version pinning (49v anti-goal).
+  New drift tests in `tests/test_skill_usage.py` (9 total).
+
 - Token-diff CI (incitaciones-bvv, port of antithesis-skills' compare-skill-context
   pattern): `scripts/skill-context.mjs` counts cl100k_base tokens per skill from
   `content/manifest.json` — partial (distilled SKILL.md) vs full (+references/) — with
