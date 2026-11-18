@@ -1,5 +1,12 @@
 ## [Unreleased]
 
+- Rule-of-5 review fixes on the craft backport: CI checkout now requests `fetch-depth: 0`
+  (depth-1 runners broke the +10% budget gate's `git show` of the base-commit blob — main CI
+  went red on 530974e, run 44379588354) and `base_size()` fails with a shallow-checkout hint;
+  `close` and `rule-of-5-universal` DO-NOT-PROCEED gates reworded for semantic precision
+  (commit-incomplete vs worktree-unclean; unconfirmable→UNVERIFIED vs unevidenced→never
+  flagged). All rewords within the +10% per-member budgets.
+
 - Antithesis craft backport (incitaciones-8fv): four patterns applied to the usage-ranked
   top members only — session family (renew/next/close), rule-of-5-universal, issue-review,
   commit. Scope-boundary sections (explicit does-NOT), DO-NOT-PROCEED gates with remediation
