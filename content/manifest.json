@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-29",
+  "version": "2026-11-18",
   "schema_version": "1.1",
   "prompts": [
     {
@@ -2061,7 +2061,25 @@
         "workflow"
       ],
       "disable_model_invocation": true,
-      "pointer_for": "session/close"
+      "pointer_for": "session/close",
+      "eval": {
+        "variants": {
+          "negative": {
+            "task_types": [
+              "workflow",
+              "session-lifecycle"
+            ],
+            "failure_signals": [
+              "end_of_day_ritual_applied_to_context_switch",
+              "in_progress_work_committed_and_pushed",
+              "context_clear_performed_mid_session",
+              "router_deferral_missing"
+            ],
+            "stages": [],
+            "notes": "Out-of-scope task: a MID-SESSION context switch (session router's park mode) phrased as 'the usual end-of-day thing'. Correct behavior = park (snapshot + next-step note, no commit+push ritual, no context clear); the user's end-of-day phrasing is the trap. The negative eval passes when the signals above FIRE on the fault-injected response, proving the rubric discriminates misuse. Maintainer oracle previously inline was moved here — the fixture must not coach the actor toward the correct (non-mutated) behavior."
+          }
+        }
+      }
     },
     {
       "name": "park",
@@ -2109,7 +2127,67 @@
         "workflow"
       ],
       "disable_model_invocation": true,
-      "pointer_for": "session/next"
+      "pointer_for": "session/next",
+      "eval": {
+        "task_types": [
+          "session-lifecycle",
+          "workflow"
+        ],
+        "success_signals": [
+          "topic_from_current_conversation",
+          "version1_contract_fields_present",
+          "exact_next_action_present",
+          "bounded_lookups_only",
+          "native_append_used"
+        ],
+        "failure_signals": [
+          "commits_or_pushes_performed",
+          "unbounded_history_loading",
+          "fabricated_entry_ids_or_sidecar_writes",
+          "success_claimed_on_failed_write"
+        ],
+        "stages": [
+          {
+            "name": "anchor",
+            "hints": [
+              "turu resolve branch",
+              "workspace facts: repo, branch, HEAD"
+            ]
+          },
+          {
+            "name": "compose",
+            "hints": [
+              "one stable topic",
+              "Format: 1 contract fields",
+              "exact next action"
+            ]
+          },
+          {
+            "name": "append-and-verify",
+            "hints": [
+              "turu append branch --stdin",
+              "report entry id",
+              "no success claim on failed write"
+            ]
+          }
+        ],
+        "variants": {
+          "negative": {
+            "task_types": [
+              "session-lifecycle",
+              "workflow"
+            ],
+            "failure_signals": [
+              "commits_or_pushes_performed",
+              "journal_or_ticket_mutations",
+              "context_clear_performed",
+              "unbounded_research_instead_of_stash"
+            ],
+            "stages": [],
+            "notes": "Out-of-scope task: a FULL end-of-session close (journal update, commit+push, context clear) handed to next, whose contract forbids research, commits, pushes, ticket mutations, journal updates, and context clearing. The canonical payload performs the entire close ritual; the eval passes when the signals fire, proving the rubric detects contract violations."
+          }
+        }
+      }
     },
     {
       "name": "renew",
@@ -2181,7 +2259,62 @@
         "workflow"
       ],
       "disable_model_invocation": true,
-      "pointer_for": "review/rule-of-5-universal"
+      "pointer_for": "review/rule-of-5-universal",
+      "eval": {
+        "task_types": [
+          "review"
+        ],
+        "success_signals": [
+          "five_stages_named_in_order",
+          "progressive_findings",
+          "specific_locations_cited",
+          "actionable_solutions_suggested",
+          "unverified_findings_marked",
+          "final_verdict_given"
+        ],
+        "failure_signals": [
+          "potential_issues_without_evidence",
+          "vague_locations",
+          "findings_repeated_without_building"
+        ],
+        "stages": [
+          {
+            "name": "draft",
+            "hints": [
+              "overall shape",
+              "architecture and scope"
+            ]
+          },
+          {
+            "name": "correctness-through-excellence",
+            "hints": [
+              "errors then clarity then edge cases then polish",
+              "convergence check each stage"
+            ]
+          },
+          {
+            "name": "final-report",
+            "hints": [
+              "synthesize findings",
+              "verdict"
+            ]
+          }
+        ],
+        "variants": {
+          "negative": {
+            "task_types": [
+              "review"
+            ],
+            "failure_signals": [
+              "implements_instead_of_reviews",
+              "no_stage_structure",
+              "edits_artifact_directly"
+            ],
+            "stages": [],
+            "notes": "Out-of-scope task: an IMPLEMENTATION request (fix the bugs, change the code) handed to a review method. Rule of 5 reviews artifacts and reports; it never edits the artifact or silently starts fixing. The canonical payload starts implementing without any stage structure."
+          }
+        }
+      }
     },
     {
       "name": "create-issues",
@@ -2229,7 +2362,68 @@
         "workflow"
       ],
       "disable_model_invocation": true,
-      "pointer_for": "issues/issue-review"
+      "pointer_for": "issues/issue-review",
+      "eval": {
+        "task_types": [
+          "issues",
+          "review"
+        ],
+        "success_signals": [
+          "passes_run_in_order",
+          "tracer_bullet_lens_applied",
+          "precise_issue_ids_referenced",
+          "issues_verified_before_flagging",
+          "convergence_evaluated",
+          "exact_edits_suggested"
+        ],
+        "failure_signals": [
+          "flags_unverified_problems",
+          "cosmetics_prioritized_over_blockers",
+          "pass_structure_skipped"
+        ],
+        "stages": [
+          {
+            "name": "gather",
+            "hints": [
+              "issue set plus source plan",
+              "pass 0 preflight for beads"
+            ]
+          },
+          {
+            "name": "content-passes",
+            "hints": [
+              "pass 1 clarity",
+              "pass 2 scope",
+              "pass 3 dependencies",
+              "pass 4 alignment",
+              "pass 5 executability",
+              "convergence check from pass 2"
+            ]
+          },
+          {
+            "name": "final-report",
+            "hints": [
+              "blockers first",
+              "exact tracker edits"
+            ]
+          }
+        ],
+        "variants": {
+          "negative": {
+            "task_types": [
+              "issues",
+              "review"
+            ],
+            "failure_signals": [
+              "reviews_code_instead_of_issues",
+              "no_pass_structure",
+              "unverified_claims_flagged"
+            ],
+            "stages": [],
+            "notes": "Out-of-scope task: a CODE/diff review request handed to the issue-set reviewer. issue-review reviews an ISSUE SET against tracer-bullet criteria, not source code style. The canonical payload drifts into line-by-line code review with unverified style flags and no pass structure."
+          }
+        }
+      }
     }
   ],
   "bundles": {
