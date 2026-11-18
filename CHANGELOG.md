@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+- Trigger hygiene (incitaciones-of8): `scripts/trigger-overlap.py --collisions` now reports
+  opt-in near-name collision candidates — manifest-name pairs sharing >= 5 leading chars or
+  within edit distance 2 (issues ~ issue-review, design-*/research-*/test-* families,
+  create-handoff ~ create-issues, renew ~ review), plus unknown `/skill:` tokens observed in
+  session stores matched by edit distance or truncation. Advisory only (HITL audit); the
+  default run's `OK`/exit contract that the release gate parses is unchanged. 13 unit tests.
+  Premise correction filed on the ticket: the x32 `/skill:issu` typo evidence was assistant/
+  toolResult echo contamination — zero user-typed `issu` invocations exist (clean
+  role==user extraction). park/create-handoff zero-usage evidence appended for the
+  retire-or-fix HITL decision (recommendation: keep as-is per incitaciones-06i pointer
+  permanence).
+
 - Clarify pending replacement validation; isolate the native CLI probe and add
   renewal decision scenarios with an updated evaluation rubric.
 
