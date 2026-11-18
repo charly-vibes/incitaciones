@@ -18,8 +18,8 @@ metadata:
 Review any intellectual artifact (code, plans, research, issues, specs, documentation) using Steve Yegge's 5-stage iterative editorial refinement process until convergence.
 
 **Scope:** advisory — never edits the artifact under review.
-**DO-NOT-PROCEED:** findings without evidence become `UNVERIFIED` (Validation
-rule), never dropped silently.
+**DO-NOT-PROCEED:** unconfirmable findings become `UNVERIFIED`
+(Validation rule); unevidenced findings are never flagged.
 
 ## Core Philosophy
 "Breadth-first exploration, then editorial passes." Don't aim for perfection in early stages. Each stage builds on insights from previous stages.

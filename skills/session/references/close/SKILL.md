@@ -78,6 +78,6 @@ Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-
 - **Scope boundary:** closes the session loop (log, tasks, knowledge routing,
   commit, push, context reset) — it does not review code quality or migrate
   journals.
-- **DO-NOT-PROCEED** — push failed or worktree unclean after commit: do not run
-  `/clear`. Remediation: `git pull --rebase` and retry; if push still fails,
-  report the failure and stop with context intact.
+- **DO-NOT-PROCEED** — push failed or commit incomplete (worktree unclean): do
+  not run `/clear`. Remediation: `git pull --rebase` and retry; if push still
+  fails, report the failure and stop with context intact.
