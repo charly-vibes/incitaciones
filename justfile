@@ -623,6 +623,14 @@ analyze-traces-auto *ARGS:
 trace-insights *ARGS:
     node scripts/trace-insights.js {{ARGS}}
 
+# Measure real skill usage across pi/omp/codex session stores (incitaciones-oy1)
+skill-usage *ARGS:
+    python3 scripts/skill_usage.py {{ARGS}}
+
+# Run extractor unit tests (fixture-driven, covers pi/omp/codex formats)
+skill-usage-test:
+    python3 tests/test_skill_usage.py -v
+
 # Validate distilled prompts
 validate-distilled:
     #!/usr/bin/env bash
@@ -1048,5 +1056,5 @@ generate-skill NAME:
 # Full CI pipeline — same commands locally and in CI (standardization §1).
 # Content lint (validate), link-check, file-header audit, distilled-prompt
 # gate, and generated-catalog freshness (skills/ + pi-package).
-ci: validate check-links header-audit validate-distilled validate-skills-dir validate-pi-package
+ci: validate check-links header-audit validate-distilled validate-skills-dir validate-pi-package skill-usage-test
     @echo "✅ CI pipeline passed"
