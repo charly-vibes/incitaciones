@@ -258,6 +258,8 @@ When a skill is consolidated away, high-traffic old names ship as **compiled poi
 
 Pointers are **permanent build artifacts, never deleted** (incitaciones-06i; supersedes the earlier one-release-then-remove policy): every distribution surface (site, npm/pi package, `skills/` catalog, flat installs) compiles the pointer as a provenance banner + the full member content via `scripts/lib/compile.mjs`, so legacy URLs and old `/skill:name` invocations always resolve to real content. The source-of-truth method content lives in the router member directory only. The single-level `pointer_for` field is validated by `just sync-manifest` (`scripts/compile-pointers.mjs --validate`).
 
+**Exception (2026-11-18, incitaciones-alo):** the zero-usage pointer aliases `park` and `create-handoff` were retired by explicit human decision on measured evidence (park: 0 invocations all-time; create-handoff: 3, none in 90d — audit in incitaciones-of8). Their compiled pointer files are preserved under `content/archive/`; the underlying modes remain in the `session` router. Permanence stays the default for high-traffic pointers (close, next, renew, create-issues, issue-review, rule-of-5-universal) — any further retirement requires the same HITL evidence bar.
+
 ## Manifest (`content/manifest.json`)
 
 The manifest is the authoritative registry of all prompts. It is consumed by `install.sh` and the site generator.
