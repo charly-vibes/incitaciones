@@ -17,7 +17,7 @@ metadata:
 
 # Close Session
 
-End the current session: log what was done, update tasks, route durable knowledge to the whisper workspace (turu-routed — see step 8), commit and push, clear context.
+End the current session: log what was done, update tasks, hand off unfinished work, route durable knowledge to the whisper workspace (turu-routed — see step 9), commit and push, close the wai session state, clear context.
 
 Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-routed: repo-local `.whisper/` by default, `~/.whisper/` only as the `--global` escape hatch) for accumulated operational knowledge. Agent shells run non-interactive and never source `.bashrc`, so the environment may be missing these exports — resolve both values per step 1 (env → shell config → convention → legacy fallback).
 
@@ -64,7 +64,12 @@ Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-
 
 7. If any tasks or follow-ups came up that aren't in a project/area, add them to `inbox.md`.
 
-8. **Route durable knowledge to the whisper workspace.** Scan the session for anything worth keeping and route by scope (skip this step entirely if nothing durable was learned). Resolve destinations via turu — never hand-derive paths or keys; the default destination is the checkout's repo-local `.whisper/`, and `~/.whisper/repos/<key>/…` is the `--global` escape hatch only:
+8. **Hand off unfinished work** (anything a future session must resume):
+   compose the version-1 turu entry per `../handoff-contract.md` — for
+   ticket-scoped work, mirror state into the bd ticket first (`bd note`,
+   contract's bd-primary rule) and apply the claims decision (keep with a
+   bd resume note, or release if nothing was committed).
+9. **Route durable knowledge to the whisper workspace.** Scan the session for anything worth keeping and route by scope (skip this step entirely if nothing durable was learned). Resolve destinations via turu — never hand-derive paths or keys; the default destination is the checkout's repo-local `.whisper/`, and `~/.whisper/repos/<key>/…` is the `--global` escape hatch only:
    - **Branch-specific finding** → `bd note <beads-epic>` or `turu append branch --text "…"` (fallback: `notes.md` in the branch slot)
    - **Repo-wide infra fact** → `turu append repo --text "…"` (fallback: repo-slot `env.md`)
    - **Universal agent behavior rule** → `bd remember` or `turu append global --text "…"` (fallback: `~/.whisper/rules.md`)
@@ -77,12 +82,18 @@ Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-
      ```
    - **Checklist:** the destination must match `turu resolve <scope>` output when turu is available — if it doesn't, stop and warn instead of writing.
 
-9. Commit and push. Stage only the files this session touched, explicitly by name:
-   ```bash
-   cd "$JOURNAL" && git add <log-file> [<files>] && git commit -m "log: YYYY-MM-DD session notes" && git push
-   ```
+10. Commit and push. Stage only the files this session touched, explicitly by name:
+    ```bash
+    cd "$JOURNAL" && git add <log-file> [<files>] && git commit -m "log: YYYY-MM-DD session notes" && git push
+    ```
 
-10. As the very last step, run `/clear` to reset the conversation context.
+11. **Close the wai session state** so resume detection stays fresh:
+    ```bash
+    wai close   # pass --project <name> (or WAI_PROJECT) when auto-detect fails in multi-project dirs
+    ```
+    Non-fatal: on failure, report and continue.
+
+12. As the very last step, run `/clear` to reset the conversation context.
 
 ## Rules
 

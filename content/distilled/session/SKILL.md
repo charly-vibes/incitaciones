@@ -7,15 +7,15 @@ Route a session-lifecycle task to the right mode, then read that mode's instruct
 | Task signal | Mode | Read |
 |---|---|---|
 | "wrap up", "close session", end-of-session summary + commit + push + context clear | close | `references/close/SKILL.md` |
-| switch context now, will return later; stash work + release claims | park | `references/park/SKILL.md` |
+| switch context now, will return later; stash work + claims decision | next | `references/next/SKILL.md` |
 | fast snapshot, no ceremony; resume later via `/renew` | next | `references/next/SKILL.md` |
-| resume work on a project/area; load journal, whisper, beads context; claim work | renew | `references/renew/SKILL.md` |
+| resume work on a project/area; omp recap + beads + whisper orientation; claim work | renew | `references/renew/SKILL.md` |
 | generate a context/handoff document for session continuity | create-handoff | `references/create-handoff/SKILL.md` |
 | continue from a previous session's handoff document | resume-handoff | `references/resume-handoff/SKILL.md` |
 
 ## Selection rules
 
-- Full ceremony with journal routing and push → **close**. Quick stash without ceremony → **next**. Context switch mid-session → **park**.
+- Full ceremony with journal routing and push → **close**. Quick stash without ceremony → **next** (mid-context-switch = next plus the claims decision; the old park procedure is folded there).
 - The user asks *how to continue later* → **create-handoff**; the user asks *to continue* from an existing handoff → **resume-handoff**.
 - "renew" always means resuming; "close" always means ending. When unsure whether the user wants to stop or stash, ask one clarifying question.
 

@@ -4,7 +4,9 @@
 
 Save minimum sufficient continuation state from the conversation.
 **Scope boundary:** handoff entries only — no research, commits, pushes,
-ticket mutations, journal updates, or context clearing.
+journal updates, or context clearing. Mid-session context switch (formerly
+/park): same procedure, no commit/push, no /clear; the human-readable
+journal entry happens at close.
 
 1. Keep commands anchored to the original workspace. Resolve routing with
    `turu resolve branch --json`; honor explicit routing/privacy rules. Default
@@ -13,42 +15,27 @@ ticket mutations, journal updates, or context clearing.
 2. Identify the task topic from the conversation. If needed, discover existing
    topics with `turu recall branch --digest --budget 4000 --no-usage --json`.
    Do not load unrelated history. Gather cheap timestamp/repo/branch/HEAD facts.
-3. Compose the version-1 entry below from known conversation state. Save with
+3. Compose the version-1 entry per `../handoff-contract.md` from known
+   conversation state. For ticket-scoped work, mirror the state into the bd
+   ticket first (`bd note`, contract's bd-primary rule). Save the entry with
    `turu append branch --topic <topic> --stdin --json`, passing the exact entry
    through stdin. Use `--supersedes <id>` only under the contract's ownership rule.
    No manual entry IDs, path derivation, or sidecar mutations.
-4. Check the append result. Report scope, topic and returned entry ID/path when
+4. Resolve in-progress claims when stashing mid-work (the /park case):
+   ```bash
+   BRANCH=$(git branch --show-current 2>/dev/null)
+   bd list --status in_progress --label branch:$BRANCH 2>/dev/null
+   ```
+   - Meaningful work committed → keep the claim; the bd note from step 3
+     records the resume point.
+   - Nothing committed → release it so another agent can pick up:
+     `bd update <id> --assignee "" --status open`.
+5. Check the append result. Report scope, topic and returned entry ID/path when
    available. Never claim success after a failed write. Say `/renew` can resume it.
 
 **DO-NOT-PROCEED** — append failed or unverifiable: never claim success.
 Remediation: retry once with identical flags; if it fails again, report and stop.
 
 Do not ask routine questions. Preserve older notes and unrelated entries.
-
-## Shared native Whisper handoff contract (version 1)
-
-Store handoffs as ordinary branch entries, not separate files. Use one stable
-bare-word topic per task: `resume-<ticket-id>` or a short filesystem-safe objective
-slug. Reuse an existing task topic. Include `Format: 1`, UTC timestamp, repo identity
-without credentials, branch, HEAD, session ID, and task in the entry body.
-
-Include: objective; current phase (research/design/red/green/review/commit);
-current state; exact next action; essential decisions/constraints and authorization
-limits; observed ticket ownership; validation command/result (or not run);
-unresolved findings/blockers; conditional path/section references. Mark unknowns.
-Aim for 400 words; do not omit critical constraints to meet the target. No secrets.
-
-Use native append publication and native entry IDs. Supersede only a known prior
-entry for the SAME task/session that this snapshot fully replaces; never supersede
-another session's entry blindly. Include `Previous entry: <id or none>` in the
-new body when replacing a known entry, so the relation survives multiline parsing.
-Do not assume native recall hides superseded entries. Concurrent entries remain visible for conflict
-resolution. Do not directly rewrite notes or sidecar files. Native entries are
-available to ordinary recall/distill and scope-based bundle workflows; actual sync
-and transport depend on the workspace configuration, not these skills.
-
-When turu lacks a required flag, inspect command help once and use the supported
-bounded path; do not repeatedly retry unsupported syntax. Without turu, honor
-explicit repo routing or an existing local workspace, append a timestamped
-version-1 section to branch notes, and read only bounded recent sections. Unknown
-routing blocks saving rather than guessing a global destination. No parallel store.
+Entry format, supersession ownership, and bd mirroring: read
+`../handoff-contract.md` before composing.
