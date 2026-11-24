@@ -2,16 +2,8 @@
 
 ### 2026-11-24
 
-- Fix issue-review session-size checks (incitaciones-6mn, review of 4ts): Check 4 reads bd's actual JSON key estimated_minutes (the shipped code read estimate, which bd never emits — every issue flagged NO-ESTIMATE, OVERSIZED unreachable); ceiling made token-primary (150K tokens = one session budget, 2x subagent median) with measured lane hints (corpus p50 5,747 tok/min afk / 1,605 interactive → 150K ≈ 26/93 min; the old single 120-min equivalence failed by 2-45x per mode); est==0 flagged as NO-ESTIMATE; --status all sweep note; lens/pass-2/pass-5 reworded. Verified live: catches incitaciones-av4 (180 min).
+- Simplify session lifecycle (incitaciones-53q): handoff contract single-sourced to references/handoff-contract.md (was duplicated verbatim in next+renew); park folded into next (mid-switch variant with the claims decision; context.md file mechanism replaced by version-1 turu entries, park kept as pointer stub); renew slimmed 97->50 lines with cheap-native orientation first (omp session recap + bd ready/show before turu recall; supersession verification kept, byte-budget rules compressed); close gains the handoff step (contract entry + bd mirror) and wraps 'wai close' before /clear, unifying the two close procedures; handoff contract adds the bd-primary rule (ticket state lives in bd notes, turu entry is transport); issue-review pass-2 gains the bd-continuation bullet. Pointer/trigger/security gates + validators + ah check pass.
 
-
-#### Changed - journal path: the removed `~/dev/status` legacy clone replaced by `~/para/areas/jornal` everywhere
-
-- The `~/dev/status` incitaciones journal clone was retired (removed 2026-09-29) — it was a second, stale clone of `ak/akielbowicz/journal`, which also backs the `~/.whisper` knowledge workspace. Before removal, its only unique content (a 2026-09-20 stash holding four talleres session entries lost from the day log) was recovered into the live clone.
-- All skill sources and installed copies (`close`, `park`, `renew`, `session/references/*`, plus `other-skills/` — archive, capture, migrate, morning, standup, weekly, local-plan) now default to `~/para/areas/jornal` (symlink → `ak/journal`); the close skill's last-ditch fallback no longer points at the removed path. `JOURNAL_PATH`/`JOURNAL_LOG_SUBDIR` exports added to nushell `env.nu` via chezmoi (bashrc already had them — nu was the gap that made sessions hit the legacy default).
-- Fallback smoke-verified with an empty environment; zero live references remain (CHANGELOG history, eval cache, and generated `_site/` untouched).
-
-## [0.10.4] - 2026-09-28
 
 #### Fixed - renew mode: turu is now the first data-source decision, not a late step 7 (incitaciones-u6j)
 

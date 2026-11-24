@@ -340,6 +340,9 @@ Session-size fit (falsifiable, not vibes):
 - A ticket that honestly needs two sessions is two tickets: the boundary must be a
   closed ticket + commit, never conversation memory (a fresh session recovers via
   `bd ready`, not a transcript).
+- A ticket parked or resumed mid-cycle carries its continuation state in the bd
+  ticket itself (`bd note`: done, safe resume point, blockers) — renew starts at
+  `bd ready`/`bd show`, not at transcripts or sidecar handoff files.
 
 ---
 
