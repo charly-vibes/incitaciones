@@ -11,6 +11,15 @@ Focus on:
 - Are AFK tickets backed by an objective gate (CI/test suite/Meter), or tagged `no-gate` and kept out of autonomous scheduling?
 - Are HITL handoff points explicit?
 - Is it clear what demo, test, or observable behavior proves completion?
+- Is the ticket self-contained for a fresh agent session — everything needed lives
+  in the issue body, `metadata.files`, or the repo, with no reliance on
+  prior-session context?
+- Do TDD tickets name the red gate explicitly (failing test + command), so red state
+  survives a mid-session compaction or session boundary — recoverable via
+  `bd show`/`bd note`, not from a transcript?
+- Do complexity and estimate agree? A `complexity:s/m` ticket with an estimate above
+  the one-cycle ceiling (or `complexity:xl` within it) is mis-tagged — retag before
+  scheduling.
 
 Watch for:
 - Hidden conversational context

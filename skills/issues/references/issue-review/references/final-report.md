@@ -24,6 +24,7 @@ Convergence: Pass [N]
 - Slice quality: [Excellent|Good|Fair|Poor]
 - Horizontal-ticket leakage: [None|Low|Moderate|High]
 - AFK/HITL clarity: [Excellent|Good|Fair|Poor]
+- Session-size fit: [Excellent|Good|Fair|Poor]
 
 ### What's Working Well
 

@@ -49,6 +49,7 @@ Treat the best issue sets as:
 - traceable back to stories, plans, or specs
 - self-describing: tickets that create or reshape source files carry the file-header criterion (see `file-headers`) — undocumented files force agents to re-derive intent
 - machine-verifiable value claims: quantified Must gate, runnable Meter, explicit anti-goals, and a `base_commit` anchor that reveals staleness
+- sized to one agent session: carries an `estimate` within the one-cycle ceiling (~120 min ≈ one context budget before compaction), so a fresh session finishes the ticket; oversized tickets are split into children, never scaled up mid-flight
 
 ## Rules
 
@@ -112,6 +113,7 @@ Convergence: Pass [N]
 - Slice quality: [Excellent|Good|Fair|Poor]
 - Horizontal-ticket leakage: [None|Low|Moderate|High]
 - AFK/HITL clarity: [Excellent|Good|Fair|Poor]
+- Session-size fit: [Excellent|Good|Fair|Poor]
 
 ### What's Working Well
 
@@ -225,6 +227,40 @@ bd update <id> --metadata "{\"base_commit\": \"$sha\"}"
 ```
 Tickets missing `base_commit` entirely: flag as part of PRE-001 remediation.
 
+**Check 4 — estimate coverage and session-size ceiling:**
+```bash
+bd list --format json | python3 -c "
+import json, sys
+CEILING = 120  # minutes: one red->green->refactor cycle, one context budget
+for i in json.load(sys.stdin):
+    est = i.get('estimate')
+    if est is None:
+        print(i['id'], 'NO-ESTIMATE')
+    elif est > CEILING:
+        print(i['id'], 'OVERSIZED', est)
+"
+```
+Flag `[PRE-005] MEDIUM` for NO-ESTIMATE: without an estimate nothing tells an agent
+whether the ticket fits one session's context budget (~150K tokens before compaction).
+Batch fix: `bd update <id> --estimate 90`.
+Flag `[PRE-006] HIGH` for OVERSIZED: the ticket cannot be completed in one session;
+running it anyway forces mid-cycle compaction (losing red/green state) or an abandoned
+claim. Fix: split into children at creation — one `bd create` per cycle, each wired
+`--deps 'blocked-by:<previous-child-id>'` — or tag `complexity:xl` and treat as a
+decomposition candidate (see Pass 5).
+
+**Check 5 — abandoned claims:**
+```bash
+bd list --format json | python3 -c "
+import json, sys
+for i in json.load(sys.stdin):
+    if i.get('status') == 'in_progress':
+        print(i['id'], 'CLAIMED', i.get('updated_at') or i.get('updatedAt') or '?')
+"
+```
+Flag `[PRE-007] LOW` for each: a claimed ticket may belong to a dead session. Fix:
+`bd reclaim` returns stale leases to ready; `bd close <id>` if the work actually landed.
+
 **Prefix:** PRE-001, PRE-002, etc.
 
 ---
@@ -288,6 +324,14 @@ Questions to ask:
 - Would splitting it by component create worse tickets?
 
 Prefix findings with `SCOPE-`.
+
+Session-size fit (falsifiable, not vibes):
+
+- One session = one red→green→refactor cycle inside a single context budget
+  (~150K tokens ≈ estimate ≤ 120 minutes). PRE-005/PRE-006 enforce this mechanically.
+- A ticket that honestly needs two sessions is two tickets: the boundary must be a
+  closed ticket + commit, never conversation memory (a fresh session recovers via
+  `bd ready`, not a transcript).
 
 ---
 
@@ -356,6 +400,15 @@ Focus on:
 - Are AFK tickets backed by an objective gate (CI/test suite/Meter), or tagged `no-gate` and kept out of autonomous scheduling?
 - Are HITL handoff points explicit?
 - Is it clear what demo, test, or observable behavior proves completion?
+- Is the ticket self-contained for a fresh agent session — everything needed lives
+  in the issue body, `metadata.files`, or the repo, with no reliance on
+  prior-session context?
+- Do TDD tickets name the red gate explicitly (failing test + command), so red state
+  survives a mid-session compaction or session boundary — recoverable via
+  `bd show`/`bd note`, not from a transcript?
+- Do complexity and estimate agree? A `complexity:s/m` ticket with an estimate above
+  the one-cycle ceiling (or `complexity:xl` within it) is mis-tagged — retag before
+  scheduling.
 
 Watch for:
 - Hidden conversational context
