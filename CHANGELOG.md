@@ -2,19 +2,8 @@
 
 ### 2026-11-24
 
-- Session-size checks for issue-review (incitaciones-4ts): PASS 0 gains an estimate-coverage + ceiling scan (PRE-005 NO-ESTIMATE / PRE-006 OVERSIZED above 120 min — one red→green→refactor cycle ≈ one ~150K-token context budget before compaction) and an abandoned-claim scan (PRE-007; bd reclaim / bd close); Pass 2 defines falsifiable session-size fit (two-session tickets are two tickets; boundary is closed ticket + commit); Pass 5 adds fresh-session self-containment, red-gate persistence via bd show/bd note instead of transcripts, and a complexity-estimate retag rule; final report template gains a Session-size fit line. skills/ catalog regenerated (45 skills).
+- Fix issue-review session-size checks (incitaciones-6mn, review of 4ts): Check 4 reads bd's actual JSON key estimated_minutes (the shipped code read estimate, which bd never emits — every issue flagged NO-ESTIMATE, OVERSIZED unreachable); ceiling made token-primary (150K tokens = one session budget, 2x subagent median) with measured lane hints (corpus p50 5,747 tok/min afk / 1,605 interactive → 150K ≈ 26/93 min; the old single 120-min equivalence failed by 2-45x per mode); est==0 flagged as NO-ESTIMATE; --status all sweep note; lens/pass-2/pass-5 reworded. Verified live: catches incitaciones-av4 (180 min).
 
-
-#### Added - rule-of-5-universal: conditional TypeSafe (Jev) verification pass for review findings (incitaciones-axy)
-
-- New progressive-disclosure tier `content/distilled/review/references/rule-of-5-universal/references/typesafe-verification.md`, loaded only when `TYPESAFE_API_KEY` is set. It makes the skill's Validation rule executable: mechanical pre-gate (location exists, quoted evidence appears verbatim — no API), then one parallel Choice question per finding (`verified/unsupported/contradicted/fabricated`) with a tunable 0.8 confidence gate, capped to CRITICAL/HIGH findings for cost.
-- Tier-0 trigger added to the rule-of-5-universal SKILL.md Validation rule (~40 tokens when the key is absent): apply the verification pass when the key is set; otherwise mark findings `UNVERIFIED`, print a banner, and fall back to self-reported validation (explicit degradation path).
-- Verdicts now feed a **measured** false-positive rate into the convergence arithmetic, replacing the previous self-estimated-only input (self-report retained as one input among several, per Jev re-validation scoring 'self-report is unreliable' at only 0.23).
-- Design validated against docs.typesafe.ai (citation_check, composite-scoring, confidence-routing patterns) and re-validated live with jev-1.13.0: 8/9 design conclusions confirmed (mechanical pre-gate then model: confidence 1.00; stages 1/5 stay generative: 1.00). Live smoke test: real finding verified at 0.89 (stands); planted fabrication returned `fabricated` at 0.43 → correctly routed to human review below the gate instead of auto-drop.
-- Constants (endpoint, `jev-latest`, `CONFIDENCE_GATE`, `VERIFY_SEVERITIES`, batching) live in one reviewable table per TypeSafe's own 'constants in one place' principle; the reference is self-contained so the `typesafe-ai` skill is an optimization, not a dependency.
-- `just validate-distilled` and `just sync-manifest` pass (manifest version 2026-09-28 → 2026-09-30). Installed `.agents/skills/` copies regenerate on next install/publish; the committed installed copy is not hand-edited.
-
-## [0.10.5] - 2026-09-29
 
 #### Changed - journal path: the removed `~/dev/status` legacy clone replaced by `~/para/areas/jornal` everywhere
 

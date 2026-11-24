@@ -72,15 +72,18 @@ Tickets missing `base_commit` entirely: flag as part of PRE-001 remediation.
 ```bash
 bd list --format json | python3 -c "
 import json, sys
-CEILING = 120  # minutes: one red->green->refactor cycle, one context budget
+TOKEN_BUDGET = 150_000   # one session's context budget (2x subagent median 77K)
+# Ceiling is token-primary: corpus p50 rates are 5,747 tok/min (afk/subagent) and
+# 1,605 tok/min (interactive), so 150K tokens = ~26 min afk, ~93 min interactive.
 for i in json.load(sys.stdin):
-    est = i.get('estimate')
-    if est is None:
+    est = i.get('estimated_minutes')  # bd JSON key; the CLI flag is --estimate
+    if est is None or est == 0:
         print(i['id'], 'NO-ESTIMATE')
-    elif est > CEILING:
+    elif est > 120:
         print(i['id'], 'OVERSIZED', est)
 "
 ```
+Plain `bd list` scans open issues; pass `--status all` for a full sweep.
 Flag `[PRE-005] MEDIUM` for NO-ESTIMATE: without an estimate nothing tells an agent
 whether the ticket fits one session's context budget (~150K tokens before compaction).
 Batch fix: `bd update <id> --estimate 90`.
@@ -88,7 +91,9 @@ Flag `[PRE-006] HIGH` for OVERSIZED: the ticket cannot be completed in one sessi
 running it anyway forces mid-cycle compaction (losing red/green state) or an abandoned
 claim. Fix: split into children at creation — one `bd create` per cycle, each wired
 `--deps 'blocked-by:<previous-child-id>'` — or tag `complexity:xl` and treat as a
-decomposition candidate (see Pass 5).
+decomposition candidate (see Pass 5). Minutes are lane-dependent: at measured p50
+rates 150K tokens is ~26 min of afk run time or ~93 min of interactive work, so the
+120-minute mark is a scheduling midpoint — the token budget is the real ceiling.
 
 **Check 5 — abandoned claims:**
 ```bash

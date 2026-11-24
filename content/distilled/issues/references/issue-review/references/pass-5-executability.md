@@ -18,8 +18,8 @@ Focus on:
   survives a mid-session compaction or session boundary — recoverable via
   `bd show`/`bd note`, not from a transcript?
 - Do complexity and estimate agree? A `complexity:s/m` ticket with an estimate above
-  the one-cycle ceiling (or `complexity:xl` within it) is mis-tagged — retag before
-  scheduling.
+  the one-cycle ceiling (PRE-006: > 120 min ≈ one ~150K-token context budget; or
+  `complexity:xl` within it) is mis-tagged — retag before scheduling.
 
 Watch for:
 - Hidden conversational context
