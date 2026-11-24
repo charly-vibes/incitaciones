@@ -20,3 +20,11 @@ Questions to ask:
 - Would splitting it by component create worse tickets?
 
 Prefix findings with `SCOPE-`.
+
+Session-size fit (falsifiable, not vibes):
+
+- One session = one red→green→refactor cycle inside a single context budget
+  (~150K tokens ≈ estimate ≤ 120 minutes). PRE-005/PRE-006 enforce this mechanically.
+- A ticket that honestly needs two sessions is two tickets: the boundary must be a
+  closed ticket + commit, never conversation memory (a fresh session recovers via
+  `bd ready`, not a transcript).

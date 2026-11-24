@@ -34,6 +34,7 @@ Treat the best issue sets as:
 - traceable back to stories, plans, or specs
 - self-describing: tickets that create or reshape source files carry the file-header criterion (see `file-headers`) — undocumented files force agents to re-derive intent
 - machine-verifiable value claims: quantified Must gate, runnable Meter, explicit anti-goals, and a `base_commit` anchor that reveals staleness
+- sized to one agent session: carries an `estimate` within the one-cycle ceiling (~120 min ≈ one context budget before compaction), so a fresh session finishes the ticket; oversized tickets are split into children, never scaled up mid-flight
 
 ## Rules
 

@@ -68,4 +68,38 @@ bd update <id> --metadata "{\"base_commit\": \"$sha\"}"
 ```
 Tickets missing `base_commit` entirely: flag as part of PRE-001 remediation.
 
+**Check 4 — estimate coverage and session-size ceiling:**
+```bash
+bd list --format json | python3 -c "
+import json, sys
+CEILING = 120  # minutes: one red->green->refactor cycle, one context budget
+for i in json.load(sys.stdin):
+    est = i.get('estimate')
+    if est is None:
+        print(i['id'], 'NO-ESTIMATE')
+    elif est > CEILING:
+        print(i['id'], 'OVERSIZED', est)
+"
+```
+Flag `[PRE-005] MEDIUM` for NO-ESTIMATE: without an estimate nothing tells an agent
+whether the ticket fits one session's context budget (~150K tokens before compaction).
+Batch fix: `bd update <id> --estimate 90`.
+Flag `[PRE-006] HIGH` for OVERSIZED: the ticket cannot be completed in one session;
+running it anyway forces mid-cycle compaction (losing red/green state) or an abandoned
+claim. Fix: split into children at creation — one `bd create` per cycle, each wired
+`--deps 'blocked-by:<previous-child-id>'` — or tag `complexity:xl` and treat as a
+decomposition candidate (see Pass 5).
+
+**Check 5 — abandoned claims:**
+```bash
+bd list --format json | python3 -c "
+import json, sys
+for i in json.load(sys.stdin):
+    if i.get('status') == 'in_progress':
+        print(i['id'], 'CLAIMED', i.get('updated_at') or i.get('updatedAt') or '?')
+"
+```
+Flag `[PRE-007] LOW` for each: a claimed ticket may belong to a dead session. Fix:
+`bd reclaim` returns stale leases to ready; `bd close <id>` if the work actually landed.
+
 **Prefix:** PRE-001, PRE-002, etc.
