@@ -19,7 +19,8 @@ metadata:
 
 Save minimum sufficient continuation state from the conversation.
 **Scope boundary:** handoff entries only — no research, commits, pushes,
-journal updates, or context clearing. Mid-session context switch (formerly
+journal updates, or context clearing; bd claim/notes updates are in scope.
+Mid-session context switch (formerly
 /park): same procedure, no commit/push, no /clear; the human-readable
 journal entry happens at close.
 
@@ -36,15 +37,8 @@ journal entry happens at close.
    `turu append branch --topic <topic> --stdin --json`, passing the exact entry
    through stdin. Use `--supersedes <id>` only under the contract's ownership rule.
    No manual entry IDs, path derivation, or sidecar mutations.
-4. Resolve in-progress claims when stashing mid-work (the /park case):
-   ```bash
-   BRANCH=$(git branch --show-current 2>/dev/null)
-   bd list --status in_progress --label branch:$BRANCH 2>/dev/null
-   ```
-   - Meaningful work committed → keep the claim; the bd note from step 3
-     records the resume point.
-   - Nothing committed → release it so another agent can pick up:
-     `bd update <id> --assignee "" --status open`.
+4. Resolve in-progress claims per the **Claims decision** section of
+   `../handoff-contract.md` (the /park case).
 5. Check the append result. Report scope, topic and returned entry ID/path when
    available. Never claim success after a failed write. Say `/renew` can resume it.
 

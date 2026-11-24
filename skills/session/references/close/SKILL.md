@@ -52,8 +52,8 @@ Uses `$JOURNAL_PATH` for the daily log journal, and the whisper workspace (turu-
 8. **Hand off unfinished work** (anything a future session must resume):
    compose the version-1 turu entry per `../handoff-contract.md` — for
    ticket-scoped work, mirror state into the bd ticket first (`bd note`,
-   contract's bd-primary rule) and apply the claims decision (keep with a
-   bd resume note, or release if nothing was committed).
+   contract's bd-primary rule) and apply the claims decision (contract's
+   **Claims decision** section).
 9. **Route durable knowledge to the whisper workspace.** Scan the session for anything worth keeping and route by scope (skip this step entirely if nothing durable was learned). Resolve destinations via turu — never hand-derive paths or keys; the default destination is the checkout's repo-local `.whisper/`, and `~/.whisper/repos/<key>/…` is the `--global` escape hatch only:
    - **Branch-specific finding** → `bd note <beads-epic>` or `turu append branch --text "…"` (fallback: `notes.md` in the branch slot)
    - **Repo-wide infra fact** → `turu append repo --text "…"` (fallback: repo-slot `env.md`)

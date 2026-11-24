@@ -15,10 +15,28 @@ constraints to meet the target. No secrets.
 
 **Ticket-scoped handoffs are bd-primary.** When the work maps to a bd ticket,
 mirror the state into the ticket itself (`bd note <id> "Parked <time>. Done:
-… . Safe to resume from: <commit>."`) before writing the turu entry. bd is
+… . Safe to resume from: <commit or 'uncommitted worktree' + one-line git
+status summary>."`) before writing the turu entry. bd is
 the primary continuation source — `bd ready`/`bd show` recover it — and the
 turu entry carries only what does not belong in a ticket (cross-ticket
 session context, authorization limits).
+
+## Claims decision (stashing mid-work)
+
+When stashing while tickets are claimed (next mid-context-switch variant;
+close's handoff step), resolve each in-progress claim on this branch:
+
+```bash
+BRANCH=$(git branch --show-current 2>/dev/null)
+bd list --status in_progress --label branch:$BRANCH 2>/dev/null
+```
+
+- **Meaningful work was committed:** keep the claim; the bd-primary note
+  records the resume point.
+- **Nothing was committed:** release it so another agent can pick it up:
+  ```bash
+  bd update <id> --assignee "" --status open
+  ```
 
 Use native append publication and native entry IDs. Supersede only a known
 prior entry for the SAME task/session that this snapshot fully replaces;

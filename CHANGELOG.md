@@ -2,16 +2,8 @@
 
 ### 2026-11-24
 
-- Simplify session lifecycle (incitaciones-53q): handoff contract single-sourced to references/handoff-contract.md (was duplicated verbatim in next+renew); park folded into next (mid-switch variant with the claims decision; context.md file mechanism replaced by version-1 turu entries, park kept as pointer stub); renew slimmed 97->50 lines with cheap-native orientation first (omp session recap + bd ready/show before turu recall; supersession verification kept, byte-budget rules compressed); close gains the handoff step (contract entry + bd mirror) and wraps 'wai close' before /clear, unifying the two close procedures; handoff contract adds the bd-primary rule (ticket state lives in bd notes, turu entry is transport); issue-review pass-2 gains the bd-continuation bullet. Pointer/trigger/security gates + validators + ah check pass.
+- Apply rule-of-5 review actions to session lifecycle (incitaciones-ucq): renew's bd orientation now discovers kept in_progress claims (bd ready excludes them - verified via bd ready help) via bd list --status in_progress --label branch:<branch>; recap query hardened (shell-side basename fallback for worktree/subdir cwds - sqlite3 has no basename() function, caught by live test; absent-db/error skip guidance); claims keep/release block single-sourced into handoff-contract.md Claims decision section (fixes next/close duplication and the undefined reference in close step 8); next scope boundary now admits bd claim/notes updates (was self-contradictory with step 4); contract resume-point example handles uncommitted worktrees.
 
-
-#### Fixed - renew mode: turu is now the first data-source decision, not a late step 7 (incitaciones-u6j)
-
-- Occurrence audit of September pi sessions (63 renew-mode sessions): only 13 ever ran `turu`; in 12 of those it ran *after* the journal greps (median ~40s later), and 50 sessions skipped turu entirely in favor of hand-rolled `~/.whisper` ls/find — including 30 sessions run after turu was installed. Only 1 session checked turu first.
-- The renew procedure now gates everything on a data-source decision made immediately after the journal pull (new step 2): `turu key --json` first; when turu is available, `turu recall repo|branch` runs now and supersedes the recent-log/inbox greps (steps 6-7), with an explicit prohibition on `ls`/`find ~/.whisper/` path guessing; the hand-rolled whisper fallback is confined to the turu-absent branch and repeats only when turu is genuinely absent. Worktree recall (`turu recall worktree`) is tied to actual worktree use in step 9.
-- `just skill-eval session` still passes 2/2; its rubric does not yet cover renew/turu ordering (follow-up filed).
-
-## [0.10.3] - 2026-09-25
 
 #### Fixed - renew skill loads whisper context via turu instead of a broken legacy pipeline (incitaciones-1nb, incitaciones-cap)
 
