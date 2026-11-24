@@ -1,0 +1,22 @@
+All completion criteria pass. Final report:
+
+## Final report — pretender gate debt (charly-1xh)
+
+**Result: `pretender check --mode gate` exit 0 — all 64 violations fixed, none skipped.**
+
+**Violations fixed per category**
+- **file_lines (5)**: 5 oversized files split into modules — `analyze-traces.js` (1942→10 modules), `cli.mjs` (→5 lib modules), `extract_links.py`/`check_links.py` (→6 py modules), `skills/` regenerated via `generate-skills-dir`.
+- **cyclomatic/cognitive/abc/params/nesting (~59)**: table-driven parsers (`parseArgs` ×3), rules tables (`normalizeRole`, `inferTaskType`, outcomes), decomposed mega-functions (`analyzeStructuredContent` 46→helpers, `formatMarkdown` 30→8 section formatters, `buildEffectivenessSummary`, `collect_headings`, `fetch_external`, `extract_markdown`, `doInstall`), context objects for params>4.
+- One self-inflicted `exported_cyclomatic` caught by the gate mid-run, fixed.
+
+**Bonus**: `analyze-traces.js`/`trace-insights.js` were crashing at runtime (CJS in ESM package) — now ESM and verified end-to-end on synthetic traces; Python refactors verified byte-identical differentially against HEAD.
+
+**Commits**: `8168e3e`, `4465350`, `1a48e51`, `d8fe8ca` (all `fix/refactor(quality)`, atomic, no `--no-verify` needed).
+
+**Completion criteria (exact commands)**
+- `pretender check --mode gate` → exit **0**
+- `just validate` → **0**; `just check-links` → **0**; pre-push trio (`validate-distilled`/`validate-pi-package`/`validate-skills-dir`) → all **0**
+- `git status --porcelain` → only pre-existing untracked `.wai/projects/incitaciones/runs/pretender-debt.log` (orchestrator artifact, left unstaged)
+
+Not pushed (per brief). `pretender.toml` untouched; no baselines/adopts used.
+SUBAGENT_DONE exit=0
