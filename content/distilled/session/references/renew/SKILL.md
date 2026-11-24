@@ -16,14 +16,24 @@ either entry.
    first. Resolve routing with `turu resolve branch --json` only when turu
    writes/recall are needed; honor privacy and explicit routing rules.
 2. **Cheap native orientation first, in order:**
-   - Latest omp session recap for this cwd:
+   - Latest omp session recap for this cwd; on sqlite error (the db is
+     machine-local and may not exist) or empty result, skip to the next
+     source:
      ```bash
      sqlite3 -readonly ~/.omp/agent/history.db \
        "select recap from session_recaps where cwd='$(pwd)' order by created_at desc limit 1"
+     # same repo under another path (worktree/subdir)? basename fallback:
+     b=$(basename "$(pwd)")
+     sqlite3 -readonly ~/.omp/agent/history.db \
+       "select cwd, recap from session_recaps where cwd like '%/' || '$b' \
+        order by created_at desc limit 3"
      ```
      plus any on-disk handoff docs (compaction `handoffSaveToDisk`).
-   - bd state for ticket work: `bd ready`, then `bd show <id>` — its notes
-     carry parked progress (the bd-primary rule in the handoff contract).
+   - bd state for ticket work: `bd ready` plus kept claims on this branch —
+     `bd ready` excludes in_progress, so a parked claim surfaces only via
+     `bd list --status in_progress --label branch:$(git branch --show-current)`;
+     `bd show <id>` reads parked-progress notes (the bd-primary rule in the
+     handoff contract).
    These usually answer state + next action alone; read turu only for what
    they do not cover.
 3. turu recall: known topic →
